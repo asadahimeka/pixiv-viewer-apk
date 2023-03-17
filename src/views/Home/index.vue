@@ -1,0 +1,86 @@
+<template>
+  <div class="Home">
+    <div class="com_sel_tabs">
+      <div v-t="'common.illust'" class="com_sel_tab cur"></div>
+      <div v-t="'common.manga'" class="com_sel_tab" @click="$router.replace('/home_manga')"></div>
+      <div v-t="'common.novel'" class="com_sel_tab" @click="$router.replace('/home_novel')"></div>
+    </div>
+    <div class="home-i">
+      <RankCard />
+      <SpotlightCard />
+      <template v-if="isLogin">
+        <Recomm4U />
+      </template>
+      <template v-else>
+        <RecommendCard v-if="isSelfHibi" />
+        <lazy-component>
+          <RandomIllust />
+        </lazy-component>
+        <lazy-component v-if="isSelfHibi">
+          <LatestIllustCard />
+        </lazy-component>
+      </template>
+    </div>
+  </div>
+</template>
+
+<script>
+import RankCard from './components/RankCard.vue'
+import SpotlightCard from '../Spotlights/SpotlightCard.vue'
+import RecommendCard from '../Discovery/RecommendCard.vue'
+import RandomIllust from './components/RandomIllust.vue'
+import LatestIllustCard from '../Discovery/LatestIllustCard.vue'
+import Recomm4U from './components/Recomm4U.vue'
+import { notSelfHibiApi } from '@/api/http'
+import { existsSessionId } from '@/api/user'
+
+const isLogin = existsSessionId()
+
+export default {
+  name: 'HomeIllust',
+  components: {
+    RankCard,
+    RandomIllust,
+    RecommendCard,
+    SpotlightCard,
+    LatestIllustCard,
+    Recomm4U,
+  },
+  data() {
+    return {
+      isSelfHibi: !notSelfHibiApi,
+      isLogin,
+    }
+  },
+}
+</script>
+
+<style lang="stylus" scoped>
+.com_sel_tabs
+  z-index 99
+  top 0
+  padding 0.3rem 0
+  background: rgba(255,255,255,0.8)
+  backdrop-filter: saturate(200%) blur(0.08rem)
+.home-i
+  padding-bottom 100px
+  background #fff
+
+  ::v-deep .cell .title
+    font-size 36px
+
+  ::v-deep .image-slide
+    background #f9ba48
+
+  ::v-deep .image-slide:not(:has(.d-loading))
+    background none
+
+  ::v-deep .svg-icon
+    margin-right 10px
+    vertical-align -0.15rem
+
+  ::v-deep .discovery-icon
+    font-size: 0.8rem
+    vertical-align: -0.2rem
+
+</style>

@@ -1,0 +1,26 @@
+{
+  "appId": "top.nanoka.pixiv",
+  "appName": "Pixiv Viewer",
+  "bundledWebRuntime": false,
+  "webDir": "dist",
+  "appendUserAgent": "PixivViewer/1.0",
+  "android": {
+    "buildOptions": {
+      "releaseType": "APK"
+    }
+  },
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    },
+    "CapacitorHttp": {
+      "enabled": true
+    },
+    "CapacitorCookies": {
+      "enabled": true
+    }
+  }
+}
