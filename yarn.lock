@@ -951,6 +951,21 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
+"@capacitor-community/appcenter-analytics@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.npmmirror.com/@capacitor-community/appcenter-analytics/-/appcenter-analytics-3.0.0.tgz#dd58585b65ab034085b9995962ed575758947a33"
+  integrity sha512-JAa2mFcrvXA+U0zVrSH8KtKBJRAkC3by8qKCAIyoyb/BtEeZzJD7QpL/fbuOa/iJyawlSZMOxq54NRnmXU3L/A==
+
+"@capacitor-community/appcenter-crashes@3.0.1":
+  version "3.0.1"
+  resolved "https://registry.npmmirror.com/@capacitor-community/appcenter-crashes/-/appcenter-crashes-3.0.1.tgz#bf06923a163079045c9d942384bd1572730fd593"
+  integrity sha512-qY1gdLQ9LS4nS9TT0z1C5kmAuMe9R+xglteOJR6P38OWR9folmC02A7cXADGZlEliZvDgZxKj1pNEZd74GUDWw==
+
+"@capacitor-community/appcenter@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.npmmirror.com/@capacitor-community/appcenter/-/appcenter-3.0.0.tgz#80820fb64e1dcab2b9860520640e77d847476bd8"
+  integrity sha512-ev5v6U3xnA/aDHZt9TAnUupuo5GsZK8xYhBKxInbryW2i3e0Fm53LYaRhcd1aRel0yaqJJJxgKPkw46W64pjVg==
+
 "@capacitor/android@4.7.0":
   version "4.7.0"
   resolved "https://registry.npmmirror.com/@capacitor/android/-/android-4.7.0.tgz#00c909d800a9aa9d7e337ee5ccdfc2be2741ca20"

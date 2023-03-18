@@ -37,7 +37,6 @@
         v-if="isNovel"
         target="_blank"
         rel="noreferrer"
-        class="umami--click--click_pixiv_link"
         :href="'https://www.pixiv.net/novel/show.php?id=' + artwork.id"
       >
         https://pixiv.net/n/{{ artwork.id }}
@@ -46,7 +45,6 @@
         v-else
         target="_blank"
         rel="noreferrer"
-        class="umami--click--click_pixiv_link"
         :href="'https://www.pixiv.net/artworks/' + artwork.id"
       >
         https://pixiv.net/i/{{ artwork.id }}
@@ -134,7 +132,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
-import { copyText, downloadFile, sleep } from '@/utils'
+import { copyText, downloadFile, sleep, trackEvent } from '@/utils'
 import { i18n } from '@/i18n'
 import { isIllustBookmarked, addBookmark, removeBookmark } from '@/api/user'
 
@@ -228,6 +226,7 @@ export default {
             this.bookmarkId = null
           }
         })
+        trackEvent('Remove Bookmark')
       } else {
         addBookmark(this.artwork.id).then(({ data, error }) => {
           this.favLoading = false
@@ -237,6 +236,7 @@ export default {
             this.bookmarkId = data?.last_bookmark_id || null
           }
         })
+        trackEvent('Add Bookmark')
       }
     },
     drawMask() {
@@ -300,6 +300,7 @@ export default {
         this.$emit('ugoira-download')
         return
       }
+      trackEvent('DownloadArtwork')
       for (let index = 0; index < this.artwork.images.length; index++) {
         const item = this.artwork.images[index]
         const fileName = `${this.artwork.author.name}_${this.artwork.title}_${this.artwork.id}_p${index}.${item.o.split('.').pop()}`

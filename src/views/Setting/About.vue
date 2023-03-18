@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import { trackEvent } from '@/utils'
 import { App } from '@capacitor/app'
 import { Device } from '@capacitor/device'
 import { Dialog } from 'vant'
@@ -68,7 +69,7 @@ export default {
   },
   methods: {
     openLink(link) {
-      // window.umami?.(`open_link_${link.replace('https://', '')}`)
+      trackEvent('Open Link', { url: link.replace('https://', '') })
       window.open(link, '_blank', 'noopener noreferrer')
     },
     showDisclaimer() {
@@ -77,7 +78,7 @@ export default {
         message: this.$t('about.disclaimer_text'),
         confirmButtonText: this.$t('common.confirm'),
       })
-      // window.umami?.(`show_disclaimer`)
+      trackEvent('Show Disclaimer')
     },
   },
 }

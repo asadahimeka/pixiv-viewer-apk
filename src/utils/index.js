@@ -2,6 +2,7 @@ import { Clipboard } from '@capacitor/clipboard'
 import { FileDownload } from 'capacitor-plugin-filedownload'
 import { Filesystem, Directory } from '@capacitor/filesystem'
 import { Share } from '@capacitor/share'
+import Analytics from '@capacitor-community/appcenter-analytics'
 
 export async function copyText(string, cb, errCb) {
   try {
@@ -90,4 +91,11 @@ export async function downloadBlob(blob, fileName) {
   } catch (error) {
     return { error }
   }
+}
+
+export function trackEvent(name, properties) {
+  return Analytics.trackEvent({
+    name,
+    properties,
+  })
 }

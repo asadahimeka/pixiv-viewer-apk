@@ -6,15 +6,17 @@
 </template>
 
 <script>
+import { Device } from '@capacitor/device'
 import Preload from '@/components/Preload'
 import { existsSessionId, initUser } from '@/api/user'
 import { mapMutations } from 'vuex'
+import { trackEvent } from './utils'
 
 export default {
   components: {
     Preload,
   },
-  mounted() {
+  async mounted() {
     const loading = document.querySelector('#ldio-loading')
     loading && (loading.style.display = 'none')
 
@@ -25,6 +27,9 @@ export default {
     }
 
     initUser().then(this.setUser).catch(() => this.setUser(null))
+
+    const { webViewVersion } = await Device.getInfo()
+    trackEvent('App Mounted', { webViewVersion })
   },
   methods: {
     ...mapMutations(['setUser']),

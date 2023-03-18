@@ -8,7 +8,7 @@
       </template>
       <template #right-icon>
         <van-button type="info" size="small" @click="clearCache('db')">
-          <span class="umami--click--clear_db_cache">{{ $t('cache.clear') }}</span>
+          <span>{{ $t('cache.clear') }}</span>
         </van-button>
       </template>
     </van-cell>
@@ -18,7 +18,7 @@
       </template>
       <template #right-icon>
         <van-button size="small" color="linear-gradient(to right, #ff6034, #ee0a24)" @click="clearCache('local')">
-          <span class="umami--click--clear_local_cache">{{ $t('cache.clear') }}</span>
+          <span>{{ $t('cache.clear') }}</span>
         </van-button>
       </template>
     </van-cell>
@@ -28,7 +28,7 @@
       </template>
       <template #right-icon>
         <van-button type="primary" size="small" @click="clearCache('session')">
-          <span class="umami--click--clear_session_cache">{{ $t('cache.clear') }}</span>
+          <span>{{ $t('cache.clear') }}</span>
         </van-button>
       </template>
     </van-cell>
@@ -45,6 +45,7 @@ import { Device } from '@capacitor/device'
 import { Dialog } from 'vant'
 import { LocalStorage, SessionStorage } from '@/utils/storage'
 import localDb from '@/utils/localDb'
+import { trackEvent } from '@/utils'
 
 export default {
   name: 'SettingClearCache',
@@ -119,6 +120,7 @@ export default {
 
         this.calcCacheSize()
         this.$toast.success(this.$t('cache.success_tip'))
+        trackEvent('ClearCache', { type })
       })
     },
   },

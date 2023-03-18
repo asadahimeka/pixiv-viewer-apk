@@ -20,5 +20,14 @@ project(':capacitor-share').projectDir = new File('../node_modules/@capacitor/sh
 include ':capacitor-status-bar'
 project(':capacitor-status-bar').projectDir = new File('../node_modules/@capacitor/status-bar/android')
 
+include ':capacitor-community-appcenter'
+project(':capacitor-community-appcenter').projectDir = new File('../node_modules/@capacitor-community/appcenter/android')
+
+include ':capacitor-community-appcenter-analytics'
+project(':capacitor-community-appcenter-analytics').projectDir = new File('../node_modules/@capacitor-community/appcenter-analytics/android')
+
+include ':capacitor-community-appcenter-crashes'
+project(':capacitor-community-appcenter-crashes').projectDir = new File('../node_modules/@capacitor-community/appcenter-crashes/android')
+
 include ':capacitor-plugin-filedownload'
 project(':capacitor-plugin-filedownload').projectDir = new File('../node_modules/capacitor-plugin-filedownload/android')

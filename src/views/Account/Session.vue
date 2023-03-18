@@ -65,6 +65,7 @@
 import { Dialog } from 'vant'
 import { i18n } from '@/i18n'
 import { login, validateSessionId } from '@/api/user'
+import { trackEvent } from '@/utils'
 
 export default {
   name: 'Session',
@@ -97,6 +98,7 @@ export default {
         this.$store.commit('setUser', userData)
         this.loading = false
         this.$toast(this.$t('sess.succ_msg'))
+        trackEvent('Login Success')
         this.$router.replace({ name: 'Setting' })
       } catch (err) {
         console.log('err: ', err)

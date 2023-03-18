@@ -1,5 +1,5 @@
 {
-  "name": "Pixiv-Viewer",
+  "name": "pixiv-viewer",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -19,6 +19,9 @@
     "@capacitor/filesystem": "4.1.4",
     "@capacitor/share": "4.1.1",
     "@capacitor/status-bar": "4.1.1",
+    "@capacitor-community/appcenter": "3.0.0",
+    "@capacitor-community/appcenter-analytics": "3.0.0",
+    "@capacitor-community/appcenter-crashes": "3.0.1",
     "axios": "0.27.2",
     "capacitor-plugin-filedownload": "github:asadahimeka/capacitor-plugin-filedownload",
     "core-js": "3.27.2",

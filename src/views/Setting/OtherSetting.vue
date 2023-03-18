@@ -95,6 +95,7 @@ import { LocalStorage, SessionStorage } from '@/utils/storage'
 import localDb from '@/utils/localDb'
 import { getCache, setCache } from '@/utils/siteCache'
 import { i18n } from '@/i18n'
+import { trackEvent } from '@/utils'
 
 const PXIMG_PROXYS = process.env.VUE_APP_PXIMG_PROXYS || ''
 const HIBIAPI_ALTS = process.env.VUE_APP_HIBIAPI_ALTS || ''
@@ -178,6 +179,7 @@ export default {
   methods: {
     async changePximgBed() {
       LocalStorage.set('PXIMG_PROXY', this.pximgBed.value)
+      trackEvent('Change Pximg', { value: this.pximgBed.value })
       SessionStorage.clear()
       await localDb.clear()
       setTimeout(() => {
@@ -187,6 +189,7 @@ export default {
     async changePximgBed_({ _value }) {
       this.pximgBed_.value = _value
       LocalStorage.set('PXIMG_PROXY', _value)
+      trackEvent('Change Pximg', { value: _value })
       SessionStorage.clear()
       await localDb.clear()
       setTimeout(() => {
@@ -195,6 +198,7 @@ export default {
     },
     async changeHibiapi() {
       LocalStorage.set('HIBIAPI_BASE', this.hibiapi.value)
+      trackEvent('Change API', { value: this.hibiapi.value })
       SessionStorage.clear()
       await localDb.clear()
       setTimeout(() => {
@@ -204,6 +208,7 @@ export default {
     async changeHibiapi_({ _value }) {
       this.hibiapi_.value = _value
       LocalStorage.set('__HIBIAPI_BASE', _value)
+      trackEvent('Change API', { value: _value })
       SessionStorage.clear()
       await localDb.clear()
       setTimeout(() => {
@@ -213,6 +218,7 @@ export default {
     changeWfType({ name }) {
       this.wfType.value = name
       LocalStorage.set('__WF_TYPE', name)
+      trackEvent('Change WfType', { value: name })
       setTimeout(() => {
         location.reload()
       }, 500)
@@ -220,6 +226,7 @@ export default {
     changeImgRes({ name }) {
       this.imgRes.value = name
       LocalStorage.set('__DTL_IMG_RES', name)
+      trackEvent('Change ImgRes', { value: name })
       setTimeout(() => {
         location.reload()
       }, 500)
@@ -228,6 +235,7 @@ export default {
       this.isDark = val
       this.$nextTick(() => {
         localStorage.setItem('__PXV_DARK', val || '')
+        trackEvent('Change Dark', { value: val })
         setTimeout(() => {
           location.reload()
         }, 500)
@@ -237,6 +245,7 @@ export default {
       this.lang.value = name
       i18n.locale = name
       localStorage.setItem('__PXV_LANG', name)
+      trackEvent('Change Lang', { value: name })
       setTimeout(() => {
         location.reload()
       }, 500)

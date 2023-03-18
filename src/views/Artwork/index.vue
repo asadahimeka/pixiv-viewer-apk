@@ -47,6 +47,7 @@ import api from '@/api'
 import { getCache, setCache } from '@/utils/siteCache'
 import _ from 'lodash'
 import { i18n } from '@/i18n'
+import { trackEvent } from '@/utils'
 
 const ugoiraDownloadPanelActions = [
   { name: 'ZIP', subname: i18n.t('artwork.download.zip') },
@@ -153,6 +154,7 @@ export default {
       this.$refs.imgView.download(item.name)
     },
     openUrl(url) {
+      trackEvent('Open Link', { url })
       window.open(url, '_blank', 'noopener noreferrer')
     },
     async share() {
@@ -163,6 +165,7 @@ export default {
           text: `${this.$t('artwork.share.share')} ${this.artwork.author.name} ${this.$t('artwork.share.of_art')} ${this.artwork.title} - ID: ${this.artwork.id}`,
           url: shareUrl,
         })
+        trackEvent('Share Artwork')
       } catch (error) {
         console.log('error: ', error)
       }

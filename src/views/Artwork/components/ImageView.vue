@@ -60,7 +60,7 @@ import GIF from 'gif.js'
 import tsWhammy from 'ts-whammy'
 import api from '@/api'
 import { LocalStorage } from '@/utils/storage'
-import { downloadBlob, downloadFile } from '@/utils'
+import { downloadBlob, downloadFile, trackEvent } from '@/utils'
 
 const imgResSel = LocalStorage.get('__DTL_IMG_RES', 'Medium')
 export default {
@@ -336,6 +336,7 @@ export default {
         default:
           break
       }
+      trackEvent('Download Ugoira', { type })
     },
     openDownloadPanel() {
       if (this.progressShow) return

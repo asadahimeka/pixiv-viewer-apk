@@ -88,6 +88,8 @@
 </template>
 
 <script>
+import { trackEvent } from '@/utils'
+
 export default {
   name: 'SettingRecommendApps',
   components: {
@@ -99,6 +101,7 @@ export default {
   },
   methods: {
     openLink(link) {
+      trackEvent('Open Link', { url: link.replace('https://', '') })
       window.open(link, '_blank', 'noopener')
     },
   },

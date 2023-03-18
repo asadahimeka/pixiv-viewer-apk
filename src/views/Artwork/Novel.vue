@@ -95,7 +95,7 @@ import _ from 'lodash'
 import { Share } from '@capacitor/share'
 import { mapGetters } from 'vuex'
 import api from '@/api'
-import { downloadBlob } from '@/utils'
+import { downloadBlob, trackEvent } from '@/utils'
 import { getCache, setCache } from '@/utils/siteCache'
 import { LocalStorage } from '@/utils/storage'
 import TopBar from '@/components/TopBar'
@@ -205,6 +205,7 @@ export default {
       }
     },
     openUrl(url) {
+      trackEvent('Open Link', { url })
       window.open(url, '_blank', 'noopener noreferrer')
     },
     async share() {
@@ -215,6 +216,7 @@ export default {
           text: `${this.$t('artwork.share.share')} ${this.artwork.author.name} ${this.$t('artwork.share.of_art')} ${this.artwork.title} - ID: ${this.artwork.id}`,
           url: shareUrl,
         })
+        trackEvent('Share Novel')
       } catch (error) {
         console.log('error: ', error)
       }
@@ -226,6 +228,7 @@ export default {
       this.$toast(this.$t('tips.current_value') + value)
     },
     async downloadNovel() {
+      trackEvent('Download Novel')
       await downloadBlob(new Blob([this.novelText.text]), `${this.artwork.id}_${this.artwork.title}.txt`)
     },
   },

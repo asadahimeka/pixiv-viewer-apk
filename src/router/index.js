@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import nprogress from 'nprogress'
 
+import { trackEvent } from '@/utils'
+
 import BaseLayout from '@/layouts/BaseLayout.vue'
 import MainLayout from '@/layouts/MainLayout.vue'
 
@@ -256,6 +258,7 @@ router.afterEach((to, from) => {
   nprogress.done()
   console.log('afterEach to', to.fullPath)
   console.log('afterEach from', from.fullPath)
+  trackEvent('Route ' + to.name, { path: to.fullPath })
 })
 
 export default router
