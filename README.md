@@ -6,6 +6,8 @@ Android version of [pixiv-viewer](https://github.com/asadahimeka/pixiv-viewer).
 
 Web Preview: 🔗 [pixiv-viewer.vercel.app](https://pixiv-viewer.vercel.app)
 
+Download: ⏬ [App Center](https://install.appcenter.ms/users/yumine/apps/pixiv-viewer/distribution_groups/beta) | [GitHub Releases](https://github.com/asadahimeka/pixiv-viewer-kai/releases)
+
 ## Created with Capacitor Create App
 
 This app was created using [`@capacitor/create-app`](https://github.com/ionic-team/create-capacitor-app),
