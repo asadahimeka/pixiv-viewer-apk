@@ -65,7 +65,7 @@ export default {
     Related,
   },
   beforeRouteUpdate(to, from, next) {
-    if (this.$refs.artworkMeta.showComments) {
+    if (this.$refs.artworkMeta?.showComments) {
       this.$refs.artworkMeta.showComments = false
       next(false)
       nprogress.done()
@@ -74,7 +74,7 @@ export default {
     }
   },
   beforeRouteLeave(to, from, next) {
-    if (this.$refs.artworkMeta.showComments) {
+    if (this.$refs.artworkMeta?.showComments) {
       this.$refs.artworkMeta.showComments = false
       next(false)
       nprogress.done()

@@ -2,31 +2,10 @@
   <div class="setting-page">
     <van-cell
       center
-      title="Pixiviz"
-      is-link
-      label="https://z.pixiv.pics"
-      @click="openLink('https://z.pixiv.pics')"
-    />
-    <van-cell
-      center
       title="PixivNow"
       is-link
-      label="https://now.pixiv.pics"
-      @click="openLink('https://now.pixiv.pics')"
-    />
-    <van-cell
-      center
-      title="PixivMoe"
-      is-link
-      label="https://moe.pixiv.pics"
-      @click="openLink('https://moe.pixiv.pics')"
-    />
-    <van-cell
-      center
-      title="PixivLxns"
-      is-link
-      label="https://lxns.pixiv.pics"
-      @click="openLink('https://lxns.pixiv.pics')"
+      label="https://pixiv.js.org"
+      @click="openLink('https://pixiv.js.org')"
     />
     <van-cell
       center
@@ -37,14 +16,14 @@
     />
     <van-cell
       center
-      title="PIXID"
+      title="Pixiviz"
       is-link
-      label="https://pixid.top/ranking.php"
-      @click="openLink('https://pixid.top/ranking.php')"
+      label="https://pixiviz.xyz"
+      @click="openLink('https://pixiviz.xyz')"
     />
     <van-cell
       center
-      title="pixivic"
+      title="Pixivic"
       is-link
       label="https://pixivic.com"
       @click="openLink('https://pixivic.com')"
@@ -58,38 +37,66 @@
     />
     <van-cell
       center
-      title="moeview"
+      title="pixiv年鑑(β)"
       is-link
-      label="https://moeview.pages.dev"
-      @click="openLink('https://moeview.pages.dev')"
+      label="https://pixiv.navirank.com/"
+      @click="openLink('https://pixiv.navirank.com/')"
     />
     <van-cell
       center
-      title="Voiux 图库"
+      title="Pixiviz Kai"
       is-link
-      label="https://gtk.voiux.com"
-      @click="openLink('https://gtk.voiux.com/pixiv_ranking?mode=daily')"
+      label="https://z.pixiv.pics"
+      @click="openLink('https://z.pixiv.pics')"
     />
     <van-cell
       center
-      title="booruwf"
+      title="Pixivel Kai"
+      is-link
+      label="https://pixivel.kanata.ml"
+      @click="openLink('https://pixivel.kanata.ml')"
+    />
+    <van-cell
+      center
+      title="PixivNow Kai"
+      is-link
+      label="https://now.pixiv.pics"
+      @click="openLink('https://now.pixiv.pics')"
+    />
+    <van-cell
+      center
+      title="pixiv萌え改"
+      is-link
+      label="https://moe.pixiv.pics"
+      @click="openLink('https://moe.pixiv.pics')"
+    />
+    <van-cell
+      center
+      title="PixivLxns"
+      is-link
+      label="https://lxns.pixiv.pics"
+      @click="openLink('https://lxns.pixiv.pics')"
+    />
+    <van-cell
+      center
+      title="Moeview"
+      is-link
+      label="https://moeview.kanata.ml"
+      @click="openLink('https://moeview.kanata.ml')"
+    />
+    <van-cell
+      center
+      title="Booru Masonry"
       is-link
       label="https://booru.kanata.ml"
       @click="openLink('https://booru.kanata.ml')"
     />
     <van-cell
       center
-      title="Pixiv Ranking"
+      title="Pixiv Daily Top50"
       is-link
       label="https://www.nanoka.top/illust/pixiv/"
       @click="openLink('https://www.nanoka.top/illust/pixiv/')"
-    />
-    <van-cell
-      center
-      title="PixAI"
-      is-link
-      label="https://pixai.art"
-      @click="openLink('https://pixai.art/?sort=daily-ranking')"
     />
   </div>
 </template>

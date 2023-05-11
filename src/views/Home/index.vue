@@ -12,7 +12,7 @@
         <Recomm4U />
       </template>
       <template v-else>
-        <RecommendCard v-if="isSelfHibi" />
+        <!-- <RecommendCard v-if="isSelfHibi" /> -->
         <lazy-component>
           <RandomIllust />
         </lazy-component>
@@ -27,7 +27,7 @@
 <script>
 import RankCard from './components/RankCard.vue'
 import SpotlightCard from '../Spotlights/SpotlightCard.vue'
-import RecommendCard from '../Discovery/RecommendCard.vue'
+// import RecommendCard from '../Discovery/RecommendCard.vue'
 import RandomIllust from './components/RandomIllust.vue'
 import LatestIllustCard from '../Discovery/LatestIllustCard.vue'
 import Recomm4U from './components/Recomm4U.vue'
@@ -41,7 +41,7 @@ export default {
   components: {
     RankCard,
     RandomIllust,
-    RecommendCard,
+    // RecommendCard,
     SpotlightCard,
     LatestIllustCard,
     Recomm4U,
@@ -78,9 +78,5 @@ export default {
   ::v-deep .svg-icon
     margin-right 10px
     vertical-align -0.15rem
-
-  ::v-deep .discovery-icon
-    font-size: 0.8rem
-    vertical-align: -0.2rem
 
 </style>

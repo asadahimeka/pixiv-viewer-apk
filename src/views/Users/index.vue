@@ -468,6 +468,7 @@ export default {
           justify-content: center;
           align-items: center;
           height: 60px;
+          cursor pointer
         }
       }
     }

@@ -30,6 +30,13 @@
     />
     <van-cell
       center
+      title="Pixiv Artvier (Android)"
+      is-link
+      label="A third-party app for pixiv. 一个第三方pixiv App。"
+      @click="openLink('https://github.com/yleencc/pixiv-artvier')"
+    />
+    <van-cell
+      center
       title="Flexbooru (Android)"
       is-link
       label="A booru client for Android, support Danbooru, Moebooru, Gelbooru, Shimmie, etc."
@@ -51,16 +58,37 @@
     />
     <van-cell
       center
-      title="ComicNyaa (Android, 预发布)"
+      title="Eros-N (Android,iOS)"
+      is-link
+      label="An unofficial nhentai app."
+      @click="openLink('https://github.com/erosTeam/eros_n')"
+    />
+    <van-cell
+      center
+      title="PicaComic (Android,Windows)"
+      is-link
+      label="Unofficial picacg app built with flutter/使用 Flutter 构建的跨平台 Picacg App"
+      @click="openLink('https://github.com/wgh136/PicaComic')"
+    />
+    <van-cell
+      center
+      title="动漫之家X (Android,iOS,Linux,macOS,Windows)"
+      is-link
+      label="动漫之家 Flutter 客户端。"
+      @click="openLink('https://github.com/xiaoyaocz/flutter_dmzj')"
+    />
+    <van-cell
+      center
+      title="ComicNyaa (Android)"
       is-link
       label=" 一个跨平台的漫画/图库聚合阅读器。"
       @click="openLink('https://github.com/tsukiseele/ComicNyaa')"
     />
     <van-cell
       center
-      title="MoeViewerN (Windows, 未发布)"
+      title="MoeViewerN (Windows)"
       is-link
-      label="一个可爱的二次元网络画廊浏览器，目前处在dev阶段。"
+      label="一个可爱的二次元网络画廊浏览器。"
       @click="openLink('https://github.com/tsukiseele/MoeViewerN')"
     />
     <van-cell

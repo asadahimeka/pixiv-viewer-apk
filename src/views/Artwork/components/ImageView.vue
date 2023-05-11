@@ -251,7 +251,7 @@ export default {
         return
       }
 
-      const [width, height] = [this.displayWidth, this.displayHeight]
+      const { width, height } = this.artwork
 
       const cacheCanvas = document.createElement('canvas')
       cacheCanvas.width = width
@@ -292,7 +292,7 @@ export default {
         // .map(frame => URL.createObjectURL(frame.blob));
       }
 
-      const [width, height] = [this.displayWidth, this.displayHeight]
+      const { width, height } = this.artwork
 
       const cacheCanvas = document.createElement('canvas')
       cacheCanvas.width = width

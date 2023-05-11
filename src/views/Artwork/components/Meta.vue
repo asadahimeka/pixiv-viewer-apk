@@ -283,7 +283,11 @@ export default {
         if (url.startsWith('pixiv://novels')) {
           url = url.replace('pixiv://novels', '/novel')
         }
-        window.open(url, '_blank', 'noreferrer')
+        if (url.startsWith('/')) {
+          this.$router.push(url)
+        } else {
+          window.open(url, '_blank', 'noreferrer')
+        }
       }
     },
     toAuthor(id) {

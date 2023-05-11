@@ -34,12 +34,23 @@ html, body
   .title
     font-size: 32px;
 
+.title,.author,.caption,.users .detail,.users .name
+  user-select text
+
 .image-preview
   background: #333;
 
 .censored
   filter: blur(40px);
   position: relative;
+  pointer-events none
+
+.image-card:has(.censored)
+  pointer-events none
+
+.image-card:has(.censored) .meta,
+.ia-left .censored
+  display none !important
 
 .com_sel
   &_tabs
@@ -192,12 +203,14 @@ html, body
 .dark #app
   min-height 100vh
   &,
+  .app-main,
   .home-i,
   .home-m,
   .home-n,
   .van-cell,
   .image-card,
   .users,
+  .illusts,
   .van-popup,
   .van-calendar,
   .van-tabs__nav,
@@ -208,6 +221,13 @@ html, body
   .van-action-sheet__item
     background #16161a
     color #fff
+
+  .user-wrap,
+  .illust-wrap
+    height auto
+
+  .sup_tags .van-tag
+    background none
 
   .rank-card .spec_wp,
   .image-card
@@ -254,8 +274,8 @@ html, body
 
   .search .search-bar-wrap .search-bar,
   .search .search-bar-wrap .van-search__content,
-  .rank .top,
-  .com_sel_tabs
+  .search .com_sel_tabs,
+  .rank .top
     background rgba(0,0,0,0.8)
   .search-dropdown
     background #16161a
@@ -266,8 +286,10 @@ html, body
     .van-cell
       background-color: transparent !important
 
-  .rank .top .calendar .date
-    color #fff
+  .rank .top
+    left 0
+    .calendar .date
+      color #fff
 
   .image-card .meta::before
     height 100%
