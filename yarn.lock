@@ -1459,6 +1459,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/crypto-js@4.1.1":
+  version "4.1.1"
+  resolved "https://registry.npmmirror.com/@types/crypto-js/-/crypto-js-4.1.1.tgz#602859584cecc91894eb23a4892f38cfa927890d"
+  integrity sha512-BG7fQKZ689HIoc5h+6D2Dgq1fABRa0RbBWKBd9SP/MVRVXROflpm5fhwyATX5duFmbStzyzyycPB8qUYKDH3NA==
+
 "@types/diff@^5.0.2":
   version "5.0.2"
   resolved "https://registry.npmmirror.com/@types/diff/-/diff-5.0.2.tgz#dd565e0086ccf8bc6522c6ebafd8a3125c91c12b"
@@ -2752,6 +2757,11 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001400, caniuse-lite@^1.0.30001426:
   resolved "https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001434.tgz#ec1ec1cfb0a93a34a0600d37903853030520a4e5"
   integrity sha512-aOBHrLmTQw//WFa2rcF1If9fa3ypkC1wzqqiKHgfdrXTWcU8C4gKVZT77eQAPWN1APys3+uQ0Df07rKauXGEYA==
 
+capacitor-native-settings@4.0.3:
+  version "4.0.3"
+  resolved "https://registry.npmmirror.com/capacitor-native-settings/-/capacitor-native-settings-4.0.3.tgz#f786c9ec746d37800ef60a9b76788351a440a6f6"
+  integrity sha512-wxWFwdSySJ1dX8eLFogTYluLYu8fc8biMTL9x0ioI559mHiPDDoCBc//W0nhByUG7a1UxrY4vM4MGDTc/Mf7Bw==
+
 "capacitor-plugin-filedownload@github:asadahimeka/capacitor-plugin-filedownload":
   version "1.0.4"
   resolved "https://codeload.github.com/asadahimeka/capacitor-plugin-filedownload/tar.gz/d907142991a951023b8bc69736ff4195cb97d22a"
@@ -3353,6 +3363,11 @@ cross-spawn@^7.0.2, cross-spawn@^7.0.3:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
+
+crypto-js@4.1.1:
+  version "4.1.1"
+  resolved "https://registry.npmmirror.com/crypto-js/-/crypto-js-4.1.1.tgz#9e485bcf03521041bd85844786b83fb7619736cf"
+  integrity sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==
 
 crypto-random-string@^2.0.0:
   version "2.0.0"
@@ -6102,6 +6117,11 @@ minizlib@^2.1.1:
   dependencies:
     minipass "^3.0.0"
     yallist "^4.0.0"
+
+mint-filter@4.0.3:
+  version "4.0.3"
+  resolved "https://registry.npmmirror.com/mint-filter/-/mint-filter-4.0.3.tgz#da12775be9400db000467031fa86c5eb3ed9bc8e"
+  integrity sha512-CKh2zKv9oFHEmYCXFk5REG2480FBNYixK+hw0mlRd/TgDJVhPpRhHPNhWa3Q6zF1tpE2q7w7y+Ylu1YJusXDpA==
 
 mitt@1.1.2:
   version "1.1.2"

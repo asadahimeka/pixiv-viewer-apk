@@ -12,17 +12,31 @@
               <img :src="userInfo.avatar" :alt="userInfo.name">
             </div>
             <h2 class="name">
-              {{ userInfo.name }}
-              <div class="sup_tags">
-                <span class="is_premium">
-                  <van-tag v-if="userInfo.is_premium" plain color="#fc9d2b">P</van-tag>
-                </span>
-                <span v-if="userInfo.gender" class="gender">
-                  <van-tag v-if="userInfo.gender == 'male'" plain color="#005CAF">♂</van-tag>
-                  <van-tag v-if="userInfo.gender == 'female'" plain color="#F596AA">♀</van-tag>
-                </span>
+              <div class="user_name">
+                {{ userInfo.name }}
+                <div class="sup_tags">
+                  <span class="is_premium">
+                    <van-tag v-if="userInfo.is_premium" plain color="#fc9d2b">P</van-tag>
+                  </span>
+                  <span v-if="userInfo.gender" class="gender">
+                    <van-tag v-if="userInfo.gender == 'male'" plain color="#005CAF">♂</van-tag>
+                    <van-tag v-if="userInfo.gender == 'female'" plain color="#F596AA">♀</van-tag>
+                  </span>
+                </div>
               </div>
             </h2>
+            <div class="follow_btn">
+              <van-button
+                v-if="showFollowBtn"
+                size="small"
+                :plain="!isFollowed"
+                :color="isFollowed ? 'linear-gradient(60deg, #96deda 0%, #50c9c3 100%)' : '#4E4F97'"
+                :loading="favLoading"
+                @click="toggleFollow"
+              >
+                {{ isFollowed ? $t('user.followed') : $t('user.follow') }}
+              </van-button>
+            </div>
             <ul class="site-list">
               <li class="site">
                 <a target="_blank" rel="noreferrer" :href="'https://pixiv.me/' + userInfo.account">
@@ -65,58 +79,90 @@
             </div>
           </div>
         </div>
-        <van-tabs v-if="userInfo.id" v-model="activeTab" class="user-tabs" sticky animated swipeable color="#F2C358">
-          <van-tab v-if="userInfo.illusts > 0" :title="$t('common.illust')" name="illusts">
+        <van-tabs
+          v-if="userInfo.id"
+          v-model="activeTab"
+          class="user-tabs"
+          sticky
+          animated
+          swipeable
+          swipe-threshold="3"
+          color="#F2C358"
+        >
+          <van-tab v-if="userInfo.illusts > 0" name="illusts">
+            <template #title>
+              <span>{{ $t('common.illust') }}</span>
+              <van-tag mark color="#cdeefe" text-color="#0b6aaf">{{ userInfo.illusts }}</van-tag>
+            </template>
             <AuthorIllusts
-              v-if="userInfo.id && userInfo.illusts > 0"
+              v-if="activeTab == 'illusts' && userInfo.id && userInfo.illusts > 0"
               :id="userInfo.id"
               key="once-illust"
               :num="userInfo.illusts"
-              :once="true"
+              :once="false"
+              :show-title="false"
               :not-from-artwork="notFromArtwork"
               @onCilck="showSub('illusts')"
             />
           </van-tab>
-          <van-tab v-if="userInfo.mangas > 0" :title="$t('common.manga')" name="manga">
+          <van-tab v-if="userInfo.mangas > 0" name="manga">
+            <template #title>
+              <span>{{ $t('common.manga') }}</span>
+              <van-tag mark color="#cdeefe" text-color="#0b6aaf">{{ userInfo.mangas }}</van-tag>
+            </template>
             <AuthorIllusts
-              v-if="userInfo.id && userInfo.mangas > 0"
+              v-if="activeTab == 'manga' && userInfo.id && userInfo.mangas > 0"
               :id="userInfo.id"
               key="once-manga"
               i-type="manga"
               :num="userInfo.mangas"
-              :once="true"
+              :once="false"
+              :show-title="false"
               :not-from-artwork="notFromArtwork"
               @onCilck="showSub('manga')"
             />
           </van-tab>
-          <van-tab v-if="userInfo.novels > 0" :title="$t('common.novel')" name="novel">
+          <van-tab v-if="userInfo.novels > 0" name="novel">
+            <template #title>
+              <span>{{ $t('common.novel') }}</span>
+              <van-tag mark color="#cdeefe" text-color="#0b6aaf">{{ userInfo.novels }}</van-tag>
+            </template>
             <AuthorNovels
-              v-if="userInfo.id && userInfo.novels > 0"
+              v-if="activeTab == 'novel' && userInfo.id && userInfo.novels > 0"
               :id="userInfo.id"
               key="once-novel"
               :num="userInfo.novels"
-              :once="true"
+              :once="false"
+              :show-title="false"
               :not-from-artwork="notFromArtwork"
               @onCilck="showSub('novel')"
             />
           </van-tab>
-          <van-tab v-if="userInfo.bookmarks > 0" :title="$t('user.fav')" name="favorite">
+          <van-tab v-if="userInfo.bookmarks > 0" name="favorite">
+            <template #title>
+              <span>{{ $t('user.fav') }}({{ $t('common.illust') }})</span>
+              <van-tag mark color="#cdeefe" text-color="#0b6aaf">{{ userInfo.bookmarks }}</van-tag>
+            </template>
             <FavoriteIllusts
-              v-if="userInfo.bookmarks > 0"
+              v-if="activeTab == 'favorite' && userInfo.bookmarks > 0"
               :id="userInfo.id"
               key="once-favorite"
               :num="userInfo.bookmarks"
               :not-from-artwork="notFromArtwork"
-              :once="true"
+              :once="false"
+              :show-title="false"
               @onCilck="showSub('favorite')"
             />
+          </van-tab>
+          <van-tab v-if="userInfo.bookmarks > 0 && userInfo.novels > 0" :title="`${$t('user.fav')}(${$t('common.novel')})`" name="fav_novel">
             <FavoriteNovels
-              v-if="userInfo.novels > 0"
+              v-if="activeTab == 'fav_novel' && userInfo.novels > 0"
               :id="userInfo.id"
               key="once-fav-novel"
               :num="0"
               :not-from-artwork="notFromArtwork"
-              :once="true"
+              :once="false"
+              :show-title="false"
               @onCilck="showSub('fav_novel')"
             />
           </van-tab>
@@ -125,9 +171,9 @@
           </van-tab>
         </van-tabs>
 
-        <div v-show="activeTab != 'related' && !loading" style="margin-top: 10px;text-align: center;">
+        <!-- <div v-show="activeTab != 'related' && !loading" style="margin-top: 10px;text-align: center;">
           <van-button size="small" @click="showSub(activeTab)">{{ $t('common.view_more') }}</van-button>
-        </div>
+        </div> -->
 
         <van-loading v-show="loading" class="loading" size="60px" />
       </div>
@@ -143,8 +189,9 @@ import RecommUser from '../Search/components/RecommUser.vue'
 import AuthorNovels from './components/AuthorNovels.vue'
 import FavoriteNovels from './components/FavoriteNovels.vue'
 import _ from 'lodash'
-import api from '@/api'
+import api, { localApi } from '@/api'
 import { getCache, setCache } from '@/utils/siteCache'
+import { setStatusBarOverlayOff, setStatusBarOverlayOn } from '@/utils'
 
 export default {
   name: 'Users',
@@ -164,6 +211,7 @@ export default {
     RecommUser,
   },
   beforeRouteEnter(to, from, next) {
+    setStatusBarOverlayOn()
     next(vm => {
       vm.notFromArtwork = ![
         'Artwork',
@@ -174,6 +222,10 @@ export default {
       ].includes(from.name)
     })
   },
+  beforeRouteLeave(to, from, next) {
+    setStatusBarOverlayOff()
+    next()
+  },
   data() {
     return {
       loading: false,
@@ -182,9 +234,19 @@ export default {
       commentHeight: 0,
       notFromArtwork: true,
       activeTab: 'illusts',
+      favLoading: false,
     }
   },
-  computed: {},
+  computed: {
+    showFollowBtn() {
+      if (!window.APP_CONFIG.useLocalAppApi) return false
+      const id = this.$store.state?.user?.id
+      return id && id != this.userInfo.id
+    },
+    isFollowed() {
+      return this.userInfo.is_followed
+    },
+  },
   watch: {
     $route() {
       if (
@@ -205,6 +267,36 @@ export default {
       this.userInfo = {}
       this.activeTab = 'illusts'
       this.getMemberInfo(id)
+    },
+    async togggleFollowCache(bool) {
+      const itemKey = `memberInfo_${this.userInfo.id}`
+      const user = await getCache(itemKey)
+      if (user) {
+        user.is_followed = bool
+        await setCache(itemKey, user, 60 * 60 * 6)
+      }
+    },
+    async toggleFollow() {
+      this.favLoading = true
+      if (this.isFollowed) {
+        const isOk = localApi.userFollowDelete(this.userInfo.id)
+        this.favLoading = false
+        if (isOk) {
+          this.userInfo.is_followed = false
+          this.togggleFollowCache(false)
+        } else {
+          this.$toast(this.$t('user.unfollow_fail'))
+        }
+      } else {
+        const isOk = localApi.userFollowAdd(this.userInfo.id)
+        this.favLoading = false
+        if (isOk) {
+          this.userInfo.is_followed = true
+          this.togggleFollowCache(true)
+        } else {
+          this.$toast(this.$t('user.follow_fail'))
+        }
+      }
     },
     async getMemberInfo(id) {
       // console.log(id);
@@ -292,7 +384,7 @@ export default {
 .user-container {
   height: 100%;
 
-  .illust-wrap, .user-wrap {
+  .user-illusts, .user-wrap {
     height: 100vh;
     // overflow-y: scroll;
   }
@@ -300,7 +392,7 @@ export default {
 
 .loading {
   position: absolute;
-  top: 30%;
+  top: 3rem;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -308,6 +400,16 @@ export default {
 .user-tabs {
   ::v-deep .van-tabs__content  {
     margin-top 10px
+  }
+  ::v-deep .van-sticky--fixed {
+    background #fff
+    padding-top 0.6rem
+  }
+}
+
+.dark .user-tabs {
+  ::v-deep .van-sticky--fixed {
+    background #16161a
   }
 }
 
@@ -359,22 +461,29 @@ export default {
       }
 
       .name {
-        position relative
+        max-width 7.2rem
+        margin: 10px auto;
         font-size: 46px;
         font-weight: bold;
-        margin: 10px 0;
+
+        .user_name {
+          display inline-block
+          position relative
+        }
 
         .sup_tags {
           position absolute
-          top 0px
-          padding-left 8PX
-          display inline-block
+          top 0
+          right 0
+          transform translateX(120%)
+          display flex
           .van-tag {
             height 16PX
             vertical-align super
           }
         }
         .gender {
+          margin-left 10px
           .van-tag {
             padding 0 2PX
             line-height 0.9
@@ -480,6 +589,16 @@ export default {
 }
 
 ::v-deep .top-bar-wrap
+  padding-top 1rem
   background none
+
+.follow_btn
+  margin 20px 0
+  ::v-deep .van-button
+    width 100px
+
+@media screen and (min-width 768px)
+  .users .info-container .info .name
+    max-width unset
 
 </style>

@@ -14,14 +14,39 @@
     </van-cell>
     <van-cell center :title="$t('display.ai')" :label="$t('display.ai_label')">
       <template #right-icon>
-        <van-switch active-color="#536cb8" :value="currentSETTING.showAi" size="24" @input="onAIChange($event)" />
+        <van-switch active-color="#536cb8" :value="currentSETTING.ai" size="24" @input="onAIChange($event)" />
       </template>
     </van-cell>
+    <van-field
+      v-model="blockTags"
+      rows="2"
+      autosize
+      :label="$t('display.block_tags')"
+      type="textarea"
+      :placeholder="$t('display.block_tags_ph')"
+    >
+      <template #button>
+        <van-button size="small" type="info" @click="saveBlockTags">{{ $t('common.save') }}</van-button>
+      </template>
+    </van-field>
+    <van-field
+      v-model="blockUids"
+      rows="2"
+      autosize
+      :label="$t('display.block_uids')"
+      type="textarea"
+      :placeholder="$t('display.block_uids_ph')"
+    >
+      <template #button>
+        <van-button size="small" type="info" @click="saveBlockUids">{{ $t('common.save') }}</van-button>
+      </template>
+    </van-field>
   </div>
 </template>
 
 <script>
 import { trackEvent } from '@/utils'
+import { LocalStorage } from '@/utils/storage'
 import { Dialog } from 'vant'
 import { mapState, mapActions } from 'vuex'
 
@@ -29,10 +54,12 @@ export default {
   name: 'SettingContentsDisplay',
   data() {
     return {
+      blockTags: LocalStorage.get('PXV_B_TAGS', ''),
+      blockUids: LocalStorage.get('PXV_B_UIDS', ''),
       currentSETTING: {
         r18: false,
         r18g: false,
-        showAi: false,
+        ai: false,
       },
     }
   },
@@ -48,8 +75,20 @@ export default {
         this.saveSETTING(JSON.parse(JSON.stringify(this.currentSETTING)))
       })
     },
+    saveBlockTags() {
+      LocalStorage.set('PXV_B_TAGS', this.blockTags)
+      setTimeout(() => {
+        location.reload()
+      }, 100)
+    },
+    saveBlockUids() {
+      LocalStorage.set('PXV_B_UIDS', this.blockUids)
+      setTimeout(() => {
+        location.reload()
+      }, 100)
+    },
     onAIChange(checked) {
-      this.$set(this.currentSETTING, 'showAi', checked)
+      this.$set(this.currentSETTING, 'ai', checked)
       this.saveSwitchValues()
       trackEvent('Display Switch', { type: `ai_${checked}` })
     },

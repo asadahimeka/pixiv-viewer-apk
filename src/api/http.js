@@ -29,37 +29,18 @@ const get = async (url, params = {}, config = {}) => {
   console.log('url: ', url)
   console.log('params: ', params)
   try {
-    const res = await axios.get(url, { params, ...config })
+    let res
+    if (/^\/(?!prks).*/.test(url) && window.APP_CONFIG.useLocalAppApi) {
+      res = await window.__localApiMap__[url]?.({ query: params, ...config })
+    } else {
+      res = (await axios.get(url, { params, ...config })).data
+    }
 
-    return new Promise((resolve, reject) => {
-      const data = res.data
-      if (typeof data === 'object') {
-        resolve(data)
-      } else {
-        reject(data)
-      }
-    })
+    return res
   } catch (error) {
     console.error(error)
     return { error }
   }
 }
 
-const post = async (url, data) => {
-  try {
-    const res = await axios.post(url, data).data
-
-    return new Promise((resolve, reject) => {
-      const data = res.data
-      if (typeof res === 'object') {
-        resolve(data)
-      } else {
-        reject(data)
-      }
-    })
-  } catch (ex) {
-    console.error(ex)
-  }
-}
-
-export { get, post }
+export { get }

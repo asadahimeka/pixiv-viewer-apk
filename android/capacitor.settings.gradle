@@ -29,5 +29,8 @@ project(':capacitor-community-appcenter-analytics').projectDir = new File('../no
 include ':capacitor-community-appcenter-crashes'
 project(':capacitor-community-appcenter-crashes').projectDir = new File('../node_modules/@capacitor-community/appcenter-crashes/android')
 
+include ':capacitor-native-settings'
+project(':capacitor-native-settings').projectDir = new File('../node_modules/capacitor-native-settings/android')
+
 include ':capacitor-plugin-filedownload'
 project(':capacitor-plugin-filedownload').projectDir = new File('../node_modules/capacitor-plugin-filedownload/android')

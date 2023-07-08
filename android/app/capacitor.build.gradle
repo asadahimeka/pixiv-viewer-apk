@@ -18,6 +18,7 @@ dependencies {
     implementation project(':capacitor-community-appcenter')
     implementation project(':capacitor-community-appcenter-analytics')
     implementation project(':capacitor-community-appcenter-crashes')
+    implementation project(':capacitor-native-settings')
     implementation project(':capacitor-plugin-filedownload')
 
 }

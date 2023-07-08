@@ -4,20 +4,32 @@
     <div class="share_btn" @click="share">
       <Icon class="icon" name="share" />
     </div>
-    <div class="ia-cont">
-      <div class="ia-left">
-        <van-loading v-if="loading" size="50px" />
-        <ImageView ref="imgView" :artwork="artwork" :lazy="true" @open-download="ugoiraDownloadPanelShow = true" />
+    <van-swipe-cell ref="swipeCell" :disabled="disableSwipe" stop-propagation @open="onSwipeOpen">
+      <template #left>
+        <div class="ia-sc-btn">
+          <van-icon name="arrow-left" size="0.6rem" />
+        </div>
+      </template>
+      <div class="ia-cont">
+        <div class="ia-left">
+          <van-loading v-if="loading" size="50px" />
+          <ImageView ref="imgView" :artwork="artwork" :lazy="true" @open-download="ugoiraDownloadPanelShow = true" />
+        </div>
+        <div class="ia-right">
+          <van-skeleton class="skeleton" title avatar :row="5" avatar-size="42px" :loading="loading">
+            <ArtworkMeta ref="artworkMeta" :artwork="artwork" @ugoira-download="showUgPanelFromDlBtn" />
+          </van-skeleton>
+          <keep-alive>
+            <AuthorCard v-if="artwork.author" :id="artwork.author.id" :key="artwork.id" />
+          </keep-alive>
+        </div>
       </div>
-      <div class="ia-right">
-        <van-skeleton class="skeleton" title avatar :row="5" avatar-size="42px" :loading="loading">
-          <ArtworkMeta ref="artworkMeta" :artwork="artwork" @ugoira-download="showUgPanelFromDlBtn" />
-        </van-skeleton>
-        <keep-alive>
-          <AuthorCard v-if="artwork.author" :id="artwork.author.id" :key="artwork.id" />
-        </keep-alive>
-      </div>
-    </div>
+      <template #right>
+        <div class="ia-sc-btn">
+          <van-icon name="arrow" size="0.6rem" />
+        </div>
+      </template>
+    </van-swipe-cell>
     <van-divider style="margin: 0.7rem 0;" />
     <keep-alive>
       <Related :key="artwork.id" :artwork="artwork" />
@@ -45,14 +57,16 @@ import { mapGetters } from 'vuex'
 import nprogress from 'nprogress'
 import api from '@/api'
 import { getCache, setCache } from '@/utils/siteCache'
+import { LocalStorage } from '@/utils/storage'
 import _ from 'lodash'
 import { i18n } from '@/i18n'
-import { trackEvent } from '@/utils'
+import { trackEvent, setStatusBarOverlayOn, setStatusBarOverlayOff } from '@/utils'
 
 const ugoiraDownloadPanelActions = [
   { name: 'ZIP', subname: i18n.t('artwork.download.zip') },
   { name: 'GIF', subname: i18n.t('artwork.download.gif') },
   { name: 'WebM', subname: i18n.t('artwork.download.webm') }, // chrome only
+  { name: 'MP4', subname: i18n.t('artwork.download.mp4') },
 ]
 
 export default {
@@ -73,7 +87,12 @@ export default {
       next()
     }
   },
+  beforeRouteEnter(to, from, next) {
+    setStatusBarOverlayOn()
+    next()
+  },
   beforeRouteLeave(to, from, next) {
+    setStatusBarOverlayOff()
     if (this.$refs.artworkMeta?.showComments) {
       this.$refs.artworkMeta.showComments = false
       next(false)
@@ -88,6 +107,7 @@ export default {
       artwork: {},
       ugoiraDownloadPanelShow: false,
       ugoiraDownloadPanelActions,
+      disableSwipe: !LocalStorage.get('PXV_IMG_DTL_SWIPE', false),
     }
   },
   computed: {
@@ -138,9 +158,9 @@ export default {
           icon: require('@/icons/error.svg'),
           duration: 3000,
         })
-        setTimeout(() => {
-          this.$router.back()
-        }, 500)
+        // setTimeout(() => {
+        //   this.$router.back()
+        // }, 500)
       }
     },
     showUgPanelFromDlBtn() {
@@ -152,6 +172,22 @@ export default {
     },
     onUgoiraDownloadPanelSelect(item) {
       this.$refs.imgView.download(item.name)
+    },
+    onSwipeOpen({ position }) {
+      this.$refs.swipeCell?.close()
+      const list = this.$store.state.galleryList || []
+      console.log('list: ', list)
+      const curr = list.findIndex(e => e == this.artwork.id)
+      console.log('curr: ', curr)
+      if (position == 'left') {
+        const prev = list[curr - 1]
+        console.log('prev: ', prev)
+        prev && this.$router.replace(`/artworks/${prev}`)
+      } else {
+        const next = list[curr + 1]
+        console.log('next: ', next)
+        next && this.$router.replace(`/artworks/${next}`)
+      }
     },
     openUrl(url) {
       trackEvent('Open Link', { url })
@@ -196,9 +232,8 @@ img[src*="/api/qrcode?text"]
     margin: 30px 0;
   .share_btn
     position: fixed;
-    top: 0;
-    right 0
-    padding: 0.8rem 0.5rem;
+    top: 1.05rem;
+    right 0.5rem;
     z-index: 99;
     font-size 2.6em
     cursor pointer
@@ -215,6 +250,15 @@ img[src*="/api/qrcode?text"]
     border-radius: 50%;
   ::v-deep .van-share-sheet__options::-webkit-scrollbar
     height 0.12rem
+  ::v-deep .van-swipe-cell
+    cursor auto
+
+.ia-sc-btn
+  display flex
+  justify-content center
+  align-items center
+  width 0.7rem
+  height 100%
 
 .ia-cont
   display flex
@@ -253,7 +297,8 @@ img[src*="/api/qrcode?text"]
 
 .artwork
   ::v-deep .top-bar-wrap
-    width 30vw
+    width 2rem
+    padding-top 1rem
     background none
 
 @media screen and (max-width: 1200px)

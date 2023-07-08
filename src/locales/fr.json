@@ -1,13 +1,15 @@
 {
   "about": {
     "disclaimer": "Clause de non-responsabilité",
-    "disclaimer_text": "<b>Lié à NSFW</b><br> Ce site n'affiche pas les ressources NSFW (telles que les illustrations R-18) par défaut, tout accès à ces ressources est défini par l'utilisateur dans les paramètres, et l'utilisateur s'est assuré \nce\n\nCeux qui ont plus de 18 ans et qui ne violent pas le contenu stipulé par les lois et réglementations locales.\n\nNous avons clairement marqué les ressources NSFW telles qu'elles peuvent apparaître, et nous décourageons l'accès ou la distribution de ces ressources.\n\n<br><b>Commentaires des utilisateurs</b><br>\"Commentaires des utilisateurs\" désigne les commentaires postés par les utilisateurs du site source Pixiv via des fonctions telles que l'auto-présentation, l'introduction d'illustrations et la zone de commentaires.\n\nCette partie appartient au propre comportement de l'éditeur, et nous ne pouvons pas la contrôler efficacement.\n\nNous ne publions ni n'encourageons la diffusion de discours inappropriés.\n\nSi vous trouvez un contenu inapproprié lors de votre navigation, nous vous encourageons fortement à le signaler au site source.\n\n<br><b>Déclaration de droit d'auteur</b><br> Toutes les données et ressources multimédias demandées sont protégées par le droit d'auteur de Pixiv ou de ses auteurs originaux.\n\n<br>Le programme Pixiv Viewer est sous licence MIT.\n\n<br>Uniquement pour la communication et l'apprentissage.",
+    "disclaimer_text": "<b>Lié à NSFW</b><br> Ce site n'affiche pas les ressources NSFW (telles que les illustrations R-18) par défaut, tout accès à ces ressources est défini par l'utilisateur dans les paramètres, et l'utilisateur s'est assuré \nce\n\nCeux qui ont plus de 18 ans et qui ne violent pas le contenu stipulé par les lois et réglementations locales.\n\nNous avons clairement marqué les ressources NSFW telles qu'elles peuvent apparaître, et nous décourageons l'accès ou la distribution de ces ressources.\n\n<br><b>Commentaires des utilisateurs</b><br>\"Commentaires des utilisateurs\" désigne les commentaires postés par les utilisateurs du site source Pixiv via des fonctions telles que l'auto-présentation, l'introduction d'illustrations et la zone de commentaires.\n\nCette partie appartient au propre comportement de l'éditeur, et nous ne pouvons pas la contrôler efficacement.\n\nNous ne publions ni n'encourageons la diffusion de discours inappropriés.\n\nSi vous trouvez un contenu inapproprié lors de votre navigation, nous vous encourageons fortement à le signaler au site source.\n\n<br><b>Déclaration de droit d'auteur</b><br>Ce site n'a aucun lien avec pixiv.net (ピクシブ Co., Ltd.). Toutes les données et ressources multimédias demandées sont protégées par le droit d'auteur de Pixiv ou de ses auteurs originaux.\n\n<br>Le programme Pixiv Viewer est sous licence MIT.\n\n<br>Uniquement pour la communication et l'apprentissage.",
     "feedback": "Retour",
     "from": "Modifié à partir de",
     "origin_site": "Site d'origine",
     "source": "Code source",
-    "title": "à propos",
-    "version": "Version"
+    "title": "À propos du site",
+    "version": "Version",
+    "about_site": "À propos de cette application",
+    "credits": "Remerciements"
   },
   "artwork": {
     "download": {
@@ -17,7 +19,8 @@
         "tip": "Veuillez d'abord jouer l'animation"
       },
       "webm": "Haute qualité, mauvaise compatibilité",
-      "zip": "Archive de trame de séquence brute"
+      "zip": "Archive de trame de séquence brute",
+      "mp4": "Allez sur ugoira.com pour convertir"
     },
     "share": {
       "of_art": "Oeuvres de",
@@ -27,7 +30,7 @@
         "copylink": "Copier le lien",
         "qrcode": "QR Code",
         "qzone": "Zone Q",
-        "web": "Partage système",
+        "web": "Partage Web",
         "wechat": "WeChat",
         "weibo": "Weibo"
       }
@@ -76,7 +79,8 @@
     "view_more": "Voir plus",
     "words": "Mots",
     "date": "date",
-    "reset": "réinitialiser"
+    "reset": "réinitialiser",
+    "save": "Sauvegarder"
   },
   "display": {
     "ai": "Affichage du travail généré par l'IA",
@@ -87,7 +91,11 @@
     "r18_label": "Contient de la nudité ou des descriptions sexuelles",
     "r18g": "Affichage des travaux R-18G",
     "r18g_label": "Contient du contenu sanglant ou dégoûtant",
-    "title": "Paramètres d'affichage des illustrations"
+    "title": "Paramètres d'affichage des illustrations",
+    "block_tags": "Marquer la liste noire",
+    "block_tags_ph": "Veuillez saisir des balises, séparées par des virgules",
+    "block_uids": "Liste noire des artistes",
+    "block_uids_ph": "Veuillez saisir les identifiants des artistes, séparés par des virgules"
   },
   "history": {
     "confirm": {
@@ -218,14 +226,50 @@
     "other": {
       "lang": "Langue",
       "lang_ph": "Veuillez sélectionner la langue",
-      "title": "Autres réglages"
+      "title": "Autres réglages",
+      "manual_input_label": "Si les adresses de proxy et d'instance d'API des images ci-dessous sont saisies manuellement",
+      "manual_input": "Entrez le lien manuellement",
+      "api_proxy": {
+        "def_ph": "Si le proxy par défaut ne peut pas être utilisé, vous pouvez essayer un autre proxy",
+        "sel_desc": "Veuillez sélectionner le proxy AppApi",
+        "title": "Sélectionnez le proxy AppApi"
+      },
+      "swipe_toggle": "Balayez vers la gauche et vers la droite sur la page de détails pour parcourir les œuvres",
+      "cp_token_label": "Copiez le RefreshToken actuel dans le presse-papiers",
+      "cp_token_title": "Exporter le jeton d'actualisation",
+      "direct_mode": {
+        "confirm": {
+          "msg": "Le mode de connexion directe est plus lent et ne garantit pas la stabilité.\n\nIl ne peut pas être activé en même temps que le proxy AppApi.",
+          "proxy_msg": "Le transfert de requêtes AppApi locales via des services cloud tiers ne peut pas garantir la stabilité et la sécurité.\n\nIl ne peut pas être activé en même temps que le mode de connexion directe.",
+          "proxy_title": "Êtes-vous sûr d'avoir activé le proxy AppApi ?",
+          "title": "Êtes-vous sûr d'avoir activé le mode direct ?"
+        },
+        "host": {
+          "label": "Repassera les requêtes DoH après l'effacement",
+          "title": "Effacer le cache des hôtes directs"
+        },
+        "host_msg": "Êtes-vous sûr d'effacer les enregistrements du cache des hôtes en mode de connexion directe ?",
+        "label": "S'il faut contourner SNI via la façade de domaine",
+        "proxy": {
+          "label": "S'il faut proxy les requêtes AppApi locales via les services cloud",
+          "title": "Activer le proxy AppApi"
+        },
+        "title": "Activer le mode direct"
+      },
+      "ana": {
+        "label": "S'il faut envoyer des statistiques anonymes à AppCenter pour l'amélioration de l'application",
+        "title": "Activer AppCenter Analytics"
+      }
     },
     "recomm": {
       "app": "applications",
       "site": "Site Internet",
-      "title": "Suggestion connexe",
+      "title": "Liens recommandés",
       "tm": "Script utilisateur"
-    }
+    },
+    "down_app": "Télécharger l'application",
+    "app_desc": "Un autre outil de navigateur d'illustrations/romans Pixiv",
+    "check_update": "Vérifier les mises à jour"
   },
   "sp": {
     "all": "Aperçu",
@@ -251,7 +295,9 @@
     "loading": "Chargement...",
     "net_err": "Exception réseau, cliquez pour recharger",
     "no_data": "Pas de données",
-    "no_more": "Pas plus"
+    "no_more": "Pas plus",
+    "copy_err": "Échec de la copie",
+    "tip": "Conseils"
   },
   "user": {
     "art_num": "{0} œuvres",
@@ -273,13 +319,21 @@
     },
     "related": "Utilisateurs associés",
     "faved": "Favoris",
-    "view_comments": "Voir les commentaires"
+    "view_comments": "Voir les commentaires",
+    "follow": "Suivre",
+    "follow_fail": "Échec du suivi",
+    "followed": "Suivi",
+    "unfollow_fail": "Échec du désabonnement"
   },
   "tip": {
-    "rate_limit": "Limite d'API dépassée, veuillez réessayer plus tard ou accédez aux paramètres pour modifier l'instance d'API",
+    "rate_limit": "Limite d'API dépassée, veuillez réessayer plus tard",
     "unknown_err": "Erreur inconnue",
+    "down_wait": "Traitement, veuillez patienter",
+    "downloaded": "Téléchargement complet",
     "downloading": "Téléchargement",
-    "downloaded": "Téléchargé"
+    "connect_err": "La connexion a échoué, cet élément n'est pas disponible.",
+    "browser_latest": "Veuillez essayer d'utiliser le dernier navigateur Chrome/Edge pour visiter ce site",
+    "browser_tip": "Veuillez utiliser le navigateur Chrome/Edge pour visiter ce site"
   },
   "sess": {
     "example": "L'ID de session ressemble à (invalide, pour la démo) :",
@@ -320,5 +374,25 @@
     "latest": "Nouveau",
     "timeline": "Alimentation",
     "user": "Suivant"
+  },
+  "login": {
+    "fail_tip": "échec de la connexion",
+    "logout_tip": "Confirmer la sortie ?",
+    "o": {
+      "desc1": "Le site source Pixiv est sur le point d'ouvrir pour vous connecter, veuillez vous assurer que vous pouvez accéder à Pixiv",
+      "desc2": "Veuillez vous assurer que vous avez installé le plug-in de navigateur URLRedirector et importé la configuration, sinon vous ne pourrez pas vous connecter",
+      "desc3": "Lien d'installation URLRedirector :",
+      "desc4": "Cliquez pour copier l'adresse de la règle en ligne URLRedirector",
+      "desc5": "Assurez-vous que le plug-in de navigateur Tampermonkey est installé et que le script utilisateur Helper est installé, sinon les demandes d'API ne fonctionneront pas",
+      "desc6": "Lien d'installation de Tampermonkey :",
+      "desc7": "Cliquez sur Installer le script utilisateur de l'assistant"
+    },
+    "succ_tip": "Connexion réussie",
+    "t": {
+      "d1": "Assurez-vous de pouvoir vous connecter à Pixiv, sinon activez le proxy AppApi",
+      "d2": "Veuillez remplir le RefreshToken, reportez-vous au lien ci-dessous pour savoir comment l'obtenir",
+      "d3": "Veuillez remplir RefreshToken",
+      "d4": "RefreshToken est malformé"
+    }
   }
 }

@@ -78,7 +78,7 @@
       ></div>
       <Icon v-if="isShrink" class="dropdown" name="dropdown" scale="4" />
     </div>
-    <div v-if="!isNovel " class="meta_btns">
+    <div v-if="!isNovel " class="meta_btns" :class="{ censored: isCensored(artwork) }">
       <van-button
         v-if="isLoggedIn"
         size="small"
@@ -114,8 +114,9 @@
       </van-button>
       <van-popup
         v-model="showComments"
-        position="right"
         class="comments-popup"
+        position="right"
+        get-container="body"
         closeable
         :overlay="false"
       >
@@ -135,6 +136,8 @@ import dayjs from 'dayjs'
 import { copyText, downloadFile, sleep, trackEvent } from '@/utils'
 import { i18n } from '@/i18n'
 import { isIllustBookmarked, addBookmark, removeBookmark } from '@/api/user'
+import { localApi } from '@/api'
+import { toggleBookmarkCache } from '@/utils/siteCache'
 
 export default {
   filters: {
@@ -209,6 +212,10 @@ export default {
   methods: {
     checkBookmarked() {
       if (!this.artwork.id) return
+      if (window.APP_CONFIG.useLocalAppApi) {
+        this.bookmarkId = this.artwork.is_bookmarked
+        return
+      }
       this.favLoading = true
       isIllustBookmarked(this.artwork.id).then(id => {
         this.favLoading = false
@@ -218,25 +225,43 @@ export default {
     toggleBookmark() {
       this.favLoading = true
       if (this.bookmarkId) {
-        removeBookmark(this.bookmarkId).then(({ error }) => {
-          this.favLoading = false
-          if (error) {
-            this.$toast(this.$t('artwork.unfav_fail'))
-          } else {
-            this.bookmarkId = null
-          }
-        })
-        trackEvent('Remove Bookmark')
+        window.APP_CONFIG.useLocalAppApi
+          ? localApi.illustBookmarkDelete(this.artwork.id).then(isOk => {
+            this.favLoading = false
+            if (isOk) {
+              this.bookmarkId = null
+              toggleBookmarkCache(this.artwork, false)
+            } else {
+              this.$toast(this.$t('artwork.unfav_fail'))
+            }
+          })
+          : removeBookmark(this.bookmarkId).then(({ error }) => {
+            this.favLoading = false
+            if (error) {
+              this.$toast(this.$t('artwork.unfav_fail'))
+            } else {
+              this.bookmarkId = null
+            }
+          })
       } else {
-        addBookmark(this.artwork.id).then(({ data, error }) => {
-          this.favLoading = false
-          if (error) {
-            this.$toast(this.$t('artwork.fav_fail'))
-          } else {
-            this.bookmarkId = data?.last_bookmark_id || null
-          }
-        })
-        trackEvent('Add Bookmark')
+        window.APP_CONFIG.useLocalAppApi
+          ? localApi.illustBookmarkAdd(this.artwork.id).then(isOk => {
+            this.favLoading = false
+            if (isOk) {
+              this.bookmarkId = true
+              toggleBookmarkCache(this.artwork, true)
+            } else {
+              this.$toast(this.$t('artwork.fav_fail'))
+            }
+          })
+          : addBookmark(this.artwork.id).then(({ data, error }) => {
+            this.favLoading = false
+            if (error) {
+              this.$toast(this.$t('artwork.fav_fail'))
+            } else {
+              this.bookmarkId = data?.last_bookmark_id || null
+            }
+          })
       }
     },
     drawMask() {
@@ -372,10 +397,15 @@ export default {
   top 0
   transform none
   overflow-y hidden
+  padding-top 1rem
+
+  ::v-deep .van-popup__close-icon {
+    top 1.2rem
+  }
 }
 .comments-iframe {
   width 750px
-  height 100vh
+  height 95vh
   border 0
 }
 
@@ -408,12 +438,13 @@ export default {
   }
 
   .author-info {
-    height: 86px;
+    display flex
+    // height: 86px;
     margin: 10px 0 20px 0;
 
     .avatar {
-      float: left;
       width: 86px;
+      min-width: 86px;
       height: 86px;
       border-radius: 50%;
       overflow: hidden;
@@ -422,21 +453,22 @@ export default {
 
     .name-box {
       height: 100%;
-      white-space: nowrap;
+      // white-space: nowrap;
 
       .title {
         padding-top: 4px;
         margin-bottom: 8px;
         font-size: 32px;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        // overflow: hidden;
+        // text-overflow: ellipsis;
       }
 
       .author {
         font-size: 22px;
         color: #9b9b9b;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        cursor pointer
+        // overflow: hidden;
+        // text-overflow: ellipsis;
       }
 
       .series {

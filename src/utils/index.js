@@ -2,7 +2,10 @@ import { Clipboard } from '@capacitor/clipboard'
 import { FileDownload } from 'capacitor-plugin-filedownload'
 import { Filesystem, Directory } from '@capacitor/filesystem'
 import { Share } from '@capacitor/share'
+import { StatusBar, Style } from '@capacitor/status-bar'
 import Analytics from '@capacitor-community/appcenter-analytics'
+import axios from 'axios'
+import { LocalStorage } from './storage'
 
 export async function copyText(string, cb, errCb) {
   try {
@@ -59,6 +62,32 @@ export function objectToQueryString(queryParameters) {
     : ''
 }
 
+export function isURL(s) {
+  return /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/i.test(s)
+}
+
+export async function checkImgAvailable(src) {
+  return new Promise((resolve, reject) => {
+    let img = document.createElement('img')
+    img.referrerPolicy = 'no-referrer'
+    img.src = src
+    img.onload = () => {
+      resolve(true)
+      img = null
+    }
+    img.onerror = () => {
+      reject(new Error('Network error.'))
+      img = null
+    }
+  })
+}
+
+export async function checkUrlAvailable(url) {
+  const res = await axios.get(url, { timeout: 5000 })
+  if (res.data) return true
+  throw new Error('Resp not ok.')
+}
+
 export async function downloadFile(uri, fileName) {
   try {
     const res = await FileDownload.download({ uri, fileName })
@@ -77,8 +106,8 @@ function blobToBase64(blob) {
 }
 
 export async function downloadBlob(blob, fileName) {
-  const base64 = await blobToBase64(blob)
   try {
+    const base64 = await blobToBase64(blob)
     const res = await Filesystem.writeFile({
       path: fileName,
       data: base64,
@@ -93,9 +122,21 @@ export async function downloadBlob(blob, fileName) {
   }
 }
 
+const isAnalyticsOn = LocalStorage.get('PXV_ANALYTICS', true)
 export function trackEvent(name, properties) {
+  if (!isAnalyticsOn) return
   return Analytics.trackEvent({
     name,
     properties,
   })
+}
+
+export function setStatusBarOverlayOn() {
+  StatusBar.setStyle({ style: Style.Dark })
+  StatusBar.setOverlaysWebView({ overlay: true })
+}
+
+export function setStatusBarOverlayOff() {
+  StatusBar.setStyle({ style: localStorage.PXV_DARK ? Style.Dark : Style.Light })
+  StatusBar.setOverlaysWebView({ overlay: false })
 }

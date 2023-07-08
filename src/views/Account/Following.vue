@@ -52,8 +52,8 @@ export default {
   .van-tabs__nav
     justify-content center
     padding-bottom 0
-    background: rgba(255,255,255,0.8)
-    backdrop-filter: saturate(200%) blur(0.08rem)
+    background: rgba(255,255,255,1)
+    // backdrop-filter: saturate(200%) blur(0.08rem)
   .van-tab
     flex unset
     margin 0 0.1rem

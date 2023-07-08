@@ -110,6 +110,8 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.icon-spec_star
+  font-size 45px
 .rank-card {
   padding: 0 14px;
   margin-bottom: 24px;

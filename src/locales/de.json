@@ -1,13 +1,15 @@
 {
   "about": {
     "disclaimer": "Haftungsausschluss",
-    "disclaimer_text": "<b>NSFW-bezogen</b><br>Diese Seite zeigt standardmäßig keine NSFW-Ressourcen (z. B. R-18-Illustrationen) an, jeder Zugriff auf solche Ressourcen wird vom Benutzer in den Einstellungen festgelegt und vom Benutzer sichergestellt \nDas\n\nDiejenigen, die über 18 Jahre alt sind und nicht gegen die durch lokale Gesetze und Vorschriften festgelegten Inhalte verstoßen.\n\nWir haben NSFW-Ressourcen deutlich gekennzeichnet, wie sie erscheinen, und wir raten davon ab, auf solche Ressourcen zuzugreifen oder sie zu verteilen.\n\n<br><b>Benutzerkommentare</b><br>„Benutzerkommentare“ beziehen sich auf Kommentare, die von Benutzern der Pixiv-Quellsite über Funktionen wie Selbstvorstellung, Illustrationseinführung und Kommentarbereich gepostet wurden.\n\nDieser Teil gehört zum eigenen Verhalten des Publishers und wir können ihn nicht effektiv kontrollieren.\n\nWir posten keine unangemessenen Äußerungen oder fördern deren Verbreitung.\n\nWenn Sie beim Surfen auf unangemessene Inhalte stoßen, empfehlen wir Ihnen dringend, dies der Quellseite zu melden.\n\n<br><b>Erklärung zum Urheberrecht</b><br>Alle angeforderten Daten und Medienressourcen unterliegen dem Urheberrecht von Pixiv oder seinen ursprünglichen Autoren.\n\n<br>Das Programm Pixiv Viewer ist unter der MIT-Lizenz lizenziert.\n\n<br>Nur für Kommunikation und Lernen.",
+    "disclaimer_text": "<b>NSFW-bezogen</b><br>Diese Seite zeigt standardmäßig keine NSFW-Ressourcen (z. B. R-18-Illustrationen) an, jeder Zugriff auf solche Ressourcen wird vom Benutzer in den Einstellungen festgelegt und vom Benutzer sichergestellt \nDas\n\nDiejenigen, die über 18 Jahre alt sind und nicht gegen die durch lokale Gesetze und Vorschriften festgelegten Inhalte verstoßen.\n\nWir haben NSFW-Ressourcen deutlich gekennzeichnet, wie sie erscheinen, und wir raten davon ab, auf solche Ressourcen zuzugreifen oder sie zu verteilen.\n\n<br><b>Benutzerkommentare</b><br>„Benutzerkommentare“ beziehen sich auf Kommentare, die von Benutzern der Pixiv-Quellsite über Funktionen wie Selbstvorstellung, Illustrationseinführung und Kommentarbereich gepostet wurden.\n\nDieser Teil gehört zum eigenen Verhalten des Publishers und wir können ihn nicht effektiv kontrollieren.\n\nWir posten keine unangemessenen Äußerungen oder fördern deren Verbreitung.\n\nWenn Sie beim Surfen auf unangemessene Inhalte stoßen, empfehlen wir Ihnen dringend, dies der Quellseite zu melden.\n\n<br><b>Erklärung zum Urheberrecht</b><br>Diese Website steht in keiner Beziehung zu pixiv.net (ピクシブ Co., Ltd.).Alle angeforderten Daten und Medienressourcen unterliegen dem Urheberrecht von Pixiv oder seinen ursprünglichen Autoren.\n\n<br>Das Programm Pixiv Viewer ist unter der MIT-Lizenz lizenziert.\n\n<br>Nur für Kommunikation und Lernen.",
     "feedback": "Rückmeldung",
     "from": "Geändert von",
     "origin_site": "Ursprüngliche Seite",
     "source": "Quellcode",
-    "title": "um",
-    "version": "Ausführung"
+    "title": "Über die Website",
+    "version": "Ausführung",
+    "about_site": "Über diese App",
+    "credits": "Danksagungen"
   },
   "artwork": {
     "download": {
@@ -17,7 +19,8 @@
         "tip": "Bitte spielen Sie zuerst die Animation ab"
       },
       "webm": "Hohe Qualität, schlechte Kompatibilität",
-      "zip": "Rohsequenz-Frame-Archiv"
+      "zip": "Rohsequenz-Frame-Archiv",
+      "mp4": "Gehen Sie zum Konvertieren zu ugoira.com"
     },
     "share": {
       "of_art": "'s Kunstwerke",
@@ -27,7 +30,7 @@
         "copylink": "Link kopieren",
         "qrcode": "QR-Code",
         "qzone": "Qzone",
-        "web": "Systemfreigabe",
+        "web": "Webfreigabe",
         "wechat": "WeChat",
         "weibo": "Weibo"
       }
@@ -76,7 +79,8 @@
     "view_more": "Mehr sehen",
     "words": "Wörter",
     "date": "Datum",
-    "reset": "zurücksetzen"
+    "reset": "zurücksetzen",
+    "save": "Speichern"
   },
   "display": {
     "ai": "KI-generierte Arbeitsanzeige",
@@ -87,7 +91,11 @@
     "r18_label": "Enthält Nacktheit oder sexuelle Beschreibungen",
     "r18g": "R-18G Werksanzeige",
     "r18g_label": "Blutige oder widerliche Inhalte enthält",
-    "title": "Artwork-Anzeigeeinstellungen"
+    "title": "Artwork-Anzeigeeinstellungen",
+    "block_tags": "Schwarze Liste markieren",
+    "block_tags_ph": "Bitte geben Sie Tags durch Kommas getrennt ein",
+    "block_uids": "Schwarze Liste der Künstler",
+    "block_uids_ph": "Bitte geben Sie die Künstler-IDs durch Kommas getrennt ein"
   },
   "history": {
     "confirm": {
@@ -218,14 +226,50 @@
     "other": {
       "lang": "Sprache",
       "lang_ph": "Bitte Sprache auswählen",
-      "title": "Andere Einstellungen"
+      "title": "Andere Einstellungen",
+      "manual_input_label": "Ob die Proxy- und API-Instanzadressen der folgenden Bilder manuell eingegeben werden",
+      "manual_input": "Geben Sie den Link manuell ein",
+      "api_proxy": {
+        "def_ph": "Wenn der Standard-Proxy nicht verwendet werden kann, können Sie es mit einem anderen Proxy versuchen",
+        "sel_desc": "Bitte wählen Sie AppApi Proxy",
+        "title": "Wählen Sie AppApi-Proxy aus"
+      },
+      "cp_token_label": "Kopieren Sie das aktuelle RefreshToken in die Zwischenablage",
+      "cp_token_title": "RefreshToken exportieren",
+      "direct_mode": {
+        "confirm": {
+          "msg": "Der Direktverbindungsmodus ist langsamer und garantiert keine Stabilität.\n\nEs kann nicht gleichzeitig mit dem AppApi-Proxy aktiviert werden.",
+          "proxy_msg": "Die Weiterleitung lokaler AppApi-Anfragen über Cloud-Dienste von Drittanbietern kann keine Stabilität und Sicherheit garantieren.\n\nEs kann nicht gleichzeitig mit dem Direktverbindungsmodus aktiviert werden.",
+          "proxy_title": "Sind Sie sicher, dass Sie den AppApi-Proxy aktivieren?",
+          "title": "Sind Sie sicher, dass Sie den Direktmodus aktivieren?"
+        },
+        "host": {
+          "label": "Nach der Freigabe werden DoH-Anfragen erneut weitergeleitet",
+          "title": "Leeren Sie den Cache für direkte Hosts"
+        },
+        "host_msg": "Sind Sie sicher, dass die Host-Cache-Datensätze im Direktverbindungsmodus gelöscht werden?",
+        "label": "Ob SNI über Domain-Fronting umgangen werden soll",
+        "proxy": {
+          "label": "Ob lokale AppApi-Anfragen über Cloud-Dienste weitergeleitet werden sollen",
+          "title": "Aktivieren Sie den AppApi-Proxy"
+        },
+        "title": "Aktivieren Sie den Direktmodus"
+      },
+      "swipe_toggle": "Wischen Sie auf der Detailseite nach links und rechts, um Werke zu durchsuchen",
+      "ana": {
+        "label": "Ob anonyme Statistiken zur App-Verbesserung an AppCenter gesendet werden sollen",
+        "title": "Aktivieren Sie AppCenter Analytics"
+      }
     },
     "recomm": {
       "app": "Anwendungen",
       "site": "Webseite",
-      "title": "Verwandter Vorschlag",
+      "title": "Empfohlene Links",
       "tm": "UserScript"
-    }
+    },
+    "down_app": "Lade App herunter",
+    "app_desc": "Ein weiteres Pixiv-Illustrations-/Roman-Browser-Tool",
+    "check_update": "Auf Updates prüfen"
   },
   "sp": {
     "all": "Überblick",
@@ -251,7 +295,9 @@
     "loading": "Wird geladen...",
     "net_err": "Netzwerkausnahme, zum Neuladen klicken",
     "no_data": "Keine Daten",
-    "no_more": "Nicht mehr"
+    "no_more": "Nicht mehr",
+    "copy_err": "Das Kopieren ist fehlgeschlagen",
+    "tip": "Tipps"
   },
   "user": {
     "art_num": "{0} funktioniert",
@@ -273,13 +319,21 @@
     },
     "related": "Verwandte Benutzer",
     "faved": "Markiert",
-    "view_comments": "Kommentare ansehen"
+    "view_comments": "Kommentare ansehen",
+    "follow": "Folgen",
+    "follow_fail": "Verfolgen fehlgeschlagen",
+    "followed": "Gefolgt",
+    "unfollow_fail": "Das Entfolgen ist fehlgeschlagen"
   },
   "tip": {
-    "rate_limit": "API-Limit überschritten, bitte versuchen Sie es später erneut oder gehen Sie zu den Einstellungen, um die API-Instanz zu ändern",
+    "rate_limit": "API-Limit überschritten, bitte versuchen Sie es später noch einmal",
     "unknown_err": "Unbekannter Fehler",
+    "down_wait": "Verarbeitung, bitte haben Sie etwas Geduld",
+    "downloaded": "Download abgeschlossen",
     "downloading": "wird heruntergeladen",
-    "downloaded": "Heruntergeladen"
+    "connect_err": "Die Verbindung ist fehlgeschlagen. Dieses Element ist nicht verfügbar.",
+    "browser_latest": "Bitte versuchen Sie, den neuesten Chrome/Edge-Browser zu verwenden, um diese Website zu besuchen",
+    "browser_tip": "Bitte verwenden Sie den Chrome/Edge-Browser, um diese Website zu besuchen"
   },
   "sess": {
     "example": "Sitzungs-ID sieht so aus (ungültig, für Demo):",
@@ -320,5 +374,25 @@
     "latest": "Neu",
     "timeline": "Füttern",
     "user": "Folgend"
+  },
+  "login": {
+    "fail_tip": "Fehler bei der Anmeldung",
+    "logout_tip": "Beenden bestätigen?",
+    "o": {
+      "desc1": "Die Pixiv-Quellseite wird gleich zum Anmelden geöffnet. Bitte stellen Sie sicher, dass Sie auf Pixiv zugreifen können",
+      "desc2": "Bitte stellen Sie sicher, dass Sie das URLRedirector-Browser-Plugin installiert und die Konfiguration importiert haben, sonst können Sie sich nicht anmelden",
+      "desc3": "URLRedirector-Installationslink:",
+      "desc4": "Klicken Sie hier, um die Adresse der URLRedirector-Onlineregel zu kopieren",
+      "desc5": "Stellen Sie sicher, dass das Tampermonkey-Browser-Plugin und das Helper-Benutzerskript installiert sind, da sonst API-Anfragen nicht funktionieren",
+      "desc6": "Tampermonkey-Installationslink:",
+      "desc7": "Klicken Sie auf „Helper-UserScript installieren“."
+    },
+    "succ_tip": "Einloggen erfolgreich",
+    "t": {
+      "d1": "Stellen Sie sicher, dass Sie eine Verbindung zu Pixiv herstellen können, andernfalls schalten Sie den AppApi-Proxy ein",
+      "d2": "Bitte füllen Sie das RefreshToken aus. Klicken Sie auf den Link unten, um zu erfahren, wie Sie es erhalten",
+      "d3": "Bitte füllen Sie RefreshToken aus",
+      "d4": "RefreshToken ist fehlerhaft"
+    }
   }
 }

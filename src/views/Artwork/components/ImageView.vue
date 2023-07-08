@@ -53,16 +53,16 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import { ImagePreview } from 'vant'
 import JSZip from 'jszip'
 import GIF from 'gif.js'
 import tsWhammy from 'ts-whammy'
 import api from '@/api'
 import { LocalStorage } from '@/utils/storage'
-import { downloadBlob, downloadFile, trackEvent } from '@/utils'
+import { downloadBlob, downloadFile, sleep, trackEvent } from '@/utils'
 
-const imgResSel = LocalStorage.get('__DTL_IMG_RES', 'Medium')
+const imgResSel = LocalStorage.get('PXV_DTL_IMG_RES', 'Large')
 export default {
   props: {
     artwork: {
@@ -90,7 +90,6 @@ export default {
     original() {
       return this.artwork.images.map(url => url.o)
     },
-    ...mapState(['$swiper']),
     ...mapGetters(['isCensored']),
   },
   watch: {
@@ -242,7 +241,7 @@ export default {
         `[${this.artwork.author.name}] ${this.artwork.title} - ${this.artwork.id}.zip`
       )
     },
-    downloadWebM() {
+    async downloadWebM() {
       if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
         this.$toast({
           message: this.$t('tips.ios_webm'),
@@ -250,6 +249,9 @@ export default {
         })
         return
       }
+
+      this.$toast(this.$t('tip.down_wait'))
+      await sleep(1000)
 
       const { width, height } = this.artwork
 
@@ -282,7 +284,10 @@ export default {
         `[${this.artwork.author.name}] ${this.artwork.title} - ${this.artwork.id}.webm`
       )
     },
-    downloadGIF() {
+    async downloadGIF() {
+      this.$toast(this.$t('tip.down_wait'))
+      await sleep(1000)
+
       let images = Object.values(this.ugoira.frames)
       let offset = 1
       if (images.length >= 100) {
@@ -331,6 +336,10 @@ export default {
 
         case 'WebM':
           this.downloadWebM()
+          break
+
+        case 'MP4':
+          window.open(`https://ugoira.com/i/${this.artwork.id}`, '_blank', 'noopener')
           break
 
         default:

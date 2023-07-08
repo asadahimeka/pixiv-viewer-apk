@@ -1,5 +1,5 @@
 <template>
-  <div class="illusts">
+  <div class="Discovery illusts">
     <top-bar />
     <h3 class="af_title">
       {{ $t('common.discovery') }}
@@ -44,6 +44,7 @@ export default {
   },
   methods: {
     toArtwork(id) {
+      this.$store.dispatch('setGalleryList', this.artList)
       this.$router.push({
         name: 'Artwork',
         params: { id },
@@ -52,7 +53,7 @@ export default {
     async getArtList() {
       this.loading = true
       this.artList = []
-      const res = await api.getDiscoveryList('all', 20, true)
+      const res = await api.getDiscoveryList('safe', 18, true)
       if (res.status === 0) {
         this.artList = res.data
       } else {

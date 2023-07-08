@@ -32,20 +32,16 @@
         </van-button>
       </template>
     </van-cell>
-    <van-cell center :title="$t('cache.mem')">
-      <template #label>
-        <span>{{ size.mem }}</span>
-      </template>
-    </van-cell>
+    <van-cell center is-link title="Open Settings" @click="openSettings" />
   </div>
 </template>
 
 <script>
-import { Device } from '@capacitor/device'
 import { Dialog } from 'vant'
 import { LocalStorage, SessionStorage } from '@/utils/storage'
 import localDb from '@/utils/localDb'
 import { trackEvent } from '@/utils'
+import { NativeSettings, AndroidSettings } from 'capacitor-native-settings'
 
 export default {
   name: 'SettingClearCache',
@@ -71,7 +67,6 @@ export default {
         db: [0, 0],
         local: [0, 0],
         session: [0, 0],
-        mem: 0,
       },
     }
   },
@@ -86,8 +81,6 @@ export default {
         (await navigator.storage.estimate()).usage,
         await localDb.length(),
       ]
-      const { memUsed } = await Device.getInfo()
-      this.size.mem = (memUsed / 1048576).toFixed(2) + 'MB'
     },
     clearCache(type) {
       let showName
@@ -114,13 +107,24 @@ export default {
         confirmButtonText: this.$t('common.confirm'),
         cancelButtonText: this.$t('common.cancel'),
       }).then(async () => {
-        if (type === 'db') await localDb.clear()
+        if (type === 'db') {
+          await localDb.clear()
+          const keyList = await caches.keys()
+          await Promise.all(keyList.map(async key => {
+            await caches.delete(key)
+          }))
+        }
         if (type === 'local') LocalStorage.clear()
         if (type === 'session') SessionStorage.clear()
 
         this.calcCacheSize()
         this.$toast.success(this.$t('cache.success_tip'))
         trackEvent('ClearCache', { type })
+      })
+    },
+    openSettings() {
+      NativeSettings.openAndroid({
+        option: AndroidSettings.ApplicationDetails,
       })
     },
   },

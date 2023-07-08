@@ -1,9 +1,11 @@
 <template>
   <div class="setting">
     <h2 class="app-title">
-      <img width="40" height="40" src="/app-icon.png" alt="">
-      <span>Pixiv Viewer</span>
-      <sup style="margin-left: 5px;font-size: 0.3rem;">Kai</sup>
+      <img v-if="!isLoggedIn" width="40" height="40" src="/app-icon.png" alt="">
+      <div class="app-title-desc">
+        <span>Pixiv Viewer<sup style="margin-left: 5px;font-size: 0.3rem;">Kai</sup></span>
+        <small>{{ $t('setting.app_desc') }}</small>
+      </div>
     </h2>
     <van-cell v-if="isLoggedIn" size="large" center is-link :to="`/u/${user.id}`">
       <template #title>
@@ -17,15 +19,16 @@
       </template>
     </van-cell>
     <van-cell v-if="isLoggedIn" size="large" center :title="$t('user.sess.my_fav')" icon="star-o" is-link :to="`/users/${user.id}/favorites`" />
-    <van-cell v-else size="large" center :title="$t('user.sess.login')" icon="user-circle-o" is-link to="/account/session" />
+    <van-cell v-else size="large" center :title="$t('user.sess.login')" icon="user-circle-o" is-link to="/account/login" />
     <van-cell size="large" center :title="$t('common.history')" icon="underway-o" is-link to="/setting/history" />
     <van-cell size="large" center :title="$t('display.title')" icon="eye-o" is-link to="/setting/contents_display" />
     <van-cell size="large" center :title="$t('cache.title')" icon="delete-o" is-link to="/setting/clearcache" />
     <van-cell size="large" center :title="$t('setting.other.title')" icon="setting-o" is-link to="/setting/others" />
     <van-cell size="large" center :title="$t('setting.recomm.title')" icon="bookmark-o" is-link to="/setting/recommend" />
+    <van-cell size="large" center :title="$t('setting.check_update')" icon="upgrade" is-link @click="openAppCenter" />
     <van-cell size="large" center :title="$t('setting.about')" icon="info-o" is-link to="/setting/about" />
     <div v-if="isLoggedIn" style="width: 60%;margin: 1rem auto 0;">
-      <van-button round plain block type="danger" size="small" @click="logout">{{ $t('user.sess.out') }}</van-button>
+      <van-button round plain block type="danger" size="small" @click="logoutApp">{{ $t('user.sess.out') }}</van-button>
     </div>
   </div>
 </template>
@@ -33,6 +36,9 @@
 <script>
 import { mapGetters, mapState } from 'vuex'
 import { logout } from '@/api/user'
+import { Dialog } from 'vant'
+import PixivAuth from '@/api/client/pixiv-auth'
+import { trackEvent } from '@/utils'
 
 export default {
   name: 'Setting',
@@ -47,7 +53,23 @@ export default {
     },
   },
   methods: {
-    logout,
+    async logoutApp() {
+      if (window.APP_CONFIG.useLocalAppApi) {
+        const res = await Dialog.confirm({ message: this.$t('login.logout_tip') })
+        if (res != 'confirm') return
+        window.APP_CONFIG.useLocalAppApi = false
+        PixivAuth.writeConfig(window.APP_CONFIG)
+        setTimeout(() => {
+          location.reload()
+        }, 500)
+      } else {
+        logout()
+      }
+    },
+    openAppCenter() {
+      trackEvent('Check Update')
+      window.open('https://install.appcenter.ms/users/yumine/apps/pixiv-viewer/distribution_groups/beta', '_blank', 'noopener noreferrer')
+    },
   },
 }
 </script>
@@ -67,8 +89,17 @@ export default {
   justify-content center
   align-items center
   margin 40px 0 50px
+  padding-right 10px
   font-size 40px
   text-align center
+
+  &-desc
+    display flex
+    flex-direction column
+    max-width 6rem
+    small
+      margin-top 0.2rem
+      font-size 0.24rem
 
   img
     margin-right 20px

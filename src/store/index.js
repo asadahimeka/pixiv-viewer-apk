@@ -4,44 +4,51 @@ import { LocalStorage } from '@/utils/storage'
 
 Vue.use(Vuex)
 
-const settings = LocalStorage.get('PIXIV_SETTING', {
+const settings = LocalStorage.get('PXV_CNT_SHOW', {
   r18: false,
   r18g: false,
-  showAi: false,
+  ai: false,
 })
 
-// if (!document.cookie.includes('nsfw=1')) {
-//   if (settings.r18) settings.r18 = false
-//   if (settings.r18g) settings.r18g = false
-// }
+const enableSwipe = LocalStorage.get('PXV_IMG_DTL_SWIPE', false)
+
+export const blockTags = LocalStorage.get('PXV_B_TAGS', '').split(',').filter(Boolean)
+export const blockUids = LocalStorage.get('PXV_B_UIDS', '').split(',').filter(Boolean)
 
 export default new Vuex.Store({
   state: {
     themeColor: '#0196fa',
     galleryList: [],
-    currentIndex: -1,
-    $swiper: null,
     searchHistory: LocalStorage.get('PIXIV_SearchHistory', []),
     SETTING: settings,
     user: null,
   },
   getters: {
-    currentId: state => state.galleryList[state.currentIndex] ? state.galleryList[state.currentIndex].id : -1,
     isCensored: state => artwork => {
+      if (blockUids.length && blockUids.includes(`${artwork?.author?.id}`)) {
+        return true
+      }
+      if (blockTags.length) {
+        const tags = JSON.stringify(artwork?.tags || [])
+        if (blockTags.some(e => tags.includes(e))) {
+          return true
+        }
+      }
+
       if (artwork.x_restrict == 1) {
         if (artwork.illust_ai_type == 2) {
-          return !state.SETTING.r18 || !state.SETTING.showAi
+          return !state.SETTING.r18 || !state.SETTING.ai
         }
         return !state.SETTING.r18
       }
       if (artwork.x_restrict == 2) {
         if (artwork.illust_ai_type == 2) {
-          return !state.SETTING.r18g || !state.SETTING.showAi
+          return !state.SETTING.r18g || !state.SETTING.ai
         }
         return !state.SETTING.r18g
       }
       if (artwork.illust_ai_type == 2) {
-        return !state.SETTING.showAi
+        return !state.SETTING.ai
       }
       return false
     },
@@ -74,15 +81,8 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    setGalleryList(state, { list, id }) {
-      state.galleryList = list
-      id && this.commit('setCurrentIndex', id)
-    },
-    setCurrentIndex(state, id) {
-      state.currentIndex = state.galleryList.findIndex(artwork => artwork.id === id)
-    },
-    setSwiper(state, obj) {
-      state.$swiper = obj
+    setGalleryList(state, list = []) {
+      if (enableSwipe) state.galleryList = list.map(e => e.id)
     },
     setSearchHistory(state, obj) {
       if (obj === null) {
@@ -97,21 +97,15 @@ export default new Vuex.Store({
     },
     saveSETTING(state, obj) {
       state.SETTING = obj
-      LocalStorage.set('PIXIV_SETTING', state.SETTING)
+      LocalStorage.set('PXV_CNT_SHOW', state.SETTING)
     },
     setUser(state, user) {
       state.user = user
     },
   },
   actions: {
-    setGalleryList({ commit }, { list, id }) {
-      commit('setGalleryList', { list, id })
-    },
-    setCurrentIndex({ commit }, value) {
-      commit('setCurrentIndex', value)
-    },
-    setSwiper({ commit }, value) {
-      commit('setSwiper', value)
+    setGalleryList({ commit }, list) {
+      commit('setGalleryList', list)
     },
     setSearchHistory({ commit }, value) {
       commit('setSearchHistory', value)

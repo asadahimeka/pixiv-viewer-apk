@@ -16,9 +16,9 @@
   <meta property="og:url" content="https://pixiv.kanata.ml" />
   <meta name="referrer" content="no-referrer">
   <meta http-equiv="x-dns-prefetch-control" content="on" />
-  <link rel="dns-prefetch" href="https://hibi2.cocomi.cf">
+  <link rel="dns-prefetch" href="https://hibi.cocomi.cf">
   <link rel="dns-prefetch" href="https://i-cf.pximg.net">
-  <link rel="preconnect" href="https://hibi2.cocomi.cf" crossorigin="anonymous" />
+  <link rel="preconnect" href="https://hibi.cocomi.cf" crossorigin="anonymous" />
   <link rel="preconnect" href="https://i-cf.pximg.net" crossorigin="anonymous" />
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
   <link rel="manifest" href="<%= BASE_URL %>manifest.json">
@@ -35,7 +35,7 @@
     <img src="<%= BASE_URL %>ic_launcher_round.png" width="120" height="120" alt="">
     <p style="margin-top: 30px;text-align: center;font-size: 24px;">Pixiv Viewer</p>
   </div>
-  <script>if(!!localStorage.__PXV_DARK)document.body.classList.add('dark');</script>
+  <script>if(!!localStorage.PXV_DARK)document.documentElement.classList.add('dark');</script>
   <!-- built files will be auto injected -->
 </body>
 

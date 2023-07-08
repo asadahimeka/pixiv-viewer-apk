@@ -3,6 +3,7 @@ import { get } from './http'
 import { LocalStorage, SessionStorage } from '@/utils/storage'
 import { getCache, setCache } from '@/utils/siteCache'
 import { i18n } from '@/i18n'
+import { filterCensoredIllusts } from '@/utils/filter'
 
 const isSupportWebP = (() => {
   const elem = document.createElement('canvas')
@@ -65,6 +66,7 @@ const parseUser = data => {
     twitter_url,
     webpage,
     workspace,
+    is_followed: user.is_followed,
   }
 }
 
@@ -111,6 +113,7 @@ const parseIllust = data => {
     x_restrict,
     illust_ai_type,
     type,
+    is_bookmarked: data.is_bookmarked,
   }
 
   return artwork
@@ -382,7 +385,7 @@ const api = {
 
       if (res.illusts) {
         relatedList = res.illusts.map(art => parseIllust(art))
-        setCache(cacheKey, relatedList, 60 * 60 * 24)
+        setCache(cacheKey, relatedList, 60 * 60 * 48)
       } else if (res.error) {
         return {
           status: -1,
@@ -413,7 +416,7 @@ const api = {
 
       if (res.novels) {
         relatedList = res.novels.map(art => parseNovel(art))
-        setCache(cacheKey, relatedList, 60 * 60 * 24)
+        setCache(cacheKey, relatedList, 60 * 60 * 48)
       } else if (res.error) {
         return {
           status: -1,
@@ -440,8 +443,8 @@ const api = {
       const res = await get('/illust_recommended')
 
       if (res.illusts) {
-        relatedList = res.illusts.map(art => parseIllust(art))
-        setCache(cacheKey, relatedList, 60 * 60 * 6)
+        relatedList = res.illusts.map(art => parseIllust(art)).filter(e => e.like >= 1000)
+        setCache(cacheKey, relatedList, 60 * 60 * 12)
       } else if (res.error) {
         return {
           status: -1,
@@ -469,7 +472,7 @@ const api = {
 
       if (res.illusts) {
         relatedList = res.illusts.map(art => parseIllust(art))
-        setCache(cacheKey, relatedList, 60 * 60 * 6)
+        setCache(cacheKey, relatedList, 60 * 60 * 12)
       } else if (res.error) {
         return {
           status: -1,
@@ -497,7 +500,7 @@ const api = {
 
       if (res.novels) {
         relatedList = res.novels.map(art => parseNovel(art))
-        setCache(cacheKey, relatedList, 60 * 60 * 6)
+        setCache(cacheKey, relatedList, 60 * 60 * 12)
       } else if (res.error) {
         return {
           status: -1,
@@ -539,7 +542,7 @@ const api = {
       }
     }
 
-    return { status: 0, data: relatedList }
+    return { status: 0, data: filterCensoredIllusts(relatedList) }
   },
 
   async getPopularPreviewNovel(word) {
@@ -594,7 +597,7 @@ const api = {
               })),
             }
           })
-        setCache(cacheKey, relatedList, 60 * 60 * 6)
+        setCache(cacheKey, relatedList, 60 * 60 * 12)
       } else if (res.error) {
         return {
           status: -1,
@@ -636,7 +639,7 @@ const api = {
               })),
             }
           })
-        setCache(cacheKey, relatedList, 60 * 60 * 6)
+        setCache(cacheKey, relatedList, 60 * 60 * 48)
       } else if (res.error) {
         return {
           status: -1,
@@ -678,7 +681,7 @@ const api = {
               })),
             }
           })
-        setCache(cacheKey, relatedList, 60 * 60 * 12)
+        setCache(cacheKey, relatedList, 60 * 60 * 24)
       } else if (res.error) {
         return {
           status: -1,
@@ -704,7 +707,7 @@ const api = {
 
       if (res.tags) {
         relatedList = res.tags.map(t => t.name)
-        setCache(cacheKey, relatedList, 60 * 60 * 12)
+        setCache(cacheKey, relatedList, 60 * 60 * 72)
       } else if (res.error) {
         return {
           status: -1,
@@ -729,10 +732,9 @@ const api = {
     let spotlights = await getCache(cacheKey)
 
     if (!spotlights) {
-      let url = 'https://www.pixivs.cn/api/pixivision'
+      const url = 'https://now.pixiv.pics/api/pixivision'
       const params = { page }
       if (lang != 'zh-Hans') {
-        url = 'https://now.pixiv.pics/api/pixivision'
         params.lang = lang
       }
       const res = await get(url, params, {
@@ -836,7 +838,7 @@ const api = {
         })
 
         spotlight = res
-        setCache(cacheKey, JSON.parse(JSON.stringify(res)), 60 * 60 * 24)
+        setCache(cacheKey, JSON.parse(JSON.stringify(res)), -1)
       } else {
         return {
           status: -1,
@@ -856,10 +858,9 @@ const api = {
     let spotlight = await getCache(cacheKey)
 
     if (!spotlight) {
-      let domain = 'www.pixivs.cn'
+      const domain = 'now.pixiv.pics'
       const params = {}
       if (lang != 'zh-Hans') {
-        domain = 'now.pixiv.pics'
         params.lang = lang
       }
       const res = await get(`https://${domain}/api/pixivision/${id}`, params, {
@@ -883,7 +884,7 @@ const api = {
         })
 
         spotlight = res
-        setCache(cacheKey, JSON.parse(JSON.stringify(res)), 60 * 60 * 24)
+        setCache(cacheKey, JSON.parse(JSON.stringify(res)), -1)
       } else {
         return {
           status: -1,
@@ -909,7 +910,7 @@ const api = {
     let rankList = await getCache(cacheKey)
 
     if (!rankList) {
-      const res = await get('https://www.pixivs.cn/api/ranking', {
+      const res = await get('https://now.pixiv.pics/api/ranking', {
         format: 'json',
         p: page,
         mode,
@@ -918,7 +919,7 @@ const api = {
 
       if (res && res.contents) {
         rankList = res.contents.map(e => parseAiIllust(e, mode.includes('r18')))
-        rankList.length && setCache(cacheKey, rankList, 60 * 60 * 24)
+        rankList.length && setCache(cacheKey, rankList, 60 * 60 * 24 * 14)
       } else {
         return {
           status: 0,
@@ -927,7 +928,7 @@ const api = {
       }
     }
 
-    return { status: 0, data: rankList }
+    return { status: 0, data: filterCensoredIllusts(rankList) }
   },
 
   async getWebRankList(mode = 'daily', page = 1, date = dayjs().subtract(2, 'days').format('YYYYMMDD'), content) {
@@ -936,7 +937,7 @@ const api = {
     let rankList = await getCache(cacheKey)
 
     if (!rankList) {
-      const domain = mode.includes('r18') ? 'now.pixiv.pics' : 'www.pixivs.cn'
+      const domain = 'now.pixiv.pics'
       const res = await get(`https://${domain}/api/ranking`, {
         format: 'json',
         p: page,
@@ -952,7 +953,7 @@ const api = {
 
       if (res && res.contents) {
         rankList = res.contents.map(e => parseWebRankIllust(e, mode, content))
-        rankList.length && setCache(cacheKey, rankList, 60 * 60 * 24)
+        rankList.length && setCache(cacheKey, rankList, 60 * 60 * 24 * 14)
       } else {
         return {
           status: 0,
@@ -961,7 +962,7 @@ const api = {
       }
     }
 
-    return { status: 0, data: rankList }
+    return { status: 0, data: filterCensoredIllusts(rankList) }
   },
 
   async getDiscoveryArtworks(mode = 'all', limit = 60) {
@@ -989,17 +990,22 @@ const api = {
       }
     }
 
-    return { status: 0, data: list }
+    return { status: 0, data: filterCensoredIllusts(list) }
   },
 
-  async getDiscoveryList(mode = 'all', max = 20, nocache = false) {
+  async getDiscoveryList(mode = 'safe', max = 18, nocache = false) {
     let list
 
     const params = { mode, max }
 
     if (nocache) params._vercel_no_cache = 1
 
-    const res = await get('https://www.pixivs.cn/ajax/illust/discovery', params, { baseURL: '/' })
+    const res = await get('https://now.pixiv.pics/ajax/illust/discovery', params, {
+      headers: {
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56',
+        'origin': 'http://localhost',
+      },
+    })
 
     if (res && res.illusts) {
       list = res.illusts.filter(e => !e.isAdContainer).map(e => parseWebApiIllust(e))
@@ -1010,7 +1016,7 @@ const api = {
       }
     }
 
-    return { status: 0, data: list }
+    return { status: 0, data: filterCensoredIllusts(list) }
   },
 
   /**
@@ -1033,7 +1039,7 @@ const api = {
 
       if (res.illusts) {
         rankList = res.illusts.map(art => parseIllust(art))
-        rankList.length && setCache(cacheKey, rankList, 60 * 60 * 12)
+        rankList.length && setCache(cacheKey, rankList, 60 * 60 * 24 * 14)
       } else if (res.error) {
         return {
           status: -1,
@@ -1047,7 +1053,7 @@ const api = {
       }
     }
 
-    return { status: 0, data: rankList }
+    return { status: 0, data: filterCensoredIllusts(rankList) }
   },
 
   async getNovelRankList(mode = 'day', page = 1, date = dayjs().subtract(2, 'days').format('YYYY-MM-DD')) {
@@ -1064,7 +1070,7 @@ const api = {
 
       if (res.novels) {
         rankList = res.novels.map(art => parseNovel(art))
-        rankList.length && setCache(cacheKey, rankList, 60 * 60 * 12)
+        rankList.length && setCache(cacheKey, rankList, 60 * 60 * 24 * 14)
       } else if (res.error) {
         return {
           status: -1,
@@ -1113,11 +1119,11 @@ const api = {
       }
     }
 
-    return { status: 0, data: searchList }
+    return { status: 0, data: filterCensoredIllusts(searchList) }
   },
 
   async searchNovel(word, page = 1) {
-    const cacheKey = `searchList_novel_${window.btoa(encodeURI(word))}_${page}`
+    const cacheKey = `searchList_novel_${word}_${page}`
     let searchList = SessionStorage.get(cacheKey)
 
     if (!searchList) {
@@ -1156,7 +1162,7 @@ const api = {
 
       if (res.novel) {
         artwork = parseNovel(res.novel)
-        setCache(cacheKey, artwork, 60 * 60 * 12)
+        setCache(cacheKey, artwork, -1)
       } else if (res.error) {
         return {
           status: -1,
@@ -1188,7 +1194,7 @@ const api = {
           prev: res.series_prev?.id && parseNovel(res.series_prev),
           next: res.series_next?.id && parseNovel(res.series_next),
         }
-        setCache(cacheKey, artwork, 60 * 60 * 24 * 7)
+        setCache(cacheKey, artwork, -1)
       } else if (res.error) {
         return {
           status: -1,
@@ -1220,7 +1226,7 @@ const api = {
 
       if (res.illust) {
         artwork = parseIllust(res.illust)
-        setCache(cacheKey, artwork, 60 * 60 * 12)
+        setCache(cacheKey, artwork, -1)
       } else if (res.error) {
         return {
           status: -1,
@@ -1257,12 +1263,13 @@ const api = {
         }
       } else {
         ugoira = {
+          // zip: imgProxy(res.ugoira_metadata.zip_urls.medium),
           zip: imgProxy(res.ugoira_metadata.zip_urls.medium.replace('_ugoira600x600', '_ugoira1920x1080')),
           frames: res.ugoira_metadata.frames,
         }
       }
 
-      setCache(cacheKey, ugoira, 60 * 60 * 24)
+      setCache(cacheKey, ugoira, -1)
     }
 
     return { status: 0, data: ugoira }
@@ -1314,7 +1321,7 @@ const api = {
 
       if (res.illusts) {
         memberArtwork = res.illusts.map(art => parseIllust(art))
-        setCache(cacheKey, memberArtwork, 60 * 60 * 12)
+        setCache(cacheKey, memberArtwork, 60 * 60 * 6)
       } else if (res.error) {
         return {
           status: -1,
@@ -1328,7 +1335,7 @@ const api = {
       }
     }
 
-    return { status: 0, data: memberArtwork }
+    return { status: 0, data: filterCensoredIllusts(memberArtwork) }
   },
 
   async getMemberNovel(id, page = 1) {
@@ -1343,7 +1350,7 @@ const api = {
 
       if (res.novels) {
         memberArtwork = res.novels.map(art => parseNovel(art))
-        setCache(cacheKey, memberArtwork, 60 * 60 * 12)
+        setCache(cacheKey, memberArtwork, 60 * 60 * 6)
       } else if (res.error) {
         return {
           status: -1,
@@ -1365,17 +1372,20 @@ const api = {
    * @param {Number} id 画师ID
    * @param {Number} max_bookmark_id max_bookmark_id
    */
-  async getMemberFavorite(id, max_bookmark_id) {
+  async getMemberFavorite(id, max_bookmark_id, nocache) {
     const cacheKey = `memberFavorite_${id}_m${max_bookmark_id}`
     let memberFavorite = await getCache(cacheKey)
 
     if (!memberFavorite) {
       memberFavorite = {}
 
-      const res = await get('/favorite', {
-        id,
-        max_bookmark_id,
-      })
+      const params = { id, max_bookmark_id }
+      const headers = {}
+      if (nocache) {
+        params.t = Date.now()
+        headers['cache-control'] = 'no-cache'
+      }
+      const res = await get('/favorite', params, { headers })
 
       if (res.illusts) {
         const url = new URLSearchParams(res.next_url)
@@ -1396,6 +1406,7 @@ const api = {
       }
     }
 
+    memberFavorite.illusts = filterCensoredIllusts(memberFavorite.illusts)
     return { status: 0, data: memberFavorite }
   },
 
@@ -1502,3 +1513,150 @@ const api = {
   },
 }
 export default api
+
+function reqGet(path, params) {
+  return get('/req_get', {
+    path,
+    params: JSON.stringify(params),
+  })
+}
+
+function reqPost(path, data) {
+  return get('/req_post', {
+    path,
+    data: JSON.stringify(data),
+    t: Date.now(),
+  }, {
+    headers: {
+      'cache-control': 'no-cache',
+    },
+  })
+}
+
+export const localApi = {
+  async me() {
+    const res = await get('/me', { _t: Date.now() })
+    if (res?.id) {
+      return {
+        id: res.id,
+        pixivId: res.account,
+        name: res.name,
+        profileImg: imgProxy(res.profile_image_urls.px_170x170),
+        profileImgBig: imgProxy(res.profile_image_urls.px_170x170),
+        premium: res.is_premium,
+        xRestrict: res.x_restrict,
+      }
+    }
+    return null
+  },
+  async userFollowing(id, page = 1) {
+    let list = []
+    const res = await get('/following', {
+      id,
+      page,
+      t: Date.now(),
+    }, {
+      headers: {
+        'cache-control': 'no-cache',
+      },
+    })
+    if (res.user_previews) {
+      list = res.user_previews
+        .map(u => {
+          return {
+            id: u.user.id,
+            name: u.user.name,
+            avatar: imgProxy(u.user.profile_image_urls.medium),
+            illusts: u.illusts.map(i => ({
+              id: i.id,
+              title: i.title,
+              src: imgProxy(i.image_urls.medium),
+              x_restrict: i.x_restrict,
+              illust_ai_type: i.illust_ai_type,
+            })),
+          }
+        })
+    } else if (res.error) {
+      return {
+        status: -1,
+        msg: dealErrMsg(res),
+      }
+    } else {
+      return {
+        status: -1,
+        msg: i18n.t('tip.unknown_err'),
+      }
+    }
+
+    return { status: 0, data: list }
+  },
+  async illustFollow(page = 1, restrict = 'all') {
+    let list = []
+    const res = await reqGet('v2/illust/follow', {
+      restrict,
+      offset: (page - 1) * 30,
+    })
+
+    if (res.illusts) {
+      list = res.illusts.map(art => parseIllust(art))
+    } else if (res.error) {
+      return {
+        status: -1,
+        msg: dealErrMsg(res),
+      }
+    } else {
+      return {
+        status: -1,
+        msg: i18n.t('tip.unknown_err'),
+      }
+    }
+
+    return { status: 0, data: filterCensoredIllusts(list) }
+  },
+  async illustBookmarkAdd(id, restrict = 'public') {
+    if (!id) return false
+    try {
+      const res = await reqPost('v2/illust/bookmark/add', {
+        illust_id: `${id}`,
+        restrict,
+      })
+      return !res.error
+    } catch (error) {
+      return false
+    }
+  },
+  async illustBookmarkDelete(id) {
+    if (!id) return false
+    try {
+      const res = await reqPost('v1/illust/bookmark/delete', {
+        illust_id: `${id}`,
+      })
+      return !res.error
+    } catch (error) {
+      return false
+    }
+  },
+  async userFollowAdd(id, restrict = 'public') {
+    if (!id) return false
+    try {
+      const res = await reqPost('v1/user/follow/add', {
+        user_id: `${id}`,
+        restrict,
+      })
+      return !res.error
+    } catch (error) {
+      return false
+    }
+  },
+  async userFollowDelete(id) {
+    if (!id) return false
+    try {
+      const res = await reqPost('v1/user/follow/delete', {
+        user_id: `${id}`,
+      })
+      return !res.error
+    } catch (error) {
+      return false
+    }
+  },
+}

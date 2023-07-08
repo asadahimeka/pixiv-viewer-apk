@@ -4,39 +4,44 @@
       <li @click="navigateTo('Home')">
         <Icon
           class="icon home"
-          :class="{ active: $route.name.startsWith('Home') }"
+          :class="{ active: isActive('Home') }"
           name="home"
           index="Home"
           :current-index="$route.name"
         />
+        <van-icon v-if="isDark" :class="{ active: isActive('Home') }" name="wap-home-o" />
         <span>{{ $t('nav.home') }}</span>
       </li>
       <li @click="navigateTo('Search')">
         <Icon
           class="icon"
-          :class="{ active: $route.name.startsWith('Search') }"
+          :class="{ active: isActive('Search') }"
           name="search"
           index="Search"
           :current-index="$route.name"
         />
+        <van-icon v-if="isDark" :class="{ active: isActive('Search') }" name="search" />
         <span>{{ $t('nav.search') }}</span>
       </li>
       <li @click="navigateTo('Rank', { type: 'daily' })">
         <Icon
           class="icon"
-          :class="{ active: $route.name.startsWith('Rank') }"
+          :class="{ active: isActive('Rank') }"
           name="rank"
           index="Rank"
           :current-index="$route.name"
         />
+        <van-icon v-if="isDark" :class="{ active: isActive('Rank') }" name="bar-chart-o" />
         <span>{{ $t('nav.rank') }}</span>
       </li>
       <li v-if="isLogin" @click="navigateTo('Following')">
         <Icon class="icon" name="following" index="Following" :current-index="$route.name" />
+        <van-icon v-if="isDark" :class="{ active: isActive('Following') }" name="star-o" />
         <span>{{ $t('nav.follow') }}</span>
       </li>
       <li @click="navigateTo('Setting')">
         <Icon class="icon" name="setting" index="Setting" :current-index="$route.name" />
+        <van-icon v-if="isDark" :class="{ active: isActive('Setting') }" name="setting-o" />
         <span>{{ $t('nav.setting') }}</span>
       </li>
     </ul>
@@ -46,20 +51,21 @@
 <script>
 import { existsSessionId } from '@/api/user'
 
-const isLogin = existsSessionId()
-
 export default {
   data() {
     return {
-      isLogin,
+      isLogin: window.APP_CONFIG.useLocalAppApi || existsSessionId(),
       showNav: true,
-      scrollFn: () => {},
+      isDark: !!localStorage.PXV_DARK,
     }
   },
   mounted() {
     console.log(this.$route)
   },
   methods: {
+    isActive(name) {
+      return this.$route.name.startsWith(name)
+    },
     navigateTo(name, params) {
       if (this.$route.name.startsWith(name)) {
         document.documentElement.scrollTo({ top: 0, behavior: 'smooth' })
@@ -103,8 +109,8 @@ export default {
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
     // backdrop-filter: blur(6px);
-    backdrop-filter: saturate(200%) blur(6px);
-    background: rgba(255, 255, 255, 0.8);
+    // backdrop-filter: saturate(200%) blur(6px);
+    background: rgba(255, 255, 255, 1);
 
     li {
       position: relative;
@@ -118,9 +124,10 @@ export default {
 
       .icon {
         display: block;
-        font-size: 58px;
+        font-size: 50px;
         margin: 0 auto;
         margin-top: 0.1rem;
+        margin-bottom 3px
         color: #fffdf7;
 
         &.active {

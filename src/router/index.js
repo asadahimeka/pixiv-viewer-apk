@@ -28,6 +28,7 @@ import ClearCache from '@/views/Setting/ClearCache.vue'
 import ContentsDisplay from '@/views/Setting/ContentsDisplay.vue'
 import SettingOthers from '@/views/Setting/OtherSetting.vue'
 import SettingAbout from '@/views/Setting/About.vue'
+import SettingDisclaimer from '@/views/Setting/Disclaimer.vue'
 import Recommend from '@/views/Setting/Recommend.vue'
 import Artwork from '@/views/Artwork/index.vue'
 import Novel from '@/views/Artwork/Novel.vue'
@@ -37,6 +38,7 @@ import UserNovels from '@/views/Users/AuthorNovelsFull.vue'
 import UserFavorites from '@/views/Users/FavoriteIllustsFull.vue'
 import UserFavoriteNovels from '@/views/Users/FavoriteNovelsFull.vue'
 import Session from '@/views/Account/Session.vue'
+import Login from '@/views/Account/Login.vue'
 import NotFound from '@/views/NotFound.vue'
 
 Vue.use(VueRouter)
@@ -192,6 +194,11 @@ const routes = [
             component: SettingAbout,
           },
           {
+            path: '/setting/about/disclaimer',
+            name: 'SettingDisclaimer',
+            component: SettingDisclaimer,
+          },
+          {
             path: '/setting/recommend',
             name: 'SettingRecommend',
             component: Recommend,
@@ -214,19 +221,25 @@ const routes = [
           },
           {
             path: '/spotlight/:id',
-            alias: ['/pixivision/:id'],
+            alias: ['/pixivision/:id', '/sp/:id'],
             name: 'Spotlight',
             component: Spotlight,
           },
           {
             path: '/spotlight_detail',
             name: 'SpotlightDetail',
+            alias: ['/spd'],
             component: SpotlightDetail,
           },
           {
             path: '/account/session',
             name: 'Session',
             component: Session,
+          },
+          {
+            path: '/account/login',
+            name: 'Login',
+            component: Login,
           },
         ],
       },

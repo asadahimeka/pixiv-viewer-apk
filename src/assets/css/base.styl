@@ -48,9 +48,17 @@ html, body
 .image-card:has(.censored)
   pointer-events none
 
+.wf-grid .image-card:has(.censored),
+.flexbin .image-card:has(.censored),
 .image-card:has(.censored) .meta,
 .ia-left .censored
   display none !important
+
+#app
+  .van-button
+    border-radius 4px
+  .top-bar .van-nav-bar__left
+    padding 0 0.35rem
 
 .com_sel
   &_tabs
@@ -86,9 +94,9 @@ html, body
   margin 0 auto 160px
 
   #top-bar-wrap
-    width 30%
+    width 1.6rem
     height auto
-    padding-top 25px
+    padding-top 0.3rem
     background transparent
 
   .hibiapi-actions .van-action-sheet__name
@@ -120,6 +128,12 @@ html, body
   .api-chk .van-action-sheet__subname, .img-chk .van-action-sheet__subname
     margin-top -3px
     color inherit !important
+
+.van-image-preview__index
+  top 1rem
+  left 1rem
+.van-image-preview__close-icon--top-right
+  top 1rem
 
 .swiper-container
   --swiper-theme-color: #fcb93e
@@ -157,7 +171,6 @@ html, body
   .swiper-button-prev, .swiper-button-next
     display none
 
-
 @font-face
   font-family: 'Dosis';
   src: local('Dosis Regular'), local('Dosis-Regular'), url('./dosis-v7-latin-ext_latin-regular.woff') format('woff');
@@ -182,6 +195,17 @@ html, body
   ::-webkit-scrollbar
     width: 0;
 
+html.dark
+  ::-webkit-scrollbar
+    width: 10px;
+    height: 5px;
+  ::-webkit-scrollbar-thumb
+    border-color: transparent
+  ::-webkit-scrollbar-track
+    background #16161a
+    border-color: transparent
+  ::-webkit-scrollbar-thumb:hover
+    background: #e6e6e6;
 
 .dark
   background #16161a
@@ -190,16 +214,11 @@ html, body
   .van-button
     background #333
     color #fff !important
-  ::-webkit-scrollbar
-    width: 10px;
-    height: 5px;
-  ::-webkit-scrollbar-thumb
-    border-color: transparent
-  ::-webkit-scrollbar-track
-    background transparent
-    border-color: transparent
-  ::-webkit-scrollbar-thumb:hover
-    background: #e6e6e6;
+  .van-dialog__message--has-title
+    color #fff
+  a
+   color #dba5ff
+
 .dark #app
   min-height 100vh
   &,
@@ -216,6 +235,7 @@ html, body
   .van-tabs__nav,
   .van-tab,
   .van-button,
+  .van-collapse-item__content,
   .van-share-sheet__cancel,
   .van-action-sheet__cancel,
   .van-action-sheet__item
@@ -223,7 +243,7 @@ html, body
     color #fff
 
   .user-wrap,
-  .illust-wrap
+  .user-illusts
     height auto
 
   .sup_tags .van-tag
@@ -231,29 +251,46 @@ html, body
 
   .rank-card .spec_wp,
   .image-card
-    border 1px solid #aaa
+    // border 1px solid #aaa
+    border 0
     border-radius: 0.26667rem;
 
-  .nav-container
-    height 1rem
   .nav-container .nav-bar
-    box-shadow 0 0 0.26667rem #555
-    background rgba(0,0,0,0.8)
+    box-shadow 0 0 0.26667rem #222
+    background rgba(0,0,0,0.88)
     li
       display flex
       justify-content center
       align-items center
+      flex-direction column
       color #fff
     .icon
       display none
+    .van-icon
+      margin-bottom 0.1rem
+      font-size 0.36rem
+      &.active,
+      &.active + span
+        color: #f2c358
+    span
+      display inline-block
 
   .com_sel_tab,
-  .rank .nav a
+  .rank .nav a,
+  .Following .van-tab:not(.van-tab--active) .van-tab__text
     background #777
     color #fff
     &.cur
       background: #f2c358;
       color #333
+
+  .van-cell::after,
+  .van-action-sheet__description::after
+    border-bottom: 1px solid #555;
+
+  .setting-page .api-chk .van-action-sheet__name,
+  .setting-page .img-chk .van-action-sheet__name
+    color #eee !important
 
   .van-button--plain
     background rgba(0,0,0,0)
@@ -262,10 +299,11 @@ html, body
 
   .van-share-sheet__cancel::before,
   .van-action-sheet__gap
-    background #aaa
+    background #555
     height 1px
   .van-share-sheet__title,
-  .van-share-sheet__name
+  .van-share-sheet__name,
+  .van-field__label
     color #fff
 
   .novel-card,
@@ -275,16 +313,58 @@ html, body
   .search .search-bar-wrap .search-bar,
   .search .search-bar-wrap .van-search__content,
   .search .com_sel_tabs,
+  .Home .com_sel_tabs,
   .rank .top
-    background rgba(0,0,0,0.8)
+    background #16161a
+    backdrop-filter: none
   .search-dropdown
     background #16161a
+    backdrop-filter: none
   .van-search__content
     border 1px solid #aaa
-    margin-right 10px
+    // margin-right 10px
     &,
     .van-cell
       background-color: transparent !important
+
+  .search_params
+    .van-dropdown-menu__bar
+      box-shadow none
+    .van-dropdown-menu__title
+      color #fff
+
+  .van-calendar__header
+    box-shadow none
+
+  .show_pop_icon,
+  .search_popular_icon
+    .icon
+      position relative
+      z-index 2
+    &::before
+      content ''
+      position absolute
+      z-index 1
+      top 50%
+      left 50%
+      transform translate(-50%, -50%)
+      width 1.25em
+      height 1.25em
+      border-radius 50%
+      background #ddd
+
+  .search_popular_icon
+    position relative
+    text-align center
+    display inline-block
+    margin-top 0.2rem
+    margin-right 0.2rem
+    .icon
+      margin-right 0
+      vertical-align: -0.25em;
+    &::before
+      width 2em
+      height 2em
 
   .rank .top
     left 0
@@ -330,11 +410,16 @@ html, body
   .image-view.shrink::after
     background: linear-gradient(to top, #16161a, rgba(0,0,0,0));
   .ia-right .shrink::after
-    background: linear-gradient(to top, #666, rgba(0,0,0,0));
+    background: linear-gradient(to top, #16161a, rgba(0,0,0,0));
   .users .info-container .info .detail .content
     color #ccc
+    & + .more
+      color #fff
     &::after
       background: linear-gradient(to top, #16161a, rgba(0,0,0,0));
   .users .info-container .info .follow .num,
   .users .info-container .info .friend .num
     color #bbb
+
+  .image-slide
+      border 1px solid #16161a

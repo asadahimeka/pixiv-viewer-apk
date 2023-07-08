@@ -37,7 +37,7 @@
 
 <script>
 import _ from 'lodash'
-import { BASE_API_URL } from '@/api/http'
+// import { BASE_API_URL } from '@/api/http'
 import { trackEvent } from '@/utils'
 export default {
   filters: {
@@ -111,7 +111,8 @@ export default {
 
       const formData = new FormData()
       formData.append('file', file.file, file.file.name)
-      const base = BASE_API_URL.replace('/api/pixiv', '')
+      // const base = BASE_API_URL.replace('/api/pixiv', '')
+      const base = 'https://hibi2.cocomi.cf'
       window.CapacitorWebFetch(`${base}/api/sauce/`, {
         method: 'POST',
         body: formData,

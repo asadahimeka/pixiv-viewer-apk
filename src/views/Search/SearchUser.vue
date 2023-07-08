@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { mintVerify } from '@/utils/filter'
 import RecommUser from './components/RecommUser.vue'
 
 export default {
@@ -43,9 +44,11 @@ export default {
   mounted() {
   },
   methods: {
-    onSearch() {
+    async onSearch() {
       const word = this.keywords.trim()
-      if (!word) return
+      if (!word || /スカラマシュ|散兵|放浪者|流浪者/i.test(word) || !(await mintVerify(word))) {
+        return
+      }
       this.$router.push(`/search_user/${word}`)
       this.keywords = ''
     },
@@ -84,8 +87,8 @@ export default {
       height: 120px;
       padding-top 0.133rem
       padding-bottom 0
-      backdrop-filter: saturate(200%) blur(6px);
-      background: rgba(255, 255, 255, 0.8);
+      // backdrop-filter: saturate(200%) blur(6px);
+      background: rgba(255, 255, 255, 1);
 
       ::v-deep .van-cell {
         align-items center
@@ -109,8 +112,8 @@ export default {
     top 120px
     margin-bottom 0
     padding 0px 0px 20px
-    backdrop-filter: saturate(200%) blur(6px);
-    background: rgba(255, 255, 255, 0.8);
+    // backdrop-filter: saturate(200%) blur(6px);
+    background: rgba(255, 255, 255, 1);
   }
 
   .search_btn {
@@ -125,6 +128,15 @@ export default {
     padding-top 2.6rem
     padding-bottom: 120px;
     box-sizing: border-box;
+  }
+}
+
+.dark {
+  .search_btn {
+    color #fff
+  }
+  .search ::v-deep .van-search__action:active {
+    background-color transparent
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="illusts">
     <wf-cont layout="Grid">
-      <ImageCard v-for="art in artList" :key="art.id" mode="all" square :artwork="art" @click-card="toArtwork($event)" />
+      <ImageCard v-for="art in artList" :key="art.id" mode="all" :artwork="art" @click-card="toArtwork($event)" />
     </wf-cont>
     <van-empty v-if="!artList.length" :description="$t('tips.no_data')" />
   </div>
@@ -11,6 +11,8 @@
 import { Dialog } from 'vant'
 import ImageCard from '@/components/ImageCard'
 import { getCache, setCache } from '@/utils/siteCache'
+import { filterCensoredIllusts } from '@/utils/filter'
+
 export default {
   name: 'SettingHistoryIllust',
   components: {
@@ -29,6 +31,7 @@ export default {
   },
   methods: {
     toArtwork(id) {
+      this.$store.dispatch('setGalleryList', this.artList)
       this.$router.push({
         name: 'Artwork',
         params: { id },
@@ -36,7 +39,7 @@ export default {
     },
     async getHistory() {
       const list = await getCache('illusts.history')
-      this.artList = list || []
+      this.artList = list ? filterCensoredIllusts(list) : []
     },
     clearHistory() {
       Dialog.confirm({

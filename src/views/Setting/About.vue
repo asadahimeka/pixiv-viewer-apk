@@ -2,46 +2,65 @@
   <div class="setting-page">
     <top-bar id="top-bar-wrap" />
     <h3 class="af_title">{{ $t('about.title') }}</h3>
-    <van-cell center :title="$t('about.version')" clickable label="v1.8.4" />
-    <van-cell center :title="$t('about.disclaimer')" is-link :label="$t('tips.click_view')" @click="showDisclaimer" />
-    <van-cell v-if="appInfo.version" center title="APP Version" clickable :label="`${appInfo.version}(${appInfo.build})`" />
-    <van-cell v-if="wvVersion" center title="Webview Version" clickable :label="wvVersion" />
-    <van-cell
-      center
-      :title="$t('about.source')"
-      is-link
-      label="Github:asadahimeka/pixiv-viewer"
-      @click="openLink('https://github.com/asadahimeka/pixiv-viewer')"
-    />
-    <van-cell
-      center
-      :title="$t('about.from')"
-      is-link
-      label="Github:journey-ad/pixiv-viewer"
-      @click="openLink('https://github.com/journey-ad/pixiv-viewer')"
-    />
-    <van-cell
-      center
-      title="HibiAPI"
-      is-link
-      label="Github:mixmoe/HibiAPI"
-      @click="openLink('https://github.com/mixmoe/HibiAPI')"
-    />
-    <van-cell center :title="$t('about.origin_site')" is-link label="https://pixiv.obfs.dev" @click="openLink('https://pixiv.obfs.dev')" />
-    <van-cell
-      center
-      :title="$t('about.feedback')"
-      is-link
-      label="Github:asadahimeka/pixiv-viewer"
-      @click="openLink('https://github.com/asadahimeka/pixiv-viewer/issues')"
-    />
-    <van-cell
-      center
-      title="Telegram Group"
-      is-link
-      label="t.me/pixiv_viewer_kai"
-      @click="openLink('https://t.me/pixiv_viewer_kai')"
-    />
+    <van-cell-group :title="$t('about.about_site')">
+      <van-cell center :title="$t('about.version')" clickable label="v1.10.6" />
+      <van-cell center :title="$t('about.disclaimer')" is-link :label="$t('tips.click_view')" to="/setting/about/disclaimer" />
+      <van-cell v-if="appInfo.version" center :title="'APP '+$t('about.version')" clickable :label="`${appInfo.version}(${appInfo.build})`" />
+      <van-cell v-if="wvVersion" center :title="'Webview '+$t('about.version')" clickable :label="wvVersion" />
+      <van-cell
+        center
+        :title="$t('about.source')"
+        is-link
+        label="Github:asadahimeka/pixiv-viewer"
+        @click="openLink('https://github.com/asadahimeka/pixiv-viewer')"
+      />
+    </van-cell-group>
+    <van-cell-group :title="$t('about.credits')">
+      <van-cell
+        center
+        title="pixiv-viewer"
+        is-link
+        label="Github:journey-ad/pixiv-viewer"
+        @click="openLink('https://github.com/journey-ad/pixiv-viewer')"
+      />
+      <van-cell
+        center
+        title="HibiAPI"
+        is-link
+        label="Github:mixmoe/HibiAPI"
+        @click="openLink('https://github.com/mixmoe/HibiAPI')"
+      />
+      <van-cell
+        center
+        title="pxder"
+        is-link
+        label="Github:Tsuk1ko/pxder"
+        @click="openLink('https://github.com/Tsuk1ko/pxder')"
+      />
+      <van-cell
+        center
+        title="PixEz"
+        is-link
+        label="Github:Notsfsssf/pixez-flutter"
+        @click="openLink('https://github.com/Notsfsssf/pixez-flutter')"
+      />
+      <van-cell
+        center
+        title="pixivpy-async"
+        is-link
+        label="Github:Mikubill/pixivpy-async"
+        @click="openLink('https://github.com/Mikubill/pixivpy-async')"
+      />
+    </van-cell-group>
+    <van-cell-group :title="$t('about.feedback')">
+      <van-cell
+        center
+        title="Github Issues"
+        is-link
+        label="Github:asadahimeka/pixiv-viewer"
+        @click="openLink('https://github.com/asadahimeka/pixiv-viewer/issues')"
+      />
+    </van-cell-group>
   </div>
 </template>
 
@@ -49,12 +68,8 @@
 import { trackEvent } from '@/utils'
 import { App } from '@capacitor/app'
 import { Device } from '@capacitor/device'
-import { Dialog } from 'vant'
-
 export default {
   name: 'SettingAbout',
-  components: {
-  },
   data() {
     return {
       wvVersion: '',
@@ -71,14 +86,6 @@ export default {
     openLink(link) {
       trackEvent('Open Link', { url: link.replace('https://', '') })
       window.open(link, '_blank', 'noopener noreferrer')
-    },
-    showDisclaimer() {
-      Dialog.alert({
-        title: this.$t('about.disclaimer'),
-        message: this.$t('about.disclaimer_text'),
-        confirmButtonText: this.$t('common.confirm'),
-      })
-      trackEvent('Show Disclaimer')
     },
   },
 }

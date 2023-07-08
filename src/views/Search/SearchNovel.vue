@@ -88,6 +88,7 @@ import api from '@/api'
 import { notSelfHibiApi } from '@/api/http'
 import NovelCard from '@/components/NovelCard.vue'
 import PopularPreviewNovel from './components/PopularPreviewNovel.vue'
+import { mintVerify } from '@/utils/filter'
 
 export default {
   name: 'Search',
@@ -225,6 +226,16 @@ export default {
       }
       console.log(`doSearch: ${val}`)
 
+      if (
+        /スカラマシュ|散兵|放浪者(原神)|流浪者(原神)|阿散|阿帽/i.test(val) ||
+        !(await mintVerify(val))
+      ) {
+        this.artList = []
+        this.finished = true
+        this.curPage = 1
+        return
+      }
+
       this.setSearchHistory(val)
 
       this.loading = true
@@ -256,7 +267,7 @@ export default {
         this.loading = false
         this.error = true
       }
-    }, 1500),
+    }, 2500),
     toArtwork(id) {
       this.$router.push({
         name: 'NovelDetail',
@@ -354,8 +365,8 @@ export default {
       height: 120px;
       padding-top 0.133rem
       padding-bottom 0
-      backdrop-filter: saturate(200%) blur(6px);
-      background: rgba(255, 255, 255, 0.8);
+      // backdrop-filter: saturate(200%) blur(6px);
+      background: rgba(255, 255, 255, 1);
 
       ::v-deep .van-cell {
         line-height: 0.6rem;

@@ -1,6 +1,6 @@
 <template>
   <div class="Home">
-    <div v-if="isSelfHibi" class="com_sel_tabs">
+    <div class="com_sel_tabs">
       <div class="com_sel_tab" @click="$router.replace('/')">{{ $t('common.illust') }}</div>
       <div class="com_sel_tab" @click="$router.replace('/home_manga')">{{ $t('common.manga') }}</div>
       <div class="com_sel_tab cur">{{ $t('common.novel') }}</div>

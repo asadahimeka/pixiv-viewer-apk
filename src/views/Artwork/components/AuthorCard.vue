@@ -59,6 +59,7 @@ export default {
         freeMode: true,
         slidesPerView: 'auto',
         mousewheel: true,
+        touchMoveStopPropagation: true,
         scrollbar: {
           el: '.swiper-scrollbar',
           draggable: true,
@@ -112,9 +113,10 @@ export default {
       }
     },
     toArtwork(id) {
+      this.setGalleryList(this.memberArtwork)
       this.$router.push({
         name: 'Artwork',
-        params: { id, list: this.memberArtwork },
+        params: { id },
       })
     },
     toAuthor(id) {

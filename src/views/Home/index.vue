@@ -6,13 +6,18 @@
       <div v-t="'common.novel'" class="com_sel_tab" @click="$router.replace('/home_novel')"></div>
     </div>
     <div class="home-i">
-      <RankCard />
-      <SpotlightCard />
-      <template v-if="isLogin">
+      <div class="rec-cards">
+        <RankCard />
+        <SpotlightCard />
+      </div>
+      <template v-if="isWebLogin">
         <Recomm4U />
       </template>
       <template v-else>
-        <!-- <RecommendCard v-if="isSelfHibi" /> -->
+        <div v-if="isSelfHibi" class="rec-cards">
+          <RecommendIllustCard />
+          <DiscoveryCard />
+        </div>
         <lazy-component>
           <RandomIllust />
         </lazy-component>
@@ -27,41 +32,58 @@
 <script>
 import RankCard from './components/RankCard.vue'
 import SpotlightCard from '../Spotlights/SpotlightCard.vue'
-// import RecommendCard from '../Discovery/RecommendCard.vue'
+import DiscoveryCard from '../Discovery/DiscoveryCard.vue'
+import RecommendIllustCard from '../Discovery/RecommendIllustCard.vue'
 import RandomIllust from './components/RandomIllust.vue'
 import LatestIllustCard from '../Discovery/LatestIllustCard.vue'
 import Recomm4U from './components/Recomm4U.vue'
 import { notSelfHibiApi } from '@/api/http'
 import { existsSessionId } from '@/api/user'
 
-const isLogin = existsSessionId()
+const isWebLogin = existsSessionId()
 
 export default {
   name: 'HomeIllust',
   components: {
     RankCard,
-    RandomIllust,
-    // RecommendCard,
     SpotlightCard,
+    DiscoveryCard,
+    RecommendIllustCard,
+    RandomIllust,
     LatestIllustCard,
     Recomm4U,
   },
   data() {
     return {
       isSelfHibi: !notSelfHibiApi,
-      isLogin,
+      isWebLogin,
     }
   },
 }
 </script>
 
+<style lang="stylus">
+.rec-cards
+  display flex
+
+  .rank-card
+    flex 1
+    width 48%
+
+@media screen and (max-width: 767px)
+  .rec-cards
+    display block
+
+    .rank-card
+      width auto
+
+</style>
 <style lang="stylus" scoped>
 .com_sel_tabs
   z-index 99
   top 0
   padding 0.3rem 0
-  background: rgba(255,255,255,0.8)
-  backdrop-filter: saturate(200%) blur(0.08rem)
+  background: rgba(255,255,255,1)
 .home-i
   padding-bottom 100px
   background #fff

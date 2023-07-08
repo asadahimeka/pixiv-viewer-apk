@@ -26,17 +26,20 @@
     "words": "Words",
     "confirm": "Confirm",
     "date": "date",
-    "reset": "Reset"
+    "reset": "Reset",
+    "save": "Save"
   },
   "about": {
     "disclaimer": "Disclaimer",
-    "disclaimer_text": "<b>NSFW-related</b><br>This site does not display NSFW resources (such as R-18 illustrations) by default, any access to such resources is set by the user in the settings, and the user has ensured that \nThose who are over 18 years old and do not violate the content stipulated by local laws and regulations. \nWe have clearly marked NSFW resources as they may appear, and we discourage accessing or distributing such resources. \n<br><b>User Comments</b><br>\"User Comments\" refer to the comments posted by users of the Pixiv source site through functions such as self-introduction, illustration introduction, and comment area. \nThis part belongs to the publisher's own behavior, and we cannot effectively control it. \nWe do not post or encourage the dissemination of inappropriate speech. \nIf you find inappropriate content during browsing, we strongly encourage you to report it to the source site. \n<br><b>Copyright Statement</b><br>All data and media resources requested are copyrighted by Pixiv or its original authors. \n<br>The Pixiv Viewer program is licensed under the MIT license. \n<br>Only for communication and learning.",
+    "disclaimer_text": "<b>NSFW-related</b><br>This site does not display NSFW resources (such as R-18 illustrations) by default, any access to such resources is set by the user in the settings, and the user has ensured that \nThose who are over 18 years old and do not violate the content stipulated by local laws and regulations. \nWe have clearly marked NSFW resources as they may appear, and we discourage accessing or distributing such resources. \n<br><b>User Comments</b><br>\"User Comments\" refer to the comments posted by users of the Pixiv source site through functions such as self-introduction, illustration introduction, and comment area. \nThis part belongs to the publisher's own behavior, and we cannot effectively control it. \nWe do not post or encourage the dissemination of inappropriate speech. \nIf you find inappropriate content during browsing, we strongly encourage you to report it to the source site. \n<br><b>Copyright Statement</b><br>This site has no relationship with pixiv.net (ピクシブ Co., Ltd.).All data and media resources requested are copyrighted by Pixiv or its original authors. \n<br>The Pixiv Viewer program is licensed under the MIT license. \n<br>Only for communication and learning.",
     "feedback": "Feedback",
     "from": "Modified from",
     "origin_site": "Original Site",
     "source": "Source Code",
-    "title": "about",
-    "version": "Version"
+    "title": "About Site",
+    "version": "Version",
+    "about_site": "About this app",
+    "credits": "Acknowledgements"
   },
   "artwork": {
     "download": {
@@ -46,7 +49,8 @@
         "tip": "Please play the animation first"
       },
       "webm": "High quality, poor compatibility",
-      "zip": "Raw Sequence Frame Archive"
+      "zip": "Raw Sequence Frame Archive",
+      "mp4": "Go to ugoira.com to convert"
     },
     "share": {
       "of_art": "'s Artworks",
@@ -56,7 +60,7 @@
         "copylink": "Copy Link",
         "qrcode": "QR Code",
         "qzone": "Qzone",
-        "web": "System share",
+        "web": "Web share",
         "wechat": "WeChat",
         "weibo": "Weibo"
       }
@@ -76,7 +80,7 @@
     "session": "Runtime cache",
     "success_tip": "Cleanup completed",
     "title": "Clear Cache",
-    "mem": "Memory used"
+    "mem": "Memory Used"
   },
   "display": {
     "ai": "AI generated work display",
@@ -87,7 +91,11 @@
     "r18_label": "Contains nudity or sexual descriptions",
     "r18g": "R-18G works display",
     "r18g_label": "Contains gore or disgusting content",
-    "title": "Artwork Display Settings"
+    "title": "Artwork Display Settings",
+    "block_tags": "Tag Blacklist",
+    "block_tags_ph": "Please enter tags, separated by commas",
+    "block_uids": "Artist Blacklist",
+    "block_uids_ph": "Please enter artist IDs, separated by commas"
   },
   "history": {
     "confirm": {
@@ -218,14 +226,50 @@
     "other": {
       "title": "Other Settings",
       "lang": "Language",
-      "lang_ph": "Please select language"
+      "lang_ph": "Please select language",
+      "manual_input": "Enter link manually",
+      "manual_input_label": "Whether the proxy and API instance addresses of the images below are entered manually",
+      "api_proxy": {
+        "def_ph": "If the default proxy cannot be used, you can try another proxy",
+        "sel_desc": "Please select AppApi Proxy",
+        "title": "Select AppApi Proxy"
+      },
+      "cp_token_label": "Copy the current RefreshToken to the clipboard",
+      "cp_token_title": "Export RefreshToken",
+      "direct_mode": {
+        "confirm": {
+          "msg": "The direct connection mode is slower and does not guarantee stability. \nIt cannot be enabled at the same time as the AppApi proxy.",
+          "proxy_msg": "Forwarding local AppApi requests through third-party cloud services cannot guarantee stability and security. \nIt cannot be turned on at the same time as the direct connection mode.",
+          "proxy_title": "Are you sure to enable AppApi proxy?",
+          "title": "Are you sure to enable direct mode?"
+        },
+        "host": {
+          "label": "Will re-pass DoH queries after clearing",
+          "title": "Clear direct hosts cache"
+        },
+        "host_msg": "Are you sure to clear the hosts cache records in direct connection mode?",
+        "label": "Whether to bypass SNI via domain fronting",
+        "proxy": {
+          "label": "Whether to proxy local AppApi requests through cloud services",
+          "title": "Enable AppApi Proxy"
+        },
+        "title": "Enable direct mode"
+      },
+      "swipe_toggle": "Swipe left or right on the details page to toggle artworks",
+      "ana": {
+        "label": "Whether to send anonymous statistics to AppCenter for app improvement",
+        "title": "Enable AppCenter Analytics"
+      }
     },
     "recomm": {
       "app": "Apps",
       "site": "Website",
-      "title": "Related Suggestion",
+      "title": "Recommended Links",
       "tm": "UserScript"
-    }
+    },
+    "down_app": "Download App",
+    "app_desc": "Another Pixiv illustration/novel browser tool",
+    "check_update": "Check for updates"
   },
   "sp": {
     "all": "Overview",
@@ -251,7 +295,9 @@
     "loading": "Loading...",
     "net_err": "Network exception, click to reload",
     "no_data": "No data",
-    "no_more": "No more"
+    "no_more": "No more",
+    "copy_err": "Copy failed",
+    "tip": "Tips"
   },
   "user": {
     "art_num": "{0} works",
@@ -273,13 +319,21 @@
     },
     "related": "Related users",
     "faved": "Bookmarked",
-    "view_comments": "View Comments"
+    "view_comments": "View Comments",
+    "follow": "Follow",
+    "follow_fail": "Follow failed",
+    "followed": "Followed",
+    "unfollow_fail": "Unfollow failed"
   },
   "tip": {
-    "rate_limit": "API limit exceeded, please try again later or go to the settings to change the API instance",
+    "rate_limit": "API limit exceeded, please try again later",
     "unknown_err": "Unknown Error",
+    "down_wait": "Processing, please be patient",
+    "downloaded": "Download complete",
     "downloading": "Downloading",
-    "downloaded": "Downloaded"
+    "connect_err": "Connection failed, this item is not available.",
+    "browser_latest": "Please try to use the latest Chrome/Edge browser to visit this site",
+    "browser_tip": "Please use Chrome/Edge browser to visit this site"
   },
   "sess": {
     "example": "Session ID looks like (invalid, for demo):",
@@ -320,5 +374,25 @@
     "latest": "New",
     "timeline": "Feed",
     "user": "Following"
+  },
+  "login": {
+    "fail_tip": "Login failed",
+    "logout_tip": "Confirm exit?",
+    "o": {
+      "desc1": "The Pixiv source site is about to open to log in, please make sure you can access Pixiv",
+      "desc2": "Please make sure you have installed the URLRedirector browser plugin and imported the configuration, otherwise you will not be able to log in",
+      "desc3": "URLRedirector install link:",
+      "desc4": "Click to copy URLRedirector online rule address",
+      "desc5": "Make sure you have the Tampermonkey browser plugin installed and the Helper user script installed, otherwise API requests will not work",
+      "desc6": "Tampermonkey install link:",
+      "desc7": "Click Install Helper UserScript"
+    },
+    "succ_tip": "Login success",
+    "t": {
+      "d1": "Make sure you can connect to Pixiv, otherwise turn on the AppApi proxy",
+      "d2": "Please fill in the RefreshToken, refer to the link below for how to obtain it",
+      "d3": "Please fill in RefreshToken",
+      "d4": "RefreshToken is malformed"
+    }
   }
 }

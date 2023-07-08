@@ -1,13 +1,15 @@
 {
   "about": {
     "disclaimer": "免責聲明",
-    "disclaimer_text": "<b>NSFW 相關</b><br>本站默認不顯示 NSFW 資源（例如 R-18 插畫），任意訪問此類資源的行為均是由用戶在設置中設定的，並且用戶已確保自身年齡已滿18歲且未違反當地法律法規所規定的內容。\n對於可能出現的 NSFW 資源我們均有做出明顯的警告標記，我們不鼓勵訪問或傳播此類資源。 \n<br><b>用戶言論</b><br>“用戶言論”指的是 Pixiv 源站用戶透過自我介紹、插畫簡介、評論區等功能發布的言論。\n這部分屬於發表者自身的行為，我們無法有效控制。\n我們不會發布也不鼓勵傳播不當言論。\n如果您在瀏覽過程中發現了不當內容，我們非常鼓勵您前往源站進行舉報。 \n<br><b>版權聲明</b><br>請求得到的全部數據以及媒體資源，版權歸 Pixiv 或其原作者所有。 \n<br>Pixiv Viewer 程序透過 MIT 協議授權。 \n<br>僅供交流與學習。",
+    "disclaimer_text": "<b>NSFW 相關</b><br>本站默認不顯示 NSFW 資源（例如 R-18 插畫），任意訪問此類資源的行為均是由用戶在設置中設定的，並且用戶已確保自身年齡已滿18歲且未違反當地法律法規所規定的內容。\n對於可能出現的 NSFW 資源我們均有做出明顯的警告標記，我們不鼓勵訪問或傳播此類資源。 \n<br><b>用戶言論</b><br>“用戶言論”指的是 Pixiv 源站用戶透過自我介紹、插畫簡介、評論區等功能發布的言論。\n這部分屬於發表者自身的行為，我們無法有效控制。\n我們不會發布也不鼓勵傳播不當言論。\n如果您在瀏覽過程中發現了不當內容，我們非常鼓勵您前往源站進行舉報。 \n<br><b>版權聲明</b><br>本站與 pixiv.net (ピクシブ株式会社) 無任何關係，請求得到的全部數據以及媒體資源，版權歸 Pixiv 或其原作者所有。 \n<br>Pixiv Viewer 程序透過 MIT 協議授權。 \n<br>僅供交流與學習。",
     "feedback": "反饋",
     "from": "修改自",
     "origin_site": "原版網站",
     "source": "原始碼",
     "title": "關於",
-    "version": "版本"
+    "version": "版本",
+    "about_site": "關於本應用",
+    "credits": "鳴謝"
   },
   "artwork": {
     "download": {
@@ -17,7 +19,8 @@
         "tip": "請先播放動圖"
       },
       "webm": "高畫質，兼容性差",
-      "zip": "原始序列幀歸檔文件"
+      "zip": "原始序列幀歸檔文件",
+      "mp4": "去 ugoira.com 轉換"
     },
     "share": {
       "of_art": "的作品",
@@ -27,7 +30,7 @@
         "copylink": "複製鏈接",
         "qrcode": "二維碼",
         "qzone": "QQ 空間",
-        "web": "系統共享",
+        "web": "Web 分享",
         "wechat": "微信",
         "weibo": "微博"
       }
@@ -76,7 +79,8 @@
     "view_more": "查看更多",
     "words": "字",
     "date": "日期",
-    "reset": "重置"
+    "reset": "重置",
+    "save": "保存"
   },
   "display": {
     "ai": "AI 生成作品顯示",
@@ -87,7 +91,11 @@
     "r18_label": "包含裸露內容或性描寫",
     "r18g": "R-18G 作品顯示",
     "r18g_label": "包含血腥或噁心內容",
-    "title": "作品顯示設置"
+    "title": "作品顯示設置",
+    "block_tags": "標籤黑名單",
+    "block_tags_ph": "請輸入標籤，英文逗號分隔",
+    "block_uids": "畫師黑名單",
+    "block_uids_ph": "請輸入畫師 ID，英文逗號分隔"
   },
   "history": {
     "confirm": {
@@ -156,8 +164,8 @@
     "date": {
       "asc": "按日期正序",
       "desc": "按日期倒序",
-      "end": "結束",
-      "start": "開始"
+      "end": "止",
+      "start": "始"
     },
     "dura": {
       "day": "一天內",
@@ -218,14 +226,50 @@
     "other": {
       "lang": "語言",
       "lang_ph": "請選擇語言",
-      "title": "其他設置"
+      "title": "其他設置",
+      "manual_input": "手動輸入地址",
+      "manual_input_label": "下方圖片代理與 API 實例地址是否手動輸入",
+      "api_proxy": {
+        "def_ph": "默認代理無法使用的話可以嘗試其他代理",
+        "sel_desc": "請選擇 AppApi 代理",
+        "title": "選擇 AppApi 代理"
+      },
+      "cp_token_label": "複製當前 RefreshToken 到剪貼板",
+      "cp_token_title": "導出 RefreshToken",
+      "direct_mode": {
+        "confirm": {
+          "msg": "直連模式速度較慢、不保證穩定性。\n不可與 AppApi 代理同時開啟。",
+          "proxy_msg": "通過第三方雲服務轉發本地 AppApi 請求，無法保證穩定性與安全性。\n不可與直連模式同時開啟。",
+          "proxy_title": "確認啟用 AppApi 代理？",
+          "title": "確認啟用直連模式？"
+        },
+        "host": {
+          "label": "清除後將重新通過 DoH 查詢",
+          "title": "清除直連 hosts 緩存"
+        },
+        "host_msg": "確認清除直連模式 hosts 緩存記錄?",
+        "label": "是否通過域前置繞過 SNI 嗅探",
+        "proxy": {
+          "label": "是否通過雲服務代理本地 AppApi 請求",
+          "title": "啟用 AppApi 代理"
+        },
+        "title": "啟用直連模式"
+      },
+      "swipe_toggle": "詳情頁左右滑動瀏覽作品",
+      "ana": {
+        "label": "是否發送匿名統計數據到 AppCenter 以便改進應用",
+        "title": "啟用 AppCenter Analytics"
+      }
     },
     "recomm": {
       "app": "應用",
       "site": "網站",
       "title": "相關推薦",
       "tm": "用戶腳本"
-    }
+    },
+    "down_app": "下載應用程序",
+    "app_desc": "又一個 Pixiv 插畫/小說閱覽工具",
+    "check_update": "檢查更新"
   },
   "sp": {
     "all": "一覽",
@@ -251,7 +295,9 @@
     "loading": "加載中...",
     "net_err": "網路異常，點擊重新加載",
     "no_data": "暫無數據",
-    "no_more": "沒有更多了"
+    "no_more": "沒有更多了",
+    "copy_err": "複製失敗",
+    "tip": "提示"
   },
   "user": {
     "art_num": "{0}件作品",
@@ -273,13 +319,21 @@
     },
     "related": "相關用戶",
     "faved": "已收藏",
-    "view_comments": "查看評論"
+    "view_comments": "查看評論",
+    "follow": "關注",
+    "follow_fail": "關注失敗",
+    "followed": "已關注",
+    "unfollow_fail": "取消關注失敗"
   },
   "tip": {
-    "rate_limit": "超出 API 限制，請稍後重試或前往設置更改 API 實例",
+    "rate_limit": "API 超出限制，請稍後重試",
     "unknown_err": "未知錯誤",
-    "downloaded": "下載成功",
-    "downloading": "下載中"
+    "down_wait": "處理中，請耐心等待",
+    "downloaded": "下載完成",
+    "downloading": "下載中",
+    "connect_err": "連接失敗，此項不可用。",
+    "browser_latest": "請盡量使用最新的 Chrome/Edge 瀏覽器訪問本站",
+    "browser_tip": "請使用 Chrome/Edge 瀏覽器訪問本站"
   },
   "sess": {
     "example": "Session ID 形如（無效，演示用）：",
@@ -320,5 +374,25 @@
     "timeline": "動態",
     "user": "已跟隨用户",
     "latest": "全站最新"
+  },
+  "login": {
+    "fail_tip": "登錄失敗",
+    "logout_tip": "確認退出？",
+    "o": {
+      "desc1": "即將打開 Pixiv 源站進行登錄，請確保可以訪問 Pixiv",
+      "desc2": "請確保已安裝 URLRedirector 瀏覽器插件並導入配置，否則將無法登錄",
+      "desc3": "URLRedirector 安裝地址：",
+      "desc4": "點擊複製 URLRedirector 在線規則地址",
+      "desc5": "請確保已安裝 Tampermonkey 瀏覽器插件並安裝 Helper 用戶腳本，否則將無法請求 API",
+      "desc6": "Tampermonkey 安裝地址：",
+      "desc7": "點擊安裝 Helper 用戶腳本"
+    },
+    "succ_tip": "登錄成功",
+    "t": {
+      "d1": "請確保可以連接到 Pixiv，否則請打開 AppApi 代理",
+      "d2": "請填寫 RefreshToken，獲取方式參考如下鏈接",
+      "d3": "請填寫 RefreshToken",
+      "d4": "RefreshToken 格式不正確"
+    }
   }
 }

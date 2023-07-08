@@ -82,7 +82,7 @@ export default {
   methods: {
     async getRankList() {
       this.loading = true
-      const res = await api.getDiscoveryList('all', 20)
+      const res = await api.getDiscoveryList('safe', 18)
       if (res.status === 0) {
         this.artList = _.shuffle(res.data)
       } else {
@@ -100,9 +100,10 @@ export default {
       })
     },
     toArtwork(id) {
+      this.$store.dispatch('setGalleryList', this.artList)
       this.$router.push({
         name: 'Artwork',
-        params: { id, list: this.artList },
+        params: { id },
       })
     },
   },

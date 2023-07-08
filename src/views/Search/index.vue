@@ -33,7 +33,7 @@
     <div v-if="focus" class="search-dropdown">
       <div v-if="keywords.trim()" class="pid-n-uid">
         <div class="keyword" @click="onSearch">{{ $t('search.seach_tag') }} {{ keywords.trim() }} </div>
-        <div v-if="isSelfHibi" class="keyword" @click="$router.push(`/search_user/${keywords.trim()}`)">
+        <div v-if="isSelfHibi" class="keyword" @click="searchUser">
           {{ $t('search.search_user') }} {{ keywords.trim() }}
         </div>
       </div>
@@ -145,6 +145,9 @@ import api from '@/api'
 import { notSelfHibiApi } from '@/api/http'
 import PopularPreview from './components/PopularPreview.vue'
 import { trackEvent } from '@/utils'
+import { mintVerify } from '@/utils/filter'
+
+const BLOCK_WORDS = [/r-?18/i, /18-?r/i, /^黄?色情?图$/, /^ero$/i, /工口/, /エロ/]
 
 export default {
   name: 'Search',
@@ -361,11 +364,29 @@ export default {
       }
       console.log(`doSearch: ${val}`)
 
+      if (
+        /スカラマシュ|散兵|放浪者(原神)|流浪者(原神)|阿散|阿帽/i.test(val) ||
+        !(await mintVerify(val))
+      ) {
+        this.artList = []
+        this.finished = true
+        this.curPage = 1
+        return
+      }
+
       this.setSearchHistory(val)
 
+      if (!(this.$store.state.SETTING.r18 || this.$store.state.SETTING.r18g)) {
+        if (BLOCK_WORDS.some(e => e.test(val))) {
+          this.artList = []
+          this.finished = true
+          this.curPage = 1
+          return
+        }
+        val += ' -R-18 -R18 -18+'
+      }
+      if (!this.$store.state.SETTING.ai) val += ' -AI'
       if (this.usersIriTag) val += ' ' + this.usersIriTag
-      if (!(this.$store.state.SETTING.r18 || this.$store.state.SETTING.r18g)) val += ' -R-18'
-      if (!this.$store.state.SETTING.showAi) val += ' -AI'
       this.loading = true
       trackEvent('Search Tag', { tag: val.replace(/\s+/g, '_') })
       const res = await api.search(val, this.curPage, _.pickBy(this.searchParams, Boolean))
@@ -389,9 +410,9 @@ export default {
           artList = artList.filter(e => {
             return !(
               e.like < 5 ||
-              /恋童|ペド|幼女/.test(JSON.stringify(e.tags)) ||
-              /恋童|幼女|进群|加好友|度盘/.test(e.title) ||
-              /恋童|幼女|进群|加好友|度盘/.test(e.caption)
+              /恋童|ペド|幼女|スカラマシュ|散兵/.test(JSON.stringify(e.tags)) ||
+              /恋童|幼女|进群|加好友|度盘|スカラマシュ|散兵/.test(e.title) ||
+              /恋童|幼女|进群|加好友|度盘|スカラマシュ|散兵/.test(e.caption)
             )
           })
 
@@ -410,11 +431,12 @@ export default {
         this.loading = false
         this.error = true
       }
-    }, 1500),
+    }, 2500),
     toArtwork(id) {
+      this.$store.dispatch('setGalleryList', this.artList)
       this.$router.push({
         name: 'Artwork',
-        params: { id, list: this.artList },
+        params: { id },
       })
     },
     onSearchInput: _.debounce(async function () {
@@ -428,6 +450,9 @@ export default {
         this.toPidPage(id)
         return
       }
+      if (/スカラマシュ|散|(^\d+$)/i.test(this.lastWord)) {
+        return
+      }
       const res = await api.getTagsAutocomplete(this.lastWord)
       if (res.status == 0) {
         this.autoCompleteTagList = res.data
@@ -436,7 +461,7 @@ export default {
     onFocus() {
       this.focus = true // 获取焦点
     },
-    onSearch() {
+    async onSearch() {
       console.log('onSearch: ', this.keywords)
       this.focus = false
       // document.querySelector('.app-main')?.scrollTo(0, 0)
@@ -453,6 +478,9 @@ export default {
         this.reset()
         this.search(keywords + ' ')
       }
+    },
+    async searchUser() {
+      this.$router.push(`/search_user/${this.keywords.trim()}`)
     },
     toPidPage(id) {
       this.keywords = ''
@@ -531,8 +559,8 @@ export default {
       height: 120px;
       padding-top 0.133rem
       padding-bottom 0
-      backdrop-filter: saturate(200%) blur(6px);
-      background: rgba(255, 255, 255, 0.8);
+      // backdrop-filter: saturate(200%) blur(6px);
+      background: rgba(255, 255, 255, 1);
 
       ::v-deep .van-cell {
         line-height: 0.6rem;
@@ -658,8 +686,8 @@ export default {
     top 120px
     margin-bottom 0
     padding 0px 0px 20px
-    backdrop-filter: saturate(200%) blur(6px);
-    background: rgba(255, 255, 255, 0.8);
+    // backdrop-filter: saturate(200%) blur(6px);
+    background: rgba(255, 255, 255, 1);
   }
 
   .list-wrap {
@@ -746,6 +774,13 @@ export default {
     width 72%
     height: 0.6rem;
     margin: 0.2rem;
+
+.dark .sel_search_date input
+  padding-left 10px
+  background #16161a
+  border-color #fff
+  border-width 1PX
+  border-radius 4px
 
 .dropdown
   &.search-bar-wrap .search-bar

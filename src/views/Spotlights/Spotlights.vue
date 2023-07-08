@@ -1,5 +1,5 @@
 <template>
-  <div class="illusts">
+  <div class="Spotlights illusts">
     <top-bar />
     <h3 class="af_title">{{ $t('sp.title') }}</h3>
     <template v-if="rankList.length && recomList.length">
@@ -19,8 +19,9 @@
       <van-tab :title="$t('sp.column')" name="column" />
       <van-tab :title="$t('sp.interview')" name="interview" />
       <van-tab :title="$t('common.manga')" name="manga" />
+      <van-tab :title="$t('common.novel')" name="novels" />
+      <van-tab title="News" name="news" />
       <van-tab :title="$t('sp.recomm')" name="recommend" />
-      <van-tab title="cosplay" name="cosplay" />
     </van-tabs>
     <van-loading v-show="loading" class="loading" :size="'50px'" />
     <van-list

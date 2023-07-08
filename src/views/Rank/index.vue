@@ -209,11 +209,12 @@ export default {
         this.loading = false
         this.error = true
       }
-    }, 500),
+    }, 1500),
     toArtwork(id) {
+      this.$store.dispatch('setGalleryList', this.artList)
       this.$router.push({
         name: 'Artwork',
-        params: { id, list: this.artList },
+        params: { id },
       })
     },
   },
@@ -262,10 +263,10 @@ export default {
     padding: 0 32px 0 12px;
     box-sizing: border-box;
     // background: #fff;
-    z-index: 1;
+    z-index: 10;
     // backdrop-filter: blur(6px);
-    backdrop-filter: saturate(200%) blur(6px);
-    background: rgba(255, 255, 255, 0.8);
+    // backdrop-filter: saturate(200%) blur(6px);
+    background: rgba(255, 255, 255, 1);
 
     .nav {
       flex 1
