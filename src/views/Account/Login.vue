@@ -43,6 +43,7 @@
 <script>
 import { getLoginURL } from '@/api/client/login'
 import PixivAuth from '@/api/client/pixiv-auth'
+import { trackEvent } from '@/utils'
 import { LocalStorage } from '@/utils/storage'
 import { Dialog } from 'vant'
 
@@ -71,6 +72,7 @@ export default {
       if (this.appConfig.refreshToken?.length == 43) {
         this.appConfig.useLocalAppApi = true
         PixivAuth.writeConfig(this.appConfig)
+        trackEvent('RefreshToken Login')
         setTimeout(() => {
           location.assign('/')
         }, 500)
@@ -93,8 +95,10 @@ export default {
         })
         if (res == 'cancel') return
         this.$set(this.appConfig, 'useApiProxy', true)
+        trackEvent('useApiProxy', { val })
       } else {
         this.$set(this.appConfig, 'useApiProxy', false)
+        trackEvent('useApiProxy', { val })
       }
       await this.$nextTick()
       PixivAuth.writeConfig(this.appConfig)

@@ -3,11 +3,12 @@ import nprogress from 'nprogress'
 import { LocalStorage } from '@/utils/storage'
 
 export const BASE_API_URL = LocalStorage.get('HIBIAPI_BASE', process.env.VUE_APP_DEF_HIBIAPI_MAIN)
-export const notSelfHibiApi = !/hibi\w{0,}\.cocomi\.cf|hibi\w{0,}\.kanata\.ml/.test(BASE_API_URL)
+export const notSelfHibiApi = !/hibi\w{0,}\.cocomi\..+/.test(BASE_API_URL)
 
 axios.defaults.baseURL = BASE_API_URL
 axios.defaults.timeout = 20000
 axios.defaults.headers.post['Content-Type'] = 'application/json'
+axios.defaults.headers.common['User-Agent'] = navigator.userAgent
 
 axios.interceptors.request.use(config => {
   nprogress.start()

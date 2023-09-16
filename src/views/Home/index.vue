@@ -14,7 +14,8 @@
         <Recomm4U />
       </template>
       <template v-else>
-        <div v-if="isSelfHibi" class="rec-cards">
+        <!-- <div v-if="isSelfHibi" class="rec-cards"> -->
+        <div class="rec-cards">
           <RecommendIllustCard />
           <DiscoveryCard />
         </div>

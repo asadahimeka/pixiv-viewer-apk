@@ -3,6 +3,7 @@
     class="image-card"
     :style="{ paddingBottom: paddingBottom(artwork), '--w': artwork.width, '--h': artwork.height }"
     @click.stop="click(artwork.id)"
+    @contextmenu="preventContext"
   >
     <img v-lazy="imgSrc" :alt="artwork.title" class="image" :class="{ censored: isCensored(artwork) }">
     <div class="tag-r18-ai">
@@ -24,7 +25,7 @@
       name="play"
       scale="8"
     />
-    <div v-if="mode == 'all' || mode === 'meta'" class="meta">
+    <div v-if="mode == 'all' || mode === 'meta'" v-longpress="downloadArtwork" class="meta">
       <div class="content">
         <h2 class="title" :title="artwork.title">{{ artwork.title }}</h2>
         <div class="author-cont">
@@ -37,9 +38,14 @@
 </template>
 
 <script>
-import { localApi } from '@/api'
-import { getCache, toggleBookmarkCache } from '@/utils/siteCache'
+import { Dialog } from 'vant'
 import { mapGetters } from 'vuex'
+import { localApi } from '@/api'
+import { downloadFile } from '@/utils'
+import { getCache, toggleBookmarkCache } from '@/utils/siteCache'
+import { LocalStorage } from '@/utils/storage'
+
+const isLongpressDL = LocalStorage.get('PXV_LONGPRESS_DL', false)
 
 export default {
   props: {
@@ -148,9 +154,32 @@ export default {
     },
     paddingBottom(artwork) {
       const pb = artwork.height / artwork.width * 100
-      if (pb < 45) return '45%'
+      if (pb < 50) return '50%'
       if (pb > 160) return '160%'
       return pb.toFixed(2) + '%'
+    },
+    preventContext(/** @type {Event} */ event) {
+      if (!isLongpressDL) return true
+      event.preventDefault()
+      return false
+    },
+    async downloadArtwork(/** @type {Event} */ ev) {
+      if (!isLongpressDL || this.artwork.type == 'ugoira') {
+        return
+      }
+      ev.preventDefault()
+      const src = this.artwork.images[0].o
+      const fileName = `${this.artwork.author.name}_${this.artwork.title}_${this.artwork.id}_p0.${src.split('.').pop()}`
+      const res = await Dialog.confirm({
+        title: this.$t('wuh4SsMnuqgjHpaOVp2rB'),
+        message: fileName,
+        closeOnPopstate: true,
+        cancelButtonText: this.$t('common.cancel'),
+        confirmButtonText: this.$t('common.confirm'),
+      }).catch(() => 'cancel')
+      if (res != 'confirm') return
+      await this.$nextTick()
+      downloadFile(src, fileName)
     },
   },
 }

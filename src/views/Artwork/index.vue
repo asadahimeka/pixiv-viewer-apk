@@ -16,7 +16,7 @@
           <ImageView ref="imgView" :artwork="artwork" :lazy="true" @open-download="ugoiraDownloadPanelShow = true" />
         </div>
         <div class="ia-right">
-          <van-skeleton class="skeleton" title avatar :row="5" avatar-size="42px" :loading="loading">
+          <van-skeleton class="skeleton" title avatar :row="5" row-width="200px" avatar-size="42px" :loading="loading">
             <ArtworkMeta ref="artworkMeta" :artwork="artwork" @ugoira-download="showUgPanelFromDlBtn" />
           </van-skeleton>
           <keep-alive>
@@ -60,7 +60,7 @@ import { getCache, setCache } from '@/utils/siteCache'
 import { LocalStorage } from '@/utils/storage'
 import _ from 'lodash'
 import { i18n } from '@/i18n'
-import { trackEvent, setStatusBarOverlayOn, setStatusBarOverlayOff } from '@/utils'
+import { trackEvent, dealStatusBarEnter, dealStatusBarEnterLeave } from '@/utils'
 
 const ugoiraDownloadPanelActions = [
   { name: 'ZIP', subname: i18n.t('artwork.download.zip') },
@@ -88,11 +88,11 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    setStatusBarOverlayOn()
+    dealStatusBarEnter()
     next()
   },
   beforeRouteLeave(to, from, next) {
-    setStatusBarOverlayOff()
+    dealStatusBarEnterLeave()
     if (this.$refs.artworkMeta?.showComments) {
       this.$refs.artworkMeta.showComments = false
       next(false)
@@ -200,6 +200,7 @@ export default {
           title: 'Pixiv Viewer',
           text: `${this.$t('artwork.share.share')} ${this.artwork.author.name} ${this.$t('artwork.share.of_art')} ${this.artwork.title} - ID: ${this.artwork.id}`,
           url: shareUrl,
+          dialogTitle: this.$t('artwork.share.share'),
         })
         trackEvent('Share Artwork')
       } catch (error) {
@@ -235,7 +236,7 @@ img[src*="/api/qrcode?text"]
     top: 1.05rem;
     right 0.5rem;
     z-index: 99;
-    font-size 2.6em
+    font-size 0.675rem
     cursor pointer
     .svg-icon
       color: #fafafa;

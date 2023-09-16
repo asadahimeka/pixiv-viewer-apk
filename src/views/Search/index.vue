@@ -350,7 +350,7 @@ export default {
         // document.querySelector('.app-main')?.scrollTo(0, 0)
         return
       }
-      this.$router.push(`/search/${keywords}`)
+      this.$router.push(`/search/${encodeURIComponent(keywords)}`)
       this.showPopPreview = false
     },
     doSearch: _.throttle(async function (val) {
@@ -466,7 +466,7 @@ export default {
       this.focus = false
       // document.querySelector('.app-main')?.scrollTo(0, 0)
       this.keywords += ' '
-      this.$router.push(`/search/${this.keywords.trim()}`)
+      this.$router.push(`/search/${encodeURIComponent(this.keywords.trim())}`)
       this.reset()
       this.doSearch(this.keywords)
     },
@@ -480,7 +480,7 @@ export default {
       }
     },
     async searchUser() {
-      this.$router.push(`/search_user/${this.keywords.trim()}`)
+      this.$router.push(`/search_user/${encodeURIComponent(this.keywords.trim())}`)
     },
     toPidPage(id) {
       this.keywords = ''
@@ -624,12 +624,10 @@ export default {
     .image-search-mask {
       position: fixed;
       // top: 128px;
-      // top: env(safe-area-inset-top);
       top: 1.72rem;
       width: 100%;
       // max-width: 10rem;
       // height: calc(100% - 128px);
-      // height: calc(100% - env(safe-area-inset-top));
       height: 100%;
       box-sizing: border-box;
       // pointer-events: none;

@@ -2,24 +2,26 @@
 
 android {
   compileOptions {
-      sourceCompatibility JavaVersion.VERSION_11
-      targetCompatibility JavaVersion.VERSION_11
+      sourceCompatibility JavaVersion.VERSION_17
+      targetCompatibility JavaVersion.VERSION_17
   }
 }
 
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
-    implementation project(':capacitor-app')
-    implementation project(':capacitor-clipboard')
-    implementation project(':capacitor-device')
-    implementation project(':capacitor-filesystem')
-    implementation project(':capacitor-share')
-    implementation project(':capacitor-status-bar')
     implementation project(':capacitor-community-appcenter')
     implementation project(':capacitor-community-appcenter-analytics')
     implementation project(':capacitor-community-appcenter-crashes')
+    implementation project(':capacitor-app')
+    implementation project(':capacitor-clipboard')
+    implementation project(':capacitor-device')
+    implementation project(':capacitor-share')
+    implementation project(':capacitor-status-bar')
+    implementation project(':capgo-capacitor-navigation-bar')
+    implementation project(':himeka-capacitor-filesystem')
+    implementation project(':himeka-capacitor-plugin-filedownload')
+    implementation project(':capacitor-android-shortcuts')
     implementation project(':capacitor-native-settings')
-    implementation project(':capacitor-plugin-filedownload')
 
 }
 

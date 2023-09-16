@@ -112,7 +112,7 @@ export default {
       const formData = new FormData()
       formData.append('file', file.file, file.file.name)
       // const base = BASE_API_URL.replace('/api/pixiv', '')
-      const base = 'https://hibi2.cocomi.cf'
+      const base = 'https://hibiapi.cocomi.eu.org'
       window.CapacitorWebFetch(`${base}/api/sauce/`, {
         method: 'POST',
         body: formData,

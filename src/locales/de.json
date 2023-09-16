@@ -44,7 +44,7 @@
       "first": "Möchten Sie {0} wirklich löschen?",
       "second": "Lädt nach der Bereinigung relevante Inhalte aus dem Netzwerk neu"
     },
-    "db": "Persistenter Cache",
+    "db": "Datenbank-Cache",
     "local": "Cache für Konfigurationselemente",
     "records": "Aufzeichnungen)",
     "session": "Laufzeit-Cache",
@@ -198,7 +198,7 @@
     },
     "img_proxy": {
       "desc": "Geben Sie unten die Pixiv-Bild-Proxy-Adresse ein, ohne dass https:// hinzugefügt werden muss",
-      "desc2": "Beispiel: i-cf.pximg.net, der lokale Cache wird nach dem Speichern gelöscht",
+      "desc2": "Beispiel: i.pixiv.re, der lokale Cache wird nach dem Speichern gelöscht",
       "ph": "Bitte pixiv-Bildproxy auswählen (der lokale Cache wird nach dem Wechsel gelöscht)",
       "title": "pximg-Proxy-Einstellung",
       "title2": "pximg-Bild-Proxy auswählen",
@@ -365,7 +365,7 @@
     "succ_msg": "Sitzungs-ID-Authentifizierung erfolgreich",
     "title": "Pixiv-Cookie setzen",
     "warn": {
-      "text": "Diese Funktion ist eine anormale Art der Anmeldung, und es besteht die Gefahr, dass das Konto gesperrt wird. \nDie Nutzung dieser Funktion gilt als eigene Zustimmung des Nutzers und eindeutige Risikoübernahme. \nWenn der Account gesperrt wird usw., hat der Autor dieses Projekts nichts damit zu tun.\n\nEs wird empfohlen, Trompete zum Testen zu verwenden.",
+      "text": "Diese Funktion stellt eine ungewöhnliche Art der Anmeldung dar und es besteht möglicherweise die Gefahr, dass das Konto gesperrt wird. \nDie Nutzung dieser Funktion gilt als Einwilligung des Nutzers und als klare Kenntnisnahme des Risikos. \nWenn das Konto gesperrt wird usw., hat der Autor dieses Projekts nichts damit zu tun.\n\nEs wird empfohlen, zum Testen ein Alt-Konto zu verwenden.",
       "title": "Risikohinweis"
     }
   },
@@ -394,5 +394,14 @@
       "d3": "Bitte füllen Sie RefreshToken aus",
       "d4": "RefreshToken ist fehlerhaft"
     }
-  }
+  },
+  "D8R2062pjASZe9mgvpeLr": "Herunterladen fehlgeschlagen",
+  "I9MyPQxu3O04E3h2qRBzN": "App-Informationen öffnen",
+  "iAH7adsXaqWMXEi3TOuwS": "Serie",
+  "eioSClGw9BqryzojTwr8j": "Seitenübergangseffekt",
+  "qmd5JADeSGtrvucK3TnGb": "Verstecken Sie Mangas auf der Seite mit der Gesamtrangliste entsprechend der Art des Werks, es kann zu Auslassungen kommen",
+  "3HnNTIScyvd1cNc2qAh7X": "Mangas im Ranking ausblenden",
+  "wuh4SsMnuqgjHpaOVp2rB": "Möchten Sie dieses Werk herunterladen?",
+  "5syY7l774noiN5LHKUnqF": "Lange drücken, um das Bild in der Liste oder auf der Detailseite herunterzuladen",
+  "8dWKEVyxLa8UjO0iuOA78": "Pixiv-Benutzer teilen"
 }

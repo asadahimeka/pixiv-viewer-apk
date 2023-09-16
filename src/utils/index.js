@@ -1,11 +1,13 @@
 import { Clipboard } from '@capacitor/clipboard'
-import { FileDownload } from 'capacitor-plugin-filedownload'
-import { Filesystem, Directory } from '@capacitor/filesystem'
-import { Share } from '@capacitor/share'
+import { FileDownload } from '@himeka/capacitor-plugin-filedownload'
+import { Filesystem, Directory } from '@himeka/capacitor-filesystem'
+// import { Share } from '@capacitor/share'
 import { StatusBar, Style } from '@capacitor/status-bar'
 import Analytics from '@capacitor-community/appcenter-analytics'
 import axios from 'axios'
 import { LocalStorage } from './storage'
+import { Toast } from 'vant'
+import { i18n } from '@/i18n'
 
 export async function copyText(string, cb, errCb) {
   try {
@@ -88,11 +90,31 @@ export async function checkUrlAvailable(url) {
   throw new Error('Resp not ok.')
 }
 
-export async function downloadFile(uri, fileName) {
+function replaceValidFilename(str = '') {
+  const maxLen = 127
+  const strArr = str.split('.')
+  const ext = strArr.pop()
+  str = strArr.join('').replace(/[\\/|?*:<>'"\s.]/g, '_') + '.' + ext
+  if (str.length > maxLen) str = str.slice(-maxLen)
+  return str
+}
+
+export async function downloadFile(url, fileName, subpath) {
   try {
-    const res = await FileDownload.download({ uri, fileName })
+    fileName = replaceValidFilename(fileName)
+    Toast(i18n.t('tip.downloading') + ': ' + fileName)
+    if (subpath) fileName = subpath + '/' + fileName
+    const res = await FileDownload.download({
+      uri: url,
+      fileName: 'pixiv-viewer/' + fileName,
+    })
+    Toast({
+      message: i18n.t('tip.downloaded') + ': ' + decodeURIComponent(res.path.replace('file://', '')),
+      duration: 3000,
+    })
     return { res }
   } catch (error) {
+    Toast(i18n.t('D8R2062pjASZe9mgvpeLr') + ': ' + error)
     return { error }
   }
 }
@@ -105,19 +127,27 @@ function blobToBase64(blob) {
   })
 }
 
-export async function downloadBlob(blob, fileName) {
+export async function downloadBlob(blob, fileName, subpath) {
   try {
+    fileName = replaceValidFilename(fileName)
+    if (subpath) fileName = subpath + '/' + fileName
     const base64 = await blobToBase64(blob)
     const res = await Filesystem.writeFile({
-      path: fileName,
+      path: 'pixiv-viewer/' + fileName,
       data: base64,
-      directory: Directory.External,
+      directory: Directory.Downloads,
+      recursive: true,
     })
-    await Share.share({
-      files: [res.uri],
+    Toast({
+      message: i18n.t('tip.downloaded') + ': ' + decodeURIComponent(res.uri.replace('file://', '')),
+      duration: 3000,
     })
+    // await Share.share({
+    //   files: [res.uri],
+    // })
     return { res }
   } catch (error) {
+    Toast(i18n.t('D8R2062pjASZe9mgvpeLr') + ': ' + error)
     return { error }
   }
 }
@@ -131,12 +161,13 @@ export function trackEvent(name, properties) {
   })
 }
 
-export function setStatusBarOverlayOn() {
+export function dealStatusBarEnter() {
   StatusBar.setStyle({ style: Style.Dark })
   StatusBar.setOverlaysWebView({ overlay: true })
 }
 
-export function setStatusBarOverlayOff() {
-  StatusBar.setStyle({ style: localStorage.PXV_DARK ? Style.Dark : Style.Light })
+const isDark = !!localStorage.PXV_DARK
+export function dealStatusBarEnterLeave() {
+  StatusBar.setStyle({ style: isDark ? Style.Dark : Style.Light })
   StatusBar.setOverlaysWebView({ overlay: false })
 }

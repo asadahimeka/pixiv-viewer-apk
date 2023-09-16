@@ -101,7 +101,7 @@ export default {
     },
     toDetail(id) {
       this.$router.push({
-        name: 'Spotlight',
+        name: 'SpotlightDetail',
         params: { id },
       })
     },

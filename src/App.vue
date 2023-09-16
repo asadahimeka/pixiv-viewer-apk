@@ -51,9 +51,7 @@ html,body
 #app
   -webkit-font-smoothing antialiased
   -moz-osx-font-smoothing grayscale
-  // max-width 750px
   width 100%
-  // height 100%
   margin 0 auto
 
 #nprogress

@@ -2,24 +2,6 @@
 include ':capacitor-android'
 project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/android/capacitor')
 
-include ':capacitor-app'
-project(':capacitor-app').projectDir = new File('../node_modules/@capacitor/app/android')
-
-include ':capacitor-clipboard'
-project(':capacitor-clipboard').projectDir = new File('../node_modules/@capacitor/clipboard/android')
-
-include ':capacitor-device'
-project(':capacitor-device').projectDir = new File('../node_modules/@capacitor/device/android')
-
-include ':capacitor-filesystem'
-project(':capacitor-filesystem').projectDir = new File('../node_modules/@capacitor/filesystem/android')
-
-include ':capacitor-share'
-project(':capacitor-share').projectDir = new File('../node_modules/@capacitor/share/android')
-
-include ':capacitor-status-bar'
-project(':capacitor-status-bar').projectDir = new File('../node_modules/@capacitor/status-bar/android')
-
 include ':capacitor-community-appcenter'
 project(':capacitor-community-appcenter').projectDir = new File('../node_modules/@capacitor-community/appcenter/android')
 
@@ -29,8 +11,32 @@ project(':capacitor-community-appcenter-analytics').projectDir = new File('../no
 include ':capacitor-community-appcenter-crashes'
 project(':capacitor-community-appcenter-crashes').projectDir = new File('../node_modules/@capacitor-community/appcenter-crashes/android')
 
+include ':capacitor-app'
+project(':capacitor-app').projectDir = new File('../node_modules/@capacitor/app/android')
+
+include ':capacitor-clipboard'
+project(':capacitor-clipboard').projectDir = new File('../node_modules/@capacitor/clipboard/android')
+
+include ':capacitor-device'
+project(':capacitor-device').projectDir = new File('../node_modules/@capacitor/device/android')
+
+include ':capacitor-share'
+project(':capacitor-share').projectDir = new File('../node_modules/@capacitor/share/android')
+
+include ':capacitor-status-bar'
+project(':capacitor-status-bar').projectDir = new File('../node_modules/@capacitor/status-bar/android')
+
+include ':capgo-capacitor-navigation-bar'
+project(':capgo-capacitor-navigation-bar').projectDir = new File('../node_modules/@capgo/capacitor-navigation-bar/android')
+
+include ':himeka-capacitor-filesystem'
+project(':himeka-capacitor-filesystem').projectDir = new File('../node_modules/@himeka/capacitor-filesystem/android')
+
+include ':himeka-capacitor-plugin-filedownload'
+project(':himeka-capacitor-plugin-filedownload').projectDir = new File('../node_modules/@himeka/capacitor-plugin-filedownload/android')
+
+include ':capacitor-android-shortcuts'
+project(':capacitor-android-shortcuts').projectDir = new File('../node_modules/capacitor-android-shortcuts/android')
+
 include ':capacitor-native-settings'
 project(':capacitor-native-settings').projectDir = new File('../node_modules/capacitor-native-settings/android')
-
-include ':capacitor-plugin-filedownload'
-project(':capacitor-plugin-filedownload').projectDir = new File('../node_modules/capacitor-plugin-filedownload/android')

@@ -32,7 +32,7 @@
         </van-button>
       </template>
     </van-cell>
-    <van-cell center is-link title="Open Settings" @click="openSettings" />
+    <van-cell center is-link :title="$t('I9MyPQxu3O04E3h2qRBzN')" @click="openSettings" />
   </div>
 </template>
 

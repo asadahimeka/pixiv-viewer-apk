@@ -71,17 +71,21 @@ export default {
   },
   methods: {
     toDetail(id) {
-      if (this.isTypeDetail) {
-        this.$router.push({
-          name: 'SpotlightDetail',
-          query: { id },
-        })
-      } else {
-        this.$router.push({
-          name: 'Spotlight',
-          params: { id },
-        })
-      }
+      this.$router.push({
+        name: 'SpotlightDetail',
+        params: { id },
+      })
+      // if (this.isTypeDetail) {
+      //   this.$router.push({
+      //     name: 'SpotlightDetail',
+      //     params: { id },
+      //   })
+      // } else {
+      //   this.$router.push({
+      //     name: 'Spotlight',
+      //     params: { id },
+      //   })
+      // }
     },
   },
 }

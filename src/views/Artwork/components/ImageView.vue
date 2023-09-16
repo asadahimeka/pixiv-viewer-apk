@@ -15,9 +15,11 @@
       <img
         v-if="lazy"
         v-lazy="getImgUrl(url)"
+        v-longpress="e => downloadArtwork(e, index)"
         :alt="`${artwork.title} - Page ${index + 1}`"
         class="image"
         @click.stop="view(index, isCensored(artwork))"
+        @contextmenu="preventContext"
       >
       <img
         v-else
@@ -54,7 +56,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { ImagePreview } from 'vant'
+import { Fancybox } from '@fancyapps/ui'
+import { Dialog } from 'vant'
+import nprogress from 'nprogress'
 import JSZip from 'jszip'
 import GIF from 'gif.js'
 import tsWhammy from 'ts-whammy'
@@ -62,7 +66,9 @@ import api from '@/api'
 import { LocalStorage } from '@/utils/storage'
 import { downloadBlob, downloadFile, sleep, trackEvent } from '@/utils'
 
-const imgResSel = LocalStorage.get('PXV_DTL_IMG_RES', 'Large')
+const imgResSel = LocalStorage.get('PXV_DTL_IMG_RES', 'Medium')
+const isLongpressDL = LocalStorage.get('PXV_LONGPRESS_DL', false)
+
 export default {
   props: {
     artwork: {
@@ -121,14 +127,61 @@ export default {
           icon: require('@/icons/ban-view.svg'),
         })
       } else {
-        ImagePreview({
-          className: 'image-preview',
-          images: this.original,
-          startPosition: index,
-          closeOnPopstate: true,
-          closeable: true,
+        Fancybox.show(this.artwork.images.map(e => ({
+          src: e.o,
+          thumb: e.l,
+        })), {
+          compact: false,
+          backdropClick: 'close',
+          contentClick: 'close',
+          startIndex: index,
+          Thumbs: { showOnStart: false },
+          Carousel: { infinite: false },
+          Toolbar: {
+            display: {
+              left: ['infobar'],
+              middle: ['toggleZoom', 'myDownload', 'rotateCW', 'flipX', 'flipY'],
+              right: [],
+            },
+            items: {
+              myDownload: {
+                tpl: '<button class="f-button"><svg><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M7 11l5 5 5-5M12 4v12"></path></svg></button>',
+                click: async ev => {
+                  console.log('ev: ', ev)
+                  const { page } = ev.instance.carousel
+                  const item = this.artwork.images[page]
+                  const fileName = `${this.artwork.author.name}_${this.artwork.title}_${this.artwork.id}_p${page}.${item.o.split('.').pop()}`
+                  await downloadFile(item.o, fileName)
+                },
+              },
+            },
+          },
         })
       }
+    },
+    preventContext(/** @type {Event} */ event) {
+      if (!isLongpressDL) return true
+      event.preventDefault()
+      return false
+    },
+    async downloadArtwork(/** @type {Event} */ ev, index) {
+      console.log('index: ', index)
+      if (!isLongpressDL || this.artwork.type == 'ugoira') {
+        return
+      }
+      ev.preventDefault()
+      const src = this.artwork.images[index].o
+      const fileName = `${this.artwork.author.name}_${this.artwork.title}_${this.artwork.id}_p${index}.${src.split('.').pop()}`
+      const res = await Dialog.confirm({
+        title: this.$t('wuh4SsMnuqgjHpaOVp2rB'),
+        message: fileName,
+        closeOnPopstate: true,
+        cancelButtonText: this.$t('common.cancel'),
+        confirmButtonText: this.$t('common.confirm'),
+      }).catch(() => 'cancel')
+      if (res != 'confirm') return
+      await this.$nextTick()
+      downloadFile(src, fileName)
     },
     showFull() {
       if (this.isShrink) this.isShrink = false
@@ -165,9 +218,11 @@ export default {
       this.progressShow = true
       let zipUrl = ugoira.zip
       if (zipUrl.includes('i-cf.pximg.net')) zipUrl = zipUrl.replace('i-cf.pximg.net', 'i.pixiv.re')
+      nprogress.start()
       window.CapacitorWebFetch(zipUrl).then(res => {
         return res.blob()
       }).then(blob => {
+        nprogress.done()
         const jszip = new JSZip()
         jszip.loadAsync(blob).then(zip => {
           let index = 0
@@ -194,6 +249,7 @@ export default {
           })
         })
       }).catch(error => {
+        nprogress.done()
         this.resetUgoira()
         this.$toast({
           message: error.message,
@@ -238,7 +294,8 @@ export default {
     downloadZIP() {
       downloadFile(
         this.ugoira.zip,
-        `[${this.artwork.author.name}] ${this.artwork.title} - ${this.artwork.id}.zip`
+        `[${this.artwork.author.name}]_${this.artwork.title}_${this.artwork.id}.zip`,
+        'ugoira'
       )
     },
     async downloadWebM() {
@@ -281,7 +338,8 @@ export default {
 
       downloadBlob(
         webm,
-        `[${this.artwork.author.name}] ${this.artwork.title} - ${this.artwork.id}.webm`
+        `[${this.artwork.author.name}]_${this.artwork.title}_${this.artwork.id}.webm`,
+        'ugoira'
       )
     },
     async downloadGIF() {
@@ -319,7 +377,8 @@ export default {
       gif.on('finished', blob => {
         downloadBlob(
           blob,
-          `[${this.artwork.author.name}] ${this.artwork.title} - ${this.artwork.id}.gif`
+          `[${this.artwork.author.name}]_${this.artwork.title}_${this.artwork.id}.gif`,
+          'ugoira'
         )
       })
       gif.render()

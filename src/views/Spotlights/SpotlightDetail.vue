@@ -39,7 +39,7 @@
 
 <script>
 import TopBar from '@/components/TopBar'
-import api from '@/api'
+import api, { PXIMG_PROXY_BASE } from '@/api'
 import SpotlightsRecom from './SpotlightsRecom.vue'
 
 export default {
@@ -77,7 +77,7 @@ export default {
     $route() {
       if (
         this.$route.name === 'SpotlightDetail' &&
-        this.$route.query.id != this.spid
+        this.$route.params.id != this.spid
       ) {
         this.spotlight = {}
         this.init()
@@ -98,7 +98,9 @@ export default {
       this.loading = true
       const res = await api.getSpotlightTypeDetail(this.spid)
       if (res.status === 0) {
-        res.data.content = res.data.content?.replace(/i\.pximg\.net/g, 'i.pixiv.re')
+        res.data.content = res.data.content
+          ?.replace(/i\.pximg\.net/g, PXIMG_PROXY_BASE)
+          ?.replace(/src="https:\/\/embed\.pixiv\.net\/(.*)"/i, `src="${process.env.VUE_APP_COMMON_PROXY}https://embed.pixiv.net/$1"`)
         this.spotlight = res.data
       } else {
         this.$toast({
@@ -109,7 +111,7 @@ export default {
       this.loading = false
     },
     init() {
-      this.spid = this.$route.query.id
+      this.spid = this.$route.params.id
       this.getDetail()
     },
     handleClick(ev) {
@@ -124,8 +126,11 @@ export default {
         const actionMap = [
           [/^https:\/\/www\.pixiv\.net\/artworks\/(\d+)/i, m => this.$router.push(`/i/${m}`)],
           [/^https:\/\/www\.pixiv\.net\/users\/(\d+)/i, m => this.$router.push(`/u/${m}`)],
-          [/^https:\/\/www\.pixivision\.net\/.+\/a\/(\d+)/i, m => this.$router.push(`/spd?id=${m}`)],
-          [new RegExp(`${location.origin}/.+/a/(\\d+)`, 'i'), m => this.$router.push(`/spd?id=${m}`)],
+          [/^https:\/\/www\.pixivision\.net\/.+\/a\/(\d+)/i, m => this.$router.push(`/a/${m}`)],
+          [new RegExp(`${location.origin}/.+/a/(\\d+)`, 'i'), m => this.$router.push(`/a/${m}`)],
+          [new RegExp(`${location.origin}/.+/\\d+#(id-\\w+)`, 'i'), m => {
+            document.getElementById(m)?.scrollIntoView({ behavior: 'smooth' })
+          }],
         ]
         for (const act of actionMap) {
           const match = url.match(act[0])?.[1]
@@ -170,6 +175,34 @@ export default {
       height auto
       margin 20px auto
 
+    ._article-illust-eyecatch img
+      max-width 100%
+    .am__work__main img
+      border-radius: 4PX
+      box-shadow: 0 3PX 1PX -2PX rgba(0, 0, 0, .2), 0 2PX 2PX 0 rgba(0, 0, 0, .14), 0 1PX 5PX 0 rgba(0, 0, 0, .12)
+    ._feature-article-body__movie
+      margin 40px 0
+      text-align center
+    ._feature-article-body__widget
+      margin-bottom 40px
+      padding 20px
+      border 1px solid #ccc
+      border-radius 5PX
+    ._feature-article-body__pixiv_illust
+      position relative
+      margin-bottom 80px
+      & + ._feature-article-body__caption
+        position relative
+        top -25px
+      &::after
+        content: ''
+        position absolute
+        bottom -0.6rem
+        left 50%
+        transform translateX(-50%)
+        width 60px
+        height 1px
+        background #808080
     .fab__credit
       font-size: 0.32rem;
       text-align: right;
@@ -364,7 +397,7 @@ export default {
       text-align: center;
       font-size: 0.35rem;
     .title
-      margin: 10px 0 20px;
+      margin: 10px 0;
       font-size: 48px;
       text-align center
 

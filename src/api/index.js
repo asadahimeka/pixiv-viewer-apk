@@ -114,6 +114,7 @@ const parseIllust = data => {
     illust_ai_type,
     type,
     is_bookmarked: data.is_bookmarked,
+    series: data.series,
   }
 
   return artwork
@@ -996,9 +997,12 @@ const api = {
   async getDiscoveryList(mode = 'safe', max = 18, nocache = false) {
     let list
 
-    const params = { mode, max }
+    const params = { mode, max, _anon: 1 }
 
-    if (nocache) params._vercel_no_cache = 1
+    if (nocache) {
+      params._vercel_no_cache = 1
+      params._t = Date.now()
+    }
 
     const res = await get('https://now.pixiv.pics/ajax/illust/discovery', params, {
       headers: {
@@ -1301,6 +1305,118 @@ const api = {
     }
 
     return { status: 0, data: memberInfo }
+  },
+
+  async getMemberIllustSeries(id, page = 1) {
+    const cacheKey = `member_illust_series_${id}_${page}`
+    let memberArtwork = await getCache(cacheKey)
+
+    if (!memberArtwork) {
+      const res = await get('/member_illust_series', { id, page })
+
+      if (res.illust_series_details) {
+        res.illust_series_details.forEach(e => { e.cover_image_urls.medium = imgProxy(e.cover_image_urls.medium) })
+        memberArtwork = res.illust_series_details
+        memberArtwork.next = !!res.next_url
+        setCache(cacheKey, memberArtwork, 60 * 60 * 24)
+      } else if (res.error) {
+        return {
+          status: -1,
+          msg: dealErrMsg(res),
+        }
+      } else {
+        return {
+          status: -1,
+          msg: i18n.t('tip.unknown_err'),
+        }
+      }
+    }
+
+    return { status: 0, data: memberArtwork }
+  },
+
+  async getIllustSeries(id, page = 1) {
+    const cacheKey = `illust_series_${id}_${page}`
+    let data = await getCache(cacheKey)
+
+    if (!data) {
+      const res = await get('/illust_series', { id, page })
+
+      if (res.illusts) {
+        data = res.illusts.map(art => parseIllust(art))
+        data.next = !!res.next_url
+        data.detail = res.illust_series_detail
+        data.detail.cover = imgProxy(res.illust_series_detail.cover_image_urls.medium)
+        setCache(cacheKey, data, 60 * 60 * 12)
+      } else if (res.error) {
+        return {
+          status: -1,
+          msg: dealErrMsg(res),
+        }
+      } else {
+        return {
+          status: -1,
+          msg: i18n.t('tip.unknown_err'),
+        }
+      }
+    }
+
+    return { status: 0, data }
+  },
+
+  async getMemberNovelSeries(id, page = 1) {
+    const cacheKey = `member_novel_series_${id}_${page}`
+    let memberArtwork = await getCache(cacheKey)
+
+    if (!memberArtwork) {
+      const res = await get('/member_novel_series', { id, page })
+
+      if (res.novel_series_details) {
+        memberArtwork = res.novel_series_details
+        memberArtwork.next = !!res.next_url
+        setCache(cacheKey, memberArtwork, 60 * 60 * 24)
+      } else if (res.error) {
+        return {
+          status: -1,
+          msg: dealErrMsg(res),
+        }
+      } else {
+        return {
+          status: -1,
+          msg: i18n.t('tip.unknown_err'),
+        }
+      }
+    }
+
+    return { status: 0, data: memberArtwork }
+  },
+
+  async getNovelSeries(id, page = 1) {
+    const cacheKey = `novel_series_${id}_${page}`
+    let data = await getCache(cacheKey)
+
+    if (!data) {
+      const res = await get('/novel_series', { id, page })
+
+      if (res.novels) {
+        data = res.novels.map(art => parseNovel(art))
+        data.next = !!res.next_url
+        data.detail = res.novel_series_detail
+        setCache(cacheKey, data, 60 * 60 * 12)
+      } else if (res.error) {
+        return {
+          status: -1,
+          msg: dealErrMsg(res),
+        }
+      } else {
+        return {
+          status: -1,
+          msg: i18n.t('tip.unknown_err'),
+        }
+      }
+    }
+
+    return { status: 0, data }
   },
 
   /**

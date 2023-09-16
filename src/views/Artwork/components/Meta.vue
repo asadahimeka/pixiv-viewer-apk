@@ -13,8 +13,13 @@
         @click="toAuthor(artwork.author.id)"
       >
       <div class="name-box">
-        <div v-if="isNovel && artwork.series.id" class="series">{{ artwork.series.title }}</div>
+        <div v-if="isNovel && artwork.series && artwork.series.id" class="series">
+          <router-link :to="`/novel/series/${artwork.series.id}`">{{ artwork.series.title }}</router-link>
+        </div>
         <h2 class="title">{{ artwork.title }}</h2>
+        <div v-if="!isNovel && artwork.series && artwork.series.id" class="series is_illust" :title="artwork.series.title">
+          <router-link :to="`/user/${artwork.author.id}/series/${artwork.series.id}`">{{ artwork.series.title }}</router-link>
+        </div>
         <div class="author" @click="toAuthor(artwork.author.id)">{{ artwork.author.name }}</div>
       </div>
     </div>
@@ -322,6 +327,7 @@ export default {
       })
     },
     toSearch(keyword) {
+      keyword = encodeURIComponent(keyword)
       this.$router.push(this.isNovel ? `/search_novel/${keyword}` : `/search/${keyword}`)
     },
     async downloadArtwork() {
@@ -333,9 +339,7 @@ export default {
       for (let index = 0; index < this.artwork.images.length; index++) {
         const item = this.artwork.images[index]
         const fileName = `${this.artwork.author.name}_${this.artwork.title}_${this.artwork.id}_p${index}.${item.o.split('.').pop()}`
-        this.$toast(this.$t('tip.downloading') + ': ' + fileName)
-        const { res } = await downloadFile(item.o, fileName)
-        this.$toast(this.$t('tip.downloaded') + ': ' + res.path.replace('file://', ''))
+        await downloadFile(item.o, fileName)
         await sleep(1000)
       }
     },
@@ -437,6 +441,21 @@ export default {
     }
   }
 
+  .series {
+    margin-bottom 8px
+    font-size 20px
+    &,& a {
+      color: #faa200 !important
+    }
+    &.is_illust {
+      margin-top 5px
+      // margin-left 105px
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
   .author-info {
     display flex
     // height: 86px;
@@ -449,6 +468,10 @@ export default {
       border-radius: 50%;
       overflow: hidden;
       margin-right: 18px;
+    }
+
+    &:not(.is_novel) .name-box {
+      max-width calc(100% - 90px)
     }
 
     .name-box {
@@ -471,11 +494,6 @@ export default {
         // text-overflow: ellipsis;
       }
 
-      .series {
-        margin-bottom 8px
-        font-size 20px
-        color: #faa200;
-      }
     }
 
     &.is_novel {
@@ -543,6 +561,7 @@ export default {
   .whid {
     display flex
     align-items center
+    flex-wrap wrap
     margin 16px 0 -4px
     font-size 20px
     color #7c8f99

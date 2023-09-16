@@ -97,10 +97,8 @@ export default {
         const userData = await login(this.sessionIdInput)
         this.$store.commit('setUser', userData)
         this.loading = false
-        window.umami?.track('login_success')
         this.$toast(this.$t('sess.succ_msg'))
-        // this.$router.replace({ name: 'Setting' })
-        trackEvent('Login Success')
+        trackEvent('Session Login Success')
         this.$router.go(-2)
         setTimeout(() => {
           location.reload()

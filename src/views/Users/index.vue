@@ -3,8 +3,11 @@
     <div class="user-wrap">
       <div class="users">
         <TopBar />
+        <div class="share_btn" @click="share">
+          <Icon class="icon" name="share" />
+        </div>
         <div v-if="userInfo.id" class="info-container">
-          <div class="bg-cover">
+          <div class="bg-cover" :class="{ hasbgcover: !!userInfo.bgcover }">
             <img v-lazy="userInfo.bgcover || userInfo.avatar" :class="{ nobg: !userInfo.bgcover }" :alt="userInfo.name">
           </div>
           <div class="info">
@@ -20,7 +23,7 @@
                   </span>
                   <span v-if="userInfo.gender" class="gender">
                     <van-tag v-if="userInfo.gender == 'male'" plain color="#005CAF">♂</van-tag>
-                    <van-tag v-if="userInfo.gender == 'female'" plain color="#F596AA">♀</van-tag>
+                    <van-tag v-if="userInfo.gender == 'female'" plain color="#F596AA">♀  </van-tag>
                   </span>
                 </div>
               </div>
@@ -122,6 +125,17 @@
               @onCilck="showSub('manga')"
             />
           </van-tab>
+          <van-tab v-if="userInfo.illust_series > 0" name="illust_series">
+            <template #title>
+              <span>{{ $t('iAH7adsXaqWMXEi3TOuwS') }}({{ $t('common.manga') }})</span>
+              <van-tag mark color="#cdeefe" text-color="#0b6aaf">{{ userInfo.illust_series }}</van-tag>
+            </template>
+            <AuthorIllustSeries
+              v-if="activeTab == 'illust_series' && userInfo.id && userInfo.illust_series > 0"
+              :id="userInfo.id"
+              key="illust_series"
+            />
+          </van-tab>
           <van-tab v-if="userInfo.novels > 0" name="novel">
             <template #title>
               <span>{{ $t('common.novel') }}</span>
@@ -136,6 +150,17 @@
               :show-title="false"
               :not-from-artwork="notFromArtwork"
               @onCilck="showSub('novel')"
+            />
+          </van-tab>
+          <van-tab v-if="userInfo.novel_series > 0" name="novel_series">
+            <template #title>
+              <span>{{ $t('iAH7adsXaqWMXEi3TOuwS') }}({{ $t('common.novel') }})</span>
+              <van-tag mark color="#cdeefe" text-color="#0b6aaf">{{ userInfo.novel_series }}</van-tag>
+            </template>
+            <AuthorNovelSeries
+              v-if="activeTab == 'novel_series' && userInfo.id && userInfo.novel_series > 0"
+              :id="userInfo.id"
+              key="novel_series"
             />
           </van-tab>
           <van-tab v-if="userInfo.bookmarks > 0" name="favorite">
@@ -182,16 +207,19 @@
 </template>
 
 <script>
-import TopBar from '@/components/TopBar'
-import AuthorIllusts from './components/AuthorIllusts'
-import FavoriteIllusts from './components/FavoriteIllusts'
+import TopBar from '@/components/TopBar.vue'
+import AuthorIllusts from './components/AuthorIllusts.vue'
+import FavoriteIllusts from './components/FavoriteIllusts.vue'
+import AuthorIllustSeries from './components/AuthorIllustSeries.vue'
+import AuthorNovelSeries from './components/AuthorNovelSeries.vue'
 import RecommUser from '../Search/components/RecommUser.vue'
 import AuthorNovels from './components/AuthorNovels.vue'
 import FavoriteNovels from './components/FavoriteNovels.vue'
 import _ from 'lodash'
 import api, { localApi } from '@/api'
 import { getCache, setCache } from '@/utils/siteCache'
-import { setStatusBarOverlayOff, setStatusBarOverlayOn } from '@/utils'
+import { trackEvent, dealStatusBarEnterLeave, dealStatusBarEnter } from '@/utils'
+import { Share } from '@capacitor/share'
 
 export default {
   name: 'Users',
@@ -209,9 +237,11 @@ export default {
     AuthorNovels,
     FavoriteNovels,
     RecommUser,
+    AuthorIllustSeries,
+    AuthorNovelSeries,
   },
   beforeRouteEnter(to, from, next) {
-    setStatusBarOverlayOn()
+    dealStatusBarEnter()
     next(vm => {
       vm.notFromArtwork = ![
         'Artwork',
@@ -223,7 +253,7 @@ export default {
     })
   },
   beforeRouteLeave(to, from, next) {
-    setStatusBarOverlayOff()
+    dealStatusBarEnterLeave()
     next()
   },
   data() {
@@ -268,6 +298,20 @@ export default {
       this.activeTab = 'illusts'
       this.getMemberInfo(id)
     },
+    async share() {
+      const shareUrl = `https://pixiv.pics/u/${this.userInfo.id}`
+      try {
+        await Share.share({
+          title: 'Pixiv Viewer',
+          text: `${this.$t('8dWKEVyxLa8UjO0iuOA78')}：${this.userInfo.name}`,
+          url: shareUrl,
+          dialogTitle: this.$t('artwork.share.share'),
+        })
+        trackEvent('Share Users')
+      } catch (error) {
+        console.log('error: ', error)
+      }
+    },
     async togggleFollowCache(bool) {
       const itemKey = `memberInfo_${this.userInfo.id}`
       const user = await getCache(itemKey)
@@ -279,7 +323,7 @@ export default {
     async toggleFollow() {
       this.favLoading = true
       if (this.isFollowed) {
-        const isOk = localApi.userFollowDelete(this.userInfo.id)
+        const isOk = await localApi.userFollowDelete(this.userInfo.id)
         this.favLoading = false
         if (isOk) {
           this.userInfo.is_followed = false
@@ -288,7 +332,7 @@ export default {
           this.$toast(this.$t('user.unfollow_fail'))
         }
       } else {
-        const isOk = localApi.userFollowAdd(this.userInfo.id)
+        const isOk = await localApi.userFollowAdd(this.userInfo.id)
         this.favLoading = false
         if (isOk) {
           this.userInfo.is_followed = true
@@ -424,9 +468,17 @@ export default {
       height: 300px;
       overflow: hidden;
 
+      &.hasbgcover {
+        height: 50vw;
+        min-height: 300px;
+        max-height: 60vh;
+      }
+
       img {
         display: block;
         width: 100%;
+        height 100%
+        object-fit: cover;
         &[lazy="loading"] {
           opacity 0
         }
@@ -596,6 +648,17 @@ export default {
   margin 20px 0
   ::v-deep .van-button
     width 100px
+
+.share_btn
+  position: fixed;
+  top: 1.05rem;
+  right 0.5rem;
+  z-index: 99;
+  font-size 0.675rem
+  cursor pointer
+  .svg-icon
+    color: #fafafa;
+    filter: drop-shadow(0.02667rem 0.05333rem 0.05333rem rgba(0,0,0,0.8))
 
 @media screen and (min-width 768px)
   .users .info-container .info .name

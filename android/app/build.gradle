@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    namespace "top.nanoka.pixiv"
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "top.nanoka.pixiv"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
-        versionName "1.1"
+        versionCode 4
+        versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

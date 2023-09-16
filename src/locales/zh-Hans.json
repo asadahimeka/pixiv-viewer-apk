@@ -182,7 +182,7 @@
   "cache": {
     "records": "条记录",
     "title": "清除缓存",
-    "db": "持久化缓存",
+    "db": "数据库缓存",
     "clear": "清理",
     "local": "配置项缓存",
     "session": "运行时缓存",
@@ -214,7 +214,7 @@
       "title": "其他设置",
       "lang": "语言",
       "lang_ph": "请选择语言",
-      "manual_input": "手动输入地址",
+      "manual_input": "手动输入代理/API地址",
       "manual_input_label": "下方图片代理与 API 实例地址是否手动输入",
       "cp_token_label": "复制当前 RefreshToken 到剪贴板",
       "cp_token_title": "导出 RefreshToken",
@@ -279,7 +279,7 @@
       "title2": "pximg 图片代理选择",
       "title3": "图片代理",
       "desc": "在下方输入 pixiv 图片代理地址，不需要加 https://",
-      "desc2": "例如：i-cf.pximg.net，保存后会清空本地缓存",
+      "desc2": "例如：i.pixiv.re，保存后会清空本地缓存",
       "title4": "pixiv 图片代理",
       "ph": "请选择 pixiv 图片代理 (切换后会清空本地缓存)"
     },
@@ -394,5 +394,14 @@
     "succ_tip": "登录成功",
     "fail_tip": "登录失败",
     "logout_tip": "确认退出？"
-  }
+  },
+  "D8R2062pjASZe9mgvpeLr": "下载失败",
+  "I9MyPQxu3O04E3h2qRBzN": "打开应用信息",
+  "iAH7adsXaqWMXEi3TOuwS": "系列",
+  "eioSClGw9BqryzojTwr8j": "页面过渡效果",
+  "3HnNTIScyvd1cNc2qAh7X": "排行榜隐藏漫画",
+  "qmd5JADeSGtrvucK3TnGb": "根据作品类型在综合排行榜列表页面隐藏漫画作品，可能会有遗漏",
+  "wuh4SsMnuqgjHpaOVp2rB": "是否下载该作品",
+  "5syY7l774noiN5LHKUnqF": "列表/详情图片长按下载",
+  "8dWKEVyxLa8UjO0iuOA78": "分享 Pixiv 用户"
 }

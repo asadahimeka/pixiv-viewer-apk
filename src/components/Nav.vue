@@ -51,10 +51,12 @@
 <script>
 import { existsSessionId } from '@/api/user'
 
+const isWebLogin = existsSessionId()
+
 export default {
   data() {
     return {
-      isLogin: window.APP_CONFIG.useLocalAppApi || existsSessionId(),
+      isLogin: window.APP_CONFIG.useLocalAppApi || isWebLogin,
       showNav: true,
       isDark: !!localStorage.PXV_DARK,
     }
@@ -84,7 +86,6 @@ export default {
   left: 0;
   width: 100%;
   height: 100px;
-  // height: calc(100px + env(safe-area-inset-bottom));
   z-index: 10;
 
   opacity: 0;

@@ -41,9 +41,9 @@ const HASH_SECRET = '28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0
 const DEFAULT_HEADERS = {
   'App-OS': 'Android',
   'App-OS-Version': 'Android 13.0',
-  'App-Version': '6.84.0',
+  'App-Version': '6.86.1',
   'Accept-Language': 'zh-CN',
-  'User-Agent': 'PixivAndroidApp/6.84.0 (Android 13.0; Pixel 7)',
+  'User-Agent': 'PixivAndroidApp/6.86.1 (Android 13.0; Pixel 7)',
 }
 
 function callApi(url, options) {
@@ -908,13 +908,40 @@ class PixivApi {
     return this.requestUrl(`/v2/novel/comment/replies?${queryString}`)
   }
 
-  novelSeries(id) {
+  novelSeries(id, options) {
     if (!id) {
       return Promise.reject(new Error('series_id required'))
     }
 
-    const queryString = qs.stringify({ series_id: id })
-    return this.requestUrl(`/v1/novel/series?${queryString}`)
+    const queryString = qs.stringify({ series_id: id, ...options })
+    return this.requestUrl(`/v2/novel/series?${queryString}`)
+  }
+
+  userIllustSeries(id, options) {
+    if (!id) {
+      return Promise.reject(new Error('user_id required'))
+    }
+
+    const queryString = qs.stringify({ user_id: id, ...options })
+    return this.requestUrl(`/v1/user/illust-series?${queryString}`)
+  }
+
+  userNovelSeries(id, options) {
+    if (!id) {
+      return Promise.reject(new Error('user_id required'))
+    }
+
+    const queryString = qs.stringify({ user_id: id, ...options })
+    return this.requestUrl(`/v1/user/novel-series?${queryString}`)
+  }
+
+  illustSeries(id, options) {
+    if (!id) {
+      return Promise.reject(new Error('illust_series_id required'))
+    }
+
+    const queryString = qs.stringify({ illust_series_id: id, ...options })
+    return this.requestUrl(`/v1/illust/series?${queryString}`)
   }
 
   novelDetail(id) {

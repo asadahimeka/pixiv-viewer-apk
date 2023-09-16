@@ -47,7 +47,7 @@ import TopBar from '@/components/TopBar'
 import ImageCard from '@/components/ImageCard'
 import api from '@/api'
 import SpotlightsRecom from './SpotlightsRecom.vue'
-import { setStatusBarOverlayOff, setStatusBarOverlayOn } from '@/utils'
+import { dealStatusBarEnterLeave, dealStatusBarEnter } from '@/utils'
 
 export default {
   name: 'Spotlight',
@@ -57,11 +57,11 @@ export default {
     SpotlightsRecom,
   },
   beforeRouteEnter(to, from, next) {
-    setStatusBarOverlayOn()
+    dealStatusBarEnter()
     next()
   },
   beforeRouteLeave(to, from, next) {
-    setStatusBarOverlayOff()
+    dealStatusBarEnterLeave()
     next()
   },
   data() {
@@ -112,6 +112,7 @@ export default {
       this.loading = true
       const res = await api.getSpotlightDetail(this.spid)
       if (res.status === 0) {
+        res.data.cover = process.env.VUE_APP_COMMON_PROXY + res.data.cover
         res.data.items = res.data.items.map(e => ({
           id: e.illust_id,
           title: e.title,
@@ -122,8 +123,10 @@ export default {
           },
         }))
         this.spotlight = res.data
-        if (!res.data.items.length) {
-          this.$router.replace(`/spotlight_detail?id=${this.spid}`)
+        if (!res.data.desc) {
+          this.spotlight.related_recommend = null
+          this.spotlight.related_latest = null
+          this.$router.replace(`/pixivision/${this.spid}`)
         }
       } else {
         this.$toast({

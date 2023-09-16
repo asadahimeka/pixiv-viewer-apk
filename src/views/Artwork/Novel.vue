@@ -36,7 +36,6 @@
     <keep-alive>
       <RelatedNovel :key="artwork.id" :artwork="artwork" />
     </keep-alive>
-    <van-share-sheet v-model="showShare" :title="$t('artwork.share.title')" :options="shareOptions" @select="onShareSel" />
     <van-action-sheet v-model="showSettings" class="setting-actions" :title="$t('novel.settings.title')" :overlay="false">
       <div class="configs">
         <div class="conf-title">{{ $t('novel.settings.text.size') }}</div>
@@ -215,6 +214,7 @@ export default {
           title: 'Pixiv Viewer',
           text: `${this.$t('artwork.share.share')} ${this.artwork.author.name} ${this.$t('artwork.share.of_art')} ${this.artwork.title} - ID: ${this.artwork.id}`,
           url: shareUrl,
+          dialogTitle: this.$t('artwork.share.share'),
         })
         trackEvent('Share Novel')
       } catch (error) {
@@ -229,7 +229,11 @@ export default {
     },
     async downloadNovel() {
       trackEvent('Download Novel')
-      await downloadBlob(new Blob([this.novelText.text]), `${this.artwork.id}_${this.artwork.title}.txt`)
+      await downloadBlob(
+        new Blob([this.novelText.text]),
+        `[${this.artwork.author.name}]_${this.artwork.title}_${this.artwork.id}.txt`,
+        'novel'
+      )
     },
   },
 }
@@ -260,7 +264,7 @@ img[src*="/api/qrcode?text"]
     top: 0.9rem;
     right 0.5rem;
     z-index: 99;
-    font-size 2.6em
+    font-size 0.675rem
     cursor pointer
     .svg-icon
       color: #fafafa;

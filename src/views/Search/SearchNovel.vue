@@ -430,12 +430,10 @@ export default {
     .image-search-mask {
       position: fixed;
       // top: 128px;
-      // top: env(safe-area-inset-top);
       top: 1.72rem;
       width: 100%;
       // max-width: 10rem;
       // height: calc(100% - 128px);
-      // height: calc(100% - env(safe-area-inset-top));
       height: 100%;
       box-sizing: border-box;
       // pointer-events: none;

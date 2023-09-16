@@ -74,7 +74,7 @@
       "first": "Are you sure you want to clear {0}?",
       "second": "Will reload relevant content from the network after cleaning"
     },
-    "db": "Persistent cache",
+    "db": "Database Cache",
     "local": "Configuration item cache",
     "records": "Record(s)",
     "session": "Runtime cache",
@@ -198,7 +198,7 @@
     },
     "img_proxy": {
       "desc": "Enter the pixiv image proxy address below, no need to add https://",
-      "desc2": "For example: i-cf.pximg.net, the local cache will be cleared after saving",
+      "desc2": "For example: i.pixiv.re, the local cache will be cleared after saving",
       "ph": "Please select pixiv image proxy (the local cache will be cleared after switching)",
       "title": "pximg Proxy Setting",
       "title2": "pximg image proxy select",
@@ -227,7 +227,7 @@
       "title": "Other Settings",
       "lang": "Language",
       "lang_ph": "Please select language",
-      "manual_input": "Enter link manually",
+      "manual_input": "Enter the proxy/API link manually",
       "manual_input_label": "Whether the proxy and API instance addresses of the images below are entered manually",
       "api_proxy": {
         "def_ph": "If the default proxy cannot be used, you can try another proxy",
@@ -365,7 +365,7 @@
     "succ_msg": "Session ID authentication succeeded",
     "title": "Set Pixiv Cookie",
     "warn": {
-      "text": "This function is an abnormal way to log in, and there may be a risk of banning the account. Using this function is deemed to be the user's own consent and clear use of the risk. If the account is banned, etc., the author of this project has nothing to do with it. \nIt is recommended to use trumpet for testing.",
+      "text": "This function is an abnormal way to log in, and there may be a risk of banning the account. Using this function is deemed to be the user's own consent and clear use of the risk. If the account is banned, etc., the author of this project has nothing to do with it. \nIt is recommended to use alt account for testing.",
       "title": "Risk Notice"
     }
   },
@@ -394,5 +394,14 @@
       "d3": "Please fill in RefreshToken",
       "d4": "RefreshToken is malformed"
     }
-  }
+  },
+  "D8R2062pjASZe9mgvpeLr": "Download failed",
+  "I9MyPQxu3O04E3h2qRBzN": "Open App Information",
+  "iAH7adsXaqWMXEi3TOuwS": "Series",
+  "eioSClGw9BqryzojTwr8j": "Page transition effect",
+  "3HnNTIScyvd1cNc2qAh7X": "Hide mangas in Ranking",
+  "qmd5JADeSGtrvucK3TnGb": "Hide mangas in the overall ranking list page according to the type of work, there may be some omissions",
+  "wuh4SsMnuqgjHpaOVp2rB": "Do you want to download this work?",
+  "5syY7l774noiN5LHKUnqF": "Long press to download the picture in the list or details page",
+  "8dWKEVyxLa8UjO0iuOA78": "Share Pixiv User"
 }

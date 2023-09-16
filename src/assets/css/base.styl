@@ -34,8 +34,12 @@ html, body
   .title
     font-size: 32px;
 
-.title,.author,.caption,.users .detail,.users .name
-  user-select text
+.artwork
+  .title,.author,.caption
+    user-select text
+.users
+  .detail,.name
+    user-select text
 
 .image-preview
   background: #333;
@@ -47,6 +51,9 @@ html, body
 
 .image-card:has(.censored)
   pointer-events none
+
+.van-list .image-card
+  box-shadow: 0 3PX 1PX -2PX rgba(0,0,0,.2), 0 2PX 2PX 0 rgba(0,0,0,.14), 0 1PX 5PX 0 rgba(0,0,0,.12)
 
 .wf-grid .image-card:has(.censored),
 .flexbin .image-card:has(.censored),
@@ -62,13 +69,16 @@ html, body
 
 .com_sel
   &_tabs
+    display flex
+    justify-content center
     width 100%
     padding-bottom 20px
     text-align center
+    box-sizing border-box
     .com_sel_tab:not(:last-child)
       margin-right 18px
   &_tab
-    display inline-flex
+    display flex
     justify-content center
     align-items center
     height 60px
@@ -135,6 +145,26 @@ html, body
 .van-image-preview__close-icon--top-right
   top 1rem
 
+.fancybox__nav
+  display none
+.fancybox__infobar
+  line-height 30PX
+  text-shadow 0.02667rem 0.05333rem 0.05333rem rgba(0,0,0,0.8)
+.fancybox__toolbar__column.is-right
+  display none
+.fancybox__toolbar
+  position absolute
+  bottom 0
+  left 50%
+  transform translateX(-50%)
+  align-items center
+  width 100%
+  .f-button
+    background transparent
+    color  #fff
+    svg
+      filter: drop-shadow(0.02667rem 0.05333rem 0.05333rem rgba(0,0,0,0.8))
+
 .swiper-container
   --swiper-theme-color: #fcb93e
 
@@ -194,6 +224,10 @@ html, body
 @media screen and (max-width: 500px)
   ::-webkit-scrollbar
     width: 0;
+
+  .image-card
+    .title, .author
+      user-select none !important
 
 html.dark
   ::-webkit-scrollbar
@@ -257,7 +291,7 @@ html.dark
 
   .nav-container .nav-bar
     box-shadow 0 0 0.26667rem #222
-    background rgba(0,0,0,0.88)
+    background #16161a
     li
       display flex
       justify-content center
@@ -307,6 +341,7 @@ html.dark
     color #fff
 
   .novel-card,
+  .series-cont,
   .search .keyword
     background #333
 
@@ -423,3 +458,6 @@ html.dark
 
   .image-slide
       border 1px solid #16161a
+
+  .ss-title, .ss-author
+    color #fff

@@ -103,17 +103,21 @@ export default {
   },
   methods: {
     toArtwork(id) {
-      if (this.activeTab == 'illustration') {
-        this.$router.push({
-          name: 'Spotlight',
-          params: { id },
-        })
-      } else {
-        this.$router.push({
-          name: 'SpotlightDetail',
-          query: { id },
-        })
-      }
+      this.$router.push({
+        name: 'SpotlightDetail',
+        params: { id },
+      })
+      // if (this.activeTab == 'illustration') {
+      //   this.$router.push({
+      //     name: 'Spotlight',
+      //     params: { id },
+      //   })
+      // } else {
+      //   this.$router.push({
+      //     name: 'SpotlightDetail',
+      //     params: { id },
+      //   })
+      // }
     },
     getList: _.throttle(async function () {
       this.loading = true

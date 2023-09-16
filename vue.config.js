@@ -11,6 +11,7 @@ module.exports = {
   lintOnSave: false,
   runtimeCompiler: false,
   productionSourceMap: false,
+  transpileDependencies: ['mint-filter'],
   configureWebpack: config => {
     if (isProduction) {
       config.optimization.minimizer[0].options.minimizer.options.compress.drop_console = true
@@ -62,7 +63,7 @@ module.exports = {
             pxtorem({
               rootValue: 75,
               propList: ['*'],
-              selectorBlackList: ['van', 'ispx'],
+              selectorBlackList: ['van', 'fancybox', 'ispx'],
             }),
           ],
         },

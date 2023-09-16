@@ -44,7 +44,7 @@
       "first": "確定要清理{0}嗎？",
       "second": "清理後將重新從網路加載相關內容"
     },
-    "db": "持久化緩存",
+    "db": "數據庫緩存",
     "local": "配置項緩存",
     "records": "條記錄",
     "session": "運行時緩存",
@@ -198,7 +198,7 @@
     },
     "img_proxy": {
       "desc": "在下方輸入 pixiv 圖片代理地址，不需要加 https://",
-      "desc2": "例如：i-cf.pximg.net，保存後會清空本地緩存",
+      "desc2": "例如：i.pixiv.re，保存後會清空本地緩存",
       "ph": "請選擇 pixiv 圖片代理 (切換後會清空本地緩存)",
       "title": "pximg 圖片代理設置",
       "title2": "pximg 圖片代理選擇",
@@ -227,7 +227,7 @@
       "lang": "語言",
       "lang_ph": "請選擇語言",
       "title": "其他設置",
-      "manual_input": "手動輸入地址",
+      "manual_input": "手動輸入代理/API鏈接",
       "manual_input_label": "下方圖片代理與 API 實例地址是否手動輸入",
       "api_proxy": {
         "def_ph": "默認代理無法使用的話可以嘗試其他代理",
@@ -394,5 +394,14 @@
       "d3": "請填寫 RefreshToken",
       "d4": "RefreshToken 格式不正確"
     }
-  }
+  },
+  "D8R2062pjASZe9mgvpeLr": "下載失敗",
+  "I9MyPQxu3O04E3h2qRBzN": "打開應用信息",
+  "iAH7adsXaqWMXEi3TOuwS": "系列",
+  "eioSClGw9BqryzojTwr8j": "頁面過渡效果",
+  "qmd5JADeSGtrvucK3TnGb": "根據作品類型在綜合排行榜列表頁面隱藏漫畫作品，可能會有遺漏",
+  "3HnNTIScyvd1cNc2qAh7X": "在排名中隱藏漫畫",
+  "wuh4SsMnuqgjHpaOVp2rB": "是否下載該作品",
+  "5syY7l774noiN5LHKUnqF": "列表/詳情圖片長按下載",
+  "8dWKEVyxLa8UjO0iuOA78": "分享 Pixiv 用戶"
 }

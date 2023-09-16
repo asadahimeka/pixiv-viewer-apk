@@ -44,7 +44,7 @@
       "first": "Voulez-vous vraiment effacer {0} ?",
       "second": "Rechargera le contenu pertinent du réseau après le nettoyage"
     },
-    "db": "Cache persistant",
+    "db": "Cache de base de données",
     "local": "Cache des éléments de configuration",
     "records": "Enregistrement(s)",
     "session": "Cache d'exécution",
@@ -198,7 +198,7 @@
     },
     "img_proxy": {
       "desc": "Entrez l'adresse proxy de l'image pixiv ci-dessous, pas besoin d'ajouter https://",
-      "desc2": "Par exemple : i-cf.pximg.net, le cache local sera vidé après l'enregistrement",
+      "desc2": "Par exemple : i.pixiv.re, le cache local sera vidé après l'enregistrement",
       "ph": "Veuillez sélectionner le proxy d'image pixiv (le cache local sera vidé après le changement)",
       "title": "Paramètre proxy pximg",
       "title2": "sélection du proxy d'image pximg",
@@ -365,7 +365,7 @@
     "succ_msg": "Authentification de l'ID de session réussie",
     "title": "Définir le cookie Pixiv",
     "warn": {
-      "text": "Cette fonction est une façon anormale de se connecter, et il peut y avoir un risque de bannissement du compte. \nL'utilisation de cette fonction est considérée comme le consentement de l'utilisateur et l'utilisation claire du risque. \nSi le compte est banni, etc., l'auteur de ce projet n'a rien à voir avec cela.\n\nIl est recommandé d'utiliser la trompette pour les tests.",
+      "text": "Cette fonction constitue une manière anormale de se connecter et il peut y avoir un risque de bannissement du compte. \nL'utilisation de cette fonction est considérée comme le consentement propre de l'utilisateur et l'utilisation claire du risque. \nSi le compte est banni, etc., l'auteur de ce projet n'y est pour rien.\n\nIl est recommandé d'utiliser le compte alt pour les tests.",
       "title": "Avis de risque"
     }
   },
@@ -394,5 +394,14 @@
       "d3": "Veuillez remplir RefreshToken",
       "d4": "RefreshToken est malformé"
     }
-  }
+  },
+  "D8R2062pjASZe9mgvpeLr": "Échec du téléchargement",
+  "I9MyPQxu3O04E3h2qRBzN": "Ouvrir les informations sur l'application",
+  "iAH7adsXaqWMXEi3TOuwS": "série",
+  "eioSClGw9BqryzojTwr8j": "Effet de transition de page",
+  "qmd5JADeSGtrvucK3TnGb": "Masquer les mangas dans la page de classement général selon le type d'œuvre, il peut y avoir quelques omissions",
+  "3HnNTIScyvd1cNc2qAh7X": "Masquer les mangas dans le classement",
+  "wuh4SsMnuqgjHpaOVp2rB": "Voulez-vous télécharger cette œuvre?",
+  "5syY7l774noiN5LHKUnqF": "Appuyez longuement pour télécharger l'image dans la liste ou la page de détails",
+  "8dWKEVyxLa8UjO0iuOA78": "Partager l'utilisateur Pixiv"
 }

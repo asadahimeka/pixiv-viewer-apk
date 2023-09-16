@@ -16,7 +16,7 @@ const langMap = {
   'zh-CN': 'zh-Hans',
   'zh-TW': 'zh-Hant',
   'zh-HK': 'zh-Hant',
-  'zh-MO': 'zh-Hans',
+  'zh-MO': 'zh-Hant',
   'zh-SG': 'zh-Hans',
   'ja-JP': 'ja',
   'en-US': 'en',
@@ -26,7 +26,7 @@ const langMap = {
   'fr-FR': 'fr',
   'ru-RU': 'ru',
 }
-const language = localStorage.getItem('PXV_LANG') || langMap[navigator.language]
+const language = localStorage.getItem('PXV_LANG') || langMap[navigator.language] || navigator.language
 console.log('language: ', language)
 
 export const i18n = new VueI18n({
