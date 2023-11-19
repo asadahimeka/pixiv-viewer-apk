@@ -49,6 +49,7 @@
               <van-radio-group v-model="textConfig.font" direction="horizontal">
                 <van-radio name="sans-serif">{{ $t('novel.settings.text.sans') }}</van-radio>
                 <van-radio name="serif">{{ $t('novel.settings.text.serif') }}</van-radio>
+                <van-radio name="lxgw">LXGW</van-radio>
               </van-radio-group>
             </div>
           </div>
@@ -248,6 +249,7 @@ img[src*="/api/qrcode?text"]
   width 5rem !important
   height 5rem !important
 
+.app-main.isArtworkPage,
 .app-main:has(.artwork)
   padding 0
 

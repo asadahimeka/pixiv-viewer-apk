@@ -1,12 +1,8 @@
 package top.nanoka.pixiv;
 
 import android.annotation.SuppressLint;
-import android.net.http.SslError;
-import android.webkit.SslErrorHandler;
 
 import com.getcapacitor.BridgeActivity;
-import com.getcapacitor.BridgeWebViewClient;
-import com.getcapacitor.plugin.WebView;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;

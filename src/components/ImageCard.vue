@@ -25,7 +25,7 @@
       name="play"
       scale="8"
     />
-    <div v-if="mode == 'all' || mode === 'meta'" v-longpress="downloadArtwork" class="meta">
+    <div v-if="mode == 'all' || mode === 'meta'" v-longpress="isLongpressDL?downloadArtwork:null" class="meta">
       <div class="content">
         <h2 class="title" :title="artwork.title">{{ artwork.title }}</h2>
         <div class="author-cont">
@@ -76,6 +76,7 @@ export default {
       showBookmarkBtn: window.APP_CONFIG.useLocalAppApi,
       bLoading: false,
       isBookmarked: false,
+      isLongpressDL,
     }
   },
   computed: {
@@ -173,6 +174,7 @@ export default {
       const res = await Dialog.confirm({
         title: this.$t('wuh4SsMnuqgjHpaOVp2rB'),
         message: fileName,
+        lockScroll: false,
         closeOnPopstate: true,
         cancelButtonText: this.$t('common.cancel'),
         confirmButtonText: this.$t('common.confirm'),

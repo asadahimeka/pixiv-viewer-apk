@@ -15,7 +15,7 @@
       <img
         v-if="lazy"
         v-lazy="getImgUrl(url)"
-        v-longpress="e => downloadArtwork(e, index)"
+        v-longpress="isLongpressDL?e => downloadArtwork(e, index):null"
         :alt="`${artwork.title} - Page ${index + 1}`"
         class="image"
         @click.stop="view(index, isCensored(artwork))"
@@ -90,6 +90,7 @@ export default {
       curIndex: 0,
       progressShow: false,
       progress: 0,
+      isLongpressDL,
     }
   },
   computed: {
@@ -165,7 +166,6 @@ export default {
       return false
     },
     async downloadArtwork(/** @type {Event} */ ev, index) {
-      console.log('index: ', index)
       if (!isLongpressDL || this.artwork.type == 'ugoira') {
         return
       }
@@ -175,6 +175,7 @@ export default {
       const res = await Dialog.confirm({
         title: this.$t('wuh4SsMnuqgjHpaOVp2rB'),
         message: fileName,
+        lockScroll: false,
         closeOnPopstate: true,
         cancelButtonText: this.$t('common.cancel'),
         confirmButtonText: this.$t('common.confirm'),

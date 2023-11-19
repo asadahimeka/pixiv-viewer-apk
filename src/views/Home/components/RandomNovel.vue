@@ -11,7 +11,7 @@
       class="artwork-list"
       :loading-text="$t('tips.loading')"
       :finished="finished"
-      :finished-text="$t('tips.no_more')"
+      finished-text=""
       :error.sync="error"
       :offset="800"
       :error-text="$t('tips.net_err')"
@@ -71,7 +71,7 @@ export default {
 
         this.loading = false
         this.curPage++
-        if (this.curPage > 4) this.finished = true
+        if (this.curPage > 9) this.finished = true
       } else {
         this.$toast({
           message: res.msg,

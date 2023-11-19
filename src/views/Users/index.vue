@@ -41,15 +41,20 @@
               </van-button>
             </div>
             <ul class="site-list">
-              <li class="site">
+              <li class="site user_account">
                 <a target="_blank" rel="noreferrer" :href="'https://pixiv.me/' + userInfo.account">
                   @{{ userInfo.account }}
                 </a>
               </li>
-              <li v-if="userInfo.region" class="site">
+              <li class="site">·</li>
+              <li class="site" @click="copyId">
+                <span class="user_id">ID:{{ userInfo.id }}</span>
+                <Icon name="copy" />
+              </li>
+              <!-- <li v-if="userInfo.region" class="site">
                 <Icon class="icon loc" name="loc" />
                 <span>{{ userInfo.region }}</span>
-              </li>
+              </li> -->
             </ul>
             <ul class="site-list" :class="{ multi: userInfo.webpage && userInfo.twitter_url }">
               <li v-if="userInfo.webpage" class="site">
@@ -61,18 +66,26 @@
                 <a :href="userInfo.twitter_url" target="_blank">@{{ userInfo.twitter_account }}</a>
               </li>
             </ul>
-            <span class="follow">
-              <span class="num">{{ userInfo.follow }}</span>{{ $t('user.following') }}
+            <span v-if="isCurrentUser" class="follow" style="cursor: pointer;" @click="toFollowedUsers">
+              {{ $t('user.following') }}<span class="num">{{ userInfo.follow }}</span>
+            </span>
+            <span v-else class="follow">
+              {{ $t('user.following') }}<span class="num">{{ userInfo.follow }}</span>
             </span>
             <span v-if="userInfo.friend" class="friend">
-              <span class="num">{{ userInfo.friend }}</span>{{ $t('user.friend') }}
+              {{ $t('user.friend') }}<span class="num">{{ userInfo.friend }}</span>
+            </span>
+            <span v-if="userInfo.region" class="follow">
+              <Icon name="loc" />
+              <span>{{ userInfo.region }}</span>
             </span>
             <div class="user_link">
+              <span>🔗</span>
               <a
                 target="_blank"
                 rel="noreferrer"
                 :href="'https://www.pixiv.net/users/' + userInfo.id"
-              >https://pixiv.net/u/{{ userInfo.id }}</a>
+              >https://pixiv.me/{{ userInfo.account }}</a>
             </div>
             <div class="detail" :class="{ ex: isEx || commentHeight < 160 }">
               <div ref="comment" class="content" v-html="userInfo.comment"></div>
@@ -179,9 +192,9 @@
               @onCilck="showSub('favorite')"
             />
           </van-tab>
-          <van-tab v-if="userInfo.bookmarks > 0 && userInfo.novels > 0" :title="`${$t('user.fav')}(${$t('common.novel')})`" name="fav_novel">
+          <van-tab v-if="userInfo.bookmarks > 0" :title="`${$t('user.fav')}(${$t('common.novel')})`" name="fav_novel">
             <FavoriteNovels
-              v-if="activeTab == 'fav_novel' && userInfo.novels > 0"
+              v-if="activeTab == 'fav_novel' && userInfo.bookmarks > 0"
               :id="userInfo.id"
               key="once-fav-novel"
               :num="0"
@@ -218,7 +231,7 @@ import FavoriteNovels from './components/FavoriteNovels.vue'
 import _ from 'lodash'
 import api, { localApi } from '@/api'
 import { getCache, setCache } from '@/utils/siteCache'
-import { trackEvent, dealStatusBarEnterLeave, dealStatusBarEnter } from '@/utils'
+import { trackEvent, dealStatusBarOnLeave, dealStatusBarOnEnter, copyText } from '@/utils'
 import { Share } from '@capacitor/share'
 
 export default {
@@ -241,7 +254,7 @@ export default {
     AuthorNovelSeries,
   },
   beforeRouteEnter(to, from, next) {
-    dealStatusBarEnter()
+    dealStatusBarOnEnter()
     next(vm => {
       vm.notFromArtwork = ![
         'Artwork',
@@ -253,8 +266,7 @@ export default {
     })
   },
   beforeRouteLeave(to, from, next) {
-    dealStatusBarEnterLeave()
-    next()
+    dealStatusBarOnLeave().then(() => next())
   },
   data() {
     return {
@@ -275,6 +287,10 @@ export default {
     },
     isFollowed() {
       return this.userInfo.is_followed
+    },
+    isCurrentUser() {
+      const id = this.$store.state?.user?.id
+      return id && id == this.userInfo.id
     },
   },
   watch: {
@@ -368,6 +384,16 @@ export default {
     },
     getCommentHeight() {
       this.commentHeight = this.$refs.comment.clientHeight
+    },
+    copyId() {
+      copyText(
+        `${this.userInfo.id}`,
+        () => this.$toast(this.$t('tips.copylink.succ')),
+        err => this.$toast(this.$t('tips.copy_err') + err)
+      )
+    },
+    toFollowedUsers() {
+      this.$router.push({ name: 'Following', params: { tab: '3' } })
     },
     showSub(page) {
       switch (page) {
@@ -529,9 +555,15 @@ export default {
           right 0
           transform translateX(120%)
           display flex
+          font-family 'Dosis', sans-serif
           .van-tag {
             height 16PX
             vertical-align super
+          }
+        }
+        .is_premium {
+          .van-tag {
+            padding 0 4.9PX
           }
         }
         .gender {
@@ -574,13 +606,17 @@ export default {
 
         .num {
           color: #333;
-          margin-right: 6px;
+          margin-left: 6px;
         }
       }
 
       .user_link {
         margin-top: 20px;
         font-size: 22px;
+
+        a {
+          color: #06f;
+        }
       }
 
       .detail {

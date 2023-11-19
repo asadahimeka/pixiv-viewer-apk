@@ -25,11 +25,6 @@
         <van-switch :value="isLongpressDL" size="24" @change="changeLongpressDL" />
       </template>
     </van-cell>
-    <van-cell center :title="$t('3HnNTIScyvd1cNc2qAh7X')" :label="$t('qmd5JADeSGtrvucK3TnGb')">
-      <template #right-icon>
-        <van-switch v-model="isHideRankManga" size="24" @change="changeHideRankManga" />
-      </template>
-    </van-cell>
     <van-cell center :title="$t('setting.other.manual_input')" :label="$t('setting.other.manual_input_label')">
       <template #right-icon>
         <van-switch v-model="hideApSelect" size="24" />
@@ -231,7 +226,6 @@ export default {
       isDark: !!localStorage.getItem('PXV_DARK'),
       enableSwipe: LocalStorage.get('PXV_IMG_DTL_SWIPE', false),
       isAnalyticsOn: LocalStorage.get('PXV_ANALYTICS', true),
-      isHideRankManga: LocalStorage.get('PXV_HIDE_RANK_MANGA', false),
       isPageEffectOn: LocalStorage.get('PXV_PAGE_EFFECT', false),
       isLongpressDL: LocalStorage.get('PXV_LONGPRESS_DL', false),
     }
@@ -437,15 +431,6 @@ export default {
         }, 500)
       })
     },
-    changeHideRankManga(val) {
-      this.isHideRankManga = val
-      this.$nextTick(() => {
-        LocalStorage.set('PXV_HIDE_RANK_MANGA', val)
-        setTimeout(() => {
-          location.reload()
-        }, 500)
-      })
-    },
     changeLang({ name }) {
       this.lang.value = name
       i18n.locale = name
@@ -569,4 +554,6 @@ export default {
   min-height 80vh
   #top-bar-wrap
     width 1.4rem
+  .van-cell__title
+    padding-right 20px
 </style>

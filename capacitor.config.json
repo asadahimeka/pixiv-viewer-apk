@@ -4,7 +4,7 @@
   "bundledWebRuntime": false,
   "webDir": "dist",
   "android": {
-    "appendUserAgent": "PixivViewer/1.1",
+    "appendUserAgent": "PixivViewer/1.3",
     "buildOptions": {
       "releaseType": "APK"
     }

@@ -1,7 +1,6 @@
 import { Clipboard } from '@capacitor/clipboard'
 import { FileDownload } from '@himeka/capacitor-plugin-filedownload'
 import { Filesystem, Directory } from '@himeka/capacitor-filesystem'
-// import { Share } from '@capacitor/share'
 import { StatusBar, Style } from '@capacitor/status-bar'
 import Analytics from '@capacitor-community/appcenter-analytics'
 import axios from 'axios'
@@ -91,7 +90,7 @@ export async function checkUrlAvailable(url) {
 }
 
 function replaceValidFilename(str = '') {
-  const maxLen = 127
+  const maxLen = 72
   const strArr = str.split('.')
   const ext = strArr.pop()
   str = strArr.join('').replace(/[\\/|?*:<>'"\s.]/g, '_') + '.' + ext
@@ -108,6 +107,14 @@ export async function downloadFile(url, fileName, subpath) {
       uri: url,
       fileName: 'pixiv-viewer/' + fileName,
     })
+
+    // const res = await Filesystem.downloadFile({
+    //   url,
+    //   path: 'pixiv-viewer/' + fileName,
+    //   directory: Directory.Downloads,
+    //   recursive: true,
+    // })
+
     Toast({
       message: i18n.t('tip.downloaded') + ': ' + decodeURIComponent(res.path.replace('file://', '')),
       duration: 3000,
@@ -142,9 +149,6 @@ export async function downloadBlob(blob, fileName, subpath) {
       message: i18n.t('tip.downloaded') + ': ' + decodeURIComponent(res.uri.replace('file://', '')),
       duration: 3000,
     })
-    // await Share.share({
-    //   files: [res.uri],
-    // })
     return { res }
   } catch (error) {
     Toast(i18n.t('D8R2062pjASZe9mgvpeLr') + ': ' + error)
@@ -161,13 +165,18 @@ export function trackEvent(name, properties) {
   })
 }
 
-export function dealStatusBarEnter() {
+export function dealStatusBarOnEnter() {
   StatusBar.setStyle({ style: Style.Dark })
   StatusBar.setOverlaysWebView({ overlay: true })
 }
 
 const isDark = !!localStorage.PXV_DARK
-export function dealStatusBarEnterLeave() {
-  StatusBar.setStyle({ style: isDark ? Style.Dark : Style.Light })
-  StatusBar.setOverlaysWebView({ overlay: false })
+export async function dealStatusBarOnLeave() {
+  try {
+    await StatusBar.setStyle({ style: isDark ? Style.Dark : Style.Light })
+    await StatusBar.setOverlaysWebView({ overlay: false })
+    return true
+  } catch (error) {
+    return false
+  }
 }

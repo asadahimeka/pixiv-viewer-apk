@@ -60,7 +60,7 @@ import { getCache, setCache } from '@/utils/siteCache'
 import { LocalStorage } from '@/utils/storage'
 import _ from 'lodash'
 import { i18n } from '@/i18n'
-import { trackEvent, dealStatusBarEnter, dealStatusBarEnterLeave } from '@/utils'
+import { trackEvent, dealStatusBarOnEnter, dealStatusBarOnLeave } from '@/utils'
 
 const ugoiraDownloadPanelActions = [
   { name: 'ZIP', subname: i18n.t('artwork.download.zip') },
@@ -88,17 +88,18 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    dealStatusBarEnter()
+    document.querySelector('.app-main')?.classList.add('isArtworkPage')
+    dealStatusBarOnEnter()
     next()
   },
   beforeRouteLeave(to, from, next) {
-    dealStatusBarEnterLeave()
     if (this.$refs.artworkMeta?.showComments) {
       this.$refs.artworkMeta.showComments = false
       next(false)
       nprogress.done()
     } else {
-      next()
+      document.querySelector('.app-main')?.classList.remove('isArtworkPage')
+      dealStatusBarOnLeave().then(() => next())
     }
   },
   data() {
@@ -124,6 +125,7 @@ export default {
     },
   },
   mounted() {
+    document.querySelector('.app-main')?.classList.add('isArtworkPage')
     this.init()
   },
   methods: {
@@ -220,8 +222,9 @@ img[src*="/api/qrcode?text"]
   width 5rem !important
   height 5rem !important
 
+.app-main.isArtworkPage,
 .app-main:has(.artwork)
-  padding 0
+  padding 0 !important
 
   .related
     padding-left 16px

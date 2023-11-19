@@ -4,7 +4,7 @@
 
 Android version of [pixiv-viewer](https://github.com/asadahimeka/pixiv-viewer).
 
-Web Preview: 🔗 [pixiv-viewer.vercel.app](https://pixiv-viewer.vercel.app)
+Web Preview: 🔗 [pixiv-viewer.vercel.app](https://pixiv.pics)
 
 Download: ⏬ [App Center](https://install.appcenter.ms/users/yumine/apps/pixiv-viewer/distribution_groups/beta) | [GitHub Releases](https://github.com/asadahimeka/pixiv-viewer-kai/releases)
 

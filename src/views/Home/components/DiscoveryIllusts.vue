@@ -53,7 +53,7 @@ export default {
 
         this.loading = false
         this.curPage++
-        if (this.curPage > 3) this.finished = true
+        if (this.curPage > 9) this.finished = true
       } else {
         this.$toast({
           message: res.msg,

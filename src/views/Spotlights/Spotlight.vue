@@ -47,7 +47,7 @@ import TopBar from '@/components/TopBar'
 import ImageCard from '@/components/ImageCard'
 import api from '@/api'
 import SpotlightsRecom from './SpotlightsRecom.vue'
-import { dealStatusBarEnterLeave, dealStatusBarEnter } from '@/utils'
+import { dealStatusBarOnLeave, dealStatusBarOnEnter } from '@/utils'
 
 export default {
   name: 'Spotlight',
@@ -57,12 +57,11 @@ export default {
     SpotlightsRecom,
   },
   beforeRouteEnter(to, from, next) {
-    dealStatusBarEnter()
+    dealStatusBarOnEnter()
     next()
   },
   beforeRouteLeave(to, from, next) {
-    dealStatusBarEnterLeave()
-    next()
+    dealStatusBarOnLeave().then(() => next())
   },
   data() {
     return {
