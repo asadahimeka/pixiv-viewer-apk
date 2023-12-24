@@ -37,10 +37,31 @@
     />
     <van-cell
       center
+      title="Pixiv Func (Android,Windows)"
+      is-link
+      label="功能齐全的Pixiv第三方客户端 免代理 支持查看动图查看直播"
+      @click="openLink('https://github.com/git-xiaocao/pixiv_func_mobile')"
+    />
+    <van-cell
+      center
+      title="PixivCollection (Windows)"
+      is-link
+      label="Pixiv本地收藏夹图片管理"
+      @click="openLink('https://github.com/asadahimeka/PixivCollection/releases')"
+    />
+    <van-cell
+      center
       title="Flexbooru (Android)"
       is-link
       label="A booru client for Android, support Danbooru, Moebooru, Gelbooru, Shimmie, etc."
       @click="openLink('https://github.com/flexbooru/flexbooru')"
+    />
+    <van-cell
+      center
+      title="Boorusphere (Android)"
+      is-link
+      label="Simple, content-focused booru viewer for Android"
+      @click="openLink('https://github.com/nullxception/boorusphere')"
     />
     <van-cell
       center
@@ -111,6 +132,41 @@
       is-link
       label="Kikoeru(ASMR Online) android client."
       @click="openLink('https://install.appcenter.ms/users/littleloli/apps/Kikoeru/distribution_groups/public')"
+    />
+    <van-cell
+      center
+      title="TachiyomiJ2K (Android)"
+      is-link
+      label="TachiyomiJ2K is a free and open source manga reader for Android 6.0 and above. Based on the original Tachiyomi"
+      @click="openLink('https://github.com/Jays2Kings/tachiyomiJ2K')"
+    />
+    <van-cell
+      center
+      title="CopyMangaX (Android)"
+      is-link
+      label="拷贝漫画三方APP 、项目采用多模块 和 MVI框架开发"
+      @click="openLink('https://github.com/crowforkotlin/CopyMangaX')"
+    />
+    <van-cell
+      center
+      title="Kotatsu (Android)"
+      is-link
+      label="Manga reader for Android"
+      @click="openLink('https://kotatsu.app/')"
+    />
+    <van-cell
+      center
+      title="Neko Anime (Android)"
+      is-link
+      label="一个可以在线看番的 Android App."
+      @click="openLink('https://github.com/xioneko/neko-anime')"
+    />
+    <van-cell
+      center
+      title="bili_you (Android)"
+      is-link
+      label="一个用flutter制作的第三方B站客户端."
+      @click="openLink('https://github.com/lucinhu/bili_you')"
     />
   </div>
 </template>

@@ -25,7 +25,6 @@
     <van-cell size="large" center :title="$t('cache.title')" icon="delete-o" is-link to="/setting/clearcache" />
     <van-cell size="large" center :title="$t('setting.other.title')" icon="setting-o" is-link to="/setting/others" />
     <van-cell size="large" center :title="$t('setting.recomm.title')" icon="bookmark-o" is-link to="/setting/recommend" />
-    <van-cell size="large" center :title="$t('setting.check_update')" icon="upgrade" is-link @click="openAppCenter" />
     <van-cell size="large" center :title="$t('setting.about')" icon="info-o" is-link to="/setting/about" />
     <div v-if="isLoggedIn" style="width: 60%;margin: 1rem auto 0;">
       <van-button round plain block type="danger" size="small" @click="logoutApp">{{ $t('user.sess.out') }}</van-button>
@@ -38,7 +37,6 @@ import { mapGetters, mapState } from 'vuex'
 import { logout } from '@/api/user'
 import { Dialog } from 'vant'
 import PixivAuth from '@/api/client/pixiv-auth'
-import { trackEvent } from '@/utils'
 
 export default {
   name: 'Setting',
@@ -47,7 +45,7 @@ export default {
     ...mapGetters(['isLoggedIn']),
     userAvatar() {
       if (/^\/(-|~)\//.test(this.user.profileImg)) {
-        return `https://pixiv.js.org/${this.user.profileImg}`
+        return `https://now.pixiv.pics/${this.user.profileImg}`
       }
       return this.user.profileImg
     },
@@ -65,10 +63,6 @@ export default {
       } else {
         logout()
       }
-    },
-    openAppCenter() {
-      trackEvent('Check Update')
-      window.open('https://install.appcenter.ms/users/yumine/apps/pixiv-viewer/distribution_groups/beta', '_blank', 'noopener noreferrer')
     },
   },
 }

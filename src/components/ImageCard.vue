@@ -25,7 +25,7 @@
       name="play"
       scale="8"
     />
-    <div v-if="mode == 'all' || mode === 'meta'" v-longpress="isLongpressDL?downloadArtwork:null" class="meta">
+    <div v-if="mode == 'all' || mode === 'meta'" v-longpress="isTriggerLongpress?onLongpress:null" class="meta">
       <div class="content">
         <h2 class="title" :title="artwork.title">{{ artwork.title }}</h2>
         <div class="author-cont">
@@ -46,6 +46,7 @@ import { getCache, toggleBookmarkCache } from '@/utils/siteCache'
 import { LocalStorage } from '@/utils/storage'
 
 const isLongpressDL = LocalStorage.get('PXV_LONGPRESS_DL', false)
+const isLongpressBlock = LocalStorage.get('PXV_LONGPRESS_BLOCK', false)
 
 export default {
   props: {
@@ -77,6 +78,7 @@ export default {
       bLoading: false,
       isBookmarked: false,
       isLongpressDL,
+      isTriggerLongpress: isLongpressDL || isLongpressBlock,
     }
   },
   computed: {
@@ -160,14 +162,47 @@ export default {
       return pb.toFixed(2) + '%'
     },
     preventContext(/** @type {Event} */ event) {
-      if (!isLongpressDL) return true
+      if (!this.isTriggerLongpress) return true
       event.preventDefault()
       return false
     },
+    onLongpress(/** @type {Event} */ ev) {
+      if (!this.isTriggerLongpress) return
+      ev.preventDefault()
+      isLongpressDL ? this.downloadArtwork() : this.showBlockDialog()
+    },
+    showBlockDialog() {
+      Dialog.confirm({
+        title: this.$t('1a1meIFthYyv_s7C4M4L0'),
+        message: `
+        <div id="sel_block_dialog">
+          <p style="margin:0.2rem 0">Author</p>
+          <div class="sel_block_chks"><input type="checkbox" data-author="${this.artwork.author.id}">${this.artwork.author.name}(${this.artwork.author.id})</div>
+          <div style="height:1px;margin:0.2rem 0;border-bottom:1px solid #ccc"></div>
+          <p style="margin:0.2rem 0">Tags</p>
+          ${this.artwork.tags.map(e => `<div class="sel_block_chks"><input type="checkbox" data-tagname="${e.name}">${e.name}</div>`).join('')}
+        </div>`,
+        lockScroll: false,
+        closeOnPopstate: true,
+        cancelButtonText: this.$t('common.cancel'),
+        confirmButtonText: this.$t('common.confirm'),
+        beforeClose: (action, done) => {
+          if (action == 'confirm') {
+            const authors = document.querySelectorAll('#sel_block_dialog input[data-author]:checked')
+            const tags = document.querySelectorAll('#sel_block_dialog input[data-tagname]:checked')
+            if (authors.length) {
+              this.$store.dispatch('appendBlockUids', [...authors].map(e => e.getAttribute('data-author')))
+            }
+            if (tags.length) {
+              this.$store.dispatch('appendBlockTags', [...tags].map(e => e.getAttribute('data-tagname')))
+            }
+          }
+          done()
+        },
+      }).catch(() => {})
+    },
     async downloadArtwork(/** @type {Event} */ ev) {
-      if (!isLongpressDL || this.artwork.type == 'ugoira') {
-        return
-      }
+      if (this.artwork.type == 'ugoira') return
       ev.preventDefault()
       const src = this.artwork.images[0].o
       const fileName = `${this.artwork.author.name}_${this.artwork.title}_${this.artwork.id}_p0.${src.split('.').pop()}`

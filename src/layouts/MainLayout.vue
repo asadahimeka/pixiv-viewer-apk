@@ -2,11 +2,11 @@
   <div class="main-layout">
     <div class="app-main">
       <transition v-if="isPageEffectOn" :name="transitionName" mode="out-in">
-        <keep-alive :max="20">
+        <keep-alive>
           <router-view />
         </keep-alive>
       </transition>
-      <keep-alive v-else :max="20">
+      <keep-alive v-else>
         <router-view />
       </keep-alive>
     </div>

@@ -91,7 +91,7 @@ export default {
       if (this.isShrink) this.isShrink = false
     },
     loadLxgwFont() {
-      document.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/lxgw-wenkai-screen-webfont/1.7.0/style.min.css">')
+      document.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="https://lib.baomitu.com/lxgw-wenkai-screen-webfont/1.7.0/style.min.css">')
     },
   },
 }

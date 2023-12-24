@@ -84,6 +84,20 @@
       label="https://www.nanoka.top/illust/pixiv/"
       @click="openLink('https://www.nanoka.top/illust/pixiv/?ref=pixiv-viewer-app')"
     />
+    <van-cell
+      center
+      title="PixivCollection"
+      is-link
+      label="https://fav.pixiv.pics/"
+      @click="openLink('https://fav.pixiv.pics/')"
+    />
+    <van-cell
+      center
+      title="Wotaku - The Otaku Index"
+      is-link
+      label="https://wotaku.moe/"
+      @click="openLink('https://wotaku.moe/')"
+    />
   </div>
 </template>
 
