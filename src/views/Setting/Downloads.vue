@@ -16,6 +16,7 @@
       <van-card
         v-for="(d,i) in dlList"
         :key="i"
+        lazy-load
         :title="d.fileName"
         :thumb="d.isImage ? imgSrc(d.path) : undefined"
       >

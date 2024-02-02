@@ -84,7 +84,7 @@ export default {
     return {
       wvVersion: '',
       appInfo: {},
-      curVer: 'v1.13.6',
+      curVer: 'v1.13.7',
     }
   },
   async created() {

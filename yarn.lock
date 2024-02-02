@@ -1190,11 +1190,6 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@himeka/capacitor-ffmpeg-kit@0.4.2":
-  version "0.4.2"
-  resolved "https://registry.npmmirror.com/@himeka/capacitor-ffmpeg-kit/-/capacitor-ffmpeg-kit-0.4.2.tgz#17463f5109753a6b3366b28659b99bfeb0876873"
-  integrity sha512-InEPct5qrUuYk0wrPS7nSxXQzdX/tjj0YMKP0sWRZ7S6BpIuvm3sDAPmjJkx8SWdxyiewG45Yds7PPR+6DSREA==
-
 "@himeka/capacitor-filesystem@5.1.2-alpha.2":
   version "5.1.2-alpha.2"
   resolved "https://registry.npmmirror.com/@himeka/capacitor-filesystem/-/capacitor-filesystem-5.1.2-alpha.2.tgz#a895076a2d8e210d6a330cb71b3451747b4ca984"

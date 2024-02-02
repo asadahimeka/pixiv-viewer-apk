@@ -64,15 +64,10 @@ import { trackEvent, dealStatusBarOnEnter, dealStatusBarOnLeave } from '@/utils'
 
 const ugoiraDownloadPanelActions = [
   { name: 'ZIP', subname: i18n.t('artwork.download.zip') },
-  { name: 'GIF(web)', subname: i18n.t('artwork.download.gif') },
-  { name: 'WebM(web)', subname: i18n.t('artwork.download.webm') },
-  { name: 'MP4(ugoira.com)', subname: i18n.t('artwork.download.mp4') },
-  { name: 'MP4(ugoira-mp4)', subname: i18n.t('gajzCbySkleDQrtXfX38H') },
-  { name: 'MP4(ffmpeg)', subname: i18n.t('B7pyxk7y7DpmBPASgNjJR') },
-  { name: 'GIF(ffmpeg)', subname: i18n.t('B7pyxk7y7DpmBPASgNjJR') },
-  { name: 'APNG(ffmpeg)', subname: i18n.t('B7pyxk7y7DpmBPASgNjJR') },
-  { name: 'WEBP(ffmpeg)', subname: i18n.t('B7pyxk7y7DpmBPASgNjJR') },
-  { name: 'WEBM(ffmpeg)', subname: i18n.t('B7pyxk7y7DpmBPASgNjJR') },
+  { name: 'GIF', subname: i18n.t('artwork.download.gif') },
+  { name: 'WebM', subname: i18n.t('artwork.download.webm') },
+  { name: 'MP4(DL)', subname: i18n.t('gajzCbySkleDQrtXfX38H') },
+  { name: 'MP4(Conv)', subname: i18n.t('artwork.download.mp4') },
 ]
 
 export default {
