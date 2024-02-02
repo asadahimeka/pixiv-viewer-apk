@@ -106,7 +106,7 @@ html, body
   #top-bar-wrap
     width 1.6rem
     height auto
-    padding-top 0.3rem
+    padding-top calc(0.3rem + var(--status-bar-height))
     background transparent
 
   .hibiapi-actions .van-action-sheet__name
@@ -275,6 +275,9 @@ html.dark
   .van-action-sheet__item
     background #16161a
     color #fff
+
+  .nav_divi
+    background #fff
 
   .user-wrap,
   .user-illusts
@@ -479,3 +482,112 @@ html.dark
     display flex
     align-items center
     gap .15rem
+
+.rank-card .spec_wp
+  overflow hidden
+  border-radius: 0.26667rem;
+
+.Spotlights .image-card, .rank-card .spec_wp
+  img[lazy="loaded"]
+    transform none
+    transition transform 0.5s
+
+.card-box .swipe-item .image-card-wrapper
+  height 100%
+  padding-bottom 0 !important
+  border-radius: 0.26667rem;
+
+.author-card .swiper-slide .image-card-wrapper
+  height 100%
+  padding-bottom 0% !important
+
+.Discovery,
+.HomeRecommIllust,
+.Spotlight,
+.History,
+.card-box .swipe-item
+  .image-card-wrapper .meta
+    background: rgba(0,0,0,.04);
+
+.search .tags .meta
+  &::after
+    content ''
+    position absolute
+    top 0
+    left 0
+    width 100%
+    height 100%
+    background: rgba(0,0,0,.04);
+    border-radius: 0.10667rem;
+
+.Spotlight,
+.card-box .swipe-item
+  .image-card .outer-meta
+    transform translateY(-100%)
+    &::before
+      position: absolute;
+      content: '';
+      bottom: 0;
+      width: 100%;
+      height: 120%;
+      background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+    .content
+      color #fff !important
+
+@keyframes fadeIn
+  from
+    opacity 0
+  to
+    opacity 1
+
+.fadeIn
+  animation fadeIn 0.5s
+
+.hide
+  display none !important
+
+.op0
+  opacity 0 !important
+
+.pt0
+  padding-top 0 !important
+
+html
+  --status-bar-height: var(--safe-area-top, 20px)
+  padding-top var(--status-bar-height)
+  transition padding-top 0.2s
+
+.search-bar-wrap
+  &::before
+    content ''
+    position fixed
+    top 0
+    left 0
+    width 100%
+    height calc(var(--status-bar-height) + 1px)
+    background #fff
+
+.van-sticky--fixed
+  padding-top var(--status-bar-height)
+  background #fff
+
+#nav-bar-overlay
+  position fixed
+  z-index 1000
+  top 0
+  left 0
+  width 100%
+  height var(--status-bar-height)
+  background #fff
+
+.dark
+  .search-bar-wrap::before,
+  .van-sticky--fixed,
+  #nav-bar-overlay
+    background #16161a
+
+#app .illusts .top-bar-wrap
+  padding-top: calc(0.26667rem + var(--status-bar-height))
+
+.search .tags .tag img[lazy="loading"]
+  opacity 0

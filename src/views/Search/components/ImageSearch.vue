@@ -4,8 +4,8 @@
       <Icon v-show="!loading&&!file" name="image" />
       <div v-show="loading" class="loading"></div>
     </van-uploader>
-    <span @click="reset">
-      <Icon v-show="!loading&&file" name="close" />
+    <span>
+      <Icon v-show="!loading&&file" class="image-search-close" name="close" @click="reset" />
     </span>
     <div v-if="file" class="container">
       <div class="thumb">
@@ -150,6 +150,9 @@ export default {
 <style lang="stylus" scoped>
 .image-search {
   .open-dialog {
+    ::v-deep .van-uploader__input-wrapper {
+      padding .17rem
+    }
 
     ::v-deep .van-uploader__wrapper--disabled {
       opacity: 1;
@@ -166,13 +169,17 @@ export default {
 
   }
 
+  &-close {
+    padding 0.2rem
+  }
+
   .svg-icon {
     font-size 0.45rem
   }
 
   .container {
     position: fixed;
-    top: 1.6rem;
+    top: calc(1.6rem + var(--status-bar-height));
     left: 0;
     width: 100vw;
     height: 93vh;

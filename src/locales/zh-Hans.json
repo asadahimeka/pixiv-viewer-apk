@@ -189,7 +189,7 @@
     "success_tip": "清理完成",
     "confirm": {
       "first": "确定要清理{0}吗？",
-      "second": "清理后将重新从网络加载相关内容"
+      "second": "清理后浏览记录将被删除，且将重新从网络加载相关内容"
     },
     "mem": "内存占用"
   },
@@ -219,7 +219,7 @@
       "cp_token_label": "复制当前 RefreshToken 到剪贴板",
       "cp_token_title": "导出 RefreshToken",
       "direct_mode": {
-        "title": "启用直连模式",
+        "title": "启用 AppApi 直连模式",
         "label": "是否通过域前置绕过 SNI 嗅探",
         "proxy": {
           "title": "启用 AppApi 代理",
@@ -231,7 +231,7 @@
         },
         "confirm": {
           "title": "确认启用直连模式？",
-          "msg": "直连模式速度较慢、不保证稳定性。不可与 AppApi 代理同时开启。",
+          "msg": "直连模式速度可能较快，但不保证稳定性。不可与 AppApi 代理同时开启。",
           "proxy_title": "确认启用 AppApi 代理？",
           "proxy_msg": "通过第三方云服务转发本地 AppApi 请求，无法保证稳定性与安全性。不可与直连模式同时开启。"
         },
@@ -411,5 +411,20 @@
   "LEaBJrLF0DUhyTe6-fKYT": "你想屏蔽这个标签吗？",
   "kFOiZTwKWwXy-sxaspqSD": "列表图片长按屏蔽",
   "w73XEmHradtum3SQ9IjBq": "你想屏蔽这个作者吗？",
-  "JKCgrgXZfg4-HDftheb96": "检测到新版本，是否前往下载？"
+  "JKCgrgXZfg4-HDftheb96": "检测到新版本，是否前往下载？",
+  "ZO7u4XT4flW6_nmyvmXt7": "列表图片信息外置",
+  "ebHfHD4g4932R2m1gFtmn": "是否返回首页？",
+  "L1YwIFcNQQQVihEgMBUaK": "清理后设置项将重置",
+  "Et3Fbos0N7bv9zGBznTLc": "启用 pximg 图片直连模式",
+  "mq3jjWeUDS-TPnfYJQvD5": "pximg 直连模式加载图片可能较快，但不保证可用性及稳定性",
+  "ltKHIZm9mBZ8Dit_u8aW4": "缩略图缓存",
+  "5wkdnjEH9KXox8uIHhQmm": "下载记录",
+  "vfK4o14WHBwqoxlLGXBhw": "确定要清除下载记录吗？已下载的文件不会被删除。",
+  "LnRdC18i8h90keGy4mNmv": "已下载",
+  "HYU_Dtvsq74EoxIp0TEOn": "全部",
+  "d1aggG8fdPzwvQMZYbzdg": "重试",
+  "kv6zdp6UsJDYstYPq-p50": "详情",
+  "4A4oYtzfF0C8cA59wAXBF": "打开",
+  "B7pyxk7y7DpmBPASgNjJR": "使用 ffmpeg 进行转换，处理时间较长且可能失败",
+  "gajzCbySkleDQrtXfX38H": "从 ugoira.com 下载"
 }

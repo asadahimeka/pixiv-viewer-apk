@@ -41,26 +41,26 @@ const HASH_SECRET = '28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0
 const DEFAULT_HEADERS = {
   'App-OS': 'Android',
   'App-OS-Version': 'Android 13.0',
-  'App-Version': '6.94.0',
+  'App-Version': '6.95.0',
   'Accept-Language': 'zh-CN',
-  'User-Agent': 'PixivAndroidApp/6.94.0 (Android 13.0; Pixel 7)',
+  'User-Agent': 'PixivAndroidApp/6.95.0 (Android 13.0; Pixel 7)',
 }
 
 function callApi(url, options) {
   let finalUrl = /^https?:\/\//i.test(url) ? url : BASE_URL + url
   const fUrl = new URL(finalUrl)
-  if (globalThis.p_api_proxy) {
+  if (window.p_api_proxy) {
     if (BASE_URL.includes(fUrl.hostname)) {
       fUrl.pathname = '/pixiv-app-api' + fUrl.pathname
     }
     if (OAUTH_URL.includes(fUrl.hostname)) {
       fUrl.pathname = '/pixiv-oauth' + fUrl.pathname
     }
-    fUrl.hostname = globalThis.p_api_proxy
+    fUrl.hostname = window.p_api_proxy
     finalUrl = fUrl.href
-  } else if (globalThis.p_api_hosts) {
+  } else if (window.p_api_hosts) {
     options.headers.Host = fUrl.host
-    fUrl.hostname = globalThis.p_api_hosts[fUrl.hostname]
+    fUrl.hostname = window.p_api_hosts[fUrl.hostname]
     finalUrl = fUrl.href
   }
 

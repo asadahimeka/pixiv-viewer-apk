@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import TopBar from '@/components/TopBar'
 import api, { PXIMG_PROXY_BASE } from '@/api'
 import SpotlightsRecom from './SpotlightsRecom.vue'
@@ -96,11 +97,11 @@ export default {
     },
     async getDetail() {
       this.loading = true
-      const res = await api.getSpotlightTypeDetail(this.spid)
+      const res = _.cloneDeep(await api.getSpotlightTypeDetail(this.spid))
       if (res.status === 0) {
         res.data.content = res.data.content
           ?.replace(/i\.pximg\.net/g, PXIMG_PROXY_BASE)
-          ?.replace(/src="https:\/\/embed\.pixiv\.net\/(.*)"/i, `src="${process.env.VUE_APP_COMMON_PROXY}https://embed.pixiv.net/$1"`)
+          ?.replace(/src="https:\/\/embed\.pixiv\.net\/(.*)"/i, `src="${process.env.VUE_APP_COMMON_PROXY || ''}https://embed.pixiv.net/$1"`)
         this.spotlight = res.data
       } else {
         this.$toast({
@@ -410,7 +411,7 @@ export default {
 
   ::v-deep .top-bar-wrap
     width 2rem
-    padding-top 40px
+    padding-top calc(0.66rem + var(--status-bar-height)) !important
     background transparent
 
   .card-box
@@ -424,11 +425,11 @@ export default {
 
 .ex_link
   position: fixed;
-  top: 0;
+  top: var(--status-bar-height);
   right 0
-  padding: 0.7rem 0.5rem;
+  padding: 0.9rem 0.5rem;
   z-index: 99;
-  font-size 2.2em
+  font-size 2em
   cursor pointer
   .svg-icon
     color: #fafafa;

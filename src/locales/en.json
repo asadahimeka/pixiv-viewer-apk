@@ -72,7 +72,7 @@
     "clear": "Clean up",
     "confirm": {
       "first": "Are you sure you want to clear {0}?",
-      "second": "Will reload relevant content from the network after cleaning"
+      "second": "After cleaning, the browsing history will be deleted and relevant content will be reloaded from the network."
     },
     "db": "Database Cache",
     "local": "Configuration item cache",
@@ -238,7 +238,7 @@
       "cp_token_title": "Export RefreshToken",
       "direct_mode": {
         "confirm": {
-          "msg": "The direct connection mode is slower and does not guarantee stability. \nIt cannot be enabled at the same time as the AppApi proxy.",
+          "msg": "Direct connection mode may be faster, but stability is not guaranteed. \nCannot be enabled at the same time as the AppApi proxy.",
           "proxy_msg": "Forwarding local AppApi requests through third-party cloud services cannot guarantee stability and security. \nIt cannot be turned on at the same time as the direct connection mode.",
           "proxy_title": "Are you sure to enable AppApi proxy?",
           "title": "Are you sure to enable direct mode?"
@@ -253,7 +253,7 @@
           "label": "Whether to proxy local AppApi requests through cloud services",
           "title": "Enable AppApi Proxy"
         },
-        "title": "Enable direct mode"
+        "title": "Enable AppApi direct mode"
       },
       "swipe_toggle": "Swipe left or right on the details page to toggle artworks",
       "ana": {
@@ -411,5 +411,20 @@
   "1a1meIFthYyv_s7C4M4L0": "Do you want to mute the artist of this artwork or some tags only?",
   "LEaBJrLF0DUhyTe6-fKYT": "Do you want to block this tag?",
   "w73XEmHradtum3SQ9IjBq": "Do you want to block this author?",
-  "JKCgrgXZfg4-HDftheb96": "A new version has been detected. Do you want to download it?"
+  "JKCgrgXZfg4-HDftheb96": "A new version has been detected. Do you want to download it?",
+  "ZO7u4XT4flW6_nmyvmXt7": "Put the meta information below the image of card list",
+  "ebHfHD4g4932R2m1gFtmn": "Do you want to return to the home page?",
+  "L1YwIFcNQQQVihEgMBUaK": "Settings will be reset after cleaning",
+  "Et3Fbos0N7bv9zGBznTLc": "Enable Pximg direct mode",
+  "mq3jjWeUDS-TPnfYJQvD5": "pximg direct connection mode may load images faster, but availability and stability are not guaranteed",
+  "ltKHIZm9mBZ8Dit_u8aW4": "Thumbnail cache",
+  "5wkdnjEH9KXox8uIHhQmm": "Downloads",
+  "vfK4o14WHBwqoxlLGXBhw": "Are you sure you want to clear download history? \nDownloaded files will not be deleted.",
+  "LnRdC18i8h90keGy4mNmv": "Downloaded",
+  "HYU_Dtvsq74EoxIp0TEOn": "All",
+  "d1aggG8fdPzwvQMZYbzdg": "Retry",
+  "kv6zdp6UsJDYstYPq-p50": "Details",
+  "4A4oYtzfF0C8cA59wAXBF": "Open",
+  "B7pyxk7y7DpmBPASgNjJR": "Conversion using ffmpeg takes longer and may fail",
+  "gajzCbySkleDQrtXfX38H": "Download from ugoira.com"
 }

@@ -8,6 +8,7 @@ import { App as CapApp } from '@capacitor/app'
 import { StatusBar, Style as StatusBarStyle } from '@capacitor/status-bar'
 import { AndroidShortcuts } from 'capacitor-android-shortcuts'
 import { NavigationBar } from '@capgo/capacitor-navigation-bar'
+import { SafeArea } from 'capacitor-plugin-safe-area'
 import Analytics from '@capacitor-community/appcenter-analytics'
 
 import Vue from 'vue'
@@ -16,22 +17,25 @@ import VueMasonry from 'vue-masonry-css'
 import Vant, { Toast, Lazyload, ImagePreview, Dialog } from 'vant'
 
 import SvgIcon from '@/icons'
-import Masonry from './components/Masonry.vue'
-import TopBar from '@/components/TopBar'
+import Masonry from '@/components/Masonry.vue'
+import TopBar from '@/components/TopBar.vue'
+import ImagePximg from '@/components/ImagePximg.vue'
 import AppComp from './App.vue'
 import router from './router'
 import store from './store'
 import longpress from './directives/longpress'
 import { i18n } from './i18n'
 import { LocalStorage } from '@/utils/storage'
-import { getActionMap } from '@/api/client/action'
-import { initBookmarkCache } from './utils/siteCache'
+import { getActionMap, setPximgIP } from '@/api/client/action'
+import { initBookmarkCache } from '@/utils/siteCache'
 import { login } from '@/api/client/login'
-import { trackEvent } from './utils'
+import { trackEvent } from '@/utils'
 
 setStatusBar()
+setSafeAreaVar()
 addCapListeners()
 setShortcuts()
+addErrorListener()
 setupApp()
 
 async function checkLocalApi() {
@@ -46,6 +50,7 @@ async function setupApp() {
   await Analytics.setEnabled({ enabled: LocalStorage.get('PXV_ANALYTICS', true) })
   const isPersisted = await navigator.storage?.persisted?.().catch(() => false)
   if (!isPersisted) await navigator.storage?.persist?.().catch(() => {})
+  await setPximgIP()
   await checkLocalApi()
 
   Vue.use(Toast)
@@ -54,6 +59,7 @@ async function setupApp() {
     // observer: true,
     lazyComponent: true,
     loading: require('@/icons/loading.svg'),
+    preload: 1.5,
     adapter: {
       error(evt) {
         const src = evt.src
@@ -71,6 +77,7 @@ async function setupApp() {
 
   Vue.component('WfCont', Masonry)
   Vue.component('TopBar', TopBar)
+  Vue.component('ImagePximg', ImagePximg)
 
   Vue.config.productionTip = false
 
@@ -82,10 +89,29 @@ async function setupApp() {
   }).$mount('#app')
 }
 
+function addErrorListener() {
+  Vue.config.errorHandler = function (err, vm, info) {
+    trackEvent('vue_error', {
+      err: `Error: ${err.toString()}\nInfo: ${info}\nDescription: ${vm.description}\nTag: ${vm.$vnode.tag}`,
+    })
+  }
+  window.onerror = function (ev, source, lineno, colno, error) {
+    trackEvent('global_error', { err: `${ev} ${error}: ${source} ${lineno}:${colno}` })
+  }
+}
+
+function setSafeAreaVar() {
+  SafeArea.getSafeAreaInsets().then(({ insets }) => {
+    console.log('insets: ', insets)
+    document.documentElement.style.setProperty('--safe-area-top', `${insets.top}px`)
+  })
+}
+
 function setStatusBar() {
   const color = localStorage.PXV_DARK ? '#16161A' : '#FFFFFF'
   StatusBar.setStyle({ style: localStorage.PXV_DARK ? StatusBarStyle.Dark : StatusBarStyle.Light })
   StatusBar.setBackgroundColor({ color })
+  StatusBar.setOverlaysWebView({ overlay: true })
   NavigationBar.setNavigationBarColor({ color })
 }
 

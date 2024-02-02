@@ -4,7 +4,7 @@
       <ImageSlide v-for="u in userList" :key="u.id" :images="u.illusts">
         <div class="link" @click="toUserPage(u.id)">
           <div class="user_info">
-            <img class="user_avatar" :src="u.avatar" alt="">
+            <ImagePximg class="user_avatar" nobg :src="u.avatar" alt="" />
             <div class="user_name">{{ u.name }}</div>
           </div>
         </div>

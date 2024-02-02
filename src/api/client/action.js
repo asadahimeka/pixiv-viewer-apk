@@ -1,5 +1,6 @@
 import axios from 'axios'
 import PixivAuth from './pixiv-auth'
+import { LocalStorage } from '@/utils/storage'
 
 const API_DOMAIN = 'app-api.pixiv.net'
 const OAUTH_DOMAIN = 'oauth.secure.pixiv.net'
@@ -8,11 +9,34 @@ const DEF_API_HOSTS = {
   [API_DOMAIN]: '210.140.92.183',
 }
 const DEF_API_PROXY = process.env.VUE_APP_DEF_APP_API_PROXY
+const DEF_PXIMG_IP = '210.140.139.131'
+
+async function setPximgIP() {
+  if (!LocalStorage.get('PXV_PXIMG_DIRECT', false)) return
+  const ip = LocalStorage.get('PXV_PXIMG_IP')
+  if (ip) {
+    window.p_pximg_ip = ip
+    return
+  }
+  try {
+    const res = await axios.get('https://1.1.1.1/dns-query?name=i.pximg.net&do=false&cd=false', {
+      headers: { Accept: 'application/dns-json' },
+      timeout: 3000,
+    })
+    const { data } = res.data.Answer[0]
+    console.log('pximg dns answer: ', data)
+    window.p_pximg_ip = data
+    LocalStorage.set('PXV_PXIMG_IP', data)
+  } catch (err) {
+    console.log('setPximgIP err: ', err)
+    window.p_pximg_ip = DEF_PXIMG_IP
+  }
+}
 
 async function setApiHosts(config) {
   console.log('config: ', config)
   if (config.apiHosts) {
-    globalThis.p_api_hosts = config.apiHosts
+    window.p_api_hosts = config.apiHosts
     return
   }
   try {
@@ -22,15 +46,15 @@ async function setApiHosts(config) {
     })
     const { data } = res.data.Answer[0]
     console.log('dns answer: ', data)
-    globalThis.p_api_hosts = {
+    window.p_api_hosts = {
       [OAUTH_DOMAIN]: data,
       [API_DOMAIN]: data,
     }
-    config.apiHosts = globalThis.p_api_hosts
+    config.apiHosts = window.p_api_hosts
     PixivAuth.writeConfig(config)
   } catch (err) {
     console.log('setApiHosts err: ', err)
-    globalThis.p_api_hosts = DEF_API_HOSTS
+    window.p_api_hosts = DEF_API_HOSTS
   }
 }
 
@@ -38,7 +62,7 @@ async function prepare() {
   const config = PixivAuth.readConfig()
   if (!PixivAuth.checkConfig(config)) throw new Error('Not login.')
   if (config.useApiProxy) {
-    globalThis.p_api_proxy = config.apiProxy || DEF_API_PROXY
+    window.p_api_proxy = config.apiProxy || DEF_API_PROXY
   } else if (config.directMode) {
     await setApiHosts(config)
   }
@@ -325,4 +349,5 @@ async function getActionMap() {
 
 export {
   getActionMap,
+  setPximgIP,
 }

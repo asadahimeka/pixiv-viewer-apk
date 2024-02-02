@@ -11,7 +11,7 @@
       <swiper class="swipe-wrap" :options="swiperOption">
         <swiper-slide v-for="art in list" :key="art.id" class="swipe-item">
           <div class="spec_wp" @click="toDetail(art.id)">
-            <img v-lazy="art.thumbnail" :alt="art.title">
+            <ImagePximg :src="art.thumbnail" :alt="art.title" />
             <div class="sp_info">
               <h2 class="sp_title">{{ art.title }}</h2>
             </div>

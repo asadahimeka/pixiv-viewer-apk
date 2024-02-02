@@ -46,7 +46,7 @@ export default {
       }).then(async () => {
         this.artList = []
         await setCache('novels.history', null)
-      })
+      }).catch(() => {})
     },
   },
 }

@@ -1,14 +1,14 @@
 <template>
   <div class="image-slide">
     <div class="slide">
-      <img
+      <ImagePximg
         v-for="(image,index) in images"
         :key="index"
-        v-lazy="image.src"
-        class="image"
+        :src="image.src"
         :alt="image.title"
         :class="{censored: isCensored(image)}"
-      >
+        class="image"
+      />
     </div>
     <slot></slot>
   </div>

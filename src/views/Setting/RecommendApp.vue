@@ -100,20 +100,6 @@
     />
     <van-cell
       center
-      title="ComicNyaa (Android)"
-      is-link
-      label=" 一个跨平台的漫画/图库聚合阅读器。"
-      @click="openLink('https://github.com/tsukiseele/ComicNyaa')"
-    />
-    <van-cell
-      center
-      title="MoeViewerN (Windows)"
-      is-link
-      label="一个可爱的二次元网络画廊浏览器。"
-      @click="openLink('https://github.com/tsukiseele/MoeViewerN')"
-    />
-    <van-cell
-      center
       title="Tachiyomi (Android)"
       is-link
       label="Free and open source manga reader for Android."
@@ -163,10 +149,31 @@
     />
     <van-cell
       center
-      title="bili_you (Android)"
+      title="Bili You (Android)"
       is-link
       label="一个用flutter制作的第三方B站客户端."
       @click="openLink('https://github.com/lucinhu/bili_you')"
+    />
+    <van-cell
+      center
+      title="纯纯看番 (Android)"
+      is-link
+      label="纯纯看番，使用 Compose 开发的看番软件，支持多番剧源"
+      @click="openLink('https://easybangumi.org/')"
+    />
+    <van-cell
+      center
+      title="ComicNyaa (Android)"
+      is-link
+      label=" 一个跨平台的漫画/图库聚合阅读器。"
+      @click="openLink('https://github.com/tsukiseele/ComicNyaa')"
+    />
+    <van-cell
+      center
+      title="MoeViewerN (Windows)"
+      is-link
+      label="一个可爱的二次元网络画廊浏览器。"
+      @click="openLink('https://github.com/tsukiseele/MoeViewerN')"
     />
   </div>
 </template>

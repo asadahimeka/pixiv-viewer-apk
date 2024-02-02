@@ -12,23 +12,15 @@
       :style="index === 0 ? { width: `${displayWidth}px`, height: `${displayWidth / (artwork.width / artwork.height)}px` } : null"
     >
       <!-- :style="{height: `${(375/artwork.width*artwork.height).toFixed(2)}px`}" -->
-      <img
-        v-if="lazy"
-        v-lazy="getImgUrl(url)"
+      <ImagePximg
         v-longpress="isLongpressDL?e => downloadArtwork(e, index):null"
-        :alt="`${artwork.title} - Page ${index + 1}`"
-        class="image"
-        @click.stop="view(index, isCensored(artwork))"
-        @contextmenu="preventContext"
-      >
-      <img
-        v-else
         :src="getImgUrl(url)"
         :alt="`${artwork.title} - Page ${index + 1}`"
+        nobg
         class="image"
-        :style="{ width: displayWidth, height: ((artwork.width / displayWidth) * artwork.height) * (artwork.width / artwork.height) }"
-        @click.stop="view(index, isCensored(artwork))"
-      >
+        @click.native.stop="view(index, isCensored(artwork))"
+        @contextmenu.native="preventContext"
+      />
       <canvas
         v-if="artwork.type === 'ugoira'"
         id="ugoira"
@@ -65,6 +57,9 @@ import tsWhammy from 'ts-whammy'
 import api from '@/api'
 import { LocalStorage } from '@/utils/storage'
 import { downloadBlob, downloadFile, sleep, trackEvent } from '@/utils'
+import { Filesystem, Directory } from '@himeka/capacitor-filesystem'
+import { FFmpegKitPlugin } from '@himeka/capacitor-ffmpeg-kit'
+import writeBlob from 'capacitor-blob-writer'
 
 const imgResSel = LocalStorage.get('PXV_DTL_IMG_RES', 'Medium')
 const isLongpressDL = LocalStorage.get('PXV_LONGPRESS_DL', false)
@@ -74,10 +69,6 @@ export default {
     artwork: {
       type: Object,
       required: true,
-    },
-    lazy: {
-      type: Boolean,
-      default: true,
     },
   },
   data() {
@@ -141,7 +132,7 @@ export default {
           Toolbar: {
             display: {
               left: ['infobar'],
-              middle: ['toggleZoom', 'myDownload', 'rotateCW', 'flipX', 'flipY'],
+              middle: ['toggleZoom', 'myDownload', 'rotateCW', 'flipX', 'flipY', 'close'],
               right: [],
             },
             items: {
@@ -248,7 +239,7 @@ export default {
                 }
               })
           })
-        })
+        }).catch(() => {})
       }).catch(error => {
         nprogress.done()
         this.resetUgoira()
@@ -384,28 +375,78 @@ export default {
       })
       gif.render()
     },
-    download(type) {
-      switch (type) {
-        case 'ZIP':
-          this.downloadZIP()
-          break
+    async saveFrames() {
+      let duration = 0
+      const images = Object.values(this.ugoira.frames)
+      await Promise.all(images.map(async frame => {
+        duration += frame.delay
+        await writeBlob({
+          blob: frame.blob,
+          path: `ugoira_${this.artwork.id}/${frame.file}`,
+          directory: Directory.External,
+          recursive: true,
+        })
+      }))
+      return images.length / duration * 1000
+    },
+    async convertUgoiraUsingFFmpeg(ext = 'mp4') {
+      const loading = this.$toast.loading({
+        duration: 0,
+        forbidClick: true,
+        message: this.$t('tip.down_wait'),
+      })
+      try {
+        const rate = await this.saveFrames()
+        const id = `${this.artwork.id}`
+        const filename = `${this.artwork.id}`
 
-        case 'GIF':
-          this.downloadGIF()
-          break
+        const input = (await Filesystem.getUri({ path: `ugoira_${id}`, directory: Directory.External })).uri + '/%06d.jpg'
+        const exists = await Filesystem.stat({ path: 'pixiv-viewer/ugoira', directory: Directory.Downloads }).catch(() => false)
+        if (!exists) {
+          await Filesystem.mkdir({ path: 'pixiv-viewer/ugoira', directory: Directory.Downloads, recursive: true })
+        }
+        const { uri: output } = await Filesystem.getUri({ path: `pixiv-viewer/ugoira/${filename}.${ext}`, directory: Directory.Downloads })
+        const cmds = {
+          mp4: `-y -r ${rate} -i "${input}" -pix_fmt yuv420p -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2" "${output}"`,
+          gif: `-y -r ${rate} -i "${input}" -filter_complex [0:v]split[a][b];[a]palettegen=stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle -vsync 0 "${output}"`,
+          apng: `-y -r ${rate} -i "${input}" -c:v apng -plays 0 -vsync 0 "${output}"`,
+          webp: `-y -r ${rate} -i "${input}" -c:v libwebp -lossless 0 -compression_level 5 -quality 100 -loop 0 -vsync 0 "${output}"`,
+          webm: `-y -r ${rate} -i "${input}" -c:v libvpx-vp9 -lossless 0 -crf 15 -b 0 -vsync 0 "${output}"`,
+        }
+        const { returnCode } = await FFmpegKitPlugin.execute({ command: cmds[ext] })
+        if (returnCode != 0) {
+          throw new Error('FFmpegKit ReturnCode: ' + returnCode)
+        }
 
-        case 'WebM':
-          this.downloadWebM()
-          break
+        await FFmpegKitPlugin.scanFile({ path: `pixiv-viewer/ugoira/${filename}.${ext}`, directory: Directory.Downloads })
 
-        case 'MP4':
-          window.open(`https://ugoira.com/i/${this.artwork.id}`, '_blank', 'noopener')
-          break
-
-        default:
-          break
+        loading.clear()
+        console.log('path: ', output)
+        this.$toast(`${this.$t('tip.downloaded')}: ${output.replace('file://', '')}`)
+      } catch (error) {
+        loading.clear()
+        console.log('error: ', error?.message)
+        this.$toast({
+          message: this.$t('D8R2062pjASZe9mgvpeLr') + ': ' + error?.message,
+          icon: require('@/icons/error.svg'),
+        })
       }
+    },
+    download(type) {
       trackEvent('Download Ugoira', { type })
+      const actions = {
+        'ZIP': () => this.downloadZIP(),
+        'GIF(web)': () => this.downloadGIF(),
+        'WebM(web)': () => this.downloadWebM(),
+        'MP4(ffmpeg)': () => this.convertUgoiraUsingFFmpeg('mp4'),
+        'GIF(ffmpeg)': () => this.convertUgoiraUsingFFmpeg('gif'),
+        'APNG(ffmpeg)': () => this.convertUgoiraUsingFFmpeg('apng'),
+        'WEBP(ffmpeg)': () => this.convertUgoiraUsingFFmpeg('webp'),
+        'WEBM(ffmpeg)': () => this.convertUgoiraUsingFFmpeg('webm'),
+        'MP4(ugoira-mp4)': () => window.open(`https://f.pixiv.pics/api/ugoira-mp4?id=${this.artwork.id}`, '_blank', 'noopener'),
+        'MP4(ugoira.com)': () => window.open(`https://ugoira.com/i/${this.artwork.id}`, '_blank', 'noopener noreferrer'),
+      }
+      actions[type]?.()
     },
     openDownloadPanel() {
       if (this.progressShow) return
@@ -508,14 +549,18 @@ export default {
       // min-height: 600px;
       // max-height: 1000px;
       object-fit: cover;
+      transition transform 0.5s
+      transform none
 
       &[lazy="loading"] {
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: scale(0.9);
         width: 120px !important;
         height: 120px !important;
+        margin-left: -60px !important;
+        margin-top: -60px !important;
         min-height: auto;
       }
     }

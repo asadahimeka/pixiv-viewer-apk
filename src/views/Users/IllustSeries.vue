@@ -3,7 +3,7 @@
     <top-bar />
     <h3 class="af_title">{{ $t('iAH7adsXaqWMXEi3TOuwS') }}({{ $t('common.manga') }})</h3>
     <template v-if="detail">
-      <img class="ss-cover" :src="detail.cover" alt="">
+      <ImagePximg class="ss-cover" :src="detail.cover" alt="" />
       <p class="ss-title">
         {{ detail.title }}
         <van-tag color="#ffe1e1" text-color="#ad0000" style="vertical-align: 0.06rem;">

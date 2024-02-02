@@ -13,7 +13,7 @@
       <div class="ia-cont">
         <div class="ia-left">
           <van-loading v-if="loading" size="50px" />
-          <ImageView ref="imgView" :artwork="artwork" :lazy="true" @open-download="ugoiraDownloadPanelShow = true" />
+          <ImageView ref="imgView" :artwork="artwork" @open-download="ugoiraDownloadPanelShow = true" />
         </div>
         <div class="ia-right">
           <van-skeleton class="skeleton" title avatar :row="5" row-width="200px" avatar-size="42px" :loading="loading">
@@ -64,9 +64,15 @@ import { trackEvent, dealStatusBarOnEnter, dealStatusBarOnLeave } from '@/utils'
 
 const ugoiraDownloadPanelActions = [
   { name: 'ZIP', subname: i18n.t('artwork.download.zip') },
-  { name: 'GIF', subname: i18n.t('artwork.download.gif') },
-  { name: 'WebM', subname: i18n.t('artwork.download.webm') }, // chrome only
-  { name: 'MP4', subname: i18n.t('artwork.download.mp4') },
+  { name: 'GIF(web)', subname: i18n.t('artwork.download.gif') },
+  { name: 'WebM(web)', subname: i18n.t('artwork.download.webm') },
+  { name: 'MP4(ugoira.com)', subname: i18n.t('artwork.download.mp4') },
+  { name: 'MP4(ugoira-mp4)', subname: i18n.t('gajzCbySkleDQrtXfX38H') },
+  { name: 'MP4(ffmpeg)', subname: i18n.t('B7pyxk7y7DpmBPASgNjJR') },
+  { name: 'GIF(ffmpeg)', subname: i18n.t('B7pyxk7y7DpmBPASgNjJR') },
+  { name: 'APNG(ffmpeg)', subname: i18n.t('B7pyxk7y7DpmBPASgNjJR') },
+  { name: 'WEBP(ffmpeg)', subname: i18n.t('B7pyxk7y7DpmBPASgNjJR') },
+  { name: 'WEBM(ffmpeg)', subname: i18n.t('B7pyxk7y7DpmBPASgNjJR') },
 ]
 
 export default {
@@ -236,7 +242,7 @@ img[src*="/api/qrcode?text"]
     margin: 30px 0;
   .share_btn
     position: fixed;
-    top: 1.05rem;
+    top: 1.15rem;
     right 0.5rem;
     z-index: 99;
     font-size 0.675rem
@@ -323,5 +329,11 @@ img[src*="/api/qrcode?text"]
     padding-right 0 !important
     .artwork-meta
       margin-top 10px !important
+
+@media screen and (max-width: 600px)
+  .ia-left
+    ::v-deep .image
+      width 100% !important
+      max-height unset !important
 
 </style>

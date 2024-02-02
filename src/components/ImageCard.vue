@@ -1,35 +1,49 @@
 <template>
-  <div
-    class="image-card"
-    :style="{ paddingBottom: paddingBottom(artwork), '--w': artwork.width, '--h': artwork.height }"
-    @click.stop="click(artwork.id)"
-    @contextmenu="preventContext"
-  >
-    <img v-lazy="imgSrc" :alt="artwork.title" class="image" :class="{ censored: isCensored(artwork) }">
-    <div class="tag-r18-ai">
-      <van-tag v-if="index">#{{ index }}</van-tag>
-      <van-tag v-if="tagText" :color="tagText === 'R-18' ? '#fb7299' : '#ff3f3f'">{{ tagText }}</van-tag>
-      <van-tag v-if="isAiIllust" color="#536cb8">&nbsp;AI&nbsp;</van-tag>
+  <div class="image-card" :class="{isOuterMeta}" :style="{ '--w': artwork.width, '--h': artwork.height }">
+    <div
+      class="image-card-wrapper"
+      :style="{ paddingBottom: paddingBottom(artwork) }"
+      @click.stop="click(artwork.id)"
+      @contextmenu="preventContext"
+    >
+      <ImageLocal v-if="isPximgDirect" :src="imgSrc" :alt="artwork.title" class="image" :class="{ censored: isCensored(artwork) }" />
+      <img v-else v-lazy="imgSrc" class="image" :class="{ censored: isCensored(artwork) }" :alt="artwork.title">
+      <div class="tag-r18-ai">
+        <van-tag v-if="index">#{{ index }}</van-tag>
+        <van-tag v-if="tagText" :color="tagText === 'R-18' ? '#fb7299' : '#ff3f3f'">{{ tagText }}</van-tag>
+        <van-tag v-if="isAiIllust" color="#536cb8">&nbsp;AI&nbsp;</van-tag>
+      </div>
+      <div v-if="(mode == 'all' || mode === 'cover') && artwork.count > 1" class="layer-num">
+        <Icon name="layer" scale="1.5" />
+        {{ artwork.count }}
+      </div>
+      <div v-if="(mode == 'all' || mode == 'cover') && showBookmarkBtn" class="bookmark" @click.stop="toggleBookmark">
+        <van-loading v-if="bLoading" color="#ff4060" />
+        <van-icon v-else :name="isBookmarked?'like':'like-o'" color="#ff4060" />
+      </div>
+      <Icon
+        v-if="(mode == 'all' || mode === 'cover') && artwork.type === 'ugoira'"
+        class="btn-play"
+        name="play"
+        scale="8"
+      />
+      <div v-if="mode == 'all' || mode === 'meta'" v-longpress="isTriggerLongpress?onLongpress:null" class="meta">
+        <div v-if="!isOuterMeta" class="content">
+          <h2 class="title" :title="artwork.title">{{ artwork.title }}</h2>
+          <div class="author-cont">
+            <ImageLocal v-if="isPximgDirect" nobg :src="artwork.author.avatar" class="avatar" :alt="artwork.author.name" />
+            <img v-else :src="artwork.author.avatar" :alt="artwork.author.name" class="avatar" @error="onAvatarErr">
+            <div class="author">{{ artwork.author.name }}</div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div v-if="(mode == 'all' || mode === 'cover') && artwork.count > 1" class="layer-num">
-      <Icon name="layer" scale="1.5" />
-      {{ artwork.count }}
-    </div>
-    <div v-if="(mode == 'all' || mode == 'cover') && showBookmarkBtn" class="bookmark" @click.stop="toggleBookmark">
-      <van-loading v-if="bLoading" color="#ff4060" />
-      <van-icon v-else :name="isBookmarked?'like':'like-o'" color="#ff4060" />
-    </div>
-    <Icon
-      v-if="(mode == 'all' || mode === 'cover') && artwork.type === 'ugoira'"
-      class="btn-play"
-      name="play"
-      scale="8"
-    />
-    <div v-if="mode == 'all' || mode === 'meta'" v-longpress="isTriggerLongpress?onLongpress:null" class="meta">
+    <div v-if="isOuterMeta && (mode == 'all' || mode === 'meta')" class="outer-meta">
       <div class="content">
         <h2 class="title" :title="artwork.title">{{ artwork.title }}</h2>
         <div class="author-cont">
-          <img :src="artwork.author.avatar" :alt="artwork.author.name" class="avatar" @error="onAvatarErr">
+          <ImageLocal v-if="isPximgDirect" nobg :src="artwork.author.avatar" class="avatar" :alt="artwork.author.name" />
+          <img v-else :src="artwork.author.avatar" :alt="artwork.author.name" class="avatar" @error="onAvatarErr">
           <div class="author">{{ artwork.author.name }}</div>
         </div>
       </div>
@@ -44,11 +58,15 @@ import { localApi } from '@/api'
 import { downloadFile } from '@/utils'
 import { getCache, toggleBookmarkCache } from '@/utils/siteCache'
 import { LocalStorage } from '@/utils/storage'
+import ImageLocal from './ImageLocal.vue'
 
 const isLongpressDL = LocalStorage.get('PXV_LONGPRESS_DL', false)
 const isLongpressBlock = LocalStorage.get('PXV_LONGPRESS_BLOCK', false)
+const isOuterMeta = LocalStorage.get('PXV_IMG_META_OUTER', false)
+const isPximgDirect = LocalStorage.get('PXV_PXIMG_DIRECT', false)
 
 export default {
+  components: { ImageLocal },
   props: {
     artwork: {
       type: Object,
@@ -79,6 +97,8 @@ export default {
       isBookmarked: false,
       isLongpressDL,
       isTriggerLongpress: isLongpressDL || isLongpressBlock,
+      isOuterMeta,
+      isPximgDirect,
     }
   },
   computed: {
@@ -223,40 +243,38 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.image-card {
+.image-card
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   overflow: hidden;
   background: #fafafa;
   margin-bottom: 10px;
   border-radius: 20px;
 
-  .image {
+  .image
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.5s;
+    transform: none;
 
-    &[lazy="loading"] {
+    &[lazy="loading"]
       width: 100px;
       height: 100px;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
-    }
-  }
+      margin-left: -50px;
+      margin-top: -50px;
+      transform: scale(0.9);
 
-  .tag-r18-ai {
+  .tag-r18-ai
     position: absolute;
     top: 12px;
     left: 12px;
-  }
 
-  .layer-num {
+  .layer-num
     position: absolute;
     top: 10px;
     right: 10px;
@@ -269,13 +287,11 @@ export default {
     font-size: 18px;
     border-radius: 5px;
 
-    svg {
+    svg
       vertical-align: bottom;
       margin-right: 4px;
-    }
-  }
 
-  .bookmark {
+  .bookmark
     position absolute
     bottom 0
     right 0
@@ -284,73 +300,99 @@ export default {
     font-size 0.5rem
     cursor pointer
     filter: drop-shadow(0.02667rem 0.05333rem 0.05333rem #e87a90)
-  }
 
-  .btn-play {
+  .btn-play
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: #565656;
     opacity: 0.6;
-  }
 
-  .meta {
+  .meta
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
 
-    &::before {
+    &::before
       position: absolute;
       content: '';
       bottom: 0;
       width: 100%;
       height: 50%;
       background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
-    }
 
-    .content {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      padding: 18px 14px;
-      box-sizing: border-box;
-      color: #fff;
+.isOuterMeta
+  box-shadow none
+  background none
+  .image-card-wrapper
+    border-radius: 0.26667rem;
 
-      .author-cont {
-        display: flex;
-        align-items: center;
-      }
+  .meta
+    background: rgba(0,0,0,.04);
+    &::before
+      display none
 
-      .title {
-        line-height: normal;
-        font-size: 24px;
-        margin: 10px 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-      }
+.image-card-wrapper
+  position relative
+  overflow hidden
 
-      .avatar {
-        width: 48px;
-        min-width: 48px;
-        height: 48px;
-        margin-right: 8px;
-        vertical-align: bottom;
-        border-radius: 50%;
-        overflow: hidden;
-      }
+.image-card-wrapper .meta, .outer-meta
+  .content
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 18px 14px;
+    box-sizing: border-box;
+    color: #fff;
+    .author-cont
+      display: flex;
+      align-items: center;
 
-      .author {
-        display: inline-block;
-        font-size: 20px;
-        font-weight: 200;
-      }
-    }
-  }
-}
+    .title
+      line-height: normal;
+      font-size: 24px;
+      margin: 10px 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+
+    .avatar
+      width: 48px;
+      min-width: 48px;
+      height: 48px;
+      margin-right: 8px;
+      vertical-align: bottom;
+      border-radius: 50%;
+      overflow: hidden;
+
+    .author
+      display: inline-block;
+      font-size: 20px;
+      font-weight: 200;
+
+.outer-meta
+  .content
+    position relative
+    padding 8px 20px 16px
+    .title
+      margin 6px 0
+      font-weight 600
+
+    .avatar
+      width: 36px;
+      min-width: 36px;
+      height: 36px;
+
+</style>
+
+<style lang="stylus">
+body:not(.dark)
+  .outer-meta
+    .content
+      color #333
 </style>

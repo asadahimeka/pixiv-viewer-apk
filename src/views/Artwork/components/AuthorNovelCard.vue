@@ -2,7 +2,7 @@
   <div v-if="author" class="author-card">
     <van-cell class="cell" :border="false" is-link @click="toAuthor(author.id)">
       <template #title>
-        <img class="icon" :src="author.avatar" alt="">
+        <ImagePximg class="icon" nobg :src="author.avatar" alt="" />
         <span class="title">{{ author.name }} {{ $t('user.of_other_art') }}</span>
       </template>
     </van-cell>

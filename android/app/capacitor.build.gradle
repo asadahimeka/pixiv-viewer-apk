@@ -12,16 +12,20 @@ dependencies {
     implementation project(':capacitor-community-appcenter')
     implementation project(':capacitor-community-appcenter-analytics')
     implementation project(':capacitor-community-appcenter-crashes')
+    implementation project(':capacitor-community-file-opener')
     implementation project(':capacitor-app')
     implementation project(':capacitor-clipboard')
     implementation project(':capacitor-device')
     implementation project(':capacitor-share')
     implementation project(':capacitor-status-bar')
     implementation project(':capgo-capacitor-navigation-bar')
+    implementation project(':himeka-capacitor-ffmpeg-kit')
     implementation project(':himeka-capacitor-filesystem')
     implementation project(':himeka-capacitor-plugin-filedownload')
     implementation project(':capacitor-android-shortcuts')
+    implementation project(':capacitor-blob-writer')
     implementation project(':capacitor-native-settings')
+    implementation project(':capacitor-plugin-safe-area')
 
 }
 

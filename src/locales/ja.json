@@ -72,7 +72,7 @@
     "clear": "クリアする",
     "confirm": {
       "first": "{0} をクリアしてもよろしいですか?",
-      "second": "クリーニング後にネットワークから関連コンテンツをリロードします"
+      "second": "クリーニング後、閲覧履歴は削除され、関連するコンテンツがネットワークから再ロードされます。"
     },
     "db": "データベースキャッシュ",
     "local": "設定項目のキャッシュ",
@@ -238,7 +238,7 @@
       "cp_token_title": "RefreshToken のエクスポート",
       "direct_mode": {
         "confirm": {
-          "msg": "直接接続モードは速度が遅く、安定性は保証されません。\n\nAppApi プロキシと同時に有効にすることはできません。",
+          "msg": "直接接続モードは高速である可能性がありますが、安定性は保証されません。 \nAppApi プロキシと同時に有効にすることはできません。",
           "proxy_msg": "サードパーティのクラウド サービスを介してローカル AppApi リクエストを転送しても、安定性とセキュリティは保証できません。\nダイレクト接続モードと同時にONにすることはできません。",
           "proxy_title": "AppApi プロキシを有効にしてよろしいですか?",
           "title": "ダイレクトモードを有効にしますか?"
@@ -253,7 +253,7 @@
           "label": "クラウド サービスを通じてローカル AppApi リクエストをプロキシするかどうか",
           "title": "AppApi プロキシを有効にする"
         },
-        "title": "ダイレクトモードを有効にする"
+        "title": "AppApiダイレクトモードを有効にする"
       },
       "swipe_toggle": "作品ページ内で左右にスワイプして作品を切り替えるかどうか",
       "ana": {
@@ -411,5 +411,20 @@
   "LEaBJrLF0DUhyTe6-fKYT": "このタグをブロックしますか?",
   "kFOiZTwKWwXy-sxaspqSD": "リスト画像を長押しするとタグをブロック",
   "w73XEmHradtum3SQ9IjBq": "この作者をブロックしますか?",
-  "JKCgrgXZfg4-HDftheb96": "新しいバージョンが検出されました。ダウンロードしますか?"
+  "JKCgrgXZfg4-HDftheb96": "新しいバージョンが検出されました。ダウンロードしますか?",
+  "ZO7u4XT4flW6_nmyvmXt7": "カードリスト画像の下にメタ情報を入れる",
+  "ebHfHD4g4932R2m1gFtmn": "ホームページに戻りますか?",
+  "L1YwIFcNQQQVihEgMBUaK": "クリーニング後に設定がリセットされます",
+  "Et3Fbos0N7bv9zGBznTLc": "Pximg ダイレクト モードを有効にする",
+  "mq3jjWeUDS-TPnfYJQvD5": "pximg 直接接続モードは画像をより速くロードする可能性がありますが、可用性と安定性は保証されません",
+  "ltKHIZm9mBZ8Dit_u8aW4": "サムネイルキャッシュ",
+  "5wkdnjEH9KXox8uIHhQmm": "ダウンロード履歴",
+  "vfK4o14WHBwqoxlLGXBhw": "ダウンロード履歴を消去してもよろしいですか?\nダウンロードしたファイルは削除されません。",
+  "LnRdC18i8h90keGy4mNmv": "ダウンロード済み",
+  "HYU_Dtvsq74EoxIp0TEOn": "全て",
+  "d1aggG8fdPzwvQMZYbzdg": "リトライ",
+  "kv6zdp6UsJDYstYPq-p50": "詳細",
+  "4A4oYtzfF0C8cA59wAXBF": "開ける",
+  "B7pyxk7y7DpmBPASgNjJR": "ffmpeg を使用した変換には時間がかかり、失敗する可能性があります",
+  "gajzCbySkleDQrtXfX38H": "ugoira.comからダウンロード"
 }

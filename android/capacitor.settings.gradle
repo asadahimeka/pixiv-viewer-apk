@@ -11,6 +11,9 @@ project(':capacitor-community-appcenter-analytics').projectDir = new File('../no
 include ':capacitor-community-appcenter-crashes'
 project(':capacitor-community-appcenter-crashes').projectDir = new File('../node_modules/@capacitor-community/appcenter-crashes/android')
 
+include ':capacitor-community-file-opener'
+project(':capacitor-community-file-opener').projectDir = new File('../node_modules/@capacitor-community/file-opener/android')
+
 include ':capacitor-app'
 project(':capacitor-app').projectDir = new File('../node_modules/@capacitor/app/android')
 
@@ -29,6 +32,9 @@ project(':capacitor-status-bar').projectDir = new File('../node_modules/@capacit
 include ':capgo-capacitor-navigation-bar'
 project(':capgo-capacitor-navigation-bar').projectDir = new File('../node_modules/@capgo/capacitor-navigation-bar/android')
 
+include ':himeka-capacitor-ffmpeg-kit'
+project(':himeka-capacitor-ffmpeg-kit').projectDir = new File('../node_modules/@himeka/capacitor-ffmpeg-kit/android')
+
 include ':himeka-capacitor-filesystem'
 project(':himeka-capacitor-filesystem').projectDir = new File('../node_modules/@himeka/capacitor-filesystem/android')
 
@@ -38,5 +44,11 @@ project(':himeka-capacitor-plugin-filedownload').projectDir = new File('../node_
 include ':capacitor-android-shortcuts'
 project(':capacitor-android-shortcuts').projectDir = new File('../node_modules/capacitor-android-shortcuts/android')
 
+include ':capacitor-blob-writer'
+project(':capacitor-blob-writer').projectDir = new File('../node_modules/capacitor-blob-writer/android')
+
 include ':capacitor-native-settings'
 project(':capacitor-native-settings').projectDir = new File('../node_modules/capacitor-native-settings/android')
+
+include ':capacitor-plugin-safe-area'
+project(':capacitor-plugin-safe-area').projectDir = new File('../node_modules/capacitor-plugin-safe-area/android')

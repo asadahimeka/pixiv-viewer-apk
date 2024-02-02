@@ -52,8 +52,8 @@
             <div class="conf-title">{{ $t('novel.settings.text.font') }}</div>
             <div class="conf-inp">
               <van-radio-group v-model="textConfig.font" direction="horizontal">
-                <van-radio name="sans-serif">{{ $t('novel.settings.text.sans') }}</van-radio>
-                <van-radio name="serif">{{ $t('novel.settings.text.serif') }}</van-radio>
+                <van-radio name="sans-serif" style="font-family: sans-serif;">{{ $t('novel.settings.text.sans') }}</van-radio>
+                <van-radio name="serif" style="font-family: serif;">{{ $t('novel.settings.text.serif') }}</van-radio>
                 <van-radio name="lxgw">LXGW</van-radio>
               </van-radio-group>
             </div>
@@ -269,7 +269,7 @@ img[src*="/api/qrcode?text"]
     margin: 30px 0;
   .more_btn
     position: fixed;
-    top: 0.9rem;
+    top calc(1rem + var(--status-bar-height))
     right 0.5rem;
     z-index: 99;
     font-size 0.675rem
@@ -394,6 +394,7 @@ img[src*="/api/qrcode?text"]
   ::v-deep .top-bar-wrap
     width 30vw
     background none
+    // padding-top 0.8rem
 
   .isCollapseMeta
     justify-content center

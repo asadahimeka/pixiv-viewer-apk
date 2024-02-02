@@ -5,13 +5,14 @@
       <canvas ref="mask" class="mask-text"></canvas>
     </div>
     <div class="author-info" :class="{ is_novel: isNovel }">
-      <img
+      <ImagePximg
         v-if="!isNovel"
         class="avatar"
+        nobg
         :src="artwork.author.avatar"
         :alt="artwork.author.name"
-        @click="toAuthor(artwork.author.id)"
-      >
+        @click.native="toAuthor(artwork.author.id)"
+      />
       <div class="name-box">
         <div v-if="isNovel && artwork.series && artwork.series.id" class="series">
           <router-link :to="`/novel/series/${artwork.series.id}`">{{ artwork.series.title }}</router-link>

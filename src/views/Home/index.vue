@@ -76,7 +76,7 @@ export default {
 .com_sel_tabs
   z-index 99
   top 0
-  padding 0.3rem 0
+  padding calc(0.3rem + var(--status-bar-height)) 0 0.3rem
   background: rgba(255,255,255,1)
 .home-i
   padding-bottom 100px

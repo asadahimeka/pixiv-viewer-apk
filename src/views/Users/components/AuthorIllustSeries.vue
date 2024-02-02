@@ -12,7 +12,7 @@
     >
       <masonry v-bind="masonryProps">
         <div v-for="s in artList" :key="s.id" class="series-cont" @click="toArtwork(s.id)">
-          <img class="series-bg" :src="s.cover_image_urls.medium" alt="">
+          <ImagePximg class="series-bg" :src="s.cover_image_urls.medium" alt="" />
           <div class="series-title">
             <p>
               <span>{{ s.title }}</span>

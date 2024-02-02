@@ -8,11 +8,11 @@
         </div>
         <div v-if="userInfo.id" class="info-container">
           <div class="bg-cover" :class="{ hasbgcover: !!userInfo.bgcover }">
-            <img v-lazy="userInfo.bgcover || userInfo.avatar" :class="{ nobg: !userInfo.bgcover }" :alt="userInfo.name">
+            <ImagePximg :src="userInfo.bgcover || userInfo.avatar" :class="{ nobg: !userInfo.bgcover }" :alt="userInfo.name" />
           </div>
           <div class="info">
             <div class="avatar">
-              <img :src="userInfo.avatar" :alt="userInfo.name">
+              <ImagePximg :src="userInfo.avatar" :alt="userInfo.name" />
             </div>
             <h2 class="name">
               <div class="user_name">
@@ -473,7 +473,7 @@ export default {
   }
   ::v-deep .van-sticky--fixed {
     background #fff
-    padding-top 0.6rem
+    // padding-top 0.6rem
   }
 }
 
@@ -679,6 +679,7 @@ export default {
 ::v-deep .top-bar-wrap
   padding-top 1rem
   background none
+  transition top 0.2s
 
 .follow_btn
   margin 20px 0
@@ -687,14 +688,23 @@ export default {
 
 .share_btn
   position: fixed;
-  top: 1.05rem;
+  top: 1.15rem;
   right 0.5rem;
   z-index: 99;
   font-size 0.675rem
   cursor pointer
+  transition top 0.2s
   .svg-icon
     color: #fafafa;
     filter: drop-shadow(0.02667rem 0.05333rem 0.05333rem rgba(0,0,0,0.8))
+
+.users:has(.van-sticky--fixed)
+  ::v-deep .top-bar-wrap
+    top 0.8rem
+    z-index 98
+  .share_btn
+    top 2rem
+    z-index 98
 
 @media screen and (min-width 768px)
   .users .info-container .info .name

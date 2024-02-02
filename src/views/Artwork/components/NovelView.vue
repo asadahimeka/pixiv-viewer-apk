@@ -7,7 +7,7 @@
     @click="showFull"
   >
     <div class="image-box">
-      <img v-lazy="getImgUrl" :alt="artwork.title" class="image">
+      <ImagePximg :src="getImgUrl" nobg :alt="artwork.title" class="image" />
     </div>
     <div
       class="novel_text"

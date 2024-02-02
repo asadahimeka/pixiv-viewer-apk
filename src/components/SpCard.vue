@@ -1,6 +1,6 @@
 <template>
   <div class="image-card">
-    <img v-lazy="artwork.thumbnail" :alt="artwork.title" class="image">
+    <ImagePximg :src="artwork.thumbnail" :alt="artwork.title" class="image" />
     <div class="meta">
       <div class="content">
         <h2 class="title" :title="artwork.title">{{ artwork.title }}</h2>

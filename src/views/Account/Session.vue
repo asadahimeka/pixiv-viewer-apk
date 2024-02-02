@@ -92,7 +92,7 @@ export default {
           closeOnPopstate: true,
           cancelButtonText: i18n.t('common.cancel'),
           confirmButtonText: i18n.t('common.confirm'),
-        })
+        }).catch(() => {})
         this.loading = true
         const userData = await login(this.sessionIdInput)
         this.$store.commit('setUser', userData)
@@ -132,7 +132,7 @@ export default {
   ::v-deep .top-bar-wrap
     width 1.3rem
     height 1.2rem
-    padding-top 20px
+    padding-top calc(20px + var(--status-bar-height))
     background transparent
 .tips
   p

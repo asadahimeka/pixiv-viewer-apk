@@ -110,7 +110,7 @@ export function logout() {
     setTimeout(() => {
       location.reload()
     }, 200)
-  })
+  }).catch(() => {})
 }
 
 export function validateSessionId(token) {

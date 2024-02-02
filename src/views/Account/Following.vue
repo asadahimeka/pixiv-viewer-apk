@@ -1,6 +1,6 @@
 <template>
   <div class="Following">
-    <van-tabs v-if="isLogin" v-model="activeTab" sticky animated swipeable color="#F2C358">
+    <van-tabs v-if="isLogin" v-model="activeTab" sticky animated color="#F2C358">
       <van-tab :title="$t('follow.timeline')" name="1">
         <LatestConcerned v-if="activeTab == 1" />
       </van-tab>

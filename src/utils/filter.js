@@ -70,7 +70,7 @@ export async function mintVerify(word = '', forceCheck = false) {
     if (!mint) {
       let filterWords = await getCache('s.filter.words')
       if (!filterWords) {
-        const resp = await fetch('https://unpkg.com/@dragon-fish/sensitive-words-filter@2.0.1/lib/words.txt')
+        const resp = await fetch(`${process.env.VUE_APP_COMMON_PROXY || ''}https://unpkg.com/@dragon-fish/sensitive-words-filter@2.0.1/lib/words.txt`)
         filterWords = (await resp.text()).split(/\s+/)
         setCache('s.filter.words', filterWords, -1)
       }

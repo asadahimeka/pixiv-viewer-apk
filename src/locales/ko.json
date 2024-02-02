@@ -42,7 +42,7 @@
     "clear": "클리어",
     "confirm": {
       "first": "{0}을 지우시겠습니까?",
-      "second": "청소 후 네트워크에서 관련 콘텐츠를 다시 로드합니다."
+      "second": "청소 후에는 검색 기록이 삭제되고 관련 콘텐츠가 네트워크에서 다시 로드됩니다."
     },
     "db": "데이터베이스 캐시",
     "local": "구성 항목 캐시",
@@ -238,7 +238,7 @@
       "cp_token_title": "RefreshToken 내보내기",
       "direct_mode": {
         "confirm": {
-          "msg": "직접 연결 모드는 속도가 느리고 안정성을 보장하지 않습니다.\n\nAppApi 프록시와 동시에 활성화할 수 없습니다.",
+          "msg": "직접 연결 모드는 속도가 더 빠를 수 있지만 안정성은 보장되지 않습니다. \nAppApi 프록시와 동시에 활성화할 수 없습니다.",
           "proxy_msg": "타사 클라우드 서비스를 통해 로컬 AppApi 요청을 전달하는 것은 안정성과 보안을 보장할 수 없습니다.\n\n직접 연결 모드와 동시에 켤 수 없습니다.",
           "proxy_title": "AppApi 프록시를 활성화하시겠습니까?",
           "title": "직접 모드를 활성화하시겠습니까?"
@@ -253,7 +253,7 @@
           "label": "클라우드 서비스를 통해 로컬 AppApi 요청을 프록시할지 여부",
           "title": "AppApi 프록시 활성화"
         },
-        "title": "다이렉트 모드 활성화"
+        "title": "AppApi 직접 모드 활성화"
       },
       "swipe_toggle": "세부정보 페이지에서 좌우로 스와이프하여 작품을 찾아보세요.",
       "ana": {
@@ -411,5 +411,20 @@
   "LEaBJrLF0DUhyTe6-fKYT": "이 태그를 차단하시겠습니까?",
   "kFOiZTwKWwXy-sxaspqSD": "목록 이미지를 길게 누르면 태그 차단",
   "w73XEmHradtum3SQ9IjBq": "이 작성자를 차단하시겠습니까?",
-  "JKCgrgXZfg4-HDftheb96": "새 버전이 감지되었습니다. 다운로드하시겠습니까?"
+  "JKCgrgXZfg4-HDftheb96": "새 버전이 감지되었습니다. 다운로드하시겠습니까?",
+  "ZO7u4XT4flW6_nmyvmXt7": "카드 목록 이미지 아래에 메타정보를 넣어주세요",
+  "ebHfHD4g4932R2m1gFtmn": "홈 페이지로 돌아가시겠습니까?",
+  "L1YwIFcNQQQVihEgMBUaK": "청소 후 설정이 재설정됩니다.",
+  "Et3Fbos0N7bv9zGBznTLc": "Pximg 직접 모드 활성화",
+  "mq3jjWeUDS-TPnfYJQvD5": "pximg 직접 연결 모드는 이미지를 더 빠르게 로드할 수 있지만 가용성과 안정성은 보장되지 않습니다.",
+  "ltKHIZm9mBZ8Dit_u8aW4": "썸네일 캐시",
+  "5wkdnjEH9KXox8uIHhQmm": "다운로드 기록",
+  "vfK4o14WHBwqoxlLGXBhw": "다운로드 기록을 삭제하시겠습니까? \n다운로드한 파일은 삭제되지 않습니다.",
+  "LnRdC18i8h90keGy4mNmv": "다운로드됨",
+  "HYU_Dtvsq74EoxIp0TEOn": "모두",
+  "d1aggG8fdPzwvQMZYbzdg": "다시 해 보다",
+  "kv6zdp6UsJDYstYPq-p50": "세부",
+  "4A4oYtzfF0C8cA59wAXBF": "열려 있는",
+  "B7pyxk7y7DpmBPASgNjJR": "ffmpeg를 사용한 변환은 시간이 더 오래 걸리고 실패할 수 있습니다.",
+  "gajzCbySkleDQrtXfX38H": "ugoira.com에서 다운로드"
 }

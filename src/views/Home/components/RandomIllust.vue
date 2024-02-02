@@ -58,7 +58,7 @@ export default {
     getRankList: _.throttle(async function () {
       this.loading = true
       const mode = _.sample(this.rankModes)
-      const date = dayjs().subtract(_.random(2, 28), 'days').format('YYYY-MM-DD')
+      const date = dayjs().subtract(_.random(2, 14), 'days').format('YYYY-MM-DD')
       const res = await api.getRankList(mode, this.curPage, date, true)
       if (res.status === 0) {
         this.artList = _.uniqBy([

@@ -7,7 +7,7 @@
         class="user_info"
         @click="toArtwork(u.id)"
       >
-        <img class="user_avatar" :src="u.avatar" alt="">
+        <ImagePximg class="user_avatar" nobg :src="u.avatar" alt="" />
         <div class="user_name">{{ u.name }}</div>
         <div
           class="cover"
@@ -56,7 +56,7 @@ export default {
       }).then(async () => {
         this.artList = []
         await setCache('users.history', null)
-      })
+      }).catch(() => {})
     },
   },
 }

@@ -13,6 +13,7 @@ module.exports = {
   productionSourceMap: false,
   transpileDependencies: ['mint-filter'],
   configureWebpack: config => {
+    config.resolve.alias['@capacitor/filesystem'] = '@himeka/capacitor-filesystem'
     if (isProduction) {
       config.optimization.minimizer[0].options.minimizer.options.compress.drop_console = true
     }

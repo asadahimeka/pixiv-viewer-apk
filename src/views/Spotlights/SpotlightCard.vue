@@ -10,7 +10,7 @@
       <swiper class="swipe-wrap" :options="swiperOption">
         <swiper-slide v-for="art in spotlights.articles" :key="art.id" class="swipe-item">
           <div class="spec_wp" @click="toDetail(art.id)">
-            <img v-lazy="art.thumbnail" :alt="art.title">
+            <ImagePximg :src="art.thumbnail" :alt="art.title" />
             <div class="sp_info">
               <h2 class="sp_title">{{ art.title }}</h2>
             </div>
@@ -127,8 +127,9 @@ export default {
       border-radius: 20px;
 
       &[lazy="loading"] {
-        width: 100px;
-        height: 100px;
+        width: 100%;
+        height: 100%;
+        opacity 0
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);

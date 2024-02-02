@@ -42,7 +42,7 @@
     "clear": "清理",
     "confirm": {
       "first": "確定要清理{0}嗎？",
-      "second": "清理後將重新從網路加載相關內容"
+      "second": "清理後瀏覽記錄將會被刪除，且將重新從網路載入相關內容"
     },
     "db": "數據庫緩存",
     "local": "配置項緩存",
@@ -238,7 +238,7 @@
       "cp_token_title": "導出 RefreshToken",
       "direct_mode": {
         "confirm": {
-          "msg": "直連模式速度較慢、不保證穩定性。\n不可與 AppApi 代理同時開啟。",
+          "msg": "直連模式速度可能較快，但不保證穩定性。\n不可與 AppApi 代理同時開啟。",
           "proxy_msg": "通過第三方雲服務轉發本地 AppApi 請求，無法保證穩定性與安全性。\n不可與直連模式同時開啟。",
           "proxy_title": "確認啟用 AppApi 代理？",
           "title": "確認啟用直連模式？"
@@ -253,7 +253,7 @@
           "label": "是否通過雲服務代理本地 AppApi 請求",
           "title": "啟用 AppApi 代理"
         },
-        "title": "啟用直連模式"
+        "title": "啟用 AppApi 直連模式"
       },
       "swipe_toggle": "詳情頁左右滑動瀏覽作品",
       "ana": {
@@ -411,5 +411,20 @@
   "LEaBJrLF0DUhyTe6-fKYT": "你想屏蔽這個標籤嗎？",
   "kFOiZTwKWwXy-sxaspqSD": "列表圖片長按屏蔽",
   "w73XEmHradtum3SQ9IjBq": "你想屏蔽這個作者嗎？",
-  "JKCgrgXZfg4-HDftheb96": "偵測到新版本，是否前往下載？"
+  "JKCgrgXZfg4-HDftheb96": "偵測到新版本，是否前往下載？",
+  "ZO7u4XT4flW6_nmyvmXt7": "列表圖片資訊外置",
+  "ebHfHD4g4932R2m1gFtmn": "是否返回首頁？",
+  "L1YwIFcNQQQVihEgMBUaK": "清理後設定項目將重置",
+  "Et3Fbos0N7bv9zGBznTLc": "啟用 pximg 圖片直連模式",
+  "mq3jjWeUDS-TPnfYJQvD5": "pximg 直連模式載入圖片可能較快，但不保證可用性及穩定性",
+  "ltKHIZm9mBZ8Dit_u8aW4": "縮圖緩存",
+  "5wkdnjEH9KXox8uIHhQmm": "下載記錄",
+  "vfK4o14WHBwqoxlLGXBhw": "確定要清除下載記錄嗎？\n已下載的檔案不會被刪除。",
+  "LnRdC18i8h90keGy4mNmv": "已下載",
+  "HYU_Dtvsq74EoxIp0TEOn": "全部",
+  "d1aggG8fdPzwvQMZYbzdg": "重試",
+  "kv6zdp6UsJDYstYPq-p50": "詳情",
+  "4A4oYtzfF0C8cA59wAXBF": "打開",
+  "B7pyxk7y7DpmBPASgNjJR": "使用 ffmpeg 進行轉換，處理時間較長且可能失敗",
+  "gajzCbySkleDQrtXfX38H": "從 ugoira.com 下載"
 }

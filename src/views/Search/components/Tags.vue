@@ -8,7 +8,7 @@
         :style="{ backgroundImage: `linear-gradient(45deg, ${randColor()} 0%, ${randColor()} 100%)` }"
         @click.stop="search(tag.name)"
       >
-        <img :src="tag.pic" alt @contextmenu="preventContext">
+        <ImagePximg :src="tag.pic" nobg alt @contextmenu.native="preventContext" />
         <div v-longpress="ev => toArtwork(ev, tag.pic)" class="meta" @contextmenu="preventContext">
           <div class="content">
             <div v-if="tag.name" class="name" :class="[getLength(tag.name)]">#{{ tag.name }}</div>

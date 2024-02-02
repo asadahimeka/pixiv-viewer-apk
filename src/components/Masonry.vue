@@ -55,7 +55,7 @@ export default {
 </script>
 
 <style>
-.wf-grid .image-card {
+.wf-grid .image-card-wrapper {
   padding-bottom: 100% !important;
 }
 
@@ -71,15 +71,27 @@ export default {
 }
 
 .justified-container .image-card {
+  --jstf-w: 320;
+  --jstf-w-px: 320PX;
+  flex-grow: calc(var(--w) * var(--jstf-w) / var(--h));
+  width: calc(var(--w) * var(--jstf-w-px) / var(--h));
+}
+
+@media screen and (max-width: 500px) {
+  .justified-container .image-card {
+    --jstf-w: 240;
+    --jstf-w-px: 240PX;
+  }
+}
+
+.justified-container .image-card-wrapper {
   position: relative !important;
   aspect-ratio: var(--w) / var(--h);
-  flex-grow: calc(var(--w) * 320 / var(--h));
-  width: calc(var(--w) * 320PX / var(--h));
   margin-bottom: 0 !important;
   padding-bottom: 0 !important;
 }
 
-.justified-container .image-card::before {
+.justified-container .image-card-wrapper::before {
   content: '';
   display: block;
   padding-bottom: calc(var(--h) / var(--w) * 100%) !important;

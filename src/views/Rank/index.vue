@@ -26,7 +26,7 @@
         type="date"
         :min="minDate"
         :max="maxDate"
-        style="width: 0;opacity: 0;"
+        style="width: 0;border: 0;opacity: 0;"
       >
     </div>
     <van-list
@@ -275,8 +275,8 @@ export default {
     top: 0;
     left 0
     width: 100%;
-    height: 100px;
-    padding: 0 32px 0 12px;
+    min-height: 100px;
+    padding: var(--status-bar-height) 20px 10px;
     box-sizing: border-box;
     // background: #fff;
     z-index: 10;
@@ -292,7 +292,7 @@ export default {
       position: relative;
       width: 60px;
       height: 60px;
-      margin-left: 8px;
+      margin-left: 15px;
       background: url('~@/assets/images/calendar.png') center no-repeat;
       background-size: 100%;
       transform: translateY(-4px);

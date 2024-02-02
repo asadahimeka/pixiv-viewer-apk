@@ -6,7 +6,7 @@
         <span class="title">{{ $t('sp.recomm_4u') }}</span>
       </template>
     </van-cell>
-    <van-tabs v-model="activeTab" sticky animated swipeable color="#F2C358">
+    <van-tabs v-model="activeTab" animated swipeable color="#F2C358">
       <van-tab :title="$t('common.illust')" name="illusts">
         <DiscoveryIllusts />
       </van-tab>

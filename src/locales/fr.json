@@ -42,7 +42,7 @@
     "clear": "Nettoyer",
     "confirm": {
       "first": "Voulez-vous vraiment effacer {0} ?",
-      "second": "Rechargera le contenu pertinent du réseau après le nettoyage"
+      "second": "Après le nettoyage, l'historique de navigation sera supprimé et le contenu pertinent sera rechargé depuis le réseau."
     },
     "db": "Cache de base de données",
     "local": "Cache des éléments de configuration",
@@ -239,7 +239,7 @@
       "cp_token_title": "Exporter le jeton d'actualisation",
       "direct_mode": {
         "confirm": {
-          "msg": "Le mode de connexion directe est plus lent et ne garantit pas la stabilité.\n\nIl ne peut pas être activé en même temps que le proxy AppApi.",
+          "msg": "Le mode de connexion directe est peut-être plus rapide, mais la stabilité n'est pas garantie. \nNe peut pas être activé en même temps que le proxy AppApi.",
           "proxy_msg": "Le transfert de requêtes AppApi locales via des services cloud tiers ne peut pas garantir la stabilité et la sécurité.\n\nIl ne peut pas être activé en même temps que le mode de connexion directe.",
           "proxy_title": "Êtes-vous sûr d'avoir activé le proxy AppApi ?",
           "title": "Êtes-vous sûr d'avoir activé le mode direct ?"
@@ -254,7 +254,7 @@
           "label": "S'il faut proxy les requêtes AppApi locales via les services cloud",
           "title": "Activer le proxy AppApi"
         },
-        "title": "Activer le mode direct"
+        "title": "Activer le mode direct AppApi"
       },
       "ana": {
         "label": "S'il faut envoyer des statistiques anonymes à AppCenter pour l'amélioration de l'application",
@@ -411,5 +411,20 @@
   "LEaBJrLF0DUhyTe6-fKYT": "Voulez-vous bloquer cette balise ?",
   "kFOiZTwKWwXy-sxaspqSD": "Bloquer les balises en appuyant longuement sur les images de la liste",
   "w73XEmHradtum3SQ9IjBq": "Voulez-vous bloquer cet auteur ?",
-  "JKCgrgXZfg4-HDftheb96": "Une nouvelle version a été détectée. Voulez-vous la télécharger ?"
+  "JKCgrgXZfg4-HDftheb96": "Une nouvelle version a été détectée. Voulez-vous la télécharger ?",
+  "ZO7u4XT4flW6_nmyvmXt7": "Mettez les méta-informations sous l'image de la liste des cartes",
+  "ebHfHD4g4932R2m1gFtmn": "Voulez-vous revenir à la page d'accueil ?",
+  "L1YwIFcNQQQVihEgMBUaK": "Les paramètres seront réinitialisés après le nettoyage",
+  "Et3Fbos0N7bv9zGBznTLc": "Activer le mode direct Pximg",
+  "mq3jjWeUDS-TPnfYJQvD5": "Le mode de connexion directe pximg peut charger les images plus rapidement, mais la disponibilité et la stabilité ne sont pas garanties.",
+  "ltKHIZm9mBZ8Dit_u8aW4": "Cache de vignettes",
+  "5wkdnjEH9KXox8uIHhQmm": "Téléchargements",
+  "vfK4o14WHBwqoxlLGXBhw": "Êtes-vous sûr de vouloir effacer l'historique des téléchargements ? \nLes fichiers téléchargés ne seront pas supprimés.",
+  "LnRdC18i8h90keGy4mNmv": "Téléchargé",
+  "HYU_Dtvsq74EoxIp0TEOn": "Tous",
+  "d1aggG8fdPzwvQMZYbzdg": "Recommencez",
+  "kv6zdp6UsJDYstYPq-p50": "Détails",
+  "4A4oYtzfF0C8cA59wAXBF": "Ouvrir",
+  "B7pyxk7y7DpmBPASgNjJR": "La conversion à l'aide de ffmpeg prend plus de temps et peut échouer",
+  "gajzCbySkleDQrtXfX38H": "Télécharger sur ugoira.com"
 }

@@ -17,6 +17,7 @@ import Spotlights from '@/views/Spotlights/Spotlights.vue'
 import Spotlight from '@/views/Spotlights/Spotlight.vue'
 import SpotlightDetail from '@/views/Spotlights/SpotlightDetail.vue'
 import Search from '@/views/Search/index.vue'
+import SearchRes from '@/views/Search/SearchRes.vue'
 import SearchNovel from '@/views/Search/SearchNovel.vue'
 import SearchUser from '@/views/Search/SearchUser.vue'
 import SearchUserRes from '@/views/Search/SearchUserRes.vue'
@@ -25,6 +26,7 @@ import RankNovel from '@/views/Rank/RankNovel.vue'
 import Following from '@/views/Account/Following.vue'
 import Setting from '@/views/Setting/index.vue'
 import History from '@/views/Setting/History.vue'
+import Downloads from '@/views/Setting/Downloads.vue'
 import ClearCache from '@/views/Setting/ClearCache.vue'
 import ContentsDisplay from '@/views/Setting/ContentsDisplay.vue'
 import SettingOthers from '@/views/Setting/OtherSetting.vue'
@@ -83,7 +85,7 @@ const routes = [
             path: '/search/:keyword',
             alias: ['/s/:keyword'],
             name: 'SearchKeyword',
-            component: Search,
+            component: SearchRes,
             meta: { __depth: 1 },
           },
           {
@@ -210,6 +212,12 @@ const routes = [
             meta: { __depth: 2 },
           },
           {
+            path: '/setting/downloads',
+            name: 'Downloads',
+            component: Downloads,
+            meta: { __depth: 2 },
+          },
+          {
             path: '/setting/clearcache',
             name: 'ClearCache',
             component: ClearCache,
@@ -321,12 +329,20 @@ const router = new VueRouter({
   },
 })
 
+const isDark = !!localStorage.PXV_DARK
+
 router.beforeEach((to, from, next) => {
+  if (!isPageEffectOn && !isDark) document.body.classList.add('fadeIn')
   nprogress.start()
   next()
 })
 
 router.afterEach((to, from) => {
+  if (!isPageEffectOn && !isDark) {
+    setTimeout(() => {
+      document.body.classList.remove('fadeIn')
+    }, 500)
+  }
   nprogress.done()
   console.log('afterEach to', to.fullPath)
   console.log('afterEach from', from.fullPath)

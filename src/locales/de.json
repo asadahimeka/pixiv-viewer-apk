@@ -42,7 +42,7 @@
     "clear": "Aufräumen",
     "confirm": {
       "first": "Möchten Sie {0} wirklich löschen?",
-      "second": "Lädt nach der Bereinigung relevante Inhalte aus dem Netzwerk neu"
+      "second": "Nach der Bereinigung wird der Browserverlauf gelöscht und relevante Inhalte neu aus dem Netzwerk geladen."
     },
     "db": "Datenbank-Cache",
     "local": "Cache für Konfigurationselemente",
@@ -238,7 +238,7 @@
       "cp_token_title": "RefreshToken exportieren",
       "direct_mode": {
         "confirm": {
-          "msg": "Der Direktverbindungsmodus ist langsamer und garantiert keine Stabilität.\n\nEs kann nicht gleichzeitig mit dem AppApi-Proxy aktiviert werden.",
+          "msg": "Der Direktverbindungsmodus ist möglicherweise schneller, die Stabilität kann jedoch nicht garantiert werden. \nKann nicht gleichzeitig mit dem AppApi-Proxy aktiviert werden.",
           "proxy_msg": "Die Weiterleitung lokaler AppApi-Anfragen über Cloud-Dienste von Drittanbietern kann keine Stabilität und Sicherheit garantieren.\n\nEs kann nicht gleichzeitig mit dem Direktverbindungsmodus aktiviert werden.",
           "proxy_title": "Sind Sie sicher, dass Sie den AppApi-Proxy aktivieren?",
           "title": "Sind Sie sicher, dass Sie den Direktmodus aktivieren?"
@@ -253,7 +253,7 @@
           "label": "Ob lokale AppApi-Anfragen über Cloud-Dienste weitergeleitet werden sollen",
           "title": "Aktivieren Sie den AppApi-Proxy"
         },
-        "title": "Aktivieren Sie den Direktmodus"
+        "title": "Aktivieren Sie den AppApi-Direktmodus"
       },
       "swipe_toggle": "Wischen Sie auf der Detailseite nach links und rechts, um Werke zu durchsuchen",
       "ana": {
@@ -411,5 +411,20 @@
   "LEaBJrLF0DUhyTe6-fKYT": "Möchten Sie dieses Tag blockieren?",
   "kFOiZTwKWwXy-sxaspqSD": "Blockieren Sie Tags, wenn Sie lange auf Listenbilder drücken",
   "w73XEmHradtum3SQ9IjBq": "Möchten Sie diesen Autor blockieren?",
-  "JKCgrgXZfg4-HDftheb96": "Es wurde eine neue Version erkannt. Möchten Sie sie herunterladen?"
+  "JKCgrgXZfg4-HDftheb96": "Es wurde eine neue Version erkannt. Möchten Sie sie herunterladen?",
+  "ZO7u4XT4flW6_nmyvmXt7": "Τοποθετήστε τις μετα-πληροφορίες κάτω από την εικόνα της λίστας καρτών",
+  "ebHfHD4g4932R2m1gFtmn": "Θέλετε να επιστρέψετε στην αρχική σελίδα;",
+  "L1YwIFcNQQQVihEgMBUaK": "Die Einstellungen werden nach der Reinigung zurückgesetzt",
+  "Et3Fbos0N7bv9zGBznTLc": "Aktivieren Sie den Pximg-Direktmodus",
+  "mq3jjWeUDS-TPnfYJQvD5": "Der direkte Verbindungsmodus von pximg lädt Bilder möglicherweise schneller, Verfügbarkeit und Stabilität können jedoch nicht garantiert werden",
+  "ltKHIZm9mBZ8Dit_u8aW4": "Miniaturbild-Cache",
+  "5wkdnjEH9KXox8uIHhQmm": "Downloads",
+  "vfK4o14WHBwqoxlLGXBhw": "Sind Sie sicher, dass Sie den Download-Verlauf löschen möchten? \nHeruntergeladene Dateien werden nicht gelöscht.",
+  "LnRdC18i8h90keGy4mNmv": "Heruntergeladen",
+  "HYU_Dtvsq74EoxIp0TEOn": "Alle",
+  "d1aggG8fdPzwvQMZYbzdg": "Wiederholen",
+  "kv6zdp6UsJDYstYPq-p50": "Einzelheiten",
+  "4A4oYtzfF0C8cA59wAXBF": "Offen",
+  "B7pyxk7y7DpmBPASgNjJR": "Die Konvertierung mit ffmpeg dauert länger und schlägt möglicherweise fehl",
+  "gajzCbySkleDQrtXfX38H": "Von ugoira.com herunterladen"
 }

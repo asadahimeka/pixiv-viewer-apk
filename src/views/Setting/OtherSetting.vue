@@ -1,7 +1,7 @@
 <template>
   <div class="setting-page">
     <top-bar id="top-bar-wrap" />
-    <h3 class="af_title">{{ $t('setting.other.title') }}</h3>
+    <h3 class="af_title" @dblclick="showAnaSwitch=true">{{ $t('setting.other.title') }}</h3>
     <van-cell center :title="$t('setting.other.lang')" is-link :label="lang.value" @click="lang.show = true" />
     <van-cell center :title="$t('setting.layout.title')" is-link :label="wfType.value" @click="wfType.show = true" />
     <van-cell center :title="$t('setting.img_res.title')" is-link :label="imgRes.value" @click="imgRes.show = true" />
@@ -30,15 +30,30 @@
         <van-switch :disabled="isLongpressDL" :value="isLongpressBlock" size="24" @change="changeLongpressBlock" />
       </template>
     </van-cell>
-    <van-cell center :title="$t('setting.other.manual_input')" :label="$t('setting.other.manual_input_label')">
+    <van-cell center :title="$t('ZO7u4XT4flW6_nmyvmXt7')" :label="$t('setting.lab.title')">
+      <template #right-icon>
+        <van-switch :value="isImageCardOuterMeta" size="24" @change="changeImageCardOuterMeta" />
+      </template>
+    </van-cell>
+    <van-cell v-if="!(isPximgDirect && appConfig.useLocalAppApi)" center :title="$t('setting.other.manual_input')" :label="$t('setting.other.manual_input_label')">
       <template #right-icon>
         <van-switch v-model="hideApSelect" size="24" />
       </template>
     </van-cell>
-    <van-cell v-if="hideApSelect" center :title="$t('setting.img_proxy.title')" is-link :label="pximgBed.value" @click="pximgBed.show = true" />
-    <van-cell v-if="!appConfig.useLocalAppApi && hideApSelect" center :title="$t('setting.api.title')" is-link :label="hibiapi.value" @click="hibiapi.show = true" />
-    <van-cell v-if="!hideApSelect" center :title="$t('setting.img_proxy.title2')" is-link :label="pximgBedLabel" @click="pximgBed_.show = true" />
-    <van-cell v-if="!appConfig.useLocalAppApi && !hideApSelect" center :title="$t('setting.api.title2')" is-link :label="hibiapiLabel" @click="hibiapi_.show = true" />
+    <template v-if="!isPximgDirect">
+      <van-cell v-if="hideApSelect" center :title="$t('setting.img_proxy.title')" is-link :label="pximgBed.value" @click="pximgBed.show = true" />
+      <van-cell v-if="!hideApSelect" center :title="$t('setting.img_proxy.title2')" is-link :label="pximgBedLabel" @click="pximgBed_.show = true" />
+    </template>
+    <template v-if="!appConfig.useLocalAppApi">
+      <van-cell v-if="hideApSelect" center :title="$t('setting.api.title')" is-link :label="hibiapi.value" @click="hibiapi.show = true" />
+      <van-cell v-if="!hideApSelect" center :title="$t('setting.api.title2')" is-link :label="hibiapiLabel" @click="hibiapi_.show = true" />
+    </template>
+    <van-cell center :title="$t('Et3Fbos0N7bv9zGBznTLc')" :label="$t('setting.lab.title')">
+      <template #right-icon>
+        <van-switch :value="isPximgDirect" size="24" @change="changePximgDirect" />
+      </template>
+    </van-cell>
+    <van-cell v-if="appConfig.directMode || isPximgDirect" center :title="$t('setting.other.direct_mode.host.title')" is-link :label="$t('setting.other.direct_mode.host.label')" @click="clearApiHosts" />
     <template v-if="appConfig.useLocalAppApi">
       <van-cell center :title="$t('setting.other.direct_mode.title')" :label="$t('setting.other.direct_mode.label')">
         <template #right-icon>
@@ -51,14 +66,13 @@
         </template>
       </van-cell>
       <van-cell v-if="appConfig.useApiProxy" center :title="$t('setting.other.api_proxy.title')" is-link :label="apiProxyLabel||$t('setting.other.api_proxy.def_ph')" @click="apiProxySel.show = true" />
-      <van-cell v-if="appConfig.directMode" center :title="$t('setting.other.direct_mode.host.title')" is-link :label="$t('setting.other.direct_mode.host.label')" @click="clearApiHosts" />
       <van-cell v-if="appConfig.refreshToken" center :title="$t('setting.other.cp_token_title')" is-link :label="$t('setting.other.cp_token_label')" @click="copyToken" />
     </template>
-    <!-- <van-cell center :title="$t('setting.other.ana.title')" :label="$t('setting.other.ana.label')">
+    <van-cell v-if="showAnaSwitch" center :title="$t('setting.other.ana.title')" :label="$t('setting.other.ana.label')">
       <template #right-icon>
         <van-switch :value="isAnalyticsOn" size="24" @change="onAnalyticsChange" />
       </template>
-    </van-cell> -->
+    </van-cell>
     <van-dialog
       v-model="pximgBed.show"
       width="9rem"
@@ -166,7 +180,7 @@ export default {
       apiProxySel: {
         show: false,
         actions: APP_API_PROXYS.split(',').map((_value, i) => {
-          return { name: `Proxy ${i}`, _value }
+          return { name: `Proxy ${i} (${_value.split(/[.-]/)[0]})`, _value }
         }),
       },
       pximgBed: {
@@ -234,6 +248,9 @@ export default {
       isPageEffectOn: LocalStorage.get('PXV_PAGE_EFFECT', false),
       isLongpressDL: LocalStorage.get('PXV_LONGPRESS_DL', false),
       isLongpressBlock: LocalStorage.get('PXV_LONGPRESS_BLOCK', false),
+      isImageCardOuterMeta: LocalStorage.get('PXV_IMG_META_OUTER', false),
+      isPximgDirect: LocalStorage.get('PXV_PXIMG_DIRECT', false),
+      showAnaSwitch: false,
     }
   },
   computed: {
@@ -278,7 +295,7 @@ export default {
           message: this.$t('setting.other.direct_mode.confirm.msg'),
           confirmButtonText: this.$t('common.confirm'),
           cancelButtonText: this.$t('common.cancel'),
-        })
+        }).catch(() => 'cancel')
         if (res == 'cancel') return
         trackEvent('setDirectMode')
         this.appConfig.directMode = true
@@ -297,7 +314,7 @@ export default {
           message: this.$t('setting.other.direct_mode.confirm.proxy_msg'),
           confirmButtonText: this.$t('common.confirm'),
           cancelButtonText: this.$t('common.cancel'),
-        })
+        }).catch(() => 'cancel')
         if (res == 'cancel') return
         trackEvent('setUseApiProxy')
         this.appConfig.useApiProxy = true
@@ -314,8 +331,10 @@ export default {
         message: this.$t('setting.other.direct_mode.host_msg'),
         confirmButtonText: this.$t('common.confirm'),
         cancelButtonText: this.$t('common.cancel'),
-      })
+      }).catch(() => 'cancel')
       if (res == 'cancel') return
+      trackEvent('clearApiHosts')
+      LocalStorage.remove('PXV_PXIMG_IP')
       delete this.appConfig.apiHosts
       await this.saveConfig()
     },
@@ -390,7 +409,7 @@ export default {
       }, 500)
     },
     onDarkChange(val) {
-      trackEvent(`set_dark_${val}`)
+      trackEvent('set_dark', { val })
       this.isDark = val
       this.$nextTick(() => {
         localStorage.setItem('PXV_DARK', val || '')
@@ -401,16 +420,17 @@ export default {
     },
     async onAnalyticsChange(val) {
       try {
-        trackEvent(`AnalyticsChange_${val}`)
+        trackEvent('AnalyticsChange', { val })
         this.isAnalyticsOn = val
         LocalStorage.set('PXV_ANALYTICS', val)
+        val ? localStorage.removeItem('umami.disabled') : localStorage.setItem('umami.disabled', val)
         await Analytics.setEnabled({ enabled: val })
       } catch (err) {
         console.log('err: ', err)
       }
     },
     changeEnableSwipe(val) {
-      trackEvent(`changeEnableSwipe_${val}`)
+      trackEvent('changeEnableSwipe', { val })
       this.enableSwipe = val
       this.$nextTick(() => {
         LocalStorage.set('PXV_IMG_DTL_SWIPE', val)
@@ -420,6 +440,7 @@ export default {
       })
     },
     changePageEffect(val) {
+      trackEvent('changePageEffect', { val })
       this.isPageEffectOn = val
       this.$nextTick(() => {
         LocalStorage.set('PXV_PAGE_EFFECT', val)
@@ -429,6 +450,7 @@ export default {
       })
     },
     changeLongpressDL(val) {
+      trackEvent('changeLongpressDL', { val })
       this.isLongpressDL = val
       this.$nextTick(() => {
         LocalStorage.set('PXV_LONGPRESS_DL', val)
@@ -438,6 +460,7 @@ export default {
       })
     },
     changeLongpressBlock(val) {
+      trackEvent('changeLongpressBlock', { val })
       this.isLongpressBlock = val
       this.$nextTick(() => {
         LocalStorage.set('PXV_LONGPRESS_BLOCK', val)
@@ -445,6 +468,41 @@ export default {
           location.reload()
         }, 500)
       })
+    },
+    changeImageCardOuterMeta(val) {
+      trackEvent('changeImageCardOuterMeta', { val })
+      this.isImageCardOuterMeta = val
+      this.$nextTick(() => {
+        LocalStorage.set('PXV_IMG_META_OUTER', val)
+        setTimeout(() => {
+          location.reload()
+        }, 500)
+      })
+    },
+    async changePximgDirect(val) {
+      if (val) {
+        const res = await Dialog.confirm({
+          title: this.$t('setting.other.direct_mode.confirm.title'),
+          message: this.$t('mq3jjWeUDS-TPnfYJQvD5'),
+          confirmButtonText: this.$t('common.confirm'),
+          cancelButtonText: this.$t('common.cancel'),
+        }).catch(() => 'cancel')
+        if (res == 'cancel') return
+        trackEvent('setPximgDirectMode')
+        this.isPximgDirect = true
+        await this.$nextTick()
+        LocalStorage.set('PXV_PXIMG_DIRECT', true)
+        setTimeout(() => {
+          location.reload()
+        }, 500)
+      } else {
+        this.isPximgDirect = false
+        await this.$nextTick()
+        LocalStorage.set('PXV_PXIMG_DIRECT', false)
+        setTimeout(() => {
+          location.reload()
+        }, 500)
+      }
     },
     changeLang({ name }) {
       this.lang.value = name

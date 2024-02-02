@@ -2,6 +2,7 @@
   <div id="app">
     <Preload />
     <router-view />
+    <div id="nav-bar-overlay"></div>
   </div>
 </template>
 
@@ -67,7 +68,7 @@ html,body
     z-index 1
     left 50%
     transform translateX(-50%)
-    top 0.3rem
+    top calc(0.3rem + var(--status-bar-height))
     margin-bottom 0
     padding 0
 </style>

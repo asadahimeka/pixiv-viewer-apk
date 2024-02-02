@@ -5,7 +5,7 @@
       <Icon class="icon" name="ex_link" />
     </div>
     <div class="main_cover">
-      <img v-lazy="spotlight.cover || ''" alt="">
+      <ImagePximg :src="spotlight.cover || ''" alt="" />
       <div class="title_wp">
         <div class="title_cnt">
           <h1 class="title">{{ spotlight.title }}</h1>
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 import TopBar from '@/components/TopBar'
 import ImageCard from '@/components/ImageCard'
 import api from '@/api'
@@ -109,9 +110,9 @@ export default {
     },
     async getDetail() {
       this.loading = true
-      const res = await api.getSpotlightDetail(this.spid)
+      const res = _.cloneDeep(await api.getSpotlightDetail(this.spid))
       if (res.status === 0) {
-        res.data.cover = process.env.VUE_APP_COMMON_PROXY + res.data.cover
+        res.data.cover = (process.env.VUE_APP_COMMON_PROXY || '') + res.data.cover
         res.data.items = res.data.items.map(e => ({
           id: e.illust_id,
           title: e.title,
@@ -285,14 +286,17 @@ export default {
 
 .ex_link
   position: fixed;
-  top: 0;
+  top: var(--status-bar-height);
   right 0
-  padding: 0.77rem 0.5rem;
+  padding: 0.9rem 0.5rem;
   z-index: 99;
   font-size 2.2em
   cursor pointer
   .svg-icon
     color: #fafafa;
     filter: drop-shadow(0.02667rem 0.05333rem 0.05333rem rgba(0,0,0,0.8))
+
+::v-deep .top-bar-wrap
+  top var(--status-bar-height)
 
 </style>

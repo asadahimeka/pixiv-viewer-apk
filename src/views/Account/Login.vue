@@ -2,9 +2,9 @@
   <div class="setting-page">
     <top-bar id="top-bar-wrap" />
     <h3 class="af_title">{{ $t('user.sess.login') }}</h3>
-    <van-cell size="large" center title="Web API (Cookie)" is-link to="/account/session" />
     <van-cell size="large" center title="App API (RefreshToken)" is-link @click="openConfirmDialog('showTokenDialog')" />
     <van-cell size="large" center title="App API (OAuth)" is-link @click="openConfirmDialog('showConfirmDialog')" />
+    <van-cell size="large" center title="Web API (Cookie)" is-link to="/account/session" />
     <van-dialog
       v-model="showConfirmDialog"
       width="9rem"
@@ -65,7 +65,7 @@ export default {
         closeOnPopstate: true,
         cancelButtonText: this.$t('common.cancel'),
         confirmButtonText: this.$t('common.confirm'),
-      })
+      }).catch(() => {})
       if (res != 'confirm') return
       this[showKey] = true
     },
@@ -93,7 +93,7 @@ export default {
           message: this.$t('setting.other.direct_mode.confirm.proxy_msg'),
           confirmButtonText: this.$t('common.confirm'),
           cancelButtonText: this.$t('common.cancel'),
-        })
+        }).catch(() => 'cancel')
         if (res == 'cancel') return
         this.$set(this.appConfig, 'useApiProxy', true)
         trackEvent('useApiProxy', { val })

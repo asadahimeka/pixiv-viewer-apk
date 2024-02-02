@@ -84,7 +84,7 @@ export default {
     return {
       wvVersion: '',
       appInfo: {},
-      curVer: 'v1.13.2',
+      curVer: 'v1.13.6',
     }
   },
   async created() {
@@ -107,7 +107,7 @@ export default {
       const resp = await fetch('https://d.cocomi.eu.org/https://install.appcenter.ms/api/v0.1/apps/yumine/pixiv-viewer/distribution_groups/beta/public_releases?scope=tester&top=10000')
       const json = await resp.json()
       if (json?.[0]?.version != this.appInfo.build) {
-        const res = await Dialog.confirm({ message: this.$t('JKCgrgXZfg4-HDftheb96') })
+        const res = await Dialog.confirm({ message: this.$t('JKCgrgXZfg4-HDftheb96') }).catch(() => {})
         if (res != 'confirm') return
         this.openAppCenter()
       }
