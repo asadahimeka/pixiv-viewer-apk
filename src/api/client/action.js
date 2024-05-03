@@ -312,12 +312,23 @@ function initApp(pixiv) {
     const { id } = req.query
     return pixiv.novelText(id)
   })
+  app.get('/webview_novel', async req => {
+    const { id, raw } = req.query
+    return pixiv.webviewNovel(id, raw == 'true')
+  })
+  app.get('/live_list', async req => {
+    const { page = 1, size = 30 } = req.query
+    const params = {}
+    if (page > 1) params.offset = (page - 1) * size
+    return pixiv.liveList(params)
+  })
   app.get('/req_get', async req => {
     const { path, params } = req.query
     console.log('path: ', path)
     console.log('params: ', params)
     const fns = {
       'v2/illust/follow': () => pixiv.illustFollow(JSON.parse(params)),
+      'v1/novel/follow': () => pixiv.novelFollow(JSON.parse(params)),
     }
     return fns[path]?.()
   })

@@ -1,9 +1,9 @@
 <template>
   <div class="novel-card" @click.stop="click(artwork.id)">
     <div class="img-cont">
-      <ImagePximg :src="imgSrc" :alt="artwork.title" class="image" :class="{ censored: isCensored(artwork) }" />
+      <ImagePximg :src="imgSrc" :alt="artwork.title" class="image" :class="{ censored }" />
     </div>
-    <div class="meta" :class="{ censored: isCensored(artwork) }">
+    <div class="meta" :class="{ censored }">
       <div v-if="artwork.series && artwork.series.id" class="series">{{ artwork.series.title }}</div>
       <div class="content">
         <h2 class="title">{{ artwork.title }}</h2>
@@ -48,6 +48,9 @@ export default {
   },
   computed: {
     ...mapGetters(['isCensored']),
+    censored() {
+      return this.isCensored(this.artwork)
+    },
     imgSrc() {
       return this.artwork.images[0][this.square ? 's' : 'm']
     },

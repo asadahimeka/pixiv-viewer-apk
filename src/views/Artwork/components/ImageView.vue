@@ -2,15 +2,15 @@
   <div
     ref="view"
     class="image-view"
-    :class="{ shrink: isShrink, loaded: artwork.images, censored: isCensored(artwork) }"
+    :class="{ shrink: isShrink, loaded: artwork.images, censored }"
     @click="showFull"
   >
     <div
       v-for="(url, index) in artwork.images"
       :key="index"
       class="image-box"
-      :style="index === 0 ? { width: `${displayWidth}px`, height: `${displayWidth / (artwork.width / artwork.height)}px` } : null"
     >
+      <!-- :style="index === 0 ? { width: `${displayWidth}px`, height: `${displayWidth / (artwork.width / artwork.height)}px` } : null" -->
       <!-- :style="{height: `${(375/artwork.width*artwork.height).toFixed(2)}px`}" -->
       <ImagePximg
         v-longpress="isLongpressDL?e => downloadArtwork(e, index):null"
@@ -18,7 +18,7 @@
         :alt="`${artwork.title} - Page ${index + 1}`"
         nobg
         class="image"
-        @click.native.stop="view(index, isCensored(artwork))"
+        @click.native.stop="view(index)"
         @contextmenu.native="preventContext"
       />
       <canvas
@@ -56,7 +56,7 @@ import GIF from 'gif.js'
 import tsWhammy from 'ts-whammy'
 import api from '@/api'
 import { LocalStorage } from '@/utils/storage'
-import { downloadBlob, downloadFile, sleep, trackEvent } from '@/utils'
+import { downloadBlob, downloadFile, sleep, trackEvent, loadScript } from '@/utils'
 
 const imgResSel = LocalStorage.get('PXV_DTL_IMG_RES', 'Medium')
 const isLongpressDL = LocalStorage.get('PXV_LONGPRESS_DL', false)
@@ -70,8 +70,8 @@ export default {
   },
   data() {
     return {
-      displayWidth: 0,
-      displayHeight: 0,
+      // displayWidth: 0,
+      // displayHeight: 0,
       isShrink: false,
       ugoira: null,
       ugoiraPlaying: false,
@@ -86,6 +86,9 @@ export default {
       return this.artwork.images.map(url => url.o)
     },
     ...mapGetters(['isCensored']),
+    censored() {
+      return this.isCensored(this.artwork)
+    },
   },
   watch: {
     artwork(val) {
@@ -109,8 +112,8 @@ export default {
       }
       return urlMap[imgResSel] || urls.l
     },
-    view(index, censored) {
-      if (censored) {
+    view(index) {
+      if (this.censored) {
         this.$toast({
           message: this.$t('common.content.hide'),
           icon: require('@/icons/ban-view.svg'),
@@ -287,6 +290,35 @@ export default {
         'ugoira'
       )
     },
+    // ref: https://github.com/xuejianxianzun/PixivBatchDownloader/blob/master/src/ts/ConvertUgoira/ToAPNG.ts
+    async downloadAPNG() {
+      if (!window.UPNG) {
+        await loadScript(`${process.env.BASE_URL}static/js/pako_deflate.min.js`)
+        await loadScript(`${process.env.BASE_URL}static/js/UPNG.min.js`)
+      }
+      this.$toast(this.$t('tip.down_wait'))
+      await sleep(1000)
+      const { width, height } = this.artwork
+      const canvas = document.createElement('canvas')
+      canvas.width = width
+      canvas.height = height
+      const ctx = canvas.getContext('2d', { willReadFrequently: true })
+      let images = []
+      const delays = []
+      Object.values(this.ugoira.frames).forEach(frame => {
+        ctx.drawImage(frame.bmp, 0, 0)
+        images.push(ctx.getImageData(0, 0, width, height).data.buffer)
+        delays.push(frame.delay)
+      })
+      const pngFile = window.UPNG.encode(images, width, height, 0, delays)
+      const blob = new Blob([pngFile], { type: 'image/vnd.mozilla.apng' })
+      images = null
+      downloadBlob(
+        blob,
+        `[${this.artwork.author.name}]_${this.artwork.title}_${this.artwork.id}.apng`,
+        'ugoira'
+      )
+    },
     async downloadWebM() {
       if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
         this.$toast({
@@ -378,8 +410,9 @@ export default {
         'ZIP': () => this.downloadZIP(),
         'GIF': () => this.downloadGIF(),
         'WebM': () => this.downloadWebM(),
-        'MP4(DL)': () => window.open(`https://f.pixiv.pics/api/ugoira-mp4?id=${this.artwork.id}`, '_blank', 'noopener'),
-        'MP4(Conv)': () => window.open(`https://ugoira.pixiv.pics/?id=${this.artwork.id}`, '_blank', 'noopener'),
+        'APNG': () => this.downloadAPNG(),
+        'MP4(DL)': () => window.open(`https://ugoira-mp4-dl.cocomi.eu.org/${this.artwork.id}`, '_blank', 'noopener'),
+        'MP4(Conv)': () => window.open(`https://ugoira.cocomi.eu.org/?id=${this.artwork.id}`, '_blank', 'noopener'),
       }
       actions[type]?.()
     },
@@ -402,9 +435,9 @@ export default {
     init() {
       this.resetUgoira()
       this.$nextTick(() => {
-        this.displayWidth = document.getElementById('app').getBoundingClientRect().width
-        this.displayHeight =
-          this.displayWidth / (this.artwork.width / this.artwork.height)
+        // this.displayWidth = document.getElementById('app').getBoundingClientRect().width
+        // this.displayHeight =
+        //   this.displayWidth / (this.artwork.width / this.artwork.height)
         setTimeout(() => {
           if (this.artwork.images && this.artwork.images.length >= 3) {
             this.isShrink = true
@@ -429,6 +462,7 @@ export default {
   }
 
   &.loaded {
+    width: 100%;
     min-height: unset;
   }
 

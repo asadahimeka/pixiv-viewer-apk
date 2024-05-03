@@ -226,7 +226,7 @@
     "other": {
       "lang": "Sprache",
       "lang_ph": "Bitte Sprache auswählen",
-      "title": "Andere Einstellungen",
+      "title": "Präferenzen",
       "manual_input_label": "Ob die Proxy- und API-Instanzadressen der folgenden Bilder manuell eingegeben werden",
       "manual_input": "Geben Sie den Link manuell ein",
       "api_proxy": {
@@ -297,7 +297,8 @@
     "no_data": "Keine Daten",
     "no_more": "Nicht mehr",
     "copy_err": "Das Kopieren ist fehlgeschlagen",
-    "tip": "Tipps"
+    "tip": "Tipps",
+    "load_more": "Mehr laden"
   },
   "user": {
     "art_num": "{0} funktioniert",
@@ -365,7 +366,7 @@
     "succ_msg": "Sitzungs-ID-Authentifizierung erfolgreich",
     "title": "Pixiv-Cookie setzen",
     "warn": {
-      "text": "Diese Funktion stellt eine ungewöhnliche Art der Anmeldung dar und es besteht möglicherweise die Gefahr, dass das Konto gesperrt wird. \nDie Nutzung dieser Funktion gilt als Einwilligung des Nutzers und als klare Kenntnisnahme des Risikos. \nWenn das Konto gesperrt wird usw., hat der Autor dieses Projekts nichts damit zu tun.\n\nEs wird empfohlen, zum Testen ein Alt-Konto zu verwenden.",
+      "text": "Diese Funktion ist eine ungewöhnliche Anmeldemethode und kann Risiken bergen. Die Verwendung dieser Funktion gilt als Zustimmung des Benutzers und als klare Nutzung der Risiken. Sollten Kontoanomalien auftreten, hat der Autor dieses Projekts nichts damit zu tun.",
       "title": "Risikohinweis"
     }
   },
@@ -426,5 +427,20 @@
   "kv6zdp6UsJDYstYPq-p50": "Einzelheiten",
   "4A4oYtzfF0C8cA59wAXBF": "Offen",
   "B7pyxk7y7DpmBPASgNjJR": "Die Konvertierung mit ffmpeg dauert länger und schlägt möglicherweise fehl",
-  "gajzCbySkleDQrtXfX38H": "Von ugoira.com herunterladen"
+  "gajzCbySkleDQrtXfX38H": "Von ugoira.com herunterladen",
+  "mR4YFHYUnr00zmzYydrMv": "Sorgen Sie dafür, dass die Bilderliste den Bildschirm ausfüllt",
+  "V-KoSeNoEiNct7oZJgCcD": "Durch Ausschalten dieses Schalters wird die maximale Breite für die Bildliste festgelegt",
+  "g4JWYmBbfeweCBkRSgGNw": "Lives",
+  "qzuDyLgl-y1tIhY0Dc_6s": "Lives",
+  "bJ1fo_0HLdA1bWDIic_CT": "Zu Ihrer Information",
+  "fSITk3ygQ7rxjm0lDUoSV": "Es besteht eine Wahrscheinlichkeit von {0} %, dass diese Arbeit von KI erstellt wurde.",
+  "Wc3yMDMSkHUhoGx22bsP8": "Importeinstellungen",
+  "Bi5BpYwKhUhWcm_RueGZN": "Exporteinstellungen",
+  "psoXLFqv51j1SeKjTbnms": "Primärfarbe",
+  "lGZGzwfWz9tW_KQey3AmQ": "Aktivieren Sie den direkten Verbindungsmodus für pximg-Bilder",
+  "nTsgCnGYm8FSVMfe-TQSN": "Bestätigen, um den pximg-Direktmodus zu aktivieren?",
+  "YeEO8hAsoM45pm_vcijKP": "Der pximg-Direktverbindungsmodus erfordert die Installation von Tampermonkey und Helper-Benutzerskript. Die Geschwindigkeit ist möglicherweise langsamer und die Stabilität ist nicht garantiert.",
+  "9omPI2Fz4KzKSVNlmF8-K": "Fehlgeschlagen: Tampermonkey oder Helper-Benutzerskript ist nicht installiert.",
+  "2jNIricwtCbrzEESdEbvH": "Klicken Sie zum Installieren",
+  "lkfd4SXJiefx26Z7vj0Au": "Link zum Hilfs-Benutzerskript"
 }

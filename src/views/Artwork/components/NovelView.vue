@@ -2,7 +2,7 @@
   <div
     ref="view"
     class="novel-view"
-    :class="{ shrink: isShrink, loaded: artwork.images, censored: isCensored(artwork) }"
+    :class="{ shrink: isShrink, loaded: artwork.images, censored }"
     :style="{ backgroundColor: textConfig.bg }"
     @click="showFull"
   >
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { imgProxy } from '@/api'
 import { mapGetters } from 'vuex'
 
 const fontMap = {
@@ -52,6 +53,9 @@ export default {
   },
   computed: {
     ...mapGetters(['isCensored']),
+    censored() {
+      return this.isCensored(this.artwork)
+    },
     getImgUrl() {
       return this.artwork.images?.[0]?.m || ''
     },
@@ -61,8 +65,9 @@ export default {
         ?.replace(/\[newpage\]/g, '<hr style="margin: 1rem 0;font-weight: bold;font-size: 1.2em;">')
         ?.replace(/\[\[rb:([^>[\]]+) *> *([^>[\]]+)\]\]/g, '<ruby>$1<rt>$2</rt></ruby>')
         ?.replace(/\[\[jumpuri:([^>\s[\]]+) *> *([^>\s[\]]+)\]\]/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>')
-        ?.replace(/\[pixivimage:([\d-]+)\]/g, '<img style="max-width:100%" src="https://pixiv.re/$1.png" alt>')
+        ?.replace(/\[pixivimage:([\d-]+)\]/g, '<img style="display:block;max-width:100%;margin:auto" src="https://pixiv.re/$1.png" alt>')
         ?.replace(/\[chapter: *([^[\]]+)\]/g, '<h2 style="margin: 1rem 0;font-weight:bold;font-size:1.5em">$1</h3>')
+        ?.replace(/\[uploadedimage:(\d+)\]/g, (_, $1) => `<img style="display:block;max-width:100%;margin:auto" src="${this.getEmbedImg($1)}" alt>`)
         ?.replace(/若想浏览插图，还请使用网页版。/g, '-- Image --')
     },
     novelStyle() {
@@ -92,6 +97,10 @@ export default {
     },
     loadLxgwFont() {
       document.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="https://lib.baomitu.com/lxgw-wenkai-screen-webfont/1.7.0/style.min.css">')
+    },
+    getEmbedImg(id) {
+      const urls = this.textObj.embedImgs?.[id]?.urls
+      return imgProxy(urls?.['1200x1200'] || urls?.original || '')
     },
   },
 }

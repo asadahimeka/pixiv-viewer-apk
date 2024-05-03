@@ -211,7 +211,7 @@
   "setting": {
     "about": "关于",
     "other": {
-      "title": "其他设置",
+      "title": "偏好设置",
       "lang": "语言",
       "lang_ph": "请选择语言",
       "manual_input": "手动输入代理/API地址",
@@ -366,7 +366,7 @@
     "succ_msg": "Session ID 认证成功",
     "warn": {
       "title": "风险告知",
-      "text": "本功能为非正常方式登录，可能存在封号风险，使用本功能即视为使用者本人同意且已明确使用风险，如发生封号等情况与本项目作者无关。建议使用小号进行测试。"
+      "text": "本功能为非正常方式登录，可能存在风险，使用本功能即视为使用者本人同意且已明确使用风险，如发生账号异常等情况与本项目作者无关。"
     }
   },
   "follow": {
@@ -426,5 +426,20 @@
   "kv6zdp6UsJDYstYPq-p50": "详情",
   "4A4oYtzfF0C8cA59wAXBF": "打开",
   "B7pyxk7y7DpmBPASgNjJR": "使用 ffmpeg 进行转换，处理时间较长且可能失败",
-  "gajzCbySkleDQrtXfX38H": "从 ugoira.com 下载"
+  "gajzCbySkleDQrtXfX38H": "从 ugoira.com 下载",
+  "mR4YFHYUnr00zmzYydrMv": "图片列表铺满屏幕",
+  "V-KoSeNoEiNct7oZJgCcD": "关闭此开关会为图片列表设置最大宽度",
+  "g4JWYmBbfeweCBkRSgGNw": "直播",
+  "qzuDyLgl-y1tIhY0Dc_6s": "人气直播",
+  "bJ1fo_0HLdA1bWDIic_CT": "结果仅供参考",
+  "fSITk3ygQ7rxjm0lDUoSV": "此作品有 {0}% 的可能性是由 AI 生成的。",
+  "Wc3yMDMSkHUhoGx22bsP8": "导入设置",
+  "Bi5BpYwKhUhWcm_RueGZN": "导出设置",
+  "psoXLFqv51j1SeKjTbnms": "应用主题色",
+  "lGZGzwfWz9tW_KQey3AmQ": "启用 pximg 图片直连模式",
+  "nTsgCnGYm8FSVMfe-TQSN": "确认启用 pximg 直连模式？",
+  "YeEO8hAsoM45pm_vcijKP": "pximg 直连模式需确保 Tampermonkey 与 Helper 脚本已安装，且速度可能较慢、不保证稳定性。",
+  "9omPI2Fz4KzKSVNlmF8-K": "Tampermonkey 或 Helper 脚本未安装，启用失败",
+  "lkfd4SXJiefx26Z7vj0Au": "Helper 脚本地址",
+  "2jNIricwtCbrzEESdEbvH": "点击安装"
 }

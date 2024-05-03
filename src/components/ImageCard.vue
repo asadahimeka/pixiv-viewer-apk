@@ -6,8 +6,8 @@
       @click.stop="click(artwork.id)"
       @contextmenu="preventContext"
     >
-      <ImageLocal v-if="isPximgDirect" :src="imgSrc" :alt="artwork.title" class="image" :class="{ censored: isCensored(artwork) }" />
-      <img v-else v-lazy="imgSrc" class="image" :class="{ censored: isCensored(artwork) }" :alt="artwork.title">
+      <ImageLocal v-if="isPximgDirect" :src="imgSrc" :alt="artwork.title" class="image" :class="{ censored }" />
+      <img v-else v-lazy="imgSrc" class="image" :class="{ censored }" :alt="artwork.title">
       <div class="tag-r18-ai">
         <van-tag v-if="index">#{{ index }}</van-tag>
         <van-tag v-if="tagText" :color="tagText === 'R-18' ? '#fb7299' : '#ff3f3f'">{{ tagText }}</van-tag>
@@ -59,6 +59,7 @@ import { downloadFile } from '@/utils'
 import { getCache, toggleBookmarkCache } from '@/utils/siteCache'
 import { LocalStorage } from '@/utils/storage'
 import ImageLocal from './ImageLocal.vue'
+import { isAiIllust } from '@/utils/filter'
 
 const isLongpressDL = LocalStorage.get('PXV_LONGPRESS_DL', false)
 const isLongpressBlock = LocalStorage.get('PXV_LONGPRESS_BLOCK', false)
@@ -109,7 +110,7 @@ export default {
       return this.artwork.images[0].m
     },
     isAiIllust() {
-      return this.artwork.illust_ai_type == 2
+      return isAiIllust(this.artwork)
     },
     tagText() {
       if (this.artwork.x_restrict == 1) {
@@ -121,6 +122,9 @@ export default {
       }
     },
     ...mapGetters(['isCensored']),
+    censored() {
+      return this.isCensored(this.artwork)
+    },
   },
   async mounted() {
     if ((this.mode == 'all' || this.mode == 'cover') && this.showBookmarkBtn) {
@@ -373,7 +377,7 @@ export default {
     .author
       display: inline-block;
       font-size: 20px;
-      font-weight: 200;
+      // font-weight: 200;
 
 .outer-meta
   .content

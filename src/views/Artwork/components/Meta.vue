@@ -21,7 +21,9 @@
         <div v-if="!isNovel && artwork.series && artwork.series.id" class="series is_illust" :title="artwork.series.title">
           <router-link :to="`/user/${artwork.author.id}/series/${artwork.series.id}`">{{ artwork.series.title }}</router-link>
         </div>
-        <div class="author" @click="toAuthor(artwork.author.id)">{{ artwork.author.name }}</div>
+        <div class="author" :class="{is_followed:artwork.author.is_followed}" @click="toAuthor(artwork.author.id)">
+          {{ artwork.author.name }}
+        </div>
       </div>
     </div>
     <div class="date">
@@ -65,9 +67,12 @@
         @contextmenu="preventContext"
       >UID:{{ artwork.author.id }}<Icon name="copy" style="margin-left: 1px;" /></span>
     </div>
-    <ul class="tag-list" :class="{ censored: isCensored(artwork) }">
-      <li v-if="artwork.illust_ai_type == 2">
+    <ul class="tag-list" :class="{ censored }">
+      <li v-if="isAiIllust">
         <van-tag class="x_tag" size="large" color="#FFB11B">{{ $t('common.ai_gen') }}</van-tag>
+      </li>
+      <li v-else-if="maybeAiAuthor">
+        <van-tag class="x_tag" size="large" color="#FFB11B">Maybe AI</van-tag>
       </li>
       <li v-if="artwork.x_restrict">
         <van-tag class="x_tag" size="large" type="danger">NSFW</van-tag>
@@ -90,13 +95,13 @@
     <div :class="{ shrink: isShrink }" @click="isShrink = false">
       <div
         class="caption"
-        :class="{ censored: isCensored(artwork) }"
+        :class="{ censored }"
         @click.stop.prevent="handleClick($event)"
         v-html="artwork.caption"
       ></div>
       <Icon v-if="isShrink" class="dropdown" name="dropdown" scale="4" />
     </div>
-    <div v-if="!isNovel " class="meta_btns" :class="{ censored: isCensored(artwork) }">
+    <div v-if="!isNovel " class="meta_btns" :class="{ censored }">
       <van-button
         v-if="isLoggedIn"
         size="small"
@@ -141,7 +146,7 @@
         <iframe
           v-if="showComments"
           class="comments-iframe"
-          :src="`https://now.pixiv.pics/#/comments/${artwork.id}`"
+          :src="`${PIXIV_NOW_URL}/#/comments/${artwork.id}`"
         ></iframe>
       </van-popup>
     </div>
@@ -152,11 +157,12 @@
 import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 import { Dialog } from 'vant'
-import { copyText, downloadFile, sleep, trackEvent } from '@/utils'
+import { copyText, downloadFile, sleep, trackEvent, isSafari } from '@/utils'
 import { i18n } from '@/i18n'
 import { isIllustBookmarked, addBookmark, removeBookmark } from '@/api/user'
-import { localApi } from '@/api'
+import { localApi, PIXIV_NOW_URL } from '@/api'
 import { toggleBookmarkCache } from '@/utils/siteCache'
+import { isAiIllust } from '@/utils/filter'
 
 export default {
   filters: {
@@ -188,9 +194,14 @@ export default {
       type: Boolean,
       default: false,
     },
+    maybeAiAuthor: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
+      PIXIV_NOW_URL,
       isShrink: false,
       bookmarkId: null,
       favLoading: false,
@@ -199,8 +210,14 @@ export default {
   },
   computed: {
     ...mapGetters(['isCensored', 'isLoggedIn']),
+    censored() {
+      return this.isCensored(this.artwork)
+    },
     showTranslatedTags() {
       return i18n.locale.includes('zh')
+    },
+    isAiIllust() {
+      return isAiIllust(this.artwork)
     },
   },
   watch: {
@@ -222,6 +239,7 @@ export default {
     },
   },
   mounted() {
+    if (isSafari()) return
     this.$nextTick(() => {
       setTimeout(() => {
         this.drawMask()
@@ -574,6 +592,11 @@ export default {
         cursor pointer
         // overflow: hidden;
         // text-overflow: ellipsis;
+        &.is_followed {
+          font-weight 500
+          text-decoration underline
+          color: #00AA90;
+        }
       }
 
     }

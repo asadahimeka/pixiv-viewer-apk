@@ -28,7 +28,7 @@
                 </div>
               </div>
             </h2>
-            <div class="follow_btn">
+            <div class="follow_btn" :class="{isFollowed}">
               <van-button
                 v-if="showFollowBtn"
                 size="small"

@@ -7,7 +7,7 @@
       <van-cell center :title="$t('about.disclaimer')" is-link :label="$t('tips.click_view')" to="/setting/about/disclaimer" />
       <van-cell v-if="appInfo.version" center :title="'APP '+$t('about.version')" clickable :label="`${appInfo.version}(${appInfo.build})`" />
       <van-cell v-if="wvVersion" center :title="'Webview '+$t('about.version')" clickable :label="wvVersion" />
-      <van-cell center :title="$t('setting.check_update')" label="Go to App Center" clickable @click="openAppCenter" />
+      <van-cell center :title="$t('setting.check_update')" label="Go to App Center" clickable @click="openGithubRelease" />
       <van-cell
         center
         :title="$t('about.source')"
@@ -15,6 +15,7 @@
         label="Github:asadahimeka/pixiv-viewer"
         @click="openLink('https://github.com/asadahimeka/pixiv-viewer')"
       />
+      <van-cell center :title="'FAQ'" is-link :label="$t('tips.click_view')" to="/setting/about/faq" />
     </van-cell-group>
     <van-cell-group :title="$t('about.credits')">
       <van-cell
@@ -56,10 +57,17 @@
     <van-cell-group :title="$t('about.feedback')">
       <van-cell
         center
-        title="Github Issues"
+        title="Github Discussions"
         is-link
         label="Github:asadahimeka/pixiv-viewer"
-        @click="openLink('https://github.com/asadahimeka/pixiv-viewer/issues')"
+        @click="openLink('https://github.com/asadahimeka/pixiv-viewer/discussions')"
+      />
+      <van-cell
+        center
+        title="Github Issues"
+        is-link
+        label="Github:asadahimeka/pixiv-viewer-apk"
+        @click="openLink('https://github.com/asadahimeka/pixiv-viewer-apk/issues')"
       />
       <van-cell
         center
@@ -84,14 +92,12 @@ export default {
     return {
       wvVersion: '',
       appInfo: {},
-      curVer: 'v1.13.7',
+      curVer: 'v1.17.2',
     }
   },
   async created() {
-    const info = await App.getInfo()
-    this.appInfo = info
-    const { webViewVersion } = await Device.getInfo()
-    this.wvVersion = webViewVersion
+    this.appInfo = await App.getInfo()
+    this.wvVersion = (await Device.getInfo()).webViewVersion
     this.checkUpdate()
   },
   methods: {
@@ -99,17 +105,17 @@ export default {
       trackEvent('Open Link', { url: link.replace('https://', '') })
       window.open(link, '_blank', 'noopener noreferrer')
     },
-    openAppCenter() {
+    openGithubRelease() {
       trackEvent('Check Update')
-      window.open('https://install.appcenter.ms/users/yumine/apps/pixiv-viewer/distribution_groups/beta', '_blank', 'noopener noreferrer')
+      window.open('https://github.com/asadahimeka/pixiv-viewer/releases', '_blank', 'noopener noreferrer')
     },
     async checkUpdate() {
-      const resp = await fetch('https://d.cocomi.eu.org/https://install.appcenter.ms/api/v0.1/apps/yumine/pixiv-viewer/distribution_groups/beta/public_releases?scope=tester&top=10000')
-      const json = await resp.json()
-      if (json?.[0]?.version != this.appInfo.build) {
+      const resp = await fetch('https://fastly.jsdelivr.net/gh/asadahimeka/pixiv-viewer-apk@main/android/app/build.gradle')
+      const text = await resp.text()
+      if (text?.match(/versionCode (\d)/i)?.[1] != this.appInfo.build) {
         const res = await Dialog.confirm({ message: this.$t('JKCgrgXZfg4-HDftheb96') }).catch(() => {})
         if (res != 'confirm') return
-        this.openAppCenter()
+        this.openGithubRelease()
       }
     },
   },

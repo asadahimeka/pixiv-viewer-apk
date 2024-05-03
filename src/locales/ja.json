@@ -224,7 +224,7 @@
       "title": "画像一覧のレイアウト選択"
     },
     "other": {
-      "title": "その他の設定",
+      "title": "環境設定",
       "lang": "言語",
       "lang_ph": "言語を選択してください",
       "manual_input_label": "以下の画像のプロキシおよび API インスタンスのアドレスが手動で入力されているかどうか",
@@ -297,7 +297,8 @@
     "no_data": "データなし",
     "no_more": "もういや",
     "copy_err": "コピーが失敗しました",
-    "tip": "ヒント"
+    "tip": "ヒント",
+    "load_more": "もっと読み込む"
   },
   "user": {
     "art_num": "{0}件作品",
@@ -365,7 +366,7 @@
     "succ_msg": "セッション ID 認証成功",
     "title": "Pixiv クッキーの設定",
     "warn": {
-      "text": "この機能は異常なログイン方法であり、アカウントがBANされる恐れがあります。\nこの機能を使用することは、ユーザー自身が同意し、リスクを明確に使用したものとみなされます。\nアカウントBAN等された場合、本企画作者は一切関係ありません。\n\nテストには alt アカウントを使用することをお勧めします。",
+      "text": "本機能は異常なログイン方法であり、リスクを伴う可能性があります。本機能の利用は、ユーザーの同意とリスクを明確に承知したものとみなされます。アカウントに異常が発生した場合、本プロジェクトの作者は一切関与しません。",
       "title": "リスク通知"
     }
   },
@@ -426,5 +427,20 @@
   "kv6zdp6UsJDYstYPq-p50": "詳細",
   "4A4oYtzfF0C8cA59wAXBF": "開ける",
   "B7pyxk7y7DpmBPASgNjJR": "ffmpeg を使用した変換には時間がかかり、失敗する可能性があります",
-  "gajzCbySkleDQrtXfX38H": "ugoira.comからダウンロード"
+  "gajzCbySkleDQrtXfX38H": "ugoira.comからダウンロード",
+  "mR4YFHYUnr00zmzYydrMv": "画像リストを画面いっぱいに表示する",
+  "V-KoSeNoEiNct7oZJgCcD": "このスイッチをオフにすると、画像リストの最大幅が設定されます",
+  "g4JWYmBbfeweCBkRSgGNw": "ライブ",
+  "qzuDyLgl-y1tIhY0Dc_6s": "人気のライブ",
+  "bJ1fo_0HLdA1bWDIic_CT": "結果は参考用です",
+  "fSITk3ygQ7rxjm0lDUoSV": "この作品が AI によって生成された確率は {0}% です。",
+  "Wc3yMDMSkHUhoGx22bsP8": "設定のインポート",
+  "Bi5BpYwKhUhWcm_RueGZN": "設定のエクスポート",
+  "psoXLFqv51j1SeKjTbnms": "テーマカラー",
+  "lGZGzwfWz9tW_KQey3AmQ": "Pximg イメージ直接接続モードを有効にする",
+  "nTsgCnGYm8FSVMfe-TQSN": "pximg ダイレクト モードを有効にすることを確認しますか?",
+  "YeEO8hAsoM45pm_vcijKP": "pximg 直接接続モードでは Tampermonkey と Helper ユーザースクリプトがインストールされている必要があり、速度が遅くなる可能性があり、安定性は保証されません。",
+  "9omPI2Fz4KzKSVNlmF8-K": "失敗: Tampermonkey または Helper ユーザー スクリプトがインストールされていません。",
+  "2jNIricwtCbrzEESdEbvH": "クリックしてインストールします",
+  "lkfd4SXJiefx26Z7vj0Au": "ヘルパー ユーザー スクリプト リンク"
 }

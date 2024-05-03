@@ -4,11 +4,25 @@ import { Clipboard } from '@capacitor/clipboard'
 import { FileDownload } from '@himeka/capacitor-plugin-filedownload'
 import { Filesystem, Directory } from '@himeka/capacitor-filesystem'
 import { StatusBar, Style } from '@capacitor/status-bar'
-import Analytics from '@capacitor-community/appcenter-analytics'
 import writeBlob from 'capacitor-blob-writer'
 import { LocalStorage } from './storage'
 import { getCache, setCache } from './siteCache'
 import { i18n } from '@/i18n'
+
+export function throttleScroll(el, downFn, upFn) {
+  let position = el.scrollTop
+  let ticking = false
+  return function (arg) {
+    if (ticking) return
+    ticking = true
+    window.requestAnimationFrame(() => {
+      const scroll = el.scrollTop
+      scroll > position ? downFn?.(scroll, arg) : upFn?.(scroll, arg)
+      position = scroll
+      ticking = false
+    })
+  }
+}
 
 export async function copyText(string, cb, errCb) {
   try {
@@ -202,10 +216,6 @@ export function trackEvent(name, properties) {
   if (!name.startsWith('Route')) {
     window.umami?.track(name, properties)
   }
-  return Analytics.trackEvent({
-    name,
-    properties,
-  })
 }
 
 export function dealStatusBarOnEnter() {
@@ -244,4 +254,28 @@ export function randomBg() {
   const leftHue = getRandomRangeNum(0, 360)
   const bottomHue = getRandomRangeNum(0, 360)
   return `linear-gradient(to right bottom,hsl(${leftHue}, 100%, 90%) 0%,hsl(${bottomHue}, 100%, 90%) 100%)`
+}
+
+export async function readTextFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = reject
+    reader.readAsText(file)
+  })
+}
+
+export function loadScript(src) {
+  return new Promise(resolve => {
+    const script = document.createElement('script')
+    script.src = src
+    script.addEventListener('load', () => { resolve() }, false)
+    document.head.appendChild(script)
+  })
+}
+
+export function isSafari() {
+  const ua = navigator.userAgent
+  if (!/Chrome/i.test(ua) && /Safari/i.test(ua)) return true
+  return false
 }

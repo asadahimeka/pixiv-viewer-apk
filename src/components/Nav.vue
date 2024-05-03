@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-container" :class="{ showNav: showNav }">
+  <div class="nav-container" :class="{ showNav: isNavAppear }">
     <ul class="nav-bar">
       <li @click="navigateTo('Home')">
         <Icon
@@ -53,44 +53,18 @@ import { existsSessionId } from '@/api/user'
 
 const isWebLogin = existsSessionId()
 
-function throttleScroll(el, downFn, upFn) {
-  let position = el.scrollTop
-  let ticking = false
-  return function (arg) {
-    if (ticking) return
-    ticking = true
-    window.requestAnimationFrame(() => {
-      const scroll = el.scrollTop
-      scroll > position ? downFn?.(scroll, arg) : upFn?.(scroll, arg)
-      position = scroll
-      ticking = false
-    })
-  }
-}
-
 export default {
+  props: {
+    isNavAppear: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data() {
     return {
       isLogin: window.APP_CONFIG.useLocalAppApi || isWebLogin,
-      showNav: true,
       isDark: !!localStorage.PXV_DARK,
-      scrollFn: () => {},
-      isListenScroll: document.documentElement.clientWidth > document.documentElement.clientHeight,
     }
-  },
-  mounted() {
-    console.log(this.$route)
-    if (this.isListenScroll) {
-      this.scrollFn = throttleScroll(document.documentElement, scroll => {
-        if (scroll > 160) this.showNav = false
-      }, () => {
-        this.showNav = true
-      })
-      addEventListener('scroll', this.scrollFn, { passive: true })
-    }
-  },
-  destroyed() {
-    this.isListenScroll && removeEventListener('scroll', this.scrollFn)
   },
   methods: {
     isActive(name) {

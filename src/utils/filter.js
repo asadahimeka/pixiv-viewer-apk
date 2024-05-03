@@ -58,14 +58,18 @@ export function filterCensoredIllusts(list = []) {
   return list.filter(filterCensoredIllust)
 }
 
+const aiTags = ['AI', 'AI生成', 'AI生成作品', 'AI作画', 'AIイラスト', 'AIgenerated', 'AI-generated'].map(e => e.toLowerCase())
+export function isAiIllust(artwork) {
+  return artwork.illust_ai_type == 2 || !!artwork.tags?.some(e => aiTags.includes(e.name?.toLowerCase()))
+}
+
 /** @type {Mint} */
 let mint
 export async function mintVerify(word = '', forceCheck = false) {
   if (!forceCheck && (store.state.SETTING.r18 || store.state.SETTING.r18g)) {
     return true
   }
-  word = word.replace(/https?:\/\//gi, '')
-  word = word.replace(/\s+/g, '')
+  word = word.replace(/[A-Za-z\d\s~`!@#$%^&*()_+\-=[\]{};':"\\|,./<>?]+/g, '')
   try {
     if (!mint) {
       let filterWords = await getCache('s.filter.words')

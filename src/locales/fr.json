@@ -226,7 +226,7 @@
     "other": {
       "lang": "Langue",
       "lang_ph": "Veuillez sélectionner la langue",
-      "title": "Autres réglages",
+      "title": "Préférences",
       "manual_input_label": "Si les adresses de proxy et d'instance d'API des images ci-dessous sont saisies manuellement",
       "manual_input": "Entrez le lien manuellement",
       "api_proxy": {
@@ -297,7 +297,8 @@
     "no_data": "Pas de données",
     "no_more": "Pas plus",
     "copy_err": "Échec de la copie",
-    "tip": "Conseils"
+    "tip": "Conseils",
+    "load_more": "charger plus"
   },
   "user": {
     "art_num": "{0} œuvres",
@@ -365,7 +366,7 @@
     "succ_msg": "Authentification de l'ID de session réussie",
     "title": "Définir le cookie Pixiv",
     "warn": {
-      "text": "Cette fonction constitue une manière anormale de se connecter et il peut y avoir un risque de bannissement du compte. \nL'utilisation de cette fonction est considérée comme le consentement propre de l'utilisateur et l'utilisation claire du risque. \nSi le compte est banni, etc., l'auteur de ce projet n'y est pour rien.\n\nIl est recommandé d'utiliser le compte alt pour les tests.",
+      "text": "Cette fonction est une méthode de connexion anormale et peut comporter des risques. L'utilisation de cette fonction est considérée comme le consentement de l'utilisateur et une utilisation claire des risques. Si des anomalies de compte surviennent, l'auteur de ce projet n'y est pour rien.",
       "title": "Avis de risque"
     }
   },
@@ -426,5 +427,20 @@
   "kv6zdp6UsJDYstYPq-p50": "Détails",
   "4A4oYtzfF0C8cA59wAXBF": "Ouvrir",
   "B7pyxk7y7DpmBPASgNjJR": "La conversion à l'aide de ffmpeg prend plus de temps et peut échouer",
-  "gajzCbySkleDQrtXfX38H": "Télécharger sur ugoira.com"
+  "gajzCbySkleDQrtXfX38H": "Télécharger sur ugoira.com",
+  "mR4YFHYUnr00zmzYydrMv": "Faire en sorte que la liste d'images remplisse l'écran",
+  "V-KoSeNoEiNct7oZJgCcD": "La désactivation de ce commutateur définira la largeur maximale de la liste d'images",
+  "g4JWYmBbfeweCBkRSgGNw": "Lives",
+  "qzuDyLgl-y1tIhY0Dc_6s": "Lives",
+  "bJ1fo_0HLdA1bWDIic_CT": "Pour votre information",
+  "fSITk3ygQ7rxjm0lDUoSV": "Il y a une probabilité de {0} % que ce travail ait été généré par l'IA.",
+  "Wc3yMDMSkHUhoGx22bsP8": "Importer les configurations",
+  "Bi5BpYwKhUhWcm_RueGZN": "Paramètres d'exportation",
+  "psoXLFqv51j1SeKjTbnms": "Couleur primaire",
+  "lGZGzwfWz9tW_KQey3AmQ": "Activer le mode de connexion directe de l'image pximg",
+  "nTsgCnGYm8FSVMfe-TQSN": "Confirmer pour activer le mode direct pximg ?",
+  "YeEO8hAsoM45pm_vcijKP": "Le mode de connexion directe pximg nécessite que Tampermonkey et Helper userscript soient installés, et la vitesse peut être plus lente et la stabilité n'est pas garantie.",
+  "9omPI2Fz4KzKSVNlmF8-K": "Échec : le script utilisateur Tampermonkey ou Helper n'est pas installé.",
+  "2jNIricwtCbrzEESdEbvH": "Cliquer pour installer",
+  "lkfd4SXJiefx26Z7vj0Au": "Lien du script utilisateur d'assistance"
 }

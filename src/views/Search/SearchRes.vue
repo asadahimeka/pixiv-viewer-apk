@@ -318,6 +318,9 @@ export default {
       }
       this.$router.push(`/search/${encodeURIComponent(keywords)}`)
       this.showPopPreview = false
+      this.keywords = keywords + ' '
+      this.reset()
+      this.doSearch(this.keywords)
     },
     doSearch: _.throttle(async function (val) {
       val = val || this.keywords
@@ -348,11 +351,15 @@ export default {
         }
         val += ' -R-18 -R18 -18+'
       }
-      if (!this.$store.state.SETTING.ai) val += ' -AI'
       if (this.usersIriTag) val += ' ' + this.usersIriTag
+      // if (!this.$store.state.SETTING.ai) val += ' -AI'
+      const params = _.pickBy(this.searchParams, Boolean)
+      if (!this.$store.state.SETTING.ai) {
+        params.search_ai_type = 0
+      }
       this.loading = true
       // trackEvent('Search Tag', { tag: val.replace(/\s+/g, '_') })
-      const res = await api.search(val, this.curPage, _.pickBy(this.searchParams, Boolean))
+      const res = await api.search(val, this.curPage, params)
       if (res.status === 0) {
         if (res.data.length) {
           let artList = _.uniqBy([

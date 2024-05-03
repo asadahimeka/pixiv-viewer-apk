@@ -5,6 +5,7 @@
     <van-cell center :title="$t('setting.other.lang')" is-link :label="lang.value" @click="lang.show = true" />
     <van-cell center :title="$t('setting.layout.title')" is-link :label="wfType.value" @click="wfType.show = true" />
     <van-cell center :title="$t('setting.img_res.title')" is-link :label="imgRes.value" @click="imgRes.show = true" />
+    <van-cell center :title="$t('psoXLFqv51j1SeKjTbnms')" is-link :label="$t('setting.lab.title')" to="/setting/accent_color" />
     <van-cell center :title="$t('setting.dark.title')" :label="$t('setting.lab.title')">
       <template #right-icon>
         <van-switch :value="isDark" size="24" @change="onDarkChange" />
@@ -73,6 +74,8 @@
         <van-switch :value="isAnalyticsOn" size="24" @change="onAnalyticsChange" />
       </template>
     </van-cell>
+    <van-cell center :title="$t('Wc3yMDMSkHUhoGx22bsP8')" is-link :label="$t('setting.lab.title')" @click="importSettings" />
+    <van-cell center :title="$t('Bi5BpYwKhUhWcm_RueGZN')" is-link :label="$t('setting.lab.title')" @click="exportSettings" />
     <van-dialog
       v-model="pximgBed.show"
       width="9rem"
@@ -162,11 +165,10 @@ import { Dialog } from 'vant'
 import { i18n } from '@/i18n'
 import localDb from '@/utils/localDb'
 import { LocalStorage, SessionStorage } from '@/utils/storage'
-import { getCache, setCache } from '@/utils/siteCache'
+// import { getCache, setCache } from '@/utils/siteCache'
 import { mintVerify } from '@/utils/filter'
-import { isURL, checkImgAvailable, checkUrlAvailable, copyText, trackEvent } from '@/utils'
+import { isURL, checkImgAvailable, checkUrlAvailable, copyText, trackEvent, readTextFile, downloadBlob } from '@/utils'
 import PixivAuth from '@/api/client/pixiv-auth'
-import Analytics from '@capacitor-community/appcenter-analytics'
 
 const PXIMG_PROXYS = process.env.VUE_APP_PXIMG_PROXYS || ''
 const HIBIAPI_ALTS = process.env.VUE_APP_HIBIAPI_ALTS || ''
@@ -180,7 +182,7 @@ export default {
       apiProxySel: {
         show: false,
         actions: APP_API_PROXYS.split(',').map((_value, i) => {
-          return { name: `Proxy ${i} (${_value.split(/[.-]/)[0]})`, _value }
+          return { name: `Proxy ${i} (${_value.split('.')[0]})`, _value }
         }),
       },
       pximgBed: {
@@ -280,6 +282,7 @@ export default {
     copyToken() {
       const t = this.appConfig.refreshToken
       if (!t) return
+      trackEvent('copyToken')
       copyText(t, () => this.$toast(this.$t('tips.copylink.succ')), err => this.$toast(this.$t('tips.copy_err') + ': ' + err))
     },
     async saveConfig() {
@@ -359,6 +362,11 @@ export default {
       }, 500)
     },
     async changePximgBed_({ _value }) {
+      const url = `https://${_value}`
+      const res = await this.checkURL(url, () => {
+        return checkImgAvailable(`${url}/user-profile/img/2022/02/03/15/54/20/22159592_fce9f5c7a908c9b601dc7e9da7a412a3_50.jpg?_t=${Date.now()}`)
+      })
+      if (!res) return
       this.pximgBed_.value = _value
       trackEvent('change_pximg', { change_pximg: _value })
       LocalStorage.set('PXIMG_PROXY', _value)
@@ -383,6 +391,10 @@ export default {
       }, 500)
     },
     async changeHibiapi_({ _value }) {
+      const res = await this.checkURL(_value, () => {
+        return checkUrlAvailable(`${_value}/rank?_t=${Date.now()}`)
+      })
+      if (!res) return
       this.hibiapi_.value = _value
       trackEvent('change_hibiapi', { change_hibiapi: _value })
       LocalStorage.set('HIBIAPI_BASE', _value)
@@ -424,7 +436,6 @@ export default {
         this.isAnalyticsOn = val
         LocalStorage.set('PXV_ANALYTICS', val)
         val ? localStorage.removeItem('umami.disabled') : localStorage.setItem('umami.disabled', val)
-        await Analytics.setEnabled({ enabled: val })
       } catch (err) {
         console.log('err: ', err)
       }
@@ -513,6 +524,42 @@ export default {
         location.reload()
       }, 500)
     },
+    importSettings() {
+      const input = document.createElement('input')
+      input.type = 'file'
+      input.accept = '.txt'
+      input.style.display = 'none'
+      input.onchange = async e => {
+        try {
+          const text = await readTextFile(e.target.files[0])
+          const settings = JSON.parse(decodeURI(atob(text)))
+          console.log('settings: ', settings)
+          Object.keys(settings).forEach(k => {
+            localStorage.setItem(k, settings[k])
+          })
+          trackEvent('importSettings')
+          this.$toast.success('Success')
+          setTimeout(() => {
+            location.reload()
+          }, 500)
+        } catch (err) {
+          console.log('err: ', err)
+          this.$toast(`Error: ${err.message}`)
+        }
+      }
+      input.click()
+    },
+    exportSettings() {
+      trackEvent('exportSettings')
+      const settings = {}
+      const len = localStorage.length
+      for (let i = 0; i < len; i++) {
+        const keyName = localStorage.key(i)
+        settings[keyName] = localStorage.getItem(keyName)
+      }
+      const blob = new Blob([btoa(encodeURI(JSON.stringify(settings)))])
+      downloadBlob(blob, 'pixiv-viewer-settings.txt')
+    },
     async checkURL(val, checkFn) {
       if (!isURL(val)) {
         const isOK = await mintVerify(val, true)
@@ -557,66 +604,66 @@ export default {
       }
     },
     async checkApiAvailable() {
-      const ck = 'setting.apiChk'
-      const isChk = await getCache(ck, false)
-      this.apiChecked = isChk
-      if (isChk) return
-      this.hibiapi_.actions.forEach(async e => {
-        this.$set(e, 'loading', true)
-        const startTime = Date.now()
-        try {
-          const resp = await fetch(`${e._value}/rank?_t=${startTime}`)
-          if (!resp.ok) throw new Error('Resp not ok.')
-          const duration = Date.now() - startTime
-          this.$set(e, 'subname', `${duration}ms`)
-          this.$set(e, 'loading', false)
-          if (duration > 1000) {
-            this.$set(e, 'color', 'grey')
-          } else if (duration < 500) {
-            this.$set(e, 'color', 'green')
-          } else {
-            this.$set(e, 'color', 'orange')
-          }
-        } catch (error) {
-          this.$set(e, 'loading', false)
-          this.$set(e, 'subname', '-1ms')
-          this.$set(e, 'color', 'red')
-        }
-      })
-      setCache(ck, true, 60 * 60 * 6)
+      // const ck = 'setting.apiChk'
+      // const isChk = await getCache(ck, false)
+      // this.apiChecked = isChk
+      // if (isChk) return
+      // this.hibiapi_.actions.forEach(async e => {
+      //   this.$set(e, 'loading', true)
+      //   const startTime = Date.now()
+      //   try {
+      //     const resp = await fetch(`${e._value}/rank?_t=${startTime}`)
+      //     if (!resp.ok) throw new Error('Resp not ok.')
+      //     const duration = Date.now() - startTime
+      //     this.$set(e, 'subname', `${duration}ms`)
+      //     this.$set(e, 'loading', false)
+      //     if (duration > 1000) {
+      //       this.$set(e, 'color', 'grey')
+      //     } else if (duration < 500) {
+      //       this.$set(e, 'color', 'green')
+      //     } else {
+      //       this.$set(e, 'color', 'orange')
+      //     }
+      //   } catch (error) {
+      //     this.$set(e, 'loading', false)
+      //     this.$set(e, 'subname', '-1ms')
+      //     this.$set(e, 'color', 'red')
+      //   }
+      // })
+      // setCache(ck, true, 60 * 60 * 6)
     },
     async checkImgAvailable() {
-      const ck = 'setting.imgChk'
-      const isChk = await getCache(ck, false)
-      this.pximgChecked = isChk
-      if (isChk) return
-      this.pximgBed_.actions.forEach(async e => {
-        this.$set(e, 'loading', true)
-        const startTime = Date.now()
-        let img = document.createElement('img')
-        img.referrerPolicy = 'no-referrer'
-        img.src = `https://${e._value}/user-profile/img/2022/02/03/15/54/20/22159592_fce9f5c7a908c9b601dc7e9da7a412a3_50.jpg?_t=${startTime}`
-        img.onload = () => {
-          const duration = Date.now() - startTime
-          this.$set(e, 'subname', `${duration}ms`)
-          this.$set(e, 'loading', false)
-          if (duration > 1000) {
-            this.$set(e, 'color', '#969799')
-          } else if (duration < 500) {
-            this.$set(e, 'color', 'green')
-          } else {
-            this.$set(e, 'color', 'orange')
-          }
-          img = null
-        }
-        img.onerror = () => {
-          this.$set(e, 'loading', false)
-          this.$set(e, 'subname', '-1ms')
-          this.$set(e, 'color', 'red')
-          img = null
-        }
-      })
-      setCache(ck, true, 60 * 60 * 6)
+      // const ck = 'setting.imgChk'
+      // const isChk = await getCache(ck, false)
+      // this.pximgChecked = isChk
+      // if (isChk) return
+      // this.pximgBed_.actions.forEach(async e => {
+      //   this.$set(e, 'loading', true)
+      //   const startTime = Date.now()
+      //   let img = document.createElement('img')
+      //   img.referrerPolicy = 'no-referrer'
+      //   img.src = `https://${e._value}/user-profile/img/2022/02/03/15/54/20/22159592_fce9f5c7a908c9b601dc7e9da7a412a3_50.jpg?_t=${startTime}`
+      //   img.onload = () => {
+      //     const duration = Date.now() - startTime
+      //     this.$set(e, 'subname', `${duration}ms`)
+      //     this.$set(e, 'loading', false)
+      //     if (duration > 1000) {
+      //       this.$set(e, 'color', '#969799')
+      //     } else if (duration < 500) {
+      //       this.$set(e, 'color', 'green')
+      //     } else {
+      //       this.$set(e, 'color', 'orange')
+      //     }
+      //     img = null
+      //   }
+      //   img.onerror = () => {
+      //     this.$set(e, 'loading', false)
+      //     this.$set(e, 'subname', '-1ms')
+      //     this.$set(e, 'color', 'red')
+      //     img = null
+      //   }
+      // })
+      // setCache(ck, true, 60 * 60 * 6)
     },
   },
 }

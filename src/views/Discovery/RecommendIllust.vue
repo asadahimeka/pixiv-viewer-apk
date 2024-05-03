@@ -5,8 +5,19 @@
     <wf-cont layout="Grid">
       <ImageCard v-for="art in artList" :key="art.id" mode="all" square :artwork="art" @click-card="toArtwork($event)" />
     </wf-cont>
-    <van-loading v-show="loading" class="loading" :size="'50px'" />
+    <van-loading v-if="!showLoadMoreBtn && loading" class="loading" :size="'50px'" />
     <van-empty v-if="!loading && !artList.length" :description="$t('tips.no_data')" />
+    <div v-if="showLoadMoreBtn && !finished" class="flex-c" style="margin: .5rem 0;">
+      <van-button
+        size="small"
+        loading-size="1em"
+        :loading-text="$t('tips.loading')"
+        :loading="loading"
+        @click="loadMore"
+      >
+        {{ $t('tips.load_more') }}
+      </van-button>
+    </div>
   </div>
 </template>
 
@@ -33,6 +44,9 @@ export default {
       loading: false,
       artList: [],
       notFromDetail: true,
+      finished: false,
+      nextUrl: null,
+      showLoadMoreBtn: window.APP_CONFIG.useLocalAppApi,
     }
   },
   activated() {
@@ -47,12 +61,49 @@ export default {
         params: { id },
       })
     },
+    tryURL(url) {
+      try {
+        return new URL(url)
+      } catch (_err) {
+        return null
+      }
+    },
+    async loadMore() {
+      const params = {}
+      if (!window.APP_CONFIG.useApiProxy) {
+        const u = this.tryURL(this.nextUrl)
+        if (u) {
+          u.searchParams.forEach((v, k) => {
+            params[k] = v
+          })
+        }
+      }
+      this.loading = true
+      const res = await api.getRecommendedIllust(JSON.stringify(params))
+      if (res.status === 0) {
+        if (res.data.length) {
+          this.artList = _.uniqBy([
+            ...this.artList,
+            ...res.data.filter(filterRecommIllust),
+          ], 'id')
+          this.nextUrl = res.data.nextUrl
+        } else {
+          this.finished = true
+        }
+      } else {
+        this.$toast({
+          message: res.msg,
+        })
+      }
+      this.loading = false
+    },
     async getArtList() {
       this.loading = true
       this.artList = []
       const res = await api.getRecommendedIllust()
       if (res.status === 0) {
-        this.artList = _.shuffle(res.data.filter(filterRecommIllust))
+        this.artList = res.data.filter(filterRecommIllust)
+        this.nextUrl = res.data.nextUrl
       } else {
         this.$toast({
           message: res.msg,
@@ -65,6 +116,7 @@ export default {
       const { list } = this.$route.params
       if (list) {
         this.artList = list
+        this.nextUrl = list.nextUrl
       } else if (this.notFromDetail) {
         this.getArtList()
       }

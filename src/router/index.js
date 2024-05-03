@@ -11,6 +11,8 @@ import MainLayout from '@/layouts/MainLayout.vue'
 import Home from '@/views/Home/index.vue'
 import HomeManga from '@/views/Home/HomeManga.vue'
 import HomeNovel from '@/views/Home/HomeNovel.vue'
+import Lives from '@/views/Lives/index.vue'
+import LiveDetail from '@/views/Lives/LiveDetail.vue'
 import Discovery from '@/views/Discovery/Discovery.vue'
 import RecommendIllust from '@/views/Discovery/RecommendIllust.vue'
 import Spotlights from '@/views/Spotlights/Spotlights.vue'
@@ -32,6 +34,8 @@ import ContentsDisplay from '@/views/Setting/ContentsDisplay.vue'
 import SettingOthers from '@/views/Setting/OtherSetting.vue'
 import SettingAbout from '@/views/Setting/About.vue'
 import SettingDisclaimer from '@/views/Setting/Disclaimer.vue'
+import SettingAccentColor from '@/views/Setting/AccentColor.vue'
+import SettingFAQ from '@/views/Setting/FAQ.vue'
 import Recommend from '@/views/Setting/Recommend.vue'
 import Artwork from '@/views/Artwork/index.vue'
 import Novel from '@/views/Artwork/Novel.vue'
@@ -254,6 +258,18 @@ const routes = [
             meta: { __depth: 2 },
           },
           {
+            path: '/setting/about/faq',
+            name: 'SettingAboutFaq',
+            component: SettingFAQ,
+            meta: { __depth: 3 },
+          },
+          {
+            path: '/setting/accent_color',
+            name: 'SettingAccentColor',
+            component: SettingAccentColor,
+            meta: { __depth: 2 },
+          },
+          {
             path: '/discovery',
             name: 'Discovery',
             component: Discovery,
@@ -296,6 +312,18 @@ const routes = [
             path: '/account/login',
             name: 'Login',
             component: Login,
+            meta: { __depth: 3 },
+          },
+          {
+            path: '/lives',
+            name: 'Lives',
+            component: Lives,
+            meta: { __depth: 2 },
+          },
+          {
+            path: '/live/:id',
+            name: 'LiveDetail',
+            component: LiveDetail,
             meta: { __depth: 3 },
           },
         ],

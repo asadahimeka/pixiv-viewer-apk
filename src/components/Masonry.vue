@@ -1,5 +1,5 @@
 <template>
-  <div :class="wfClass">
+  <div class="image-layout" :class="wfClass">
     <masonry v-if="isMasonry" v-bind="masonryProps">
       <slot></slot>
     </masonry>

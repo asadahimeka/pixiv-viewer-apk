@@ -2,6 +2,7 @@ import 'swiper/css/swiper.css'
 import '@fancyapps/ui/dist/fancybox/fancybox.css'
 import 'vant/lib/index.css'
 import '@/assets/css/base.styl'
+import '@/assets/css/theme.styl'
 import './polyfill'
 
 import { App as CapApp } from '@capacitor/app'
@@ -9,14 +10,13 @@ import { StatusBar, Style as StatusBarStyle } from '@capacitor/status-bar'
 import { AndroidShortcuts } from 'capacitor-android-shortcuts'
 import { NavigationBar } from '@capgo/capacitor-navigation-bar'
 import { SafeArea } from 'capacitor-plugin-safe-area'
-import Analytics from '@capacitor-community/appcenter-analytics'
 
 import Vue from 'vue'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import VueMasonry from 'vue-masonry-css'
 import Vant, { Toast, Lazyload, ImagePreview, Dialog } from 'vant'
 
-import SvgIcon from '@/icons'
+import SvgIcon, { loadingSvg } from './icons'
 import Masonry from '@/components/Masonry.vue'
 import TopBar from '@/components/TopBar.vue'
 import ImagePximg from '@/components/ImagePximg.vue'
@@ -47,7 +47,6 @@ async function checkLocalApi() {
 }
 
 async function setupApp() {
-  await Analytics.setEnabled({ enabled: LocalStorage.get('PXV_ANALYTICS', true) })
   const isPersisted = await navigator.storage?.persisted?.().catch(() => false)
   if (!isPersisted) await navigator.storage?.persist?.().catch(() => {})
   await setPximgIP()
@@ -58,7 +57,7 @@ async function setupApp() {
   Vue.use(Lazyload, {
     // observer: true,
     lazyComponent: true,
-    loading: require('@/icons/loading.svg'),
+    loading: localStorage.PXV_ACT_COLOR ? loadingSvg(localStorage.PXV_ACT_COLOR) : require('@/icons/loading.svg'),
     preload: 1.5,
     adapter: {
       error(evt) {

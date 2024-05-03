@@ -31,6 +31,9 @@
           <van-button type="info" size="small" plain block @click="downloadNovel">
             {{ $t('common.download') }}
           </van-button>
+          <van-button type="info" size="small" plain block @click="showComments = true">
+            {{ $t('user.view_comments') }}
+          </van-button>
         </div>
         <keep-alive>
           <AuthorNovelCard v-if="artwork.author" :id="artwork.author.id" :key="artwork.id" />
@@ -45,7 +48,11 @@
       <div class="configs">
         <div class="conf-title">{{ $t('novel.settings.text.size') }}</div>
         <div class="conf-inp">
-          <van-slider v-model="textConfig.size" :min="12" :max="36" class="conf-slider" @change="onSizeChange" />
+          <van-slider v-model="textConfig.size" :min="12" :max="36" class="conf-slider" @change="onSizeChange">
+            <template #button>
+              <div class="van-slider__button">{{ textConfig.size }}</div>
+            </template>
+          </van-slider>
         </div>
         <div class="conf-fcont">
           <div class="conf-fitem">
@@ -70,11 +77,19 @@
         </div>
         <div class="conf-title">{{ $t('novel.settings.text.height') }}</div>
         <div class="conf-inp">
-          <van-slider v-model="textConfig.height" :min="1" :max="5" :step="0.1" class="conf-slider" @change="onSizeChange" />
+          <van-slider v-model="textConfig.height" :min="1" :max="5" :step="0.1" class="conf-slider" @change="onSizeChange">
+            <template #button>
+              <div class="van-slider__button">{{ textConfig.height }}</div>
+            </template>
+          </van-slider>
         </div>
         <div class="conf-title">{{ $t('novel.settings.text.weight') }}</div>
         <div class="conf-inp">
-          <van-slider v-model="textConfig.weight" :min="100" :max="900" :step="100" class="conf-slider" @change="onSizeChange" />
+          <van-slider v-model="textConfig.weight" :min="100" :max="900" :step="100" class="conf-slider" @change="onSizeChange">
+            <template #button>
+              <div class="van-slider__button">{{ textConfig.weight }}</div>
+            </template>
+          </van-slider>
         </div>
         <div class="conf-fcont">
           <div class="conf-fitem">
@@ -92,6 +107,20 @@
         </div>
       </div>
     </van-action-sheet>
+    <van-popup
+      v-model="showComments"
+      class="comments-popup"
+      position="right"
+      get-container="body"
+      closeable
+      :overlay="false"
+    >
+      <iframe
+        v-if="showComments"
+        class="comments-iframe"
+        :src="`${PIXIV_NOW_URL}/#/comments/${artwork.id}?novel=1`"
+      ></iframe>
+    </van-popup>
   </div>
 </template>
 
@@ -99,7 +128,7 @@
 import _ from 'lodash'
 import { Share } from '@capacitor/share'
 import { mapGetters } from 'vuex'
-import api from '@/api'
+import api, { PIXIV_NOW_URL } from '@/api'
 import { downloadBlob, trackEvent } from '@/utils'
 import { getCache, setCache } from '@/utils/siteCache'
 import { LocalStorage } from '@/utils/storage'
@@ -136,6 +165,8 @@ export default {
       showSettings: false,
       textConfig,
       isCollapseMeta: false,
+      showComments: false,
+      PIXIV_NOW_URL,
     }
   },
   computed: {
@@ -155,6 +186,9 @@ export default {
       handler(val) {
         LocalStorage.set('PXV_TEXT_CONFIG', val)
       },
+    },
+    showComments(val) {
+      document.documentElement.style.overflowY = val ? 'hidden' : ''
     },
   },
   mounted() {
@@ -264,6 +298,15 @@ img[src*="/api/qrcode?text"]
     padding-right 16px
 </style>
 <style lang="stylus" scoped>
+.comments-popup
+  top 0
+  transform none
+  overflow-y hidden
+.comments-iframe
+  width 750px
+  height 100vh
+  border 0
+
 .artwork
   .skeleton
     margin: 30px 0;
@@ -324,6 +367,15 @@ img[src*="/api/qrcode?text"]
     padding-left 20px
   .conf-slider
     margin-top 40px
+    ::v-deep .van-slider__button
+      display flex
+      justify-content center
+      align-items center
+      width: auto
+      padding: 0.1rem
+      height: auto
+      border-radius: 0.2rem
+      font-family Bahnschrift, Dosis, Arial, Helvetica, sans-serif
 
 .ia-cont
   display flex

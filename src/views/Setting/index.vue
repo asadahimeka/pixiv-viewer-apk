@@ -1,6 +1,6 @@
 <template>
   <div class="setting">
-    <h2 class="app-title">
+    <h2 class="app-title" @click="$router.push('/setting/accent_color')">
       <img v-if="!isLoggedIn" width="40" height="40" src="/app-icon.png" alt="">
       <div class="app-title-desc">
         <span style="font-family: serif;">Pixiv Viewer<sup style="margin-left: 5px;font-size: 0.3rem;">Kai</sup></span>

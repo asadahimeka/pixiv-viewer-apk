@@ -65,6 +65,13 @@
     />
     <van-cell
       center
+      title="Boorusama (Android)"
+      is-link
+      label="A mobile client for booru sites built with Flutter"
+      @click="openLink('https://github.com/khoadng/Boorusama')"
+    />
+    <van-cell
+      center
       title="JHenTai (Android,iOS,Linux,macOS,Windows)"
       is-link
       label="A cross-platform app made for e-hentai & exhentai by Flutter."
@@ -160,6 +167,13 @@
       is-link
       label="纯纯看番，使用 Compose 开发的看番软件，支持多番剧源"
       @click="openLink('https://easybangumi.org/')"
+    />
+    <van-cell
+      center
+      title="ani (Android,iOS,Linux,macOS,Windows)"
+      is-link
+      label="集找番、追番、看番的一站式弹幕追番平台"
+      @click="openLink('https://github.com/open-ani/ani')"
     />
     <van-cell
       center

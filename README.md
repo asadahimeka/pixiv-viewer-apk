@@ -24,33 +24,56 @@ yarn build && yarn run
 ```
 
 ## Features
-- [x] Basic Pages
-  - [x] Home Waterfall Layout
-  - [x] Ranking(Overall/Illusts/Mangas/Ugoira/Novels)
-  - [x] Artworks Page
-  - [x] Users Page
-  - [x] Setting Page
-- [x] Search Tags(Illusts/Mangas/Users/Novels)
-- [x] Search with local image
-- [x] Play Ugoira
-- [x] Download Ugoira(ZIP/GIF/WebM)
-- [x] Local Caching with localforage
-- [x] View History
-- [x] Mobile and Desktop Responsive Style
-- [x] Support PWA
-- [x] R18 and AI Artworks Display Switch
-- [x] Select Waterfall Layout(Masonry/Grid/Flexbin)
-- [x] Select Pximg Proxy
-- [x] Select HibiAPI Instance
-- [x] Spotlights/Recommended/Discovery/New Illusts
-- [x] Search Tags Autocomplete
-- [x] Search Popular Artworks Preview
-- [x] Search Params Support
-- [x] Novel Support
-- [x] Login/Bookmark/Follow
-- [x] I18n Support
-- [x] Dark Mode
-- [x] Swipe to toggle artworks
+- [x] Home
+   - [x] Illusts/Mangas/Novels/Lives
+   - [x] Rankings/Spotlights/Recommended/Discovery/New Artworks
+   - [x] Random Artworks
+- [x] Search (Illusts/Mangas/Novels/Users)
+   - [x] Search Trends (long press to view cover)
+   - [x] Search Tags Autocomplete
+   - [x] Search Popular Artworks Preview
+   - [x] Search Params Support
+   - [x] Search Image via SauceNAO
+- [x] Ranking
+   - [x] Overall/Illusts/Mangas/Ugoira/Novels
+   - [x] R18/AI Ranking
+   - [x] View Ranking by Date
+- [x] Feeds
+   - [x] Following Artworks
+   - [x] My favorites
+   - [x] Following Users
+   - [x] Latest Artworks
+- [x] Settings
+   - [x] Login (RefreshToken/OAuth/Cookie)
+   - [x] View History
+   - [x] R18/AI Artworks Display Switch
+   - [x] Local Tags/Users Blacklist
+   - [x] Clear Cache
+   - [x] Multi-language Support
+   - [x] Image List Layout Selection
+   - [x] Image Detail Quality Selection
+   - [x] Dark mode
+   - [x] Swipe Left or Right to Browse Artworks
+   - [x] Multiple Image Proxy Selection
+   - [x] Multiple API Instance Selection
+   - [x] Export RefreshToken
+   - [x] AppAPI Direct Mode
+   - [x] AppAPI Proxy Service
+   - [x] Long Press to Download List Image
+   - [x] Long Press to Block List Image
+   - [x] pximg Image Direct Mode
+- [x] Artwork Detail
+   - [x] Bookmark/Unbookmark/Download/Comments/Share
+   - [x] Origin Link/ID Copy
+   - [x] GIF Playback
+   - [x] Download Ugoira (ZIP/GIF/WebM/MP4)
+   - [x] Novel Download
+   - [x] Novel Reading Settings (Font/Color/Direction, etc.)
+- [x] Author Detail
+   - [x] Follow/Unfollow
+   - [x] View the Author's Illusts/Mangas/Bookmarks/Novels
+   - [x] View Manga Series/Novel Series
+   - [x] Related Users
 
 ## Preview
 
@@ -65,7 +88,6 @@ yarn build && yarn run
 - [PixivNow](https://now.pixiv.pics/ranking)
 - [PixivMoe](https://moe.pixiv.pics)
 - [PixivLxns](https://lxns.pixiv.pics)
-- [PIXID](https://pixid.top/ranking.php)
 - [pixivic](https://pixivic.com)
 - [vilipix](https://www.vilipix.com/ranking)
 - [moeview](https://moeview.pixiv.pics)
@@ -74,7 +96,7 @@ yarn build && yarn run
 
 ## Contributing
 
-This project uses [Vue I18n](https://kazupon.github.io/vue-i18n/) for internationalization, other language translations are mainly from machine translation, if there is anything wrong, welcome [contribute translation](https://github.com/asadahimeka/pixiv-viewer/tree/master/src/locales)
+This project uses [Vue I18n](https://kazupon.github.io/vue-i18n/) for internationalization, translations are mainly from machine translation, if there is anything wrong, welcome [contribute translation](https://github.com/asadahimeka/pixiv-viewer/tree/master/src/locales)
 
 ## Credits
 
@@ -87,6 +109,14 @@ This project uses [Vue I18n](https://kazupon.github.io/vue-i18n/) for internatio
 - [SauceNAO](https://saucenao.com/)
 - [Cloudflare Workers](https://workers.cloudflare.com/)
 - [Vercel](https://vercel.com/)
+
+## Disclaimer
+
+This project has no affiliation with pixiv.net(ピクシブ株式会社).
+
+The copyright of all artworks presented in this project(Website/APP) belongs to Pixiv or its original authors.
+
+This project is for communication and learning only and may not be used for any commercial purposes.
 
 ## LICENSE
 

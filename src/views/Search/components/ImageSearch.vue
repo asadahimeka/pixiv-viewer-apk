@@ -5,7 +5,7 @@
       <div v-show="loading" class="loading"></div>
     </van-uploader>
     <span>
-      <Icon v-show="!loading&&file" class="image-search-close" name="close" @click="reset" />
+      <Icon v-show="!loading&&file" class="image-search-close" name="close" @click.native="reset" />
     </span>
     <div v-if="file" class="container">
       <div class="thumb">

@@ -1,5 +1,5 @@
 <template>
-  <div class="artwork">
+  <div class="artwork" :class="{ isSafari }">
     <TopBar />
     <div class="share_btn" @click="share">
       <Icon class="icon" name="share" />
@@ -17,10 +17,10 @@
         </div>
         <div class="ia-right">
           <van-skeleton class="skeleton" title avatar :row="5" row-width="200px" avatar-size="42px" :loading="loading">
-            <ArtworkMeta ref="artworkMeta" :artwork="artwork" @ugoira-download="showUgPanelFromDlBtn" />
+            <ArtworkMeta ref="artworkMeta" :artwork="artwork" :maybe-ai-author="maybeAiAuthor" @ugoira-download="showUgPanelFromDlBtn" />
           </van-skeleton>
           <keep-alive>
-            <AuthorCard v-if="artwork.author" :id="artwork.author.id" :key="artwork.id" />
+            <AuthorCard v-if="artwork.author" :id="artwork.author.id" :key="artwork.id" @author-change="v => maybeAiAuthor = v" />
           </keep-alive>
         </div>
       </div>
@@ -54,18 +54,19 @@ import AuthorCard from './components/AuthorCard'
 import Related from './components/Related'
 import { Share } from '@capacitor/share'
 import { mapGetters } from 'vuex'
-import nprogress from 'nprogress'
+// import nprogress from 'nprogress'
 import api from '@/api'
 import { getCache, setCache } from '@/utils/siteCache'
 import { LocalStorage } from '@/utils/storage'
 import _ from 'lodash'
 import { i18n } from '@/i18n'
-import { trackEvent, dealStatusBarOnEnter, dealStatusBarOnLeave } from '@/utils'
+import { trackEvent, dealStatusBarOnEnter, dealStatusBarOnLeave, isSafari } from '@/utils'
 
 const ugoiraDownloadPanelActions = [
   { name: 'ZIP', subname: i18n.t('artwork.download.zip') },
   { name: 'GIF', subname: i18n.t('artwork.download.gif') },
   { name: 'WebM', subname: i18n.t('artwork.download.webm') },
+  { name: 'APNG', subname: i18n.t('artwork.download.webm') },
   { name: 'MP4(DL)', subname: i18n.t('gajzCbySkleDQrtXfX38H') },
   { name: 'MP4(Conv)', subname: i18n.t('artwork.download.mp4') },
 ]
@@ -79,29 +80,31 @@ export default {
     AuthorCard,
     Related,
   },
-  beforeRouteUpdate(to, from, next) {
-    if (this.$refs.artworkMeta?.showComments) {
-      this.$refs.artworkMeta.showComments = false
-      next(false)
-      nprogress.done()
-    } else {
-      next()
-    }
-  },
+  // beforeRouteUpdate(to, from, next) {
+  //   if (this.$refs.artworkMeta?.showComments) {
+  //     this.$refs.artworkMeta.showComments = false
+  //     next(false)
+  //     nprogress.done()
+  //   } else {
+  //     next()
+  //   }
+  // },
   beforeRouteEnter(to, from, next) {
     document.querySelector('.app-main')?.classList.add('isArtworkPage')
     dealStatusBarOnEnter()
     next()
   },
   beforeRouteLeave(to, from, next) {
-    if (this.$refs.artworkMeta?.showComments) {
-      this.$refs.artworkMeta.showComments = false
-      next(false)
-      nprogress.done()
-    } else {
-      document.querySelector('.app-main')?.classList.remove('isArtworkPage')
-      dealStatusBarOnLeave().then(() => next())
-    }
+    // if (this.$refs.artworkMeta?.showComments) {
+    //   this.$refs.artworkMeta.showComments = false
+    //   next(false)
+    //   nprogress.done()
+    // } else {
+    document.querySelector('.app-main')?.classList.remove('isArtworkPage')
+    // dealStatusBarOnLeave().then(() => next())
+    dealStatusBarOnLeave()
+    next()
+    // }
   },
   data() {
     return {
@@ -110,6 +113,8 @@ export default {
       ugoiraDownloadPanelShow: false,
       ugoiraDownloadPanelActions,
       disableSwipe: !LocalStorage.get('PXV_IMG_DTL_SWIPE', false),
+      maybeAiAuthor: false,
+      isSafari: isSafari(),
     }
   },
   computed: {
@@ -330,5 +335,21 @@ img[src*="/api/qrcode?text"]
     ::v-deep .image
       width 100% !important
       max-height unset !important
+
+.artwork
+  ::v-deep .top-bar-wrap
+    width 2rem
+    background none
+  &.isSafari
+    .image-view.loaded
+      min-height auto
+    .ia-right ::v-deep .artwork-meta
+      padding 20px 30px 40px
+      background #f5f5f5
+      border-radius 20px
+      @media screen and (max-width: 1200px)
+        margin 0.26667rem 0.13333rem !important
+      .shrink::after
+        background: linear-gradient(to top, #f5f5f5, rgba(255,255,255,0));
 
 </style>

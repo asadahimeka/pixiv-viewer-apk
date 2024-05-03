@@ -226,7 +226,7 @@
     "other": {
       "lang": "語言",
       "lang_ph": "請選擇語言",
-      "title": "其他設置",
+      "title": "偏好設定",
       "manual_input": "手動輸入代理/API鏈接",
       "manual_input_label": "下方圖片代理與 API 實例地址是否手動輸入",
       "api_proxy": {
@@ -297,7 +297,8 @@
     "no_data": "暫無數據",
     "no_more": "沒有更多了",
     "copy_err": "複製失敗",
-    "tip": "提示"
+    "tip": "提示",
+    "load_more": "加載更多"
   },
   "user": {
     "art_num": "{0}件作品",
@@ -365,7 +366,7 @@
     "succ_msg": "Session ID 認證成功",
     "title": "設置 Pixiv Cookie",
     "warn": {
-      "text": "本功能為非正常方式登錄，可能存在封號風險，使用本功能即視為使用者本人同意且已明確使用風險，如發生封號等情況與本項目作者無關。\n建議使用小號進行測試。",
+      "text": "本功能為非正常方式登錄，可能有風險，使用本功能即視為使用者本人同意且已明確使用風險，如發生帳號異常等情形與本專案作者無關。",
       "title": "風險告知"
     }
   },
@@ -426,5 +427,20 @@
   "kv6zdp6UsJDYstYPq-p50": "詳情",
   "4A4oYtzfF0C8cA59wAXBF": "打開",
   "B7pyxk7y7DpmBPASgNjJR": "使用 ffmpeg 進行轉換，處理時間較長且可能失敗",
-  "gajzCbySkleDQrtXfX38H": "從 ugoira.com 下載"
+  "gajzCbySkleDQrtXfX38H": "從 ugoira.com 下載",
+  "mR4YFHYUnr00zmzYydrMv": "圖片清單鋪滿螢幕",
+  "V-KoSeNoEiNct7oZJgCcD": "關閉此開關會為圖片清單設定最大寬度",
+  "g4JWYmBbfeweCBkRSgGNw": "直播",
+  "qzuDyLgl-y1tIhY0Dc_6s": "人氣直播",
+  "bJ1fo_0HLdA1bWDIic_CT": "結果僅供參考",
+  "fSITk3ygQ7rxjm0lDUoSV": "此作品有 {0}% 的可能性是由 AI 產生的。",
+  "Wc3yMDMSkHUhoGx22bsP8": "導入設定",
+  "Bi5BpYwKhUhWcm_RueGZN": "匯出設定",
+  "psoXLFqv51j1SeKjTbnms": "應用主題色",
+  "lGZGzwfWz9tW_KQey3AmQ": "啟用 pximg 圖片直連模式",
+  "nTsgCnGYm8FSVMfe-TQSN": "確認啟用 pximg 直連模式？",
+  "YeEO8hAsoM45pm_vcijKP": "pximg 直連模式需確保 Tampermonkey 與 Helper 腳本已安裝，且速度可能較慢、不保證穩定性。",
+  "9omPI2Fz4KzKSVNlmF8-K": "Tampermonkey 或 Helper 腳本未安裝，啟用失敗",
+  "2jNIricwtCbrzEESdEbvH": "點選安裝",
+  "lkfd4SXJiefx26Z7vj0Au": "Helper 腳本地址"
 }

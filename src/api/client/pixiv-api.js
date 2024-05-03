@@ -41,9 +41,9 @@ const HASH_SECRET = '28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0
 const DEFAULT_HEADERS = {
   'App-OS': 'Android',
   'App-OS-Version': 'Android 13.0',
-  'App-Version': '6.97.0',
+  'App-Version': '6.102.0',
   'Accept-Language': 'zh-CN',
-  'User-Agent': 'PixivAndroidApp/6.97.0 (Android 13.0; Pixel 7)',
+  'User-Agent': 'PixivAndroidApp/6.102.0 (Android 13.0; Pixel 7)',
 }
 
 function callApi(url, options) {
@@ -602,14 +602,18 @@ class PixivApi {
   }
 
   illustRecommended(options) {
-    const queryString = qs.stringify(
-      Object.assign(
-        {
-          include_ranking_illusts: true,
-        },
-        options
+    if (options.params === '{}') delete options.params
+    const queryString = options.params
+      ? qs.stringify(JSON.parse(options.params))
+      : qs.stringify(
+        Object.assign(
+          {
+            include_privacy_policy: false,
+            include_ranking_illusts: false,
+          },
+          options
+        )
       )
-    )
     return this.requestUrl(`/v1/illust/recommended?${queryString}`)
   }
 
@@ -953,13 +957,32 @@ class PixivApi {
     return this.requestUrl(`/v2/novel/detail?${queryString}`)
   }
 
-  novelText(id) {
+  async novelText(id) {
     if (!id) {
       return Promise.reject(new Error('novel_id required'))
     }
 
-    const queryString = qs.stringify({ novel_id: id })
-    return this.requestUrl(`/v1/novel/text?${queryString}`)
+    // const queryString = qs.stringify({ novel_id: id })
+    // return this.requestUrl(`/v1/novel/text?${queryString}`)
+
+    const r = await this.webviewNovel(id)
+    return ({ novel_text: r.text })
+  }
+
+  async webviewNovel(id, raw = false) {
+    if (!id) {
+      throw new Error('novel_id required')
+    }
+
+    const queryString = qs.stringify({ id, viewer_version: '20221031_ai' })
+    const response = await this.requestUrl(`/webview/v2/novel?${queryString}`, {
+      responseType: 'text',
+    })
+
+    if (raw) return response
+
+    const json = response.match(/novel:\s({.+}),/)?.[1]
+    return JSON.parse(json)
   }
 
   novelFollow(options) {
@@ -1064,6 +1087,18 @@ class PixivApi {
     }
     const queryString = qs.stringify({ illust_id: id })
     return this.requestUrl(`/v1/ugoira/metadata?${queryString}`)
+  }
+
+  liveList(options) {
+    const queryString = qs.stringify(
+      Object.assign(
+        {
+          list_type: 'popular',
+        },
+        options
+      )
+    )
+    return this.requestUrl(`/v1/live/list?${queryString}`)
   }
 }
 

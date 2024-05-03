@@ -212,7 +212,7 @@ export default {
         // document.querySelector('.app-main')?.scrollTo(0, 0)
         return
       }
-      this.$router.push(`/search_novel/${keywords}`)
+      this.$router.push(`/search_novel/${encodeURIComponent(keywords)}`)
       this.showPopPreview = false
     },
     doSearch: _.throttle(async function (val) {
@@ -293,7 +293,7 @@ export default {
       this.focus = false
       // document.querySelector('.app-main')?.scrollTo(0, 0)
       this.keywords += ' '
-      this.$router.push(`/search_novel/${this.keywords.trim()}`)
+      this.$router.push(`/search_novel/${encodeURIComponent(this.keywords.trim())}`)
       this.reset()
       this.doSearch(this.keywords)
     },

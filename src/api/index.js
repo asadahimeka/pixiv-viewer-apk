@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { get } from './http'
+import { get, notSelfHibiApi } from './http'
 import { LocalStorage, SessionStorage } from '@/utils/storage'
 import { getCache, setCache } from '@/utils/siteCache'
 import { i18n } from '@/i18n'
@@ -16,6 +16,8 @@ const isSupportWebP = (() => {
   // very old browser like IE 8, canvas not supported
   return false
 })()
+
+export const PIXIV_NOW_URL = 'https://pxnow.cocomi.eu.org'
 
 export const PXIMG_PROXY_BASE = LocalStorage.get('PXIMG_PROXY', process.env.VUE_APP_DEF_PXIMG_MAIN)
 export const imgProxy = url => {
@@ -100,6 +102,7 @@ const parseIllust = data => {
       id: data.user.id,
       name: data.user.name,
       avatar: imgProxy(data.user.profile_image_urls.medium),
+      is_followed: data.user.is_followed,
     },
     created: create_date,
     images,
@@ -436,16 +439,22 @@ const api = {
     return { status: 0, data: relatedList }
   },
 
-  async getRecommendedIllust() {
+  async getRecommendedIllust(params) {
     const cacheKey = 'recommended.illust'
-    let relatedList = await getCache(cacheKey)
+    let relatedList
+    if (!window.APP_CONFIG.useLocalAppApi) {
+      relatedList = await getCache(cacheKey)
+    }
 
     if (!relatedList) {
-      const res = await get('/illust_recommended')
+      const res = await get('/illust_recommended', { params })
 
       if (res.illusts) {
-        relatedList = res.illusts.map(art => parseIllust(art)).filter(e => e.like >= 1000)
-        setCache(cacheKey, relatedList, 60 * 60 * 12)
+        relatedList = res.illusts.map(art => parseIllust(art)).filter(e => e.like >= 500)
+        relatedList.nextUrl = res.next_url
+        if (!window.APP_CONFIG.useLocalAppApi) {
+          setCache(cacheKey, relatedList, 60 * 60 * 12)
+        }
       } else if (res.error) {
         return {
           status: -1,
@@ -733,7 +742,7 @@ const api = {
     let spotlights = await getCache(cacheKey)
 
     if (!spotlights) {
-      const url = 'https://now.pixiv.pics/api/pixivision'
+      const url = `${PIXIV_NOW_URL}/api/pixivision`
       const params = { page }
       if (lang != 'zh-Hans') {
         params.lang = lang
@@ -781,7 +790,7 @@ const api = {
       if (lang != 'zh-Hans') {
         params.lang = lang
       }
-      const res = await get('https://now.pixiv.pics/api/pixivision/list', params, {
+      const res = await get(`${PIXIV_NOW_URL}/api/pixivision/list`, params, {
         headers: {
           'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56',
           'origin': 'http://localhost',
@@ -823,7 +832,7 @@ const api = {
       if (lang != 'zh-Hans') {
         params.lang = lang
       }
-      const res = await get('https://now.pixiv.pics/api/pixivision/detail', params, {
+      const res = await get(`${PIXIV_NOW_URL}/api/pixivision/detail`, params, {
         headers: {
           'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56',
           'origin': 'http://localhost',
@@ -859,12 +868,11 @@ const api = {
     let spotlight = await getCache(cacheKey)
 
     if (!spotlight) {
-      const domain = 'now.pixiv.pics'
       const params = {}
       if (lang != 'zh-Hans') {
         params.lang = lang
       }
-      const res = await get(`https://${domain}/api/pixivision/${id}`, params, {
+      const res = await get(`${PIXIV_NOW_URL}/api/pixivision/${id}`, params, {
         headers: {
           'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56',
           'origin': 'http://localhost',
@@ -911,7 +919,7 @@ const api = {
     let rankList = await getCache(cacheKey)
 
     if (!rankList) {
-      const res = await get('https://now.pixiv.pics/api/ranking', {
+      const res = await get(`${PIXIV_NOW_URL}/api/ranking`, {
         format: 'json',
         p: page,
         mode,
@@ -938,8 +946,7 @@ const api = {
     let rankList = await getCache(cacheKey)
 
     if (!rankList) {
-      const domain = 'now.pixiv.pics'
-      const res = await get(`https://${domain}/api/ranking`, {
+      const res = await get(`${PIXIV_NOW_URL}/api/ranking`, {
         format: 'json',
         p: page,
         mode,
@@ -969,7 +976,7 @@ const api = {
   async getDiscoveryArtworks(mode = 'all', limit = 60) {
     let list
 
-    const res = await get('https://now.pixiv.pics/ajax/discovery/artworks', {
+    const res = await get(`${PIXIV_NOW_URL}/ajax/discovery/artworks`, {
       mode,
       limit,
       lang: 'zh',
@@ -1004,7 +1011,7 @@ const api = {
       params._t = Date.now()
     }
 
-    const res = await get('https://now.pixiv.pics/ajax/illust/discovery', params, {
+    const res = await get(`${PIXIV_NOW_URL}/ajax/illust/discovery`, params, {
       headers: {
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56',
         'origin': 'http://localhost',
@@ -1188,16 +1195,25 @@ const api = {
     let artwork = await getCache(cacheKey)
 
     if (!artwork) {
-      const res = await get('/novel_text', {
-        id,
-      })
+      let res
+      if (notSelfHibiApi) {
+        res = await get(`${PIXIV_NOW_URL}/ajax/novel/${id}.txt`).then(r => ({
+          text: r.content,
+          prev: r.seriesNavData?.prev,
+          next: r.seriesNavData?.next,
+          embedImgs: r.textEmbeddedImages,
+        }))
+      } else {
+        res = await get('/webview_novel', { id }).then(r => ({
+          text: r.text,
+          prev: r.seriesNavigation?.prevNovel,
+          next: r.seriesNavigation?.nextNovel,
+          embedImgs: r.images,
+        }))
+      }
 
-      if (res.novel_text) {
-        artwork = {
-          text: res.novel_text,
-          prev: res.series_prev?.id && parseNovel(res.series_prev),
-          next: res.series_next?.id && parseNovel(res.series_next),
-        }
+      if (res.text) {
+        artwork = res
         setCache(cacheKey, artwork, -1)
       } else if (res.error) {
         return {
@@ -1230,6 +1246,45 @@ const api = {
 
       if (res.illust) {
         artwork = parseIllust(res.illust)
+        try {
+          if (artwork.images[0].o.includes('common/images/limit_sanity_level')) {
+            const [webRes, webImages] = await Promise.all([
+              get(`${PIXIV_NOW_URL}/ajax/illust/${id}?full=1`),
+              get(`${PIXIV_NOW_URL}/ajax/illust/${id}/pages`),
+            ])
+            artwork = {
+              id: webRes.illustId,
+              title: webRes.illustTitle,
+              caption: webRes.illustComment,
+              author: {
+                id: webRes.userId,
+                name: webRes.userName,
+                avatar: artwork.author.avatar,
+                is_followed: false,
+              },
+              created: webRes.createDate,
+              images: webImages.map(e => ({
+                s: imgProxy(e.urls.thumb_mini),
+                m: imgProxy(e.urls.small),
+                l: imgProxy(e.urls.regular),
+                o: imgProxy(e.urls.original),
+              })),
+              tags: webRes.tags.tags.map(e => ({ name: e.tag })),
+              width: webRes.width,
+              height: webRes.height,
+              count: webRes.pageCount,
+              view: webRes.viewCount,
+              like: webRes.bookmarkCount,
+              x_restrict: webRes.xRestrict,
+              illust_ai_type: webRes.aiType,
+              type: 'illust',
+              is_bookmarked: false,
+              series: null,
+            }
+          }
+        } catch (err) {
+          console.log('err: ', err)
+        }
         setCache(cacheKey, artwork, -1)
       } else if (res.error) {
         return {
@@ -1346,7 +1401,7 @@ const api = {
         data = res.illusts.map(art => parseIllust(art))
         data.next = !!res.next_url
         data.detail = res.illust_series_detail
-        data.detail.cover = imgProxy(res.illust_series_detail.cover_image_urls.medium)
+        data.detail.cover = imgProxy(res.illust_series_detail?.cover_image_urls?.medium || '')
         setCache(cacheKey, data, 60 * 60 * 12)
       } else if (res.error) {
         return {
@@ -1627,6 +1682,24 @@ const api = {
 
     return { status: 0, data: tags }
   },
+  async getLiveList(page = 1) {
+    const res = await get('/live_list', { page, _t: dayjs().format('YYYYMMDDHHmm') })
+
+    if (res.error) {
+      return {
+        status: -1,
+        msg: dealErrMsg(res),
+      }
+    }
+    if (!res.lives) {
+      return {
+        status: -1,
+        msg: i18n.t('tip.unknown_err'),
+      }
+    }
+
+    return { status: 0, data: res.lives }
+  },
 }
 export default api
 
@@ -1728,6 +1801,29 @@ export const localApi = {
     }
 
     return { status: 0, data: filterCensoredIllusts(list) }
+  },
+  async novelFollow(page = 1) {
+    let list = []
+    const offset = (page - 1) * 30
+    const params = {}
+    if (offset > 0) params.offset = offset
+    const res = await reqGet('v1/novel/follow', params)
+
+    if (res.novels) {
+      list = res.novels.map(art => parseNovel(art))
+    } else if (res.error) {
+      return {
+        status: -1,
+        msg: dealErrMsg(res),
+      }
+    } else {
+      return {
+        status: -1,
+        msg: i18n.t('tip.unknown_err'),
+      }
+    }
+
+    return { status: 0, data: list }
   },
   async illustBookmarkAdd(id, restrict = 'public') {
     if (!id) return false

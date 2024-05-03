@@ -230,6 +230,8 @@ html, body
       user-select none !important
 
 html.dark
+  background #16161a
+  color #fff
   ::-webkit-scrollbar
     width: 10px;
     height: 5px;
@@ -348,6 +350,9 @@ html.dark
   .search .keyword
     background #333
 
+  .conf-slider .van-slider__button
+    background #777
+
   .search .search-bar-wrap .search-bar,
   .search .search-bar-wrap .van-search__content,
   .search .com_sel_tabs,
@@ -441,7 +446,8 @@ html.dark
   .artwork-meta .date .view
     color #8ca8ff
   .novel-view
-    background #16161a !important
+    &,&+.collapse-btn
+      background #16161a !important
   .novel_text
     color #b6b6b6 !important
   .novel-view.shrink::after,
@@ -462,8 +468,13 @@ html.dark
   .image-slide
       border 1px solid #16161a
 
-  .ss-title, .ss-author
+  .ss-title,
+  .ss-author,
+  .live_list .content,
+  .live_detail .content
     color #fff
+  .live_detail .content .chats
+    background #16161a
 
 .artwork .conf-inp
   .van-radio--horizontal
@@ -487,15 +498,19 @@ html.dark
   overflow hidden
   border-radius: 0.26667rem;
 
-.Spotlights .image-card, .rank-card .spec_wp
-  img[lazy="loaded"]
-    transform none
-    transition transform 0.5s
+// .Spotlights .image-card, .rank-card .spec_wp
+//   img[lazy="loaded"]
+//     transform none
+//     transition transform 0.5s
 
 .card-box .swipe-item .image-card-wrapper
   height 100%
   padding-bottom 0 !important
   border-radius: 0.26667rem;
+
+.swiper-slide .image
+  transform none !important
+  transition none !important
 
 .author-card .swiper-slide .image-card-wrapper
   height 100%
@@ -591,3 +606,9 @@ html
 
 .search .tags .tag img[lazy="loading"]
   opacity 0
+
+.van-action-sheet__content::-webkit-scrollbar
+  width 0.17333rem
+
+.app-main:has(.live_detail)
+  border-top 4PX solid #F2C358

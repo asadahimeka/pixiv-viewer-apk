@@ -1,0 +1,285 @@
+.artwork-meta .pid_link a,
+.artwork-meta .caption a,
+.user_link a
+  &:hover
+    text-decoration underline
+
+.svg-icon
+  color #FFB11B
+
+.custom_theme
+  accent-color var(--accent-color)
+
+  ::-webkit-scrollbar-thumb
+    background var(--accent-color)
+
+  a,
+  .svg-icon,
+  .setting .app-title,
+  .swiper-button-prev, .swiper-button-next,
+  .van-button.van-dialog__confirm,
+  .Home .home-title .app-title,
+  .dark #app .nav-container .nav-bar .van-icon.active,
+  .dark #app .nav-container .nav-bar .van-icon.active + span
+    color var(--accent-color)
+
+  .novel-card .series,
+  #app .artwork-meta .series a,
+  #app .artwork-meta .date .view,
+  #app .artwork-meta .date .like,
+  #app .artwork-meta .date .svg-icon,
+  #app .artwork-meta .tag-list,
+  .nav-bar .svg-icon.active,
+  .nav-bar .svg-icon.active + span,
+  .van-dropdown-menu__title--active,
+  .van-dropdown-item__option--active,
+  .van-dropdown-item__option--active .van-dropdown-item__icon,
+  .van-calendar__day--middle,
+  .van-dialog__cancel[style*="color:"]
+    color var(--accent-color) !important
+
+  .back_to_top,
+  .van-tabs__line,
+  #app .follow_btn.isFollowed .van-button,
+  .search .search-bar-wrap .search-bar-word .word,
+  .user-container .user-tabs .van-tag--mark,
+  .van-calendar__day--end,
+  .van-calendar__day--multiple-middle,
+  .van-calendar__day--multiple-selected,
+  .van-calendar__day--start,
+  .van-calendar__day--start-end,
+  .van-calendar__selected-day,
+  #app .nav a.cur
+    background var(--accent-color) !important
+
+  .com_sel_tab.cur,
+  .van-slider__bar,
+  .Following .van-tab--active .van-tab__text
+  .dark #app .com_sel_tab.cur,
+  .dark #app .rank .nav a.cur,
+  .dark #app .Following .van-tab:not(.van-tab--active) .van-tab__text.cur
+    background var(--accent-color)
+
+  #nprogress .bar,
+  #app .tips code
+    background-color: var(--accent-color)
+
+  #app .tips code
+    color #fff
+
+  .van-radio__icon--checked .van-icon,
+  .van-calendar__confirm.van-button,
+  .setting-page .van-cell .van-button,
+  .af_title + .van-form .van-button[type="submit"],
+  #app .setting-page .van-switch--on
+    background var(--accent-color) !important
+    border-color var(--accent-color) !important
+
+  .van-button--plain
+    color var(--accent-color) !important
+    border-color var(--accent-color) !important
+
+  .app-main:has(.live_detail)
+    border-color var(--accent-color) !important
+
+  #app .artwork-meta .tag-list .tag:not(.translated):hover
+    background transparent
+    text-decoration underline
+
+  .image-card .bookmark
+    padding 0.12rem !important
+    filter none !important
+    background: rgba(0,0,0,.3)
+    backdrop-filter: blur(10px)
+    border-top-left-radius 0.2rem
+    .van-icon
+      color var(--accent-color) !important
+
+  #app .rank .top .calendar
+    background-image: url('~@/assets/images/calendar_op0.png')
+    .date
+      color var(--accent-color)
+
+  @media screen and (max-width: 500px)
+    .app-main:has(.setting-page)
+      border-top 4PX solid var(--accent-color)
+
+tab-text-color($color)
+  .com_sel_tab.cur,
+  #app .nav a.cur,
+  .user-container .user-tabs .van-tag--mark,
+  .search .search-bar-wrap .search-bar-word .word,
+  .Following .van-tab--active .van-tab__text
+    color $color !important
+
+.custom_theme
+  tab-text-color(#fefefe)
+  .search .search-bar-wrap .search-bar-word .word .text
+    border-color #fefefe !important
+
+bandori-chara-icon($url)
+  .setting .app-title
+    img
+      display none
+    &-desc
+      position relative
+      padding-left 1.2rem
+      &::before
+        content ''
+        position absolute
+        top 50%
+        left 0
+        width: 0.9rem
+        height: 0.9rem
+        transform translateY(-50%)
+  .setting:has(.user_data)
+    .app-title-desc
+      padding-left 0
+      &::before
+        display none
+  .Home .home-title
+    &::before
+      content ''
+      position absolute
+      top 50%
+      left 0
+      width: 0.8rem
+      height: 0.8rem
+      transform translateY(-50%)
+    .app-logo
+      display none
+    .app-title
+      position relative
+      padding-left 0.9rem
+  .setting .app-title-desc::before,
+  .Home .home-title::before
+    background url($url) no-repeat center / contain
+
+artwork-tag-shadow($alpha = 0.05, $isBold = false)
+  #app .artwork-meta .tag-list .tag
+    if $isBold
+      font-weight bold
+    text-shadow 1PX 1PX rgba(0,0,0,$alpha)
+
+darken-text-preset()
+  tab-text-color(#333)
+  artwork-tag-shadow()
+
+.t_Anon
+  bandori-chara-icon("~@/assets/images/bandori/42Anon-Chihaya-joXxhD.png")
+
+.t_Soyo
+  --accent-color darken(#FFDD88, 20%) !important
+  bandori-chara-icon("~@/assets/images/bandori/44Soyo-Nagasaki-FaWW3M.png")
+  darken-text-preset()
+
+.t_Taki
+  bandori-chara-icon("~@/assets/images/bandori/45Taki-Shiina-mAtLbm.png")
+
+.t_Tomori
+  bandori-chara-icon("~@/assets/images/bandori/41Tomori-Takamatsu-OHMnhE.png")
+  tab-text-color(#333)
+  artwork-tag-shadow(0.01, true)
+
+.t_Rana
+  bandori-chara-icon("~@/assets/images/bandori/43Raana-Kaname-hDUANf.png")
+  tab-text-color(#333)
+  artwork-tag-shadow(0.05, true)
+
+.t_LuoTianyi,
+.t_Rinko,
+.t_Kanon
+  artwork-tag-shadow()
+
+.t_Tsugumi
+  --accent-color darken(#FFEE88, 35%) !important
+  darken-text-preset()
+
+.t_Chisato
+  --accent-color darken(#FFEEAA, 30%) !important
+  darken-text-preset()
+
+.t_Kokoro
+  --accent-color darken(#FFEE22, 15%) !important
+  darken-text-preset()
+
+.t_LOCK
+  --accent-color darken(#AAEE22, 10%) !important
+  darken-text-preset()
+
+.t_Kasumi
+  bandori-chara-icon("~@/assets/images/bandori/6Kasumi-Toyama-5RT6V3.png")
+.t_Tae
+  bandori-chara-icon("~@/assets/images/bandori/7Tae-Hanazono-NvX97I.png")
+.t_Rimi
+  bandori-chara-icon("~@/assets/images/bandori/8Rimi-Ushigome-XySNxU.png")
+.t_Saaya
+  bandori-chara-icon("~@/assets/images/bandori/9Saaya-Yamabuki-s5ZgsR.png")
+.t_Arisa
+  bandori-chara-icon("~@/assets/images/bandori/10Arisa-Ichigaya-Ub9Avr.png")
+
+.t_Yukina
+  bandori-chara-icon("~@/assets/images/bandori/26Yukina-Minato-iKvRys.png")
+.t_Sayo
+  bandori-chara-icon("~@/assets/images/bandori/27Sayo-Hikawa-yTVpZh.png")
+.t_Lisa
+  bandori-chara-icon("~@/assets/images/bandori/28Lisa-Imai-G7Kaf5.png")
+.t_Ako
+  bandori-chara-icon("~@/assets/images/bandori/29Ako-Udagawa-CdqVpc.png")
+.t_Rinko
+  bandori-chara-icon("~@/assets/images/bandori/30Rinko-Shirokane-cSpZHX.png")
+
+.t_Ran
+  bandori-chara-icon("~@/assets/images/bandori/11Ran-Mitake-0Phk2K.png")
+.t_Moka
+  bandori-chara-icon("~@/assets/images/bandori/12Moca-Aoba-Ov3pCL.png")
+.t_Himari
+  bandori-chara-icon("~@/assets/images/bandori/13Himari-Uehara-Af23h0.png")
+.t_Tomoe
+  bandori-chara-icon("~@/assets/images/bandori/14Tomoe-Udagawa-V4MeiL.png")
+.t_Tsugumi
+  bandori-chara-icon("~@/assets/images/bandori/15Tsugumi-Hazawa-y38Nv3.png")
+
+.t_Aya
+  bandori-chara-icon("~@/assets/images/bandori/21Aya-Maruyama-xR7U1k.png")
+.t_Hina
+  bandori-chara-icon("~@/assets/images/bandori/22Hina-Hikawa-R7GnAW.png")
+.t_Chisato
+  bandori-chara-icon("~@/assets/images/bandori/23Chisato-Shirasagi-BNimKb.png")
+.t_Maya
+  bandori-chara-icon("~@/assets/images/bandori/24Maya-Yamato-kh5IMf.png")
+.t_Eve
+  bandori-chara-icon("~@/assets/images/bandori/25Eve-Wakamiya-xB1ABy.png")
+
+.t_Kokoro
+  bandori-chara-icon("~@/assets/images/bandori/16Kokoro-Tsurumaki-O4FbtH.png")
+.t_Kaoru
+  bandori-chara-icon("~@/assets/images/bandori/17Kaoru-Seta-xi1nZF.png")
+.t_Hagumi
+  bandori-chara-icon("~@/assets/images/bandori/18Hagumi-Kitazawa-0gfwgv.png")
+.t_Kanon
+  bandori-chara-icon("~@/assets/images/bandori/19Kanon-Matsubara-huGKWh.png")
+.t_Misaki
+  bandori-chara-icon("~@/assets/images/bandori/20Misaki-Okusawa-9pX5DG.png")
+
+.t_LAYER
+  bandori-chara-icon("~@/assets/images/bandori/36LAYER-37Q8rQ.png")
+.t_LOCK
+  bandori-chara-icon("~@/assets/images/bandori/37LOCK-5xvctz.png")
+.t_MASKING
+  bandori-chara-icon("~@/assets/images/bandori/38MASKING-PCZ7gC.png")
+.t_PAREO
+  bandori-chara-icon("~@/assets/images/bandori/39PAREO-6DPmmM.png")
+.t_CHU2
+  bandori-chara-icon("~@/assets/images/bandori/40CHU²-LF0zoh.png")
+
+.t_Mashiro
+  bandori-chara-icon("~@/assets/images/bandori/31Mashiro-Kurata-roOUKU.png")
+.t_Touko
+  bandori-chara-icon("~@/assets/images/bandori/32Touko-Kirigaya-IyTZ9d.png")
+.t_Nanami
+  bandori-chara-icon("~@/assets/images/bandori/33Nanami-Hiromachi-Y5aB90.png")
+.t_Tsukushi
+  bandori-chara-icon("~@/assets/images/bandori/34Tsukushi-Futaba-9uhm4n.png")
+.t_Rui
+  bandori-chara-icon("~@/assets/images/bandori/35Rui-Yashio-EfpbT4.png")
