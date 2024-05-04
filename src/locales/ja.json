@@ -257,8 +257,8 @@
       },
       "swipe_toggle": "作品ページ内で左右にスワイプして作品を切り替えるかどうか",
       "ana": {
-        "label": "アプリの改善のために匿名の統計を AppCenter に送信するかどうか",
-        "title": "AppCenter 分析を有効にする"
+        "label": "アプリの改善のために匿名の統計を Umami に送信するかどうか",
+        "title": "Umami 分析を有効にする"
       }
     },
     "recomm": {

@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "top.nanoka.pixiv"
+    namespace "top.nanoka.pxvek"
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "top.nanoka.pixiv"
+        applicationId "top.nanoka.pxvek"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 8

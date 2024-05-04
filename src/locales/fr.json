@@ -257,8 +257,8 @@
         "title": "Activer le mode direct AppApi"
       },
       "ana": {
-        "label": "S'il faut envoyer des statistiques anonymes à AppCenter pour l'amélioration de l'application",
-        "title": "Activer AppCenter Analytics"
+        "label": "S'il faut envoyer des statistiques anonymes à Umami pour l'amélioration de l'application",
+        "title": "Activer Umami Analytics"
       }
     },
     "recomm": {

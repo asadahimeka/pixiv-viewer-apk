@@ -62,7 +62,8 @@ export default {
     next()
   },
   beforeRouteLeave(to, from, next) {
-    dealStatusBarOnLeave().then(() => next())
+    dealStatusBarOnLeave()
+    next()
   },
   data() {
     return {

@@ -225,9 +225,8 @@ export default {
         },
       }).catch(() => {})
     },
-    async downloadArtwork(/** @type {Event} */ ev) {
+    async downloadArtwork() {
       if (this.artwork.type == 'ugoira') return
-      ev.preventDefault()
       const src = this.artwork.images[0].o
       const fileName = `${this.artwork.author.name}_${this.artwork.title}_${this.artwork.id}_p0.${src.split('.').pop()}`
       const res = await Dialog.confirm({

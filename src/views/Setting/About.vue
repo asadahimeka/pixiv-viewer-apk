@@ -7,7 +7,7 @@
       <van-cell center :title="$t('about.disclaimer')" is-link :label="$t('tips.click_view')" to="/setting/about/disclaimer" />
       <van-cell v-if="appInfo.version" center :title="'APP '+$t('about.version')" clickable :label="`${appInfo.version}(${appInfo.build})`" />
       <van-cell v-if="wvVersion" center :title="'Webview '+$t('about.version')" clickable :label="wvVersion" />
-      <van-cell center :title="$t('setting.check_update')" label="Go to App Center" clickable @click="openGithubRelease" />
+      <van-cell center :title="$t('setting.check_update')" label="Go to Github Release" clickable @click="openGithubRelease" />
       <van-cell
         center
         :title="$t('about.source')"
@@ -110,9 +110,9 @@ export default {
       window.open('https://github.com/asadahimeka/pixiv-viewer/releases', '_blank', 'noopener noreferrer')
     },
     async checkUpdate() {
-      const resp = await fetch('https://fastly.jsdelivr.net/gh/asadahimeka/pixiv-viewer-apk@main/android/app/build.gradle')
+      const resp = await fetch('https://fastly.jsdelivr.net/gh/asadahimeka/pixiv-viewer-apk@ipa/src/views/Setting/About.vue')
       const text = await resp.text()
-      if (text?.match(/versionCode (\d)/i)?.[1] != this.appInfo.build) {
+      if (text?.match(/curVer: '(v[\d.]+)',/i)?.[1] != this.curVer) {
         const res = await Dialog.confirm({ message: this.$t('JKCgrgXZfg4-HDftheb96') }).catch(() => {})
         if (res != 'confirm') return
         this.openGithubRelease()

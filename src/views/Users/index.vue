@@ -677,7 +677,7 @@ export default {
 }
 
 ::v-deep .top-bar-wrap
-  padding-top 1rem
+  padding-top calc(0.4rem + var(--status-bar-height))
   background none
   transition top 0.2s
 
@@ -688,7 +688,7 @@ export default {
 
 .share_btn
   position: fixed;
-  top: 1.15rem;
+  top: calc(0.6rem + var(--status-bar-height));
   right 0.5rem;
   z-index: 99;
   font-size 0.675rem
@@ -700,10 +700,10 @@ export default {
 
 .users:has(.van-sticky--fixed)
   ::v-deep .top-bar-wrap
-    top 0.8rem
+    top calc(-0.6rem + var(--status-bar-height)) !important
     z-index 98
   .share_btn
-    top 2rem
+    top: calc(1.4rem + var(--status-bar-height));
     z-index 98
 
 @media screen and (min-width 768px)

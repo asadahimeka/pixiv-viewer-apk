@@ -5,7 +5,7 @@
 
 <script>
 import { Capacitor } from '@capacitor/core'
-import { Filesystem, Directory } from '@himeka/capacitor-filesystem'
+import { Filesystem, Directory } from '@capacitor/filesystem'
 import { loadingSvg as loadSvg } from '@/icons'
 import { LocalStorage } from '@/utils/storage'
 import { randomBg } from '@/utils'
@@ -77,9 +77,10 @@ export default {
           this.loading = false
           return
         }
+        url.protocol = 'http:'
         url.host = window.p_pximg_ip
         const path = url.pathname.slice(1)
-        const directory = Directory.External
+        const directory = Directory.Cache
         const stats = await Filesystem.stat({ path, directory }).catch(() => ({ uri: null }))
         if (stats.uri) {
           this.localSrc = Capacitor.convertFileSrc(stats.uri)
@@ -91,7 +92,7 @@ export default {
           path,
           directory,
           recursive: true,
-          headers: { Host: 'i.pximg.net', Referer: 'https://www.pixiv.net' },
+          headers: { /* Host: 'i.pximg.net', */ Referer: 'https://www.pixiv.net' },
         })
         this.localSrc = Capacitor.convertFileSrc(res.path)
         this.loading = false

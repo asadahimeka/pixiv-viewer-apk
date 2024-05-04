@@ -3,7 +3,7 @@
     <top-bar id="top-bar-wrap" />
     <h3 class="af_title">{{ $t('psoXLFqv51j1SeKjTbnms') }}</h3>
     <div class="color-list">
-      <div v-for="c in colors" :key="c.name" class="color-item" @click="saveActColor(c)">
+      <div v-for="c in colors" :key="c.color" class="color-item" @click="saveActColor(c)">
         <div class="color-bg" :style="{background:c.color}">{{ c.color }}</div>
         <div class="color-name" :style="{color:c.color}">
           <span v-if="c.color == actColor">✅</span>

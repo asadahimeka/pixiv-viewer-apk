@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { Toast } from 'vant'
 import { Clipboard } from '@capacitor/clipboard'
-import { FileDownload } from '@himeka/capacitor-plugin-filedownload'
-import { Filesystem, Directory } from '@himeka/capacitor-filesystem'
-import { StatusBar, Style } from '@capacitor/status-bar'
+import { FileDownload } from 'capacitor-plugin-filedownload'
+import { Filesystem, Directory } from '@capacitor/filesystem'
+// import { StatusBar, Style } from '@capacitor/status-bar'
 import writeBlob from 'capacitor-blob-writer'
 import { LocalStorage } from './storage'
 import { getCache, setCache } from './siteCache'
@@ -131,19 +131,20 @@ export async function downloadFile(url, fileName, subpath) {
     let downloadUrl
     if (isDirect && /\.(jpe?g|png)$/.test(url)) {
       const newUrl = new URL(url)
+      newUrl.protocol = 'http:'
       newUrl.host = window.p_pximg_ip
       downloadUrl = newUrl.href
       res = await Filesystem.downloadFile({
         url: downloadUrl,
         path: 'pixiv-viewer/' + fileName,
-        directory: Directory.Downloads,
+        directory: Directory.Documents,
         recursive: true,
-        headers: { Host: 'i.pximg.net', Referer: 'https://www.pixiv.net' },
+        headers: { /* Host: 'i.pximg.net', */ Referer: 'https://www.pixiv.net' },
       })
     } else {
       downloadUrl = url
       res = await FileDownload.download({
-        uri: downloadUrl,
+        url: downloadUrl,
         fileName: 'pixiv-viewer/' + fileName,
       })
     }
@@ -189,7 +190,7 @@ export async function downloadBlob(blob, fileName, subpath) {
     // })
 
     const path = 'pixiv-viewer/' + fileName
-    const directory = Directory.Downloads
+    const directory = Directory.Documents
 
     await writeBlob({ blob, path, directory, recursive: true })
     const { uri } = await Filesystem.getUri({ path, directory })
@@ -219,21 +220,21 @@ export function trackEvent(name, properties) {
 }
 
 export function dealStatusBarOnEnter() {
-  StatusBar.setStyle({ style: Style.Dark })
-  document.documentElement.classList.add('pt0')
-  window['nav-bar-overlay']?.classList.add('op0')
+  // StatusBar.setStyle({ style: Style.Dark })
+  // document.documentElement.classList.add('pt0')
+  // window['nav-bar-overlay']?.classList.add('op0')
 }
 
-const isDark = !!localStorage.PXV_DARK
+// const isDark = !!localStorage.PXV_DARK
 export async function dealStatusBarOnLeave() {
-  try {
-    document.documentElement.classList.remove('pt0')
-    window['nav-bar-overlay']?.classList.remove('op0')
-    await StatusBar.setStyle({ style: isDark ? Style.Dark : Style.Light })
-    return true
-  } catch (error) {
-    return false
-  }
+  // try {
+  //   document.documentElement.classList.remove('pt0')
+  //   window['nav-bar-overlay']?.classList.remove('op0')
+  //   await StatusBar.setStyle({ style: isDark ? Style.Dark : Style.Light })
+  //   return true
+  // } catch (error) {
+  //   return false
+  // }
 }
 
 export function formatBytes(bytes) {
@@ -275,7 +276,8 @@ export function loadScript(src) {
 }
 
 export function isSafari() {
-  const ua = navigator.userAgent
-  if (!/Chrome/i.test(ua) && /Safari/i.test(ua)) return true
-  return false
+  // const ua = navigator.userAgent
+  // if (!/Chrome/i.test(ua) && /Safari/i.test(ua)) return true
+  // return false
+  return true
 }

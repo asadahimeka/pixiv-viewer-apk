@@ -244,8 +244,8 @@
         "sel_desc": "请选择 AppApi 代理"
       },
       "ana": {
-        "title": "启用 AppCenter Analytics",
-        "label": "是否发送匿名统计数据到 AppCenter 以便改进应用"
+        "title": "启用 Umami Analytics",
+        "label": "是否发送匿名统计数据到 Umami 以便改进应用"
       }
     },
     "recomm": {

@@ -257,8 +257,8 @@
       },
       "swipe_toggle": "Wischen Sie auf der Detailseite nach links und rechts, um Werke zu durchsuchen",
       "ana": {
-        "label": "Ob anonyme Statistiken zur App-Verbesserung an AppCenter gesendet werden sollen",
-        "title": "Aktivieren Sie AppCenter Analytics"
+        "label": "Ob anonyme Statistiken an Umami gesendet werden sollen, um die Anwendung zu verbessern",
+        "title": "Aktivieren Sie Umami Analytics"
       }
     },
     "recomm": {

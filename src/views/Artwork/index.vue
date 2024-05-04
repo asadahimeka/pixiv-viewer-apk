@@ -242,7 +242,7 @@ img[src*="/api/qrcode?text"]
     margin: 30px 0;
   .share_btn
     position: fixed;
-    top: 1.15rem;
+    top: calc(0.6rem + var(--status-bar-height));
     right 0.5rem;
     z-index: 99;
     font-size 0.675rem
@@ -308,7 +308,7 @@ img[src*="/api/qrcode?text"]
 .artwork
   ::v-deep .top-bar-wrap
     width 2rem
-    padding-top 1rem
+    padding-top calc(0.4rem + var(--status-bar-height))
     background none
 
 @media screen and (max-width: 1200px)

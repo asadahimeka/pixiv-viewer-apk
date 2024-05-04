@@ -1,13 +1,9 @@
 {
-  "appId": "top.nanoka.pixiv",
-  "appName": "Pixiv Viewer",
-  "bundledWebRuntime": false,
+  "appId": "top.nanoka.pxvek",
+  "appName": "iPxve",
   "webDir": "dist",
-  "android": {
-    "appendUserAgent": "PixivViewer/1.4",
-    "buildOptions": {
-      "releaseType": "APK"
-    }
+  "ios": {
+    "appendUserAgent": "iPxve/1.5"
   },
   "server": {
     "androidScheme": "https"

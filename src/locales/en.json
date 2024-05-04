@@ -257,8 +257,8 @@
       },
       "swipe_toggle": "Swipe left or right on the details page to toggle artworks",
       "ana": {
-        "label": "Whether to send anonymous statistics to AppCenter for app improvement",
-        "title": "Enable AppCenter Analytics"
+        "label": "Whether to send anonymous statistics to Umami for app improvement",
+        "title": "Enable Umami Analytics"
       }
     },
     "recomm": {

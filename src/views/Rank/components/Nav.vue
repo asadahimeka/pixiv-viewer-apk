@@ -53,7 +53,7 @@ export default {
 
 <style lang="stylus" scoped>
 .nav {
-  // width: 90%;
+  min-width: 72vw;
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
@@ -73,4 +73,5 @@ export default {
       background: #f2c358;
     }
   }
-}</style>
+}
+</style>

@@ -257,8 +257,8 @@
       },
       "swipe_toggle": "세부정보 페이지에서 좌우로 스와이프하여 작품을 찾아보세요.",
       "ana": {
-        "label": "앱 개선을 위해 AppCenter에 익명 통계를 보낼지 여부",
-        "title": "AppCenter 분석 활성화"
+        "label": "앱 개선을 위해 Umami에 익명 통계를 보낼지 여부",
+        "title": "Umami 분석 활성화"
       }
     },
     "recomm": {

@@ -257,8 +257,8 @@
       },
       "swipe_toggle": "詳情頁左右滑動瀏覽作品",
       "ana": {
-        "label": "是否發送匿名統計數據到 AppCenter 以便改進應用",
-        "title": "啟用 AppCenter Analytics"
+        "label": "是否發送匿名統計數據到 Umami 以便改進應用",
+        "title": "啟用 Umami Analytics"
       }
     },
     "recomm": {

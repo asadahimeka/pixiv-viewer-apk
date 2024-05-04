@@ -157,7 +157,7 @@
 import { mapGetters } from 'vuex'
 import dayjs from 'dayjs'
 import { Dialog } from 'vant'
-import { copyText, downloadFile, sleep, trackEvent, isSafari } from '@/utils'
+import { copyText, downloadFile, sleep, trackEvent } from '@/utils'
 import { i18n } from '@/i18n'
 import { isIllustBookmarked, addBookmark, removeBookmark } from '@/api/user'
 import { localApi, PIXIV_NOW_URL } from '@/api'
@@ -239,12 +239,12 @@ export default {
     },
   },
   mounted() {
-    if (isSafari()) return
+    /* if (isSafari()) return
     this.$nextTick(() => {
       setTimeout(() => {
         this.drawMask()
       }, 500)
-    })
+    }) */
   },
   methods: {
     checkBookmarked() {

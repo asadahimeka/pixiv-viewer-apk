@@ -1088,6 +1088,16 @@
   resolved "https://registry.npmmirror.com/@capacitor/device/-/device-5.0.7.tgz#f45d74008cbd4352f3e9eb816f2f8f4a177840b4"
   integrity sha512-sTYzGktRVK6giQCsoFtw+IGkEPGmFvIwi0pfFej5TRND1UHidkNZSpgMFBbjCYPbwsqXTcR3boYPcmxvl5iuJg==
 
+"@capacitor/filesystem@^5.2.1":
+  version "5.2.1"
+  resolved "https://registry.npmmirror.com/@capacitor/filesystem/-/filesystem-5.2.1.tgz#c6183dce64fe95375a254d841029c5b88211392a"
+  integrity sha512-mexkJHUbNhydzfJywEUTIGARlB/HRogrtbjCZdA+mQxOi07T2887a70CwFaYRu1nKLMoKoliTM5UsLSsdl0PlA==
+
+"@capacitor/ios@^5.6.0":
+  version "5.7.5"
+  resolved "https://registry.npmmirror.com/@capacitor/ios/-/ios-5.7.5.tgz#bad2aac70ccae5d62cff23aa963ad1b0ad788c9e"
+  integrity sha512-mREcvv4XC9USSAbYmf/2Lmbr52eZjMDpKYwxwi2CKLJXGXNjYfJaHm6jnPordAl6kZdm3Bm/tnx+rYpb9KptGA==
+
 "@capacitor/share@^5.0.6":
   version "5.0.7"
   resolved "https://registry.npmmirror.com/@capacitor/share/-/share-5.0.7.tgz#301d06e2c8add86e24957f4c02e28e847b894f89"
@@ -1097,11 +1107,6 @@
   version "5.0.7"
   resolved "https://registry.npmmirror.com/@capacitor/status-bar/-/status-bar-5.0.7.tgz#a341e8dec9f93769bed4a42e8ad397e5df1b5287"
   integrity sha512-KblB3gV2LDMEjx3fQoNBAzxb+Tr+2mv68SfFLLDCMiMUD3Eile2TAWRWd1yxy496pDFTOs2BJtup8++iuuuJ/w==
-
-"@capgo/capacitor-navigation-bar@6.0.12":
-  version "6.0.12"
-  resolved "https://registry.npmmirror.com/@capgo/capacitor-navigation-bar/-/capacitor-navigation-bar-6.0.12.tgz#68c842efedf7cfda53efbd40d0ef35dbf4965aef"
-  integrity sha512-egx6SEk/oiHRL6gEcQfn1esDlT3bBnIb5avfR2ad3c2kzWl3CvVtWQkZMRG27OW1kCiydXFLve6ecQcMU1bJ9Q==
 
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
@@ -1163,16 +1168,6 @@
   integrity sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==
   dependencies:
     "@hapi/hoek" "^9.0.0"
-
-"@himeka/capacitor-filesystem@5.1.2-alpha.2":
-  version "5.1.2-alpha.2"
-  resolved "https://registry.npmmirror.com/@himeka/capacitor-filesystem/-/capacitor-filesystem-5.1.2-alpha.2.tgz#a895076a2d8e210d6a330cb71b3451747b4ca984"
-  integrity sha512-nnjN83g4VrRz7VxjurAGHFCXqGjjUrU6jQR3sr3y4sAycJdKYl1Ubu6NVqncCUBXBtU1FjCs+l9P5wSzjMHvfA==
-
-"@himeka/capacitor-plugin-filedownload@1.0.6":
-  version "1.0.6"
-  resolved "https://registry.npmmirror.com/@himeka/capacitor-plugin-filedownload/-/capacitor-plugin-filedownload-1.0.6.tgz#cfb2fc3b32a50c2e228b2ec93f91cd39a3dc9b02"
-  integrity sha512-aqjQ84W/0tEWrFHONMXPgrRSu1MfFrPQCd0HVoqT4OnMRoP5vPUWThr72KkgVh1iwnlS9zKUfHuezrjMbmUCYw==
 
 "@humanwhocodes/config-array@^0.11.13":
   version "0.11.14"
@@ -1296,6 +1291,11 @@
     tslib "^2.0.1"
     untildify "^4.0.0"
     wrap-ansi "^7.0.0"
+
+"@jcesarmobile/ssl-skip@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.npmmirror.com/@jcesarmobile/ssl-skip/-/ssl-skip-0.3.0.tgz#55d2fc3aeaf4c8393762fc81a39ff8be05259009"
+  integrity sha512-vnYzQxgoQCuPQetfhWIR4KAAbuRcmvthWhF/qGgSp3X+VKQ05wtkVMdQNyKDkizANkB4M/R+DoPJtLEULDKmiA==
 
 "@jridgewell/gen-mapping@^0.3.5":
   version "0.3.5"
@@ -2962,11 +2962,6 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001587, caniuse-lite@^1.0.30001599:
   resolved "https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001615.tgz#7c2c8772db681b6dee74d81d6550db68f2d28842"
   integrity sha512-1IpazM5G3r38meiae0bHRnPhz+CBQ3ZLqbQMtrg+AsTPKAXgW38JNsXkyZ+v8waCsDmPq87lmfun5Q2AGysNEQ==
 
-capacitor-android-shortcuts@5.0.5:
-  version "5.0.5"
-  resolved "https://registry.npmmirror.com/capacitor-android-shortcuts/-/capacitor-android-shortcuts-5.0.5.tgz#3225af646f2e1f0003ff9b383f3d8c9e54b96607"
-  integrity sha512-A9FiIRH/65Z8VGtRVJrXEw5ecoAwY34Dh8y5jYVtB/FLsZwVH0bDgPLBpAA5IlgrlK2xVw0NajjUrRmOegg4uw==
-
 capacitor-blob-writer@1.1.14:
   version "1.1.14"
   resolved "https://registry.npmmirror.com/capacitor-blob-writer/-/capacitor-blob-writer-1.1.14.tgz#89be144225fa1e588815cd315157c3bc77ad86da"
@@ -2976,6 +2971,11 @@ capacitor-native-settings@5.0.1:
   version "5.0.1"
   resolved "https://registry.npmmirror.com/capacitor-native-settings/-/capacitor-native-settings-5.0.1.tgz#b9c8445da149fea9bd527170c6486ce51e2c7e1a"
   integrity sha512-HH7GCyaVLwWP4FEVqvOQM+cHWveQUjsA2128wfZ5yr9eOQrECVWzO5UXH9ZlikpWi1C7exnovcyEr3TlYO6l8w==
+
+capacitor-plugin-filedownload@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmmirror.com/capacitor-plugin-filedownload/-/capacitor-plugin-filedownload-2.0.0.tgz#856fca468c0f1649fe1b61e9540ddd2f245afe4e"
+  integrity sha512-KEd/8rTOlHL79OUbFjppkKEIdtR9V9uD1mQlxSkEvFH8kXkl8TV9Q3Vp3wMxgIvFPjK4CCu6JOD51zjMOAtyag==
 
 capacitor-plugin-safe-area@2.0.6:
   version "2.0.6"

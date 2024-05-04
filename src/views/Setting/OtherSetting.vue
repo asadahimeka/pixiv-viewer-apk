@@ -435,7 +435,10 @@ export default {
         trackEvent('AnalyticsChange', { val })
         this.isAnalyticsOn = val
         LocalStorage.set('PXV_ANALYTICS', val)
-        val ? localStorage.removeItem('umami.disabled') : localStorage.setItem('umami.disabled', val)
+        val ? localStorage.removeItem('umami.disabled') : localStorage.setItem('umami.disabled', 'true')
+        setTimeout(() => {
+          location.reload()
+        }, 500)
       } catch (err) {
         console.log('err: ', err)
       }

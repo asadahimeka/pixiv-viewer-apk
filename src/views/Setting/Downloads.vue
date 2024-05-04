@@ -42,7 +42,7 @@
 <script>
 import { Capacitor } from '@capacitor/core'
 import { FileOpener } from '@capacitor-community/file-opener'
-import { Filesystem, Directory } from '@himeka/capacitor-filesystem'
+import { Filesystem, Directory } from '@capacitor/filesystem'
 import { Dialog } from 'vant'
 import TopBar from '@/components/TopBar'
 import { downloadFile, formatBytes } from '@/utils'
@@ -119,7 +119,7 @@ export default {
       }).catch(() => {})
     },
     async readDir(path) {
-      const directory = Directory.Downloads
+      const directory = Directory.Documents
       const { files } = await Filesystem.readdir({ path, directory }).catch(() => ({ files: [] }))
       const res = await Promise.all(files.map(async it => {
         if (it.type == 'file') {
@@ -130,9 +130,9 @@ export default {
             isNovel: /\.txt$/.test(it.name),
             isImage: /\.(jpe?g|png|gif)$/.test(it.name),
             size: formatBytes(it.size),
-            date: new Date(it.ctime).toLocaleString(),
+            date: new Date(+(it.ctime || it.mtime)).toLocaleString(),
             status: 'ok',
-            ms: it.ctime || it.mtime,
+            ms: +(it.ctime || it.mtime),
           }
         }
       }))

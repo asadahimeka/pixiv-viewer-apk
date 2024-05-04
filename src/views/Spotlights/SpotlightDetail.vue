@@ -411,7 +411,7 @@ export default {
 
   ::v-deep .top-bar-wrap
     width 2rem
-    padding-top calc(0.66rem + var(--status-bar-height)) !important
+    padding-top calc(0.36rem + var(--status-bar-height)) !important
     background transparent
 
   .card-box
@@ -427,7 +427,7 @@ export default {
   position: fixed;
   top: var(--status-bar-height);
   right 0
-  padding: 0.9rem 0.5rem;
+  padding: 0.6rem 0.5rem;
   z-index: 99;
   font-size 2em
   cursor pointer

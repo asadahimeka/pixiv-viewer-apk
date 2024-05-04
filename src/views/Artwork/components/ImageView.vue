@@ -320,13 +320,13 @@ export default {
       )
     },
     async downloadWebM() {
-      if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
-        this.$toast({
-          message: this.$t('tips.ios_webm'),
-          icon: require('@/icons/error.svg'),
-        })
-        return
-      }
+      // if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+      //   this.$toast({
+      //     message: this.$t('tips.ios_webm'),
+      //     icon: require('@/icons/error.svg'),
+      //   })
+      //   return
+      // }
 
       this.$toast(this.$t('tip.down_wait'))
       await sleep(1000)

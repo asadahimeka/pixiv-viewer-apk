@@ -10,23 +10,22 @@
         @select="onRankCatSel"
       >
         <template #reference>
-          <div class="com_sel_tab" style="margin-right: 2px;">{{ rankCatLabels[actRankCat] }}</div>
+          <div class="com_sel_tab" style="min-width: 1.2rem;margin-right: 2px;">{{ rankCatLabels[actRankCat] }}</div>
         </template>
       </van-popover>
       <div class="nav_divi"></div>
       <RankNav :menu="menu" />
-      <span style="display: inline-block;">
+      <div class="cal-box">
         <div class="calendar" @click="$refs.dateInp.click()">
           <div class="date">{{ dateNum }}</div>
         </div>
-      </span>
+      </div>
       <input
         ref="dateInp"
         v-model="date"
         type="date"
         :min="minDate"
         :max="maxDate"
-        style="width: 0;border: 0;opacity: 0;"
       >
     </div>
     <van-list
@@ -257,7 +256,7 @@ export default {
 </style>
 <style lang="stylus" scoped>
 .nav_divi {
-  width 1px
+  width 1PX
   height 24px
   margin 0 15px
   background #000
@@ -295,6 +294,24 @@ export default {
 
     .nav {
       flex 1
+    }
+
+    .cal-box {
+      position absolute
+      top var(--status-bar-height)
+      right 0
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: calc(100% - var(--status-bar-height));
+      padding-right: 0.3rem;
+      background: #fff;
+      &+input[type=date] {
+        width: 0;
+        border: 0;
+        opacity: 0;
+        outline: 0;
+      }
     }
 
     .calendar {
