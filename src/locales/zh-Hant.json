@@ -257,8 +257,8 @@
       },
       "swipe_toggle": "詳情頁左右滑動瀏覽作品",
       "ana": {
-        "label": "是否發送匿名統計數據到 AppCenter 以便改進應用",
-        "title": "啟用 AppCenter Analytics"
+        "label": "是否發送匿名統計數據到 Umami 以便改進應用",
+        "title": "啟用 Umami Analytics"
       }
     },
     "recomm": {
@@ -442,5 +442,14 @@
   "YeEO8hAsoM45pm_vcijKP": "pximg 直連模式需確保 Tampermonkey 與 Helper 腳本已安裝，且速度可能較慢、不保證穩定性。",
   "9omPI2Fz4KzKSVNlmF8-K": "Tampermonkey 或 Helper 腳本未安裝，啟用失敗",
   "2jNIricwtCbrzEESdEbvH": "點選安裝",
-  "lkfd4SXJiefx26Z7vj0Au": "Helper 腳本地址"
+  "lkfd4SXJiefx26Z7vj0Au": "Helper 腳本地址",
+  "0CDMRP9wSGJQTyMbvrM8z": "查看回覆",
+  "1V8tlBs--oNk_UbzsItA-": "備用域名",
+  "hGqGftQ7v772prEac1hbJ": "評論",
+  "vqHSGcz4r3oSQIWQwZiVf": "還沒有人發表評論呢~",
+  "OKTKyrictvQCVi7NiTj9Q": "將圖片標題與作者置於圖片卡下方",
+  "pNh9SJwP8sHaVgxTnVtlB": "不可與長按屏蔽一起使用",
+  "SoLAtsxVTTXp9cj0MdFqh": "長按可屏蔽作者或標籤，不可與長按下載一起使用",
+  "GC421AyTxr0fbKIiTVhNt": "停用詳情頁狀態列透明",
+  "Rw0vijWia2YYJTECmLXnR": "異形螢幕可開啟此項"
 }

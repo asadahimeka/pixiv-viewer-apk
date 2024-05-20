@@ -11,6 +11,17 @@ const DEF_API_HOSTS = {
 const DEF_API_PROXY = process.env.VUE_APP_DEF_APP_API_PROXY
 const DEF_PXIMG_IP = '210.140.139.131'
 
+function dnsQuery(domain) {
+  return Promise.race([
+    axios.get(`https://1.1.1.1/dns-query?name=${domain}&do=false&cd=false`, {
+      headers: { Accept: 'application/dns-json' },
+    }),
+    new Promise((_resolve, reject) => {
+      setTimeout(() => reject(new Error('请求超时')), 3000)
+    }),
+  ])
+}
+
 async function setPximgIP() {
   if (!LocalStorage.get('PXV_PXIMG_DIRECT', false)) return
   const ip = LocalStorage.get('PXV_PXIMG_IP')
@@ -19,10 +30,7 @@ async function setPximgIP() {
     return
   }
   try {
-    const res = await axios.get('https://1.1.1.1/dns-query?name=i.pximg.net&do=false&cd=false', {
-      headers: { Accept: 'application/dns-json' },
-      timeout: 3000,
-    })
+    const res = await dnsQuery('i.pximg.net')
     const { data } = res.data.Answer[0]
     console.log('pximg dns answer: ', data)
     window.p_pximg_ip = data
@@ -40,10 +48,7 @@ async function setApiHosts(config) {
     return
   }
   try {
-    const res = await axios.get('https://1.1.1.1/dns-query?name=www.pixivision.net&do=false&cd=false', {
-      headers: { Accept: 'application/dns-json' },
-      timeout: 3000,
-    })
+    const res = await dnsQuery('www.pixivision.net')
     const { data } = res.data.Answer[0]
     console.log('dns answer: ', data)
     window.p_api_hosts = {

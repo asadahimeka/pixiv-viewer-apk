@@ -7,13 +7,13 @@
       <van-cell center :title="$t('about.disclaimer')" is-link :label="$t('tips.click_view')" to="/setting/about/disclaimer" />
       <van-cell v-if="appInfo.version" center :title="'APP '+$t('about.version')" clickable :label="`${appInfo.version}(${appInfo.build})`" />
       <van-cell v-if="wvVersion" center :title="'Webview '+$t('about.version')" clickable :label="wvVersion" />
-      <van-cell center :title="$t('setting.check_update')" label="Go to App Center" clickable @click="openGithubRelease" />
+      <van-cell center :title="$t('setting.check_update')" label="Go to Github Release" clickable @click="openGithubRelease" />
       <van-cell
         center
         :title="$t('about.source')"
         is-link
         label="Github:asadahimeka/pixiv-viewer"
-        @click="openLink('https://github.com/asadahimeka/pixiv-viewer')"
+        @click="openLink('https://github.com/asadahimeka/pixiv-viewer-apk')"
       />
       <van-cell center :title="'FAQ'" is-link :label="$t('tips.click_view')" to="/setting/about/faq" />
     </van-cell-group>
@@ -81,10 +81,9 @@
 </template>
 
 <script>
-import { App } from '@capacitor/app'
-import { Device } from '@capacitor/device'
 import { Dialog } from 'vant'
 import { trackEvent } from '@/utils'
+import { CURRENT_WEB_VERSION, getAppInfo, getDeviceInfo } from '@/version'
 
 export default {
   name: 'SettingAbout',
@@ -92,12 +91,12 @@ export default {
     return {
       wvVersion: '',
       appInfo: {},
-      curVer: 'v1.17.2',
+      curVer: CURRENT_WEB_VERSION,
     }
   },
   async created() {
-    this.appInfo = await App.getInfo()
-    this.wvVersion = (await Device.getInfo()).webViewVersion
+    this.appInfo = await getAppInfo()
+    this.wvVersion = (await getDeviceInfo()).webViewVersion
     this.checkUpdate()
   },
   methods: {

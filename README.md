@@ -108,7 +108,6 @@ This project uses [Vue I18n](https://kazupon.github.io/vue-i18n/) for internatio
 - [PixivNow](https://github.com/FreeNowOrg/PixivNow)
 - [SauceNAO](https://saucenao.com/)
 - [Cloudflare Workers](https://workers.cloudflare.com/)
-- [Vercel](https://vercel.com/)
 
 ## Disclaimer
 
@@ -120,4 +119,4 @@ This project is for communication and learning only and may not be used for any 
 
 ## LICENSE
 
-[![MIT License Copyright (c) 2020 Jad](https://img.shields.io/github/license/journey-ad/pixiv-viewer)](https://github.com/asadahimeka/pixiv-viewer/blob/master/LICENSE)
+[![MIT License Copyright (c) 2020 Jad](https://img.shields.io/github/license/asadahimeka/pixiv-viewer-apk)](https://github.com/asadahimeka/pixiv-viewer-apk/blob/master/LICENSE)

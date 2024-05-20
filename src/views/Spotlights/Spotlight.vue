@@ -123,7 +123,7 @@ export default {
           },
         }))
         this.spotlight = res.data
-        if (!res.data.desc) {
+        if (!res.data.desc || !res.data.items.length) {
           this.spotlight.related_recommend = null
           this.spotlight.related_latest = null
           this.$router.replace(`/pixivision/${this.spid}`)

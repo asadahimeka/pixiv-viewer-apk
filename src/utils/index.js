@@ -1,9 +1,10 @@
 import axios from 'axios'
 import { Toast } from 'vant'
+import { Fancybox } from '@fancyapps/ui'
 import { Clipboard } from '@capacitor/clipboard'
 import { FileDownload } from '@himeka/capacitor-plugin-filedownload'
 import { Filesystem, Directory } from '@himeka/capacitor-filesystem'
-import { StatusBar, Style } from '@capacitor/status-bar'
+// import { StatusBar, Style } from '@capacitor/status-bar'
 import writeBlob from 'capacitor-blob-writer'
 import { LocalStorage } from './storage'
 import { getCache, setCache } from './siteCache'
@@ -218,22 +219,26 @@ export function trackEvent(name, properties) {
   }
 }
 
+const isOverlayOff = LocalStorage.get('PXV_STATUSBAR_OVERLAY_OFF', false)
+
 export function dealStatusBarOnEnter() {
-  StatusBar.setStyle({ style: Style.Dark })
+  if (isOverlayOff) return
+  // StatusBar.setStyle({ style: Style.Dark })
   document.documentElement.classList.add('pt0')
   window['nav-bar-overlay']?.classList.add('op0')
 }
 
-const isDark = !!localStorage.PXV_DARK
+// const isDark = !!localStorage.PXV_DARK
 export async function dealStatusBarOnLeave() {
-  try {
-    document.documentElement.classList.remove('pt0')
-    window['nav-bar-overlay']?.classList.remove('op0')
-    await StatusBar.setStyle({ style: isDark ? Style.Dark : Style.Light })
-    return true
-  } catch (error) {
-    return false
-  }
+  if (isOverlayOff) return
+  // try {
+  document.documentElement.classList.remove('pt0')
+  window['nav-bar-overlay']?.classList.remove('op0')
+  // await StatusBar.setStyle({ style: isDark ? Style.Dark : Style.Light })
+  // return true
+  // } catch (error) {
+  // return false
+  // }
 }
 
 export function formatBytes(bytes) {
@@ -278,4 +283,41 @@ export function isSafari() {
   const ua = navigator.userAgent
   if (!/Chrome/i.test(ua) && /Safari/i.test(ua)) return true
   return false
+}
+
+export async function fancyboxShow(artwork, index = 0, getSrc = e => e.o) {
+  Fancybox.show(artwork.images.map(e => ({
+    src: getSrc(e),
+    thumb: e.m,
+  })), {
+    compact: false,
+    startIndex: index,
+    backdropClick: 'close',
+    contentClick: 'close',
+    hideScrollbar: false,
+    placeFocusBack: false,
+    trapFocus: false,
+    Hash: false,
+    Thumbs: { showOnStart: false },
+    Carousel: { infinite: false },
+    Toolbar: {
+      display: {
+        left: ['infobar'],
+        middle: ['toggleZoom', 'myDownload', 'rotateCW', 'flipX', 'flipY', 'close'],
+        right: [],
+      },
+      items: {
+        myDownload: {
+          tpl: '<button class="f-button"><svg><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M7 11l5 5 5-5M12 4v12"></path></svg></button>',
+          click: async ev => {
+            console.log('ev: ', ev)
+            const { page } = ev.instance.carousel
+            const item = artwork.images[page]
+            const fileName = `${artwork.author.name}_${artwork.title}_${artwork.id}_p${page}.${item.o.split('.').pop()}`
+            await downloadFile(item.o, fileName)
+          },
+        },
+      },
+    },
+  })
 }

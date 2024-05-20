@@ -9,9 +9,6 @@ android {
 
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
-    implementation project(':capacitor-community-appcenter')
-    implementation project(':capacitor-community-appcenter-analytics')
-    implementation project(':capacitor-community-appcenter-crashes')
     implementation project(':capacitor-community-file-opener')
     implementation project(':capacitor-app')
     implementation project(':capacitor-clipboard')

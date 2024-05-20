@@ -5,10 +5,30 @@
     <van-cell center :title="$t('setting.other.lang')" is-link :label="lang.value" @click="lang.show = true" />
     <van-cell center :title="$t('setting.layout.title')" is-link :label="wfType.value" @click="wfType.show = true" />
     <van-cell center :title="$t('setting.img_res.title')" is-link :label="imgRes.value" @click="imgRes.show = true" />
-    <van-cell center :title="$t('psoXLFqv51j1SeKjTbnms')" is-link :label="$t('setting.lab.title')" to="/setting/accent_color" />
+    <van-cell center :title="$t('psoXLFqv51j1SeKjTbnms')" is-link :label="`${accentColor} ${actTheme}`" to="/setting/accent_color" />
     <van-cell center :title="$t('setting.dark.title')" :label="$t('setting.lab.title')">
       <template #right-icon>
         <van-switch :value="isDark" size="24" @change="onDarkChange" />
+      </template>
+    </van-cell>
+    <van-cell center :title="$t('5syY7l774noiN5LHKUnqF')" :label="$t('pNh9SJwP8sHaVgxTnVtlB')">
+      <template #right-icon>
+        <van-switch :disabled="isLongpressBlock" :value="isLongpressDL" size="24" @change="changeLongpressDL" />
+      </template>
+    </van-cell>
+    <van-cell center :title="$t('kFOiZTwKWwXy-sxaspqSD')" :label="$t('SoLAtsxVTTXp9cj0MdFqh')">
+      <template #right-icon>
+        <van-switch :disabled="isLongpressDL" :value="isLongpressBlock" size="24" @change="changeLongpressBlock" />
+      </template>
+    </van-cell>
+    <van-cell center :title="$t('ZO7u4XT4flW6_nmyvmXt7')" :label="$t('OKTKyrictvQCVi7NiTj9Q')">
+      <template #right-icon>
+        <van-switch :value="isImageCardOuterMeta" size="24" @change="changeImageCardOuterMeta" />
+      </template>
+    </van-cell>
+    <van-cell center :title="$t('GC421AyTxr0fbKIiTVhNt')" :label="$t('Rw0vijWia2YYJTECmLXnR')">
+      <template #right-icon>
+        <van-switch :value="isDisableStatusbarOverlay" size="24" @change="changeStatusbarOverlayOff" />
       </template>
     </van-cell>
     <van-cell center :title="$t('setting.other.swipe_toggle')" :label="$t('setting.lab.title')">
@@ -19,21 +39,6 @@
     <van-cell center :title="$t('eioSClGw9BqryzojTwr8j')" :label="$t('setting.lab.title')">
       <template #right-icon>
         <van-switch :value="isPageEffectOn" size="24" @change="changePageEffect" />
-      </template>
-    </van-cell>
-    <van-cell center :title="$t('5syY7l774noiN5LHKUnqF')" :label="$t('setting.lab.title')">
-      <template #right-icon>
-        <van-switch :disabled="isLongpressBlock" :value="isLongpressDL" size="24" @change="changeLongpressDL" />
-      </template>
-    </van-cell>
-    <van-cell center :title="$t('kFOiZTwKWwXy-sxaspqSD')" :label="$t('setting.lab.title')">
-      <template #right-icon>
-        <van-switch :disabled="isLongpressDL" :value="isLongpressBlock" size="24" @change="changeLongpressBlock" />
-      </template>
-    </van-cell>
-    <van-cell center :title="$t('ZO7u4XT4flW6_nmyvmXt7')" :label="$t('setting.lab.title')">
-      <template #right-icon>
-        <van-switch :value="isImageCardOuterMeta" size="24" @change="changeImageCardOuterMeta" />
       </template>
     </van-cell>
     <van-cell v-if="!(isPximgDirect && appConfig.useLocalAppApi)" center :title="$t('setting.other.manual_input')" :label="$t('setting.other.manual_input_label')">
@@ -253,6 +258,9 @@ export default {
       isImageCardOuterMeta: LocalStorage.get('PXV_IMG_META_OUTER', false),
       isPximgDirect: LocalStorage.get('PXV_PXIMG_DIRECT', false),
       showAnaSwitch: false,
+      actTheme: localStorage.PXV_THEME || '',
+      accentColor: localStorage.PXV_ACT_COLOR || 'Default',
+      isDisableStatusbarOverlay: LocalStorage.get('PXV_STATUSBAR_OVERLAY_OFF', false),
     }
   },
   computed: {
@@ -419,6 +427,16 @@ export default {
       setTimeout(() => {
         location.reload()
       }, 500)
+    },
+    changeStatusbarOverlayOff(val) {
+      trackEvent('DisableStatusbarOverlay', { val })
+      this.isDisableStatusbarOverlay = val
+      this.$nextTick(() => {
+        LocalStorage.set('PXV_STATUSBAR_OVERLAY_OFF', val)
+        setTimeout(() => {
+          location.reload()
+        }, 500)
+      })
     },
     onDarkChange(val) {
       trackEvent('set_dark', { val })

@@ -7,6 +7,15 @@
         <small>{{ $t('setting.app_desc') }}</small>
       </div>
     </h2>
+    <van-notice-bar
+      v-if="notice"
+      class="custom-notice"
+      color="#B5495B"
+      background="#FEDFE1"
+      :left-icon="notice.icon"
+    >
+      {{ notice.text }}
+    </van-notice-bar>
     <van-cell v-if="isLoggedIn" size="large" center is-link :to="`/u/${user.id}`">
       <template #title>
         <div class="user_data">
@@ -34,22 +43,44 @@
 </template>
 
 <script>
+import { Dialog } from 'vant'
+import dayjs from 'dayjs'
 import { mapGetters, mapState } from 'vuex'
 import { logout } from '@/api/user'
-import { Dialog } from 'vant'
 import PixivAuth from '@/api/client/pixiv-auth'
 
 export default {
   name: 'Setting',
+  data() {
+    return {
+      notice: null,
+    }
+  },
   computed: {
     ...mapState(['user']),
     ...mapGetters(['isLoggedIn']),
     userAvatar() {
       if (/^\/(-|~)\//.test(this.user.profileImg)) {
-        return `https://now.pixiv.pics/${this.user.profileImg}`
+        return `https://pxvek.cocomi.eu.org/${this.user.profileImg}`
       }
       return this.user.profileImg
     },
+  },
+  async created() {
+    try {
+      const notices = await fetch('https://pxve-notice.nanoka.top').then(r => r.json())
+      const today = dayjs().startOf('day')
+      this.notice = notices.filter(e => e.pnt.length == 0 || e.pnt.includes('android')).find(e =>
+        today.isAfter(dayjs(e.start).startOf('day') - 1) &&
+        today.isBefore(dayjs(e.end).endOf('day'))
+      )
+      console.log('this.notice: ', this.notice)
+      if (this.notice?.style) {
+        document.head.insertAdjacentHTML('beforeend', `<style>${this.notice.style}</style>`)
+      }
+    } catch (err) {
+      console.log('err: ', err)
+    }
   },
   methods: {
     async logoutApp() {

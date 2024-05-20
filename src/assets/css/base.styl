@@ -594,6 +594,14 @@ html
   width 100%
   height var(--status-bar-height)
   background #fff
+  &.show
+    transition 0.2s
+    opacity 1 !important
+    backdrop-filter: saturate(200%) blur(.08rem);
+    background: rgba(255, 255, 255, 0.72);
+
+.dark #nav-bar-overlay.show
+  background: rgba(0, 0, 0, 0.28);
 
 .dark
   .search-bar-wrap::before,

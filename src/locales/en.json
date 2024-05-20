@@ -257,8 +257,8 @@
       },
       "swipe_toggle": "Swipe left or right on the details page to toggle artworks",
       "ana": {
-        "label": "Whether to send anonymous statistics to AppCenter for app improvement",
-        "title": "Enable AppCenter Analytics"
+        "label": "Whether to send anonymous statistics to Umami for app improvement",
+        "title": "Enable Umami Analytics"
       }
     },
     "recomm": {
@@ -442,5 +442,14 @@
   "YeEO8hAsoM45pm_vcijKP": "pximg direct connection mode requires that Tampermonkey and Helper userscript are installed, and the speed may be slower and stability is not guaranteed.",
   "9omPI2Fz4KzKSVNlmF8-K": "Failed: Tampermonkey or Helper userscript is not installed.",
   "2jNIricwtCbrzEESdEbvH": "Click to install",
-  "lkfd4SXJiefx26Z7vj0Au": "Helper userscript link"
+  "lkfd4SXJiefx26Z7vj0Au": "Helper userscript link",
+  "0CDMRP9wSGJQTyMbvrM8z": "View replies",
+  "1V8tlBs--oNk_UbzsItA-": "Alternate domain name",
+  "hGqGftQ7v772prEac1hbJ": "Comments",
+  "vqHSGcz4r3oSQIWQwZiVf": "No one has commented yet~",
+  "OKTKyrictvQCVi7NiTj9Q": "Place the image title and author below the image card",
+  "pNh9SJwP8sHaVgxTnVtlB": "Cannot be used together with long press to block",
+  "SoLAtsxVTTXp9cj0MdFqh": "Long press can block the author or tag, and cannot be used together with long press to download.",
+  "GC421AyTxr0fbKIiTVhNt": "Disable status bar transparency on details page",
+  "Rw0vijWia2YYJTECmLXnR": "Special-shaped screens may need to turn on this item"
 }

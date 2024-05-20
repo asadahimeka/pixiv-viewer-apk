@@ -24,3 +24,5 @@ yarn-error.log*
 .vercel
 .sourcemaps
 *.map
+
+/public/static/words.txt

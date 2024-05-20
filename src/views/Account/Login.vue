@@ -34,7 +34,13 @@
       <van-cell>
         <div class="flex">
           <span style="margin-right: 0.3rem">{{ $t('setting.other.direct_mode.proxy.title') }}</span>
-          <van-switch :value="appConfig.useApiProxy" size="24" @change="setUseApiProxy" />
+          <van-switch :value="appConfig.useApiProxy" :disabled="appConfig.directMode" size="24" @change="setUseApiProxy" />
+        </div>
+      </van-cell>
+      <van-cell>
+        <div class="flex">
+          <span style="margin-right: 0.3rem">{{ $t('setting.other.direct_mode.title') }}</span>
+          <van-switch :value="appConfig.directMode" :disabled="appConfig.useApiProxy" size="24" @change="setDirectMode" />
         </div>
       </van-cell>
     </van-dialog>
@@ -96,11 +102,27 @@ export default {
         }).catch(() => 'cancel')
         if (res == 'cancel') return
         this.$set(this.appConfig, 'useApiProxy', true)
-        trackEvent('useApiProxy', { val })
       } else {
         this.$set(this.appConfig, 'useApiProxy', false)
-        trackEvent('useApiProxy', { val })
       }
+      trackEvent('useApiProxy', { val })
+      await this.$nextTick()
+      PixivAuth.writeConfig(this.appConfig)
+    },
+    async setDirectMode(val) {
+      if (val) {
+        const res = await Dialog.confirm({
+          title: this.$t('setting.other.direct_mode.confirm.title'),
+          message: this.$t('setting.other.direct_mode.confirm.msg'),
+          confirmButtonText: this.$t('common.confirm'),
+          cancelButtonText: this.$t('common.cancel'),
+        }).catch(() => 'cancel')
+        if (res == 'cancel') return
+        this.$set(this.appConfig, 'directMode', true)
+      } else {
+        this.$set(this.appConfig, 'directMode', false)
+      }
+      trackEvent('setDirectMode', { val })
       await this.$nextTick()
       PixivAuth.writeConfig(this.appConfig)
     },

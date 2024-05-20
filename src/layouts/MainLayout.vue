@@ -56,9 +56,17 @@ export default {
   },
   mounted() {
     addEventListener('scroll', throttleScroll(document.documentElement, scroll => {
-      if (scroll > 160) this.isNavAppear = false
-    }, () => {
+      if (scroll > 160) {
+        this.isNavAppear = false
+        if (window['nav-bar-overlay']?.classList.contains('op0')) {
+          window['nav-bar-overlay']?.classList.add('show')
+        }
+      }
+    }, scroll => {
       this.isNavAppear = true
+      if (scroll < 160 && window['nav-bar-overlay']?.classList.contains('op0')) {
+        window['nav-bar-overlay']?.classList.remove('show')
+      }
     }), { passive: true })
   },
   methods: {

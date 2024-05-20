@@ -37,7 +37,7 @@
 
 <script>
 import _ from 'lodash'
-// import { BASE_API_URL } from '@/api/http'
+import { PIXIV_NEXT_URL } from '@/api'
 import { trackEvent } from '@/utils'
 export default {
   filters: {
@@ -111,11 +111,10 @@ export default {
 
       const formData = new FormData()
       formData.append('file', file.file, file.file.name)
-      // const base = BASE_API_URL.replace('/api/pixiv', '')
-      const base = 'https://hibiapi.cocomi.eu.org'
-      window.CapacitorWebFetch(`${base}/api/sauce/`, {
+      window.CapacitorWebFetch(`${PIXIV_NEXT_URL}/api/saucenao`, {
         method: 'POST',
         body: formData,
+        referrerPolicy: 'origin',
       }).then(res => {
         if (!res.ok) throw new Error('Resp not ok.')
         return res.json()

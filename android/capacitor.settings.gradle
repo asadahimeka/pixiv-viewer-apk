@@ -2,15 +2,6 @@
 include ':capacitor-android'
 project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/android/capacitor')
 
-include ':capacitor-community-appcenter'
-project(':capacitor-community-appcenter').projectDir = new File('../node_modules/@capacitor-community/appcenter/android')
-
-include ':capacitor-community-appcenter-analytics'
-project(':capacitor-community-appcenter-analytics').projectDir = new File('../node_modules/@capacitor-community/appcenter-analytics/android')
-
-include ':capacitor-community-appcenter-crashes'
-project(':capacitor-community-appcenter-crashes').projectDir = new File('../node_modules/@capacitor-community/appcenter-crashes/android')
-
 include ':capacitor-community-file-opener'
 project(':capacitor-community-file-opener').projectDir = new File('../node_modules/@capacitor-community/file-opener/android')
 

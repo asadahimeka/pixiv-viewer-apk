@@ -48,7 +48,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { Fancybox } from '@fancyapps/ui'
 import { Dialog } from 'vant'
 import nprogress from 'nprogress'
 import JSZip from 'jszip'
@@ -56,7 +55,7 @@ import GIF from 'gif.js'
 import tsWhammy from 'ts-whammy'
 import api from '@/api'
 import { LocalStorage } from '@/utils/storage'
-import { downloadBlob, downloadFile, sleep, trackEvent, loadScript } from '@/utils'
+import { downloadBlob, downloadFile, sleep, trackEvent, loadScript, fancyboxShow } from '@/utils'
 
 const imgResSel = LocalStorage.get('PXV_DTL_IMG_RES', 'Medium')
 const isLongpressDL = LocalStorage.get('PXV_LONGPRESS_DL', false)
@@ -119,36 +118,7 @@ export default {
           icon: require('@/icons/ban-view.svg'),
         })
       } else {
-        Fancybox.show(this.artwork.images.map(e => ({
-          src: e.o,
-          thumb: e.l,
-        })), {
-          compact: false,
-          backdropClick: 'close',
-          contentClick: 'close',
-          startIndex: index,
-          Thumbs: { showOnStart: false },
-          Carousel: { infinite: false },
-          Toolbar: {
-            display: {
-              left: ['infobar'],
-              middle: ['toggleZoom', 'myDownload', 'rotateCW', 'flipX', 'flipY', 'close'],
-              right: [],
-            },
-            items: {
-              myDownload: {
-                tpl: '<button class="f-button"><svg><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M7 11l5 5 5-5M12 4v12"></path></svg></button>',
-                click: async ev => {
-                  console.log('ev: ', ev)
-                  const { page } = ev.instance.carousel
-                  const item = this.artwork.images[page]
-                  const fileName = `${this.artwork.author.name}_${this.artwork.title}_${this.artwork.id}_p${page}.${item.o.split('.').pop()}`
-                  await downloadFile(item.o, fileName)
-                },
-              },
-            },
-          },
-        })
+        fancyboxShow(this.artwork, index)
       }
     },
     preventContext(/** @type {Event} */ event) {

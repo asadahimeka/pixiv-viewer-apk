@@ -257,8 +257,8 @@
         "title": "Activer le mode direct AppApi"
       },
       "ana": {
-        "label": "S'il faut envoyer des statistiques anonymes à AppCenter pour l'amélioration de l'application",
-        "title": "Activer AppCenter Analytics"
+        "label": "S'il faut envoyer des statistiques anonymes à Umami pour l'amélioration de l'application",
+        "title": "Activer Umami Analytics"
       }
     },
     "recomm": {
@@ -442,5 +442,14 @@
   "YeEO8hAsoM45pm_vcijKP": "Le mode de connexion directe pximg nécessite que Tampermonkey et Helper userscript soient installés, et la vitesse peut être plus lente et la stabilité n'est pas garantie.",
   "9omPI2Fz4KzKSVNlmF8-K": "Échec : le script utilisateur Tampermonkey ou Helper n'est pas installé.",
   "2jNIricwtCbrzEESdEbvH": "Cliquer pour installer",
-  "lkfd4SXJiefx26Z7vj0Au": "Lien du script utilisateur d'assistance"
+  "lkfd4SXJiefx26Z7vj0Au": "Lien du script utilisateur d'assistance",
+  "0CDMRP9wSGJQTyMbvrM8z": "Afficher les réponses",
+  "1V8tlBs--oNk_UbzsItA-": "Nom de domaine alternatif",
+  "hGqGftQ7v772prEac1hbJ": "Commentaire",
+  "vqHSGcz4r3oSQIWQwZiVf": "Personne n'a encore commenté ~",
+  "OKTKyrictvQCVi7NiTj9Q": "Placez le titre de l'image et l'auteur sous la fiche image",
+  "pNh9SJwP8sHaVgxTnVtlB": "Ne peut pas être utilisé avec une pression longue pour bloquer",
+  "SoLAtsxVTTXp9cj0MdFqh": "Un appui long peut bloquer l'auteur ou la balise et ne peut pas être utilisé avec un appui long pour télécharger.",
+  "GC421AyTxr0fbKIiTVhNt": "Désactiver la transparence de la barre d'état sur la page de détails",
+  "Rw0vijWia2YYJTECmLXnR": "Des écrans de forme spéciale devront peut-être allumer cet élément"
 }

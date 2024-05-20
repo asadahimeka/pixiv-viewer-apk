@@ -4,7 +4,7 @@
   "bundledWebRuntime": false,
   "webDir": "dist",
   "android": {
-    "appendUserAgent": "PixivViewer/1.4",
+    "appendUserAgent": "PixivViewer/1.5",
     "buildOptions": {
       "releaseType": "APK"
     }
@@ -20,7 +20,7 @@
       "enabled": true
     },
     "CapacitorCookies": {
-      "enabled": true
+      "enabled": false
     }
   }
 }
