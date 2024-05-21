@@ -17,7 +17,8 @@ const isSupportWebP = (() => {
   return false
 })()
 
-export const PIXIV_NOW_URL = 'https://pxnow.cocomi.eu.org'
+export const PIXIV_NEXT_URL = 'https://hibiapi.cocomi.eu.org'
+export const PIXIV_NOW_URL = `${PIXIV_NEXT_URL}/api/pixiv-now/http`
 
 export const PXIMG_PROXY_BASE = LocalStorage.get('PXIMG_PROXY', process.env.VUE_APP_DEF_PXIMG_MAIN)
 export const imgProxy = url => {
@@ -269,7 +270,8 @@ export const parseWebApiIllust = d => {
 }
 
 const dealErrMsg = res => {
-  let msg = res.error.user_message || res.error.message || res.error
+  const err = res.error?.response?.data?.error || res.error
+  let msg = err?.message || err?.user_message || err
   if (msg == 'Rate Limit') msg = i18n.t('tip.rate_limit')
   return msg
 }
@@ -742,7 +744,7 @@ const api = {
     let spotlights = await getCache(cacheKey)
 
     if (!spotlights) {
-      const url = `${PIXIV_NOW_URL}/api/pixivision`
+      const url = `${PIXIV_NEXT_URL}/api/pixivision`
       const params = { page }
       if (lang != 'zh-Hans') {
         params.lang = lang
@@ -790,7 +792,7 @@ const api = {
       if (lang != 'zh-Hans') {
         params.lang = lang
       }
-      const res = await get(`${PIXIV_NOW_URL}/api/pixivision/list`, params, {
+      const res = await get(`${PIXIV_NEXT_URL}/api/pixivision/list`, params, {
         headers: {
           'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56',
           'origin': 'http://localhost',
@@ -832,7 +834,7 @@ const api = {
       if (lang != 'zh-Hans') {
         params.lang = lang
       }
-      const res = await get(`${PIXIV_NOW_URL}/api/pixivision/detail`, params, {
+      const res = await get(`${PIXIV_NEXT_URL}/api/pixivision/detail`, params, {
         headers: {
           'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56',
           'origin': 'http://localhost',
@@ -872,7 +874,7 @@ const api = {
       if (lang != 'zh-Hans') {
         params.lang = lang
       }
-      const res = await get(`${PIXIV_NOW_URL}/api/pixivision/${id}`, params, {
+      const res = await get(`${PIXIV_NEXT_URL}/api/pixivision/${id}`, params, {
         headers: {
           'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56',
           'origin': 'http://localhost',
@@ -919,7 +921,7 @@ const api = {
     let rankList = await getCache(cacheKey)
 
     if (!rankList) {
-      const res = await get(`${PIXIV_NOW_URL}/api/ranking`, {
+      const res = await get(`${PIXIV_NOW_URL}/ranking`.replace('/http', ''), {
         format: 'json',
         p: page,
         mode,
@@ -946,7 +948,7 @@ const api = {
     let rankList = await getCache(cacheKey)
 
     if (!rankList) {
-      const res = await get(`${PIXIV_NOW_URL}/api/ranking`, {
+      const res = await get(`${PIXIV_NOW_URL}/ranking`.replace('/http', ''), {
         format: 'json',
         p: page,
         mode,
@@ -981,6 +983,7 @@ const api = {
       limit,
       lang: 'zh',
       _vercel_no_cache: 1,
+      _t: Date.now(),
     }, {
       headers: {
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56',
@@ -1197,7 +1200,7 @@ const api = {
     if (!artwork) {
       let res
       if (notSelfHibiApi) {
-        res = await get(`${PIXIV_NOW_URL}/ajax/novel/${id}.txt`).then(r => ({
+        res = await get(`${PIXIV_NOW_URL}/ajax/novel/${id}`).then(r => ({
           text: r.content,
           prev: r.seriesNavData?.prev,
           next: r.seriesNavData?.next,

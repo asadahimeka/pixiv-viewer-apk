@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Toast } from 'vant'
+import { Fancybox } from '@fancyapps/ui'
 import { Clipboard } from '@capacitor/clipboard'
 import { FileDownload } from 'capacitor-plugin-filedownload'
 import { Filesystem, Directory } from '@capacitor/filesystem'
@@ -280,4 +281,41 @@ export function isSafari() {
   // if (!/Chrome/i.test(ua) && /Safari/i.test(ua)) return true
   // return false
   return true
+}
+
+export async function fancyboxShow(artwork, index = 0, getSrc = e => e.o) {
+  Fancybox.show(artwork.images.map(e => ({
+    src: getSrc(e),
+    thumb: e.m,
+  })), {
+    compact: false,
+    startIndex: index,
+    backdropClick: 'close',
+    contentClick: 'close',
+    hideScrollbar: false,
+    placeFocusBack: false,
+    trapFocus: false,
+    Hash: false,
+    Thumbs: { showOnStart: false },
+    Carousel: { infinite: false },
+    Toolbar: {
+      display: {
+        left: ['infobar'],
+        middle: ['toggleZoom', 'myDownload', 'rotateCW', 'flipX', 'flipY', 'close'],
+        right: [],
+      },
+      items: {
+        myDownload: {
+          tpl: '<button class="f-button"><svg><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M7 11l5 5 5-5M12 4v12"></path></svg></button>',
+          click: async ev => {
+            console.log('ev: ', ev)
+            const { page } = ev.instance.carousel
+            const item = artwork.images[page]
+            const fileName = `${artwork.author.name}_${artwork.title}_${artwork.id}_p${page}.${item.o.split('.').pop()}`
+            await downloadFile(item.o, fileName)
+          },
+        },
+      },
+    },
+  })
 }

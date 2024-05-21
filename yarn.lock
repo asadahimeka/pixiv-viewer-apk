@@ -1020,15 +1020,15 @@
   resolved "https://registry.npmmirror.com/@capacitor-community/file-opener/-/file-opener-1.0.6.tgz#a73b4e28b7e7cb739defacdf35d69e81167c13bb"
   integrity sha512-iHsPblcgqTF8rEmvpVyAGfxuTUtV8BthoBv/zBLKEEb1vSUVONed0UTRjvvqjHxewS8LNEWVXzuMzXfQU1r1cA==
 
-"@capacitor/android@^5.6.0":
-  version "5.7.5"
-  resolved "https://registry.npmmirror.com/@capacitor/android/-/android-5.7.5.tgz#8392de3c38ed4455038ea7e18c01aa33584e5208"
-  integrity sha512-VKb9VarGA2hJ8PuLk4EhSq4jvgM+V8JOoNw00WdD6Q4rbgDKSa7WIKTw75sFrNRGiwHSZ99FPvmisJfr1Spk+Q==
+"@capacitor/android@5.6.0":
+  version "5.6.0"
+  resolved "https://registry.npmmirror.com/@capacitor/android/-/android-5.6.0.tgz#62a5e4697466beed4265da6f3939b42e8f00e642"
+  integrity sha512-6O7xV6K6c8WvQzKxOe7fnhRyoVpS3TNDXy1FyfhvOvclBvu+1JddSdFvW4e4dSL60s2c00sCzNRgYhm+cn0/dQ==
 
-"@capacitor/app@^5.0.6":
-  version "5.0.7"
-  resolved "https://registry.npmmirror.com/@capacitor/app/-/app-5.0.7.tgz#f71e81320bcd504c400c1f503ba43a88ccac96e8"
-  integrity sha512-oad0jwQu+vgQDukeS9UV56yG10dlxkAGGl26IQpZlTmg3dTI9qSJtvhmlLfkF0nEtoj5IsVQUPE+NLH1oZkgGQ==
+"@capacitor/app@5.0.6":
+  version "5.0.6"
+  resolved "https://registry.npmmirror.com/@capacitor/app/-/app-5.0.6.tgz#2ee02551115fd2e92dc7e81bc30a6c6fa78efa66"
+  integrity sha512-6ZXVdnNmaYILasC/RjQw+yfTmq2ZO7Q3v5lFcDVfq3PFGnybyYQh+RstBrYri+376OmXOXxBD7E6UxBhrMzXGA==
 
 "@capacitor/assets@3.0.4":
   version "3.0.4"
@@ -1048,7 +1048,30 @@
     tslib "2.6.2"
     yargs "17.7.2"
 
-"@capacitor/cli@^5.3.0", "@capacitor/cli@^5.6.0":
+"@capacitor/cli@5.6.0":
+  version "5.6.0"
+  resolved "https://registry.npmmirror.com/@capacitor/cli/-/cli-5.6.0.tgz#83fb1303ae1bd977622a4f55d3e1cec96378c475"
+  integrity sha512-h2HLkjPn+hd95F0iOlSWROW15kxj/0qNuzXgktSNQ55Z3dCeWmelgfkbYwjo0eqiunv5zNa31H0YvrpnIVdKEA==
+  dependencies:
+    "@ionic/cli-framework-output" "^2.2.5"
+    "@ionic/utils-fs" "^3.1.6"
+    "@ionic/utils-subprocess" "^2.1.11"
+    "@ionic/utils-terminal" "^2.3.3"
+    commander "^9.3.0"
+    debug "^4.3.4"
+    env-paths "^2.2.0"
+    kleur "^4.1.4"
+    native-run "^2.0.0"
+    open "^8.4.0"
+    plist "^3.0.5"
+    prompts "^2.4.2"
+    rimraf "^4.4.1"
+    semver "^7.3.7"
+    tar "^6.1.11"
+    tslib "^2.4.0"
+    xml2js "^0.5.0"
+
+"@capacitor/cli@^5.3.0":
   version "5.7.5"
   resolved "https://registry.npmmirror.com/@capacitor/cli/-/cli-5.7.5.tgz#a5ca439ee10e67ea1005ebcab99701e9deea2626"
   integrity sha512-CEgCXq3NNacS+9EptJXM+Cm915oB8eNPhiTP7ylKsQchrY0CGbeyO5y4A/oYnB/h4f+UiaX3ShlIOljx3+agqw==
@@ -1071,42 +1094,42 @@
     tslib "^2.4.0"
     xml2js "^0.5.0"
 
-"@capacitor/clipboard@^5.0.6":
-  version "5.0.7"
-  resolved "https://registry.npmmirror.com/@capacitor/clipboard/-/clipboard-5.0.7.tgz#7de43783603717b577f5cfb0fdfca2a7566a5187"
-  integrity sha512-N9JJruFB1mKNmA/+HPXyhcSugvEmYYfM4BibYB8lPqGc9QUY8WirU1+/5Keo8+lKJ6Sv9FVyHr2Sf8XFpwK7Tw==
+"@capacitor/clipboard@5.0.6":
+  version "5.0.6"
+  resolved "https://registry.npmmirror.com/@capacitor/clipboard/-/clipboard-5.0.6.tgz#abc0101fb1b2780e829542b2d31f9eb1480b8ee8"
+  integrity sha512-VsokRAn+0HVWj6riSRdspczEfqFoHbrhS/XRhGoEPsj0uvYPSufy0Kb2dpnSqkeeElhh2Jvn8jmVAzII2XeR9w==
 
-"@capacitor/core@^5.6.0":
-  version "5.7.5"
-  resolved "https://registry.npmmirror.com/@capacitor/core/-/core-5.7.5.tgz#087cb45a072d0625c0a12ade36d027e4be9b9421"
-  integrity sha512-babBo26lgIyKkAOr/AbPq5wwi9I4uHDP0lBteJq7p4xZElA6tAA8mD3xRH1/4EKmZ4+acYpKmmyegX3zsVh37A==
+"@capacitor/core@5.6.0":
+  version "5.6.0"
+  resolved "https://registry.npmmirror.com/@capacitor/core/-/core-5.6.0.tgz#09f766f65d156cda6a0c86bed3b1cc6e4e1184cb"
+  integrity sha512-xJhCOUGPHw0QYDA3YH+CmL6qiV9DH4Ij3yPxSenymjrtLuXI197u9ddCZwGEwgVIkh9kGZBBKzsNkn89SZ2gdQ==
   dependencies:
     tslib "^2.1.0"
 
-"@capacitor/device@^5.0.6":
-  version "5.0.7"
-  resolved "https://registry.npmmirror.com/@capacitor/device/-/device-5.0.7.tgz#f45d74008cbd4352f3e9eb816f2f8f4a177840b4"
-  integrity sha512-sTYzGktRVK6giQCsoFtw+IGkEPGmFvIwi0pfFej5TRND1UHidkNZSpgMFBbjCYPbwsqXTcR3boYPcmxvl5iuJg==
+"@capacitor/device@5.0.6":
+  version "5.0.6"
+  resolved "https://registry.npmmirror.com/@capacitor/device/-/device-5.0.6.tgz#11322a9c737196f2df8f82abbe6d1a5b32e35fb7"
+  integrity sha512-tmjK0H8IKbDLMcmzZzJPbV+9yLkKJ76QOdz4A7fZAOYx2GnFHsFngxldq/wKotGAJuDX/ih3ZzHNrzVguzlv2g==
 
-"@capacitor/filesystem@^5.2.1":
+"@capacitor/filesystem@5.2.1":
   version "5.2.1"
   resolved "https://registry.npmmirror.com/@capacitor/filesystem/-/filesystem-5.2.1.tgz#c6183dce64fe95375a254d841029c5b88211392a"
   integrity sha512-mexkJHUbNhydzfJywEUTIGARlB/HRogrtbjCZdA+mQxOi07T2887a70CwFaYRu1nKLMoKoliTM5UsLSsdl0PlA==
 
-"@capacitor/ios@^5.6.0":
-  version "5.7.5"
-  resolved "https://registry.npmmirror.com/@capacitor/ios/-/ios-5.7.5.tgz#bad2aac70ccae5d62cff23aa963ad1b0ad788c9e"
-  integrity sha512-mREcvv4XC9USSAbYmf/2Lmbr52eZjMDpKYwxwi2CKLJXGXNjYfJaHm6jnPordAl6kZdm3Bm/tnx+rYpb9KptGA==
+"@capacitor/ios@5.6.0":
+  version "5.6.0"
+  resolved "https://registry.npmmirror.com/@capacitor/ios/-/ios-5.6.0.tgz#c2776061526edf725acd67dd214c2fd87236a030"
+  integrity sha512-iswpOcD5us10hIF5zS4w6k/ekW0A+2pXhDV4AHOBXR4VOkOMI8QJaavgl9JvZ/NVvVNJdEN2rOKCMNh4AH08sw==
 
-"@capacitor/share@^5.0.6":
-  version "5.0.7"
-  resolved "https://registry.npmmirror.com/@capacitor/share/-/share-5.0.7.tgz#301d06e2c8add86e24957f4c02e28e847b894f89"
-  integrity sha512-4GraggRRxwhstxIdF9JyOEBq4QTufqFOekdB4P9GeiQYWJoA5VraSR1mwy4Trke1VFfaBjz/nGi4WQOJdHIAgg==
+"@capacitor/share@5.0.6":
+  version "5.0.6"
+  resolved "https://registry.npmmirror.com/@capacitor/share/-/share-5.0.6.tgz#76d2f6f13d1596999c49a0d99d21e7a63b8ecfef"
+  integrity sha512-/dVOW7kcuuD7hWB9Z1drArIpEk+5JCoMnMrAs2c7CLp3q5PeaXNJjTkGr6RJ1OtMhsHyXc6DAFwQ4frFkmZsgw==
 
-"@capacitor/status-bar@^5.0.6":
-  version "5.0.7"
-  resolved "https://registry.npmmirror.com/@capacitor/status-bar/-/status-bar-5.0.7.tgz#a341e8dec9f93769bed4a42e8ad397e5df1b5287"
-  integrity sha512-KblB3gV2LDMEjx3fQoNBAzxb+Tr+2mv68SfFLLDCMiMUD3Eile2TAWRWd1yxy496pDFTOs2BJtup8++iuuuJ/w==
+"@capacitor/status-bar@5.0.6":
+  version "5.0.6"
+  resolved "https://registry.npmmirror.com/@capacitor/status-bar/-/status-bar-5.0.6.tgz#281568a7f7aeacf80777702cb9947c29dc32685c"
+  integrity sha512-7od8CxsBnot1XMK3IeOkproFL4hgoKoWAc3pwUvmDOkQsXoxwQm4SR9mLwQavv1XfxtHbFV9Ukd7FwMxOPSViw==
 
 "@cspotcode/source-map-support@^0.8.0":
   version "0.8.1"
@@ -1291,11 +1314,6 @@
     tslib "^2.0.1"
     untildify "^4.0.0"
     wrap-ansi "^7.0.0"
-
-"@jcesarmobile/ssl-skip@0.3.0":
-  version "0.3.0"
-  resolved "https://registry.npmmirror.com/@jcesarmobile/ssl-skip/-/ssl-skip-0.3.0.tgz#55d2fc3aeaf4c8393762fc81a39ff8be05259009"
-  integrity sha512-vnYzQxgoQCuPQetfhWIR4KAAbuRcmvthWhF/qGgSp3X+VKQ05wtkVMdQNyKDkizANkB4M/R+DoPJtLEULDKmiA==
 
 "@jridgewell/gen-mapping@^0.3.5":
   version "0.3.5"
@@ -2064,30 +2082,6 @@
     eslint-plugin-import "^2.26.0"
     eslint-plugin-n "^15.2.4"
     eslint-plugin-promise "^6.0.0"
-
-"@vue/reactivity@3.4.26":
-  version "3.4.26"
-  resolved "https://registry.npmmirror.com/@vue/reactivity/-/reactivity-3.4.26.tgz#1191f543809d4c93e5b3e842ba83022350a3f205"
-  integrity sha512-E/ynEAu/pw0yotJeLdvZEsp5Olmxt+9/WqzvKff0gE67tw73gmbx6tRkiagE/eH0UCubzSlGRebCbidB1CpqZQ==
-  dependencies:
-    "@vue/shared" "3.4.26"
-
-"@vue/runtime-core@3.4.26":
-  version "3.4.26"
-  resolved "https://registry.npmmirror.com/@vue/runtime-core/-/runtime-core-3.4.26.tgz#51ee971cb700370a67e5a510c4a84eff7491d658"
-  integrity sha512-AFJDLpZvhT4ujUgZSIL9pdNcO23qVFh7zWCsNdGQBw8ecLNxOOnPcK9wTTIYCmBJnuPHpukOwo62a2PPivihqw==
-  dependencies:
-    "@vue/reactivity" "3.4.26"
-    "@vue/shared" "3.4.26"
-
-"@vue/runtime-dom@^3.4.26":
-  version "3.4.26"
-  resolved "https://registry.npmmirror.com/@vue/runtime-dom/-/runtime-dom-3.4.26.tgz#179aa7c8dc964112e6d096bc8ec5f361111009a1"
-  integrity sha512-UftYA2hUXR2UOZD/Fc3IndZuCOOJgFxJsWOxDkhfVcwLbsfh2CdXE2tG4jWxBZuDAs9J9PzRTUFt1PgydEtItw==
-  dependencies:
-    "@vue/runtime-core" "3.4.26"
-    "@vue/shared" "3.4.26"
-    csstype "^3.1.3"
 
 "@vue/shared@3.4.26":
   version "3.4.26"
@@ -3696,7 +3690,7 @@ csso@^4.2.0:
   dependencies:
     css-tree "^1.1.2"
 
-csstype@^3.1.0, csstype@^3.1.3:
+csstype@^3.1.0:
   version "3.1.3"
   resolved "https://registry.npmmirror.com/csstype/-/csstype-3.1.3.tgz#d80ff294d114fb0e6ac500fbf85b60137d7eff81"
   integrity sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==

@@ -1,12 +1,12 @@
-<p align="center"><img src="https://api.moedog.org/count/@asadahimeka-pixiv-viewer-apk-github" alt="pixiv-viewer"></p>
+<p align="center"><img src="https://api.moedog.org/count/@asadahimeka-pixiv-viewer-ios-github" alt="pixiv-viewer"></p>
 
 <h1 align="center">Pixiv Viewer <sup><small>Kai</small></sup></h1>
 
-Android version of [pixiv-viewer](https://github.com/asadahimeka/pixiv-viewer).
+iOS version of [pixiv-viewer](https://github.com/asadahimeka/pixiv-viewer).
 
-Web Preview: 🔗 [pixiv-viewer.vercel.app](https://pixiv.pics)
+Web Preview: 🔗 [pixiv-viewer.netlify.app](https://pixiv-viewer.netlify.app)
 
-Download: ⏬ [App Center](https://install.appcenter.ms/users/yumine/apps/pixiv-viewer/distribution_groups/beta) | [GitHub Releases](https://github.com/asadahimeka/pixiv-viewer-kai/releases)
+Download: ⏬ [GitHub Releases](https://github.com/asadahimeka/pixiv-viewer-kai/releases)
 
 ## Created with Capacitor Create App
 
@@ -57,7 +57,6 @@ yarn build && yarn run
    - [x] Multiple Image Proxy Selection
    - [x] Multiple API Instance Selection
    - [x] Export RefreshToken
-   - [x] AppAPI Direct Mode
    - [x] AppAPI Proxy Service
    - [x] Long Press to Download List Image
    - [x] Long Press to Block List Image
@@ -108,7 +107,6 @@ This project uses [Vue I18n](https://kazupon.github.io/vue-i18n/) for internatio
 - [PixivNow](https://github.com/FreeNowOrg/PixivNow)
 - [SauceNAO](https://saucenao.com/)
 - [Cloudflare Workers](https://workers.cloudflare.com/)
-- [Vercel](https://vercel.com/)
 
 ## Disclaimer
 
@@ -120,4 +118,4 @@ This project is for communication and learning only and may not be used for any 
 
 ## LICENSE
 
-[![MIT License Copyright (c) 2020 Jad](https://img.shields.io/github/license/journey-ad/pixiv-viewer)](https://github.com/asadahimeka/pixiv-viewer/blob/master/LICENSE)
+[![MIT License Copyright (c) 2020 Jad](https://img.shields.io/github/license/asadahimeka/pixiv-viewer-apk)](https://github.com/asadahimeka/pixiv-viewer-apk/blob/master/LICENSE)

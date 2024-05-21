@@ -40,8 +40,8 @@
     </div>
     <div v-if="isOuterMeta && (mode == 'all' || mode === 'meta')" class="outer-meta">
       <div class="content">
-        <h2 class="title" :title="artwork.title">{{ artwork.title }}</h2>
-        <div class="author-cont">
+        <h2 class="title" :title="artwork.title" @click="onImageTitleClick">{{ artwork.title }}</h2>
+        <div class="author-cont" @click="toAuthor">
           <ImageLocal v-if="isPximgDirect" nobg :src="artwork.author.avatar" class="avatar" :alt="artwork.author.name" />
           <img v-else :src="artwork.author.avatar" :alt="artwork.author.name" class="avatar" @error="onAvatarErr">
           <div class="author">{{ artwork.author.name }}</div>
@@ -55,7 +55,7 @@
 import { Dialog } from 'vant'
 import { mapGetters } from 'vuex'
 import { localApi } from '@/api'
-import { downloadFile } from '@/utils'
+import { downloadFile, fancyboxShow } from '@/utils'
 import { getCache, toggleBookmarkCache } from '@/utils/siteCache'
 import { LocalStorage } from '@/utils/storage'
 import ImageLocal from './ImageLocal.vue'
@@ -194,6 +194,13 @@ export default {
       if (!this.isTriggerLongpress) return
       ev.preventDefault()
       isLongpressDL ? this.downloadArtwork() : this.showBlockDialog()
+    },
+    onImageTitleClick() {
+      fancyboxShow(this.artwork, 0, e => e.l.replace(/\/c\/\d+x\d+(_\d+)?\//g, '/'))
+    },
+    toAuthor() {
+      if (this.$route.name == 'Users') return
+      this.$router.push(`/users/${this.artwork.author.id}`)
     },
     showBlockDialog() {
       Dialog.confirm({

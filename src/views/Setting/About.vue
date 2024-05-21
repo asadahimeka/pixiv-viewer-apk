@@ -13,7 +13,7 @@
         :title="$t('about.source')"
         is-link
         label="Github:asadahimeka/pixiv-viewer"
-        @click="openLink('https://github.com/asadahimeka/pixiv-viewer')"
+        @click="openLink('https://github.com/asadahimeka/pixiv-viewer-apk/tree/ipa')"
       />
       <van-cell center :title="'FAQ'" is-link :label="$t('tips.click_view')" to="/setting/about/faq" />
     </van-cell-group>
@@ -81,10 +81,9 @@
 </template>
 
 <script>
-import { App } from '@capacitor/app'
-import { Device } from '@capacitor/device'
 import { Dialog } from 'vant'
 import { trackEvent } from '@/utils'
+import { CURRENT_WEB_VERSION, getAppInfo, getDeviceInfo } from '@/version'
 
 export default {
   name: 'SettingAbout',
@@ -92,12 +91,12 @@ export default {
     return {
       wvVersion: '',
       appInfo: {},
-      curVer: 'v1.17.2',
+      curVer: CURRENT_WEB_VERSION,
     }
   },
   async created() {
-    this.appInfo = await App.getInfo()
-    this.wvVersion = (await Device.getInfo()).webViewVersion
+    this.appInfo = await getAppInfo()
+    this.wvVersion = (await getDeviceInfo()).webViewVersion
     this.checkUpdate()
   },
   methods: {
@@ -110,9 +109,9 @@ export default {
       window.open('https://github.com/asadahimeka/pixiv-viewer/releases', '_blank', 'noopener noreferrer')
     },
     async checkUpdate() {
-      const resp = await fetch('https://fastly.jsdelivr.net/gh/asadahimeka/pixiv-viewer-apk@ipa/src/views/Setting/About.vue')
+      const resp = await fetch('https://fastly.jsdelivr.net/gh/asadahimeka/pixiv-viewer-apk@ipa/src/version.js')
       const text = await resp.text()
-      if (text?.match(/curVer: '(v[\d.]+)',/i)?.[1] != this.curVer) {
+      if (text?.match(/CURRENT_WEB_VERSION = '(v[\d.]+)'/i)?.[1] != this.curVer) {
         const res = await Dialog.confirm({ message: this.$t('JKCgrgXZfg4-HDftheb96') }).catch(() => {})
         if (res != 'confirm') return
         this.openGithubRelease()

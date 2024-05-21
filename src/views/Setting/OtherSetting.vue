@@ -5,10 +5,25 @@
     <van-cell center :title="$t('setting.other.lang')" is-link :label="lang.value" @click="lang.show = true" />
     <van-cell center :title="$t('setting.layout.title')" is-link :label="wfType.value" @click="wfType.show = true" />
     <van-cell center :title="$t('setting.img_res.title')" is-link :label="imgRes.value" @click="imgRes.show = true" />
-    <van-cell center :title="$t('psoXLFqv51j1SeKjTbnms')" is-link :label="$t('setting.lab.title')" to="/setting/accent_color" />
+    <van-cell center :title="$t('psoXLFqv51j1SeKjTbnms')" is-link :label="`${accentColor} ${actTheme}`" to="/setting/accent_color" />
     <van-cell center :title="$t('setting.dark.title')" :label="$t('setting.lab.title')">
       <template #right-icon>
         <van-switch :value="isDark" size="24" @change="onDarkChange" />
+      </template>
+    </van-cell>
+    <van-cell center :title="$t('5syY7l774noiN5LHKUnqF')" :label="$t('pNh9SJwP8sHaVgxTnVtlB')">
+      <template #right-icon>
+        <van-switch :disabled="isLongpressBlock" :value="isLongpressDL" size="24" @change="changeLongpressDL" />
+      </template>
+    </van-cell>
+    <van-cell center :title="$t('kFOiZTwKWwXy-sxaspqSD')" :label="$t('SoLAtsxVTTXp9cj0MdFqh')">
+      <template #right-icon>
+        <van-switch :disabled="isLongpressDL" :value="isLongpressBlock" size="24" @change="changeLongpressBlock" />
+      </template>
+    </van-cell>
+    <van-cell center :title="$t('ZO7u4XT4flW6_nmyvmXt7')" :label="$t('OKTKyrictvQCVi7NiTj9Q')">
+      <template #right-icon>
+        <van-switch :value="isImageCardOuterMeta" size="24" @change="changeImageCardOuterMeta" />
       </template>
     </van-cell>
     <van-cell center :title="$t('setting.other.swipe_toggle')" :label="$t('setting.lab.title')">
@@ -19,21 +34,6 @@
     <van-cell center :title="$t('eioSClGw9BqryzojTwr8j')" :label="$t('setting.lab.title')">
       <template #right-icon>
         <van-switch :value="isPageEffectOn" size="24" @change="changePageEffect" />
-      </template>
-    </van-cell>
-    <van-cell center :title="$t('5syY7l774noiN5LHKUnqF')" :label="$t('setting.lab.title')">
-      <template #right-icon>
-        <van-switch :disabled="isLongpressBlock" :value="isLongpressDL" size="24" @change="changeLongpressDL" />
-      </template>
-    </van-cell>
-    <van-cell center :title="$t('kFOiZTwKWwXy-sxaspqSD')" :label="$t('setting.lab.title')">
-      <template #right-icon>
-        <van-switch :disabled="isLongpressDL" :value="isLongpressBlock" size="24" @change="changeLongpressBlock" />
-      </template>
-    </van-cell>
-    <van-cell center :title="$t('ZO7u4XT4flW6_nmyvmXt7')" :label="$t('setting.lab.title')">
-      <template #right-icon>
-        <van-switch :value="isImageCardOuterMeta" size="24" @change="changeImageCardOuterMeta" />
       </template>
     </van-cell>
     <van-cell v-if="!(isPximgDirect && appConfig.useLocalAppApi)" center :title="$t('setting.other.manual_input')" :label="$t('setting.other.manual_input_label')">
@@ -56,14 +56,15 @@
     </van-cell>
     <van-cell v-if="appConfig.directMode || isPximgDirect" center :title="$t('setting.other.direct_mode.host.title')" is-link :label="$t('setting.other.direct_mode.host.label')" @click="clearApiHosts" />
     <template v-if="appConfig.useLocalAppApi">
-      <van-cell center :title="$t('setting.other.direct_mode.title')" :label="$t('setting.other.direct_mode.label')">
+      <!-- <van-cell center :title="$t('setting.other.direct_mode.title')" :label="$t('setting.other.direct_mode.label')">
         <template #right-icon>
           <van-switch :value="appConfig.directMode" :disabled="appConfig.useApiProxy" size="24" @change="setDirectMode" />
         </template>
-      </van-cell>
+      </van-cell> -->
       <van-cell center :title="$t('setting.other.direct_mode.proxy.title')" :label="$t('setting.other.direct_mode.proxy.label')">
         <template #right-icon>
-          <van-switch :value="appConfig.useApiProxy" :disabled="appConfig.directMode" size="24" @change="setUseApiProxy" />
+          <!-- <van-switch :value="appConfig.useApiProxy" :disabled="appConfig.directMode" size="24" @change="setUseApiProxy" /> -->
+          <van-switch :value="appConfig.useApiProxy" size="24" @change="setUseApiProxy" />
         </template>
       </van-cell>
       <van-cell v-if="appConfig.useApiProxy" center :title="$t('setting.other.api_proxy.title')" is-link :label="apiProxyLabel||$t('setting.other.api_proxy.def_ph')" @click="apiProxySel.show = true" />
@@ -253,6 +254,8 @@ export default {
       isImageCardOuterMeta: LocalStorage.get('PXV_IMG_META_OUTER', false),
       isPximgDirect: LocalStorage.get('PXV_PXIMG_DIRECT', false),
       showAnaSwitch: false,
+      actTheme: localStorage.PXV_THEME || '',
+      accentColor: localStorage.PXV_ACT_COLOR || 'Default',
     }
   },
   computed: {
@@ -435,7 +438,7 @@ export default {
         trackEvent('AnalyticsChange', { val })
         this.isAnalyticsOn = val
         LocalStorage.set('PXV_ANALYTICS', val)
-        val ? localStorage.removeItem('umami.disabled') : localStorage.setItem('umami.disabled', 'true')
+        val ? localStorage.removeItem('umami.disabled') : localStorage.setItem('umami.disabled', val)
         setTimeout(() => {
           location.reload()
         }, 500)

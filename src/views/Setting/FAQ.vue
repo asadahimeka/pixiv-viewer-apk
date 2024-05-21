@@ -10,6 +10,9 @@
         见 pixiv 官方公告：<a href="https://www.pixiv.net/info.php?id=10837" target="_blank" rel="noopener noreferrer">https://www.pixiv.net/info.php?id=10837</a>。
         建议用自己的账号登录本站后再使用，并且要在官方网页端<a href="https://www.pixiv.net/setting_user.php" target="_blank" rel="noopener noreferrer">设置</a>里面选择非美国/英国的地区，最好选择日区。
       </van-collapse-item>
+      <van-collapse-item title="列表与详情图片不匹配或重复、搜索结果与搜索标签不匹配" name="99">
+        是因为自建 API 的 CDN 缓存导致的，可以到设置里切换其他 API 实例或者登录后再使用
+      </van-collapse-item>
       <van-collapse-item title="Cookie/SessionID 登录出错" name="5">建议使用 RefreshToken 方式登录</van-collapse-item>
       <van-collapse-item title="Android 版本点击下载就闪退" name="6">到系统设置里给予本应用存储权限，或者下载最新版本后再进行尝试</van-collapse-item>
     </van-collapse>
