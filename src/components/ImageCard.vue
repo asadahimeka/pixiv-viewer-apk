@@ -18,7 +18,7 @@
         {{ artwork.count }}
       </div>
       <div v-if="(mode == 'all' || mode == 'cover') && showBookmarkBtn" class="bookmark" @click.stop="toggleBookmark">
-        <van-loading v-if="bLoading" color="#ff4060" />
+        <van-loading v-if="bLoading" color="#ff4060" size="28px" />
         <van-icon v-else :name="isBookmarked?'like':'like-o'" color="#ff4060" />
       </div>
       <Icon
@@ -401,7 +401,7 @@ export default {
 </style>
 
 <style lang="stylus">
-body:not(.dark)
+html:not(.dark)
   .outer-meta
     .content
       color #333

@@ -292,6 +292,7 @@ export default {
   position relative
   margin-top 40px
   margin-bottom 40px
+  padding 0 40px
   text-align center
   font-size 0.38rem
   font-weight bold
@@ -303,7 +304,7 @@ export default {
     text-align center
   ::v-deep .top-bar-wrap
     width 2rem
-    padding-top 20px
+    padding-top calc(20px + var(--status-bar-height))
     background transparent
   .live_detail_cont
     position relative
