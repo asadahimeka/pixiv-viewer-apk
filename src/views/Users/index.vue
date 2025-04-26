@@ -331,7 +331,7 @@ export default {
       }).catch(() => {})
     },
     async share() {
-      const shareUrl = `https://pixiv.pics/u/${this.userInfo.id}`
+      const shareUrl = `https://pixiv.pictures/u/${this.userInfo.id}`
       try {
         await Share.share({
           title: 'Pixiv Viewer',

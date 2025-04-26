@@ -18,7 +18,7 @@ const doGet = (url, params, config = {}) => {
     method: 'GET',
     ...config,
     headers: {
-      'Origin': 'https://pixiv.pics',
+      'Origin': 'https://pixiv.pictures',
       'x-auth': LocalStorage.get('PXV_NOW_COOKIE') || '',
       'x-csrf-token': sessionStorage.getItem('PXV_NOW_CSRFTOKEN') || '',
       ...config.headers,
@@ -47,7 +47,7 @@ const doPost = (url, data, config = {}) => {
     ...config,
     headers: {
       'Content-Type': 'application/json',
-      'Origin': 'https://pixiv.pics',
+      'Origin': 'https://pixiv.pictures',
       'x-auth': LocalStorage.get('PXV_NOW_COOKIE') || '',
       'x-csrf-token': sessionStorage.getItem('PXV_NOW_CSRFTOKEN') || '',
       ...config.headers,

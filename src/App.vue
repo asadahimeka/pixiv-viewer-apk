@@ -12,7 +12,7 @@ import { mapMutations } from 'vuex'
 import { existsSessionId, initUser } from '@/api/user'
 import { localApi } from './api'
 import { trackEvent } from './utils'
-import { CURRENT_WEB_VERSION, getAppInfo, getDeviceInfo } from './version'
+import { CURRENT_WEB_VERSION, getAppInfo, getDeviceInfo } from './platform/capacitor/version'
 
 export default {
   components: {

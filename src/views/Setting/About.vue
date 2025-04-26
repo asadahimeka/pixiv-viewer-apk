@@ -83,7 +83,7 @@
 <script>
 import { Dialog } from 'vant'
 import { trackEvent } from '@/utils'
-import { CURRENT_WEB_VERSION, getAppInfo, getDeviceInfo } from '@/version'
+import { CURRENT_WEB_VERSION, getAppInfo, getDeviceInfo } from '@/platform/capacitor/version'
 
 export default {
   name: 'SettingAbout',

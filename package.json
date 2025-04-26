@@ -4,12 +4,12 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --port 8081",
-    "build": "vue-cli-service build",
-    "sync": "npx cap sync android",
-    "open": "npx cap open android",
-    "run": "npx cap run android",
+    "build:web": "vue-cli-service build",
+    "cap:sync": "npx cap sync android",
+    "cap:open": "npx cap open android",
+    "cap:run": "npx cap run android",
     "lint": "vue-cli-service lint",
-    "postbuild": "npm run sync"
+    "postbuild:web": "npm run cap:sync"
   },
   "packageManager": "yarn@1.22.19",
   "dependencies": {
@@ -63,6 +63,7 @@
     "@vue/eslint-config-standard": "8.0.1",
     "babel-eslint": "10.1.0",
     "babel-plugin-import": "1.13.8",
+    "cross-env": "7.0.3",
     "eslint": "8.56.0",
     "eslint-plugin-vue": "9.20.1",
     "postcss-pxtorem": "5.1.1",

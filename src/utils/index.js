@@ -4,7 +4,6 @@ import { Fancybox } from '@fancyapps/ui'
 import { Clipboard } from '@capacitor/clipboard'
 import { FileDownload } from '@himeka/capacitor-plugin-filedownload'
 import { Filesystem, Directory } from '@himeka/capacitor-filesystem'
-// import { StatusBar, Style } from '@capacitor/status-bar'
 import writeBlob from 'capacitor-blob-writer'
 import { LocalStorage } from './storage'
 import { getCache, setCache } from './siteCache'
@@ -214,31 +213,21 @@ export async function downloadBlob(blob, fileName, subpath) {
 const isAnalyticsOn = LocalStorage.get('PXV_ANALYTICS', true)
 export function trackEvent(name, properties) {
   if (!isAnalyticsOn) return
-  if (!name.startsWith('Route')) {
-    window.umami?.track(name, properties)
-  }
+  window.umami?.track(name, properties)
 }
 
 const isOverlayOff = LocalStorage.get('PXV_STATUSBAR_OVERLAY_OFF', false)
 
 export function dealStatusBarOnEnter() {
   if (isOverlayOff) return
-  // StatusBar.setStyle({ style: Style.Dark })
   document.documentElement.classList.add('pt0')
   window['nav-bar-overlay']?.classList.add('op0')
 }
 
-// const isDark = !!localStorage.PXV_DARK
 export async function dealStatusBarOnLeave() {
   if (isOverlayOff) return
-  // try {
   document.documentElement.classList.remove('pt0')
   window['nav-bar-overlay']?.classList.remove('op0')
-  // await StatusBar.setStyle({ style: isDark ? Style.Dark : Style.Light })
-  // return true
-  // } catch (error) {
-  // return false
-  // }
 }
 
 export function formatBytes(bytes) {

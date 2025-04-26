@@ -1,7 +1,7 @@
 <template>
   <div class="setting-page">
     <top-bar id="top-bar-wrap" />
-    <h3 class="af_title" @dblclick="showAnaSwitch=true">{{ $t('setting.other.title') }}</h3>
+    <h3 class="af_title">{{ $t('setting.other.title') }}</h3>
     <van-cell center :title="$t('setting.other.lang')" is-link :label="lang.value" @click="lang.show = true" />
     <van-cell center :title="$t('setting.layout.title')" is-link :label="wfType.value" @click="wfType.show = true" />
     <van-cell center :title="$t('setting.img_res.title')" is-link :label="imgRes.value" @click="imgRes.show = true" />
@@ -74,7 +74,7 @@
       <van-cell v-if="appConfig.useApiProxy" center :title="$t('setting.other.api_proxy.title')" is-link :label="apiProxyLabel||$t('setting.other.api_proxy.def_ph')" @click="apiProxySel.show = true" />
       <van-cell v-if="appConfig.refreshToken" center :title="$t('setting.other.cp_token_title')" is-link :label="$t('setting.other.cp_token_label')" @click="copyToken" />
     </template>
-    <van-cell v-if="showAnaSwitch" center :title="$t('setting.other.ana.title')" :label="$t('setting.other.ana.label')">
+    <van-cell center :title="$t('setting.other.ana.title')" :label="$t('setting.other.ana.label')">
       <template #right-icon>
         <van-switch :value="isAnalyticsOn" size="24" @change="onAnalyticsChange" />
       </template>
@@ -257,7 +257,6 @@ export default {
       isLongpressBlock: LocalStorage.get('PXV_LONGPRESS_BLOCK', false),
       isImageCardOuterMeta: LocalStorage.get('PXV_IMG_META_OUTER', false),
       isPximgDirect: LocalStorage.get('PXV_PXIMG_DIRECT', false),
-      showAnaSwitch: false,
       actTheme: localStorage.PXV_THEME || '',
       accentColor: localStorage.PXV_ACT_COLOR || 'Default',
       isDisableStatusbarOverlay: LocalStorage.get('PXV_STATUSBAR_OVERLAY_OFF', false),

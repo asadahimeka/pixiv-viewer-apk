@@ -202,7 +202,7 @@ export default {
       window.open(url, '_blank', 'noopener noreferrer')
     },
     async share() {
-      const shareUrl = `https://pixiv.pics/i/${this.artwork.id}`
+      const shareUrl = `https://pixiv.pictures/i/${this.artwork.id}`
       try {
         await Share.share({
           title: 'Pixiv Viewer',
