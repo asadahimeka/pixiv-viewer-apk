@@ -16,18 +16,10 @@
       <div class="nav_divi"></div>
       <RankNav :menu="menu" is-novel />
       <span style="display: inline-block;">
-        <div class="calendar" @click="$refs.dateInp.click()">
+        <div class="calendar" @click="isDatePickerShow = true">
           <div class="date">{{ dateNum }}</div>
         </div>
       </span>
-      <input
-        ref="dateInp"
-        v-model="date"
-        type="date"
-        :min="minDate"
-        :max="maxDate"
-        style="width: 0;opacity: 0;border: 0;"
-      >
     </div>
     <van-list
       v-model="loading"
@@ -50,6 +42,21 @@
         />
       </masonry>
     </van-list>
+    <van-calendar
+      ref="calendar"
+      v-model="isDatePickerShow"
+      color="#f2c358"
+      class="sel-rank-date"
+      row-height="1.5rem"
+      position="top"
+      :min-date="minDate"
+      :max-date="maxDate"
+      :default-date="date"
+      :poppable="true"
+      :show-title="false"
+      :show-confirm="false"
+      @confirm="v => { date = v; isDatePickerShow = false }"
+    />
     <van-loading v-show="loading" class="loading" :size="'50px'" />
   </div>
 </template>
@@ -57,12 +64,12 @@
 <script>
 import dayjs from 'dayjs'
 import Nav from './components/Nav'
-import _ from 'lodash'
+import _ from '@/lib/lodash'
 import api from '@/api'
 import NovelCard from '@/components/NovelCard.vue'
 import { i18n } from '@/i18n'
 
-const rankMenus = {
+const getRankMenus = () => ({
   day: { name: i18n.t('rank.day'), io: 'day', cat: '4' },
   week: { name: i18n.t('rank.week'), io: 'week', cat: '4' },
   week_rookie: { name: i18n.t('rank.rookie'), io: 'week_rookie', cat: '4' },
@@ -74,11 +81,11 @@ const rankMenus = {
   week_ai_r18: { name: 'R18 AI', io: 'week_ai_r18', x: true, ai: true, cat: '4' },
   day_male_r18: { name: i18n.t('rank.day_x_male'), io: 'day_male_r18', x: true, cat: '4' },
   day_female_r18: { name: i18n.t('rank.day_x_female'), io: 'day_female_r18', x: true, cat: '4' },
-}
+})
 
-const rankCatLabels = [i18n.t('common.overall'), i18n.t('common.illust'), i18n.t('common.ugoira'), i18n.t('common.manga'), i18n.t('common.novel')]
+const getRankCatLabels = () => [i18n.t('common.overall'), i18n.t('common.illust'), i18n.t('common.ugoira'), i18n.t('common.manga'), i18n.t('common.novel')]
 const rankCatLinks = ['/rank/daily', '/rank/daily_illust', '/rank/daily_ugoira', '/rank/daily_manga', '/rank_novel/day']
-const rankCatActions = rankCatLabels.map((e, i) => ({ text: e, _v: i.toString() }))
+const getRankCatActions = () => getRankCatLabels().map((e, i) => ({ text: e, _v: i.toString() }))
 
 export default {
   name: 'RankNovel',
@@ -87,10 +94,9 @@ export default {
     NovelCard,
   },
   data() {
-    const maxDate = dayjs().subtract(new Date().getHours() > 14 ? 1 : 2, 'days').format('YYYY-MM-DD')
+    const maxDate = dayjs().subtract(new Date().getHours() > 14 ? 1 : 2, 'days').toDate()
     return {
-      scrollTop: 0,
-      minDate: '2007-09-13',
+      minDate: dayjs('2007-09-13').toDate(),
       maxDate,
       date: maxDate,
       isDatePickerShow: false,
@@ -100,11 +106,16 @@ export default {
       error: false,
       loading: false,
       finished: false,
-      menu: rankMenus,
+      menu: getRankMenus(),
       showRankCat: false,
       actRankCat: '4',
-      rankCatLabels,
-      rankCatActions,
+      rankCatLabels: getRankCatLabels(),
+      rankCatActions: getRankCatActions(),
+    }
+  },
+  head() {
+    return {
+      title: `${this.$t('nav.rank')} - ${this.rankCatLabels[this.actRankCat]}`,
     }
   },
   computed: {
@@ -232,8 +243,8 @@ export default {
     // background: #fff;
     z-index: 1;
     // backdrop-filter: blur(6px);
-    // backdrop-filter: saturate(200%) blur(6px);
-    background: rgba(255, 255, 255, 1);
+    backdrop-filter: saturate(200%) blur(10PX);
+    background: rgba(255, 255, 255, 0.8);
 
     .nav {
       flex 1

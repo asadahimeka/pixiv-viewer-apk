@@ -29,6 +29,7 @@ import qs from 'qs'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import { LocalStorage } from '@/utils/storage'
+import { i18n } from '@/i18n'
 
 const md5 = s => CryptoJS.MD5(s).toString()
 
@@ -40,10 +41,10 @@ const HASH_SECRET = '28c1fdd170a5204386cb1313c7077b34f83e4aaf4aa829ce78c231e05b0
 
 const DEFAULT_HEADERS = {
   'App-OS': 'Android',
-  'App-OS-Version': 'Android 13.0',
-  'App-Version': '6.102.0',
-  'Accept-Language': 'zh-CN',
-  'User-Agent': 'PixivAndroidApp/6.102.0 (Android 13.0; Pixel 7)',
+  'App-OS-Version': 'Android 14.0',
+  'App-Version': '6.140.1',
+  'Accept-Language': i18n.locale || 'zh-CN',
+  'User-Agent': 'PixivAndroidApp/6.140.1 (Android 14.0; Pixel 8)',
 }
 
 function callApi(url, options) {
@@ -60,7 +61,7 @@ function callApi(url, options) {
     finalUrl = fUrl.href
   } else if (window.p_api_hosts) {
     options.headers.Host = fUrl.host
-    fUrl.hostname = window.p_api_hosts[fUrl.hostname]
+    fUrl.host = window.p_api_hosts[fUrl.hostname]
     finalUrl = fUrl.href
   }
 
@@ -513,19 +514,14 @@ class PixivApi {
     return this.requestUrl(`/v2/illust/comment/replies?${queryString}`)
   }
 
-  illustRelated(id, options) {
+  illustRelated(id, options = {}) {
     if (!id) {
       return Promise.reject(new Error('illust_id required'))
     }
 
-    const queryString = qs.stringify(
-      Object.assign(
-        {
-          illust_id: id,
-        },
-        options
-      )
-    )
+    const { nextUrl } = options
+    delete options.nextUrl
+    const queryString = nextUrl || qs.stringify(Object.assign({ illust_id: id }, options))
     return this.requestUrl(`/v2/illust/related?${queryString}`)
   }
 
@@ -912,15 +908,6 @@ class PixivApi {
     return this.requestUrl(`/v2/novel/comment/replies?${queryString}`)
   }
 
-  novelSeries(id, options) {
-    if (!id) {
-      return Promise.reject(new Error('series_id required'))
-    }
-
-    const queryString = qs.stringify({ series_id: id, ...options })
-    return this.requestUrl(`/v2/novel/series?${queryString}`)
-  }
-
   userIllustSeries(id, options) {
     if (!id) {
       return Promise.reject(new Error('user_id required'))
@@ -946,6 +933,15 @@ class PixivApi {
 
     const queryString = qs.stringify({ illust_series_id: id, ...options })
     return this.requestUrl(`/v1/illust/series?${queryString}`)
+  }
+
+  novelSeries(id, options) {
+    if (!id) {
+      return Promise.reject(new Error('series_id required'))
+    }
+
+    const queryString = qs.stringify({ series_id: id, ...options })
+    return this.requestUrl(`/v2/novel/series?${queryString}`)
   }
 
   novelDetail(id) {

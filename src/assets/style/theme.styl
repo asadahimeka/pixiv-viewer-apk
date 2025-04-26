@@ -19,8 +19,8 @@
   .swiper-button-prev, .swiper-button-next,
   .van-button.van-dialog__confirm,
   .Home .home-title .app-title,
-  &.dark #app .nav-container .nav-bar .van-icon.active,
-  &.dark #app .nav-container .nav-bar .van-icon.active + span
+  .dark #app .nav-container .nav-bar .van-icon.active,
+  .dark #app .nav-container .nav-bar .van-icon.active + span
     color var(--accent-color)
 
   .novel-card .series,
@@ -35,7 +35,8 @@
   .van-dropdown-item__option--active,
   .van-dropdown-item__option--active .van-dropdown-item__icon,
   .van-calendar__day--middle,
-  .van-dialog__cancel[style*="color:"]
+  .van-dialog__cancel[style*="color:"],
+  .van-tag--primary.van-tag--plain
     color var(--accent-color) !important
 
   .back_to_top,
@@ -55,9 +56,9 @@
   .com_sel_tab.cur,
   .van-slider__bar,
   .Following .van-tab--active .van-tab__text
-  &.dark #app .com_sel_tab.cur,
-  &.dark #app .rank .nav a.cur,
-  &.dark #app .Following .van-tab:not(.van-tab--active) .van-tab__text.cur
+  .dark #app .com_sel_tab.cur,
+  .dark #app .rank .nav a.cur,
+  .dark #app .Following .van-tab:not(.van-tab--active) .van-tab__text.cur
     background var(--accent-color)
 
   #nprogress .bar,
@@ -157,6 +158,20 @@ bandori-chara-icon($url)
   .setting .app-title-desc::before,
   .Home .home-title::before
     background url($url) no-repeat center / contain
+  .ldio-content
+    &::before
+      content ''
+      display block
+      width 80PX
+      height 80PX
+      margin 0 auto
+      background url($url) no-repeat center / contain
+    img
+      display none
+    .ldio-title
+      top 100PX
+      & + .ldio-title
+        top 140PX !important
 
 artwork-tag-shadow($alpha = 0.05, $isBold = false)
   #app .artwork-meta .tag-list .tag

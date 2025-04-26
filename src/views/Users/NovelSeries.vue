@@ -14,7 +14,7 @@
             <van-icon name="orders-o" style="margin-right: 2px;" />
             {{ detail.content_count }}
           </van-tag>
-          <van-tag color="#cdeefe" text-color="#0b6aaf">{{ detail.total_character_count }}{{ $t('common.words') }}</van-tag>
+          <van-tag color="#cdeefe" text-color="#0b6aaf">{{ $t('P8RGkre-rnlFxZ18aH2VW', [convertToK(detail.total_character_count)]) }}</van-tag>
         </p>
       </template>
       <van-list
@@ -41,10 +41,13 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import _ from '@/lib/lodash'
 import TopBar from '@/components/TopBar'
 import NovelCard from '@/components/NovelCard.vue'
 import api from '@/api'
+import { formatIntlNumber } from '@/utils'
+import { isCNLocale } from '@/i18n'
+
 export default {
   name: 'NovelSeries',
   components: {
@@ -80,6 +83,11 @@ export default {
     },
   },
   methods: {
+    convertToK(val) {
+      if (!val) return '-'
+      if (isCNLocale()) return val
+      return formatIntlNumber(+val)
+    },
     toArtwork(id) {
       this.$router.push({
         name: 'NovelDetail',
@@ -96,6 +104,7 @@ export default {
           ...this.artList,
           ...res.data,
         ], 'id')
+
         this.detail = res.data.detail
         this.loading = false
         if (res.data.next) {
@@ -115,6 +124,7 @@ export default {
   },
 }
 </script>
+
 <style lang="stylus" scoped>
 .af_title
   position relative
@@ -122,12 +132,15 @@ export default {
   margin-bottom 40px
   text-align center
   font-size 28px
+
 .illusts
   position relative
   padding 0 20px 40px
+
   ::v-deep .novel-card
     .series, .img-cont, .author
       display none !important
+
   .ss-cover
     display block
     max-width 100%
@@ -151,20 +164,25 @@ export default {
     text-align center
     font-size 18px
     color rgb(92, 92, 92)
+
   .loading
     margin-top: 2rem;
     text-align: center;
+
   ::v-deep .top-bar-wrap
     width 30%
     padding-top 20px
     background transparent
+
   .card-box
     padding: 0 12px
     display: flex
     flex-direction: row
+
     .image-card
       max-height: 360px
       margin: 4px 2px
+
   ::v-deep .author-cont
     display none !important
   ::v-deep .meta
@@ -173,4 +191,5 @@ export default {
       background-image: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(255,255,255,0) 100%);
     .title
       display block !important
+
 </style>

@@ -1,21 +1,31 @@
 <template>
-  <img v-if="direct" :class="{'fadeIn':!loading}" :src="directSrc" :style="bgStyle" :lazy="lazy" :alt="alt">
-  <img v-else v-lazy="src" :alt="alt">
+  <img v-if="direct" :class="{'fadeIn':!loading}" :src="directSrc" :style="bgStyle" :lazy="lazy" :alt="alt" @load="revokeURL">
+  <img v-else-if="isVLazy" v-lazy="src" :alt="alt">
+  <img
+    v-else
+    class="img3"
+    loading="lazy"
+    :src="src"
+    :alt="alt"
+    :style="bgStyle"
+    :lazy="lazy"
+    @load="loading=false"
+  >
 </template>
 
 <script>
-import { Capacitor } from '@capacitor/core'
-import { Filesystem, Directory } from '@himeka/capacitor-filesystem'
+import store from '@/store'
+import platform from '@/platform'
 import { loadingSvg as loadSvg } from '@/icons'
-import { LocalStorage } from '@/utils/storage'
 import { randomBg } from '@/utils'
 
-const loadingSvg = localStorage.PXV_ACT_COLOR ? loadSvg(localStorage.PXV_ACT_COLOR) : require('@/icons/loading.svg')
+const loadingSvg = loadSvg(localStorage.PXV_ACT_COLOR || '#38a9f5')
 const defSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='
-const direct = LocalStorage.get('PXV_PXIMG_DIRECT', false)
+
+const { isImgLazy, isDirectPximg } = store.state.appSetting
 
 export default {
-  name: 'ImagePximg',
+  name: 'DirectPximg',
   props: {
     src: {
       type: String,
@@ -32,15 +42,15 @@ export default {
   },
   data() {
     return {
-      direct,
-      loadingSvg,
       loading: true,
       localSrc: '',
+      isVLazy: isImgLazy,
+      direct: isDirectPximg,
     }
   },
   computed: {
     lazy() {
-      return this.nobg && this.loading ? 'loading' : undefined
+      return this.nobg && this.loading ? 'loading' : 'loaded'
     },
     bgStyle() {
       return { background: !this.nobg && this.loading ? randomBg() : 'none' }
@@ -51,11 +61,22 @@ export default {
         : this.localSrc
     },
   },
+  watch: {
+    src() {
+      if (!this.isVLazy && this.$parent.playUgoira) {
+        this.loading = true
+      }
+    },
+  },
   mounted() {
     if (this.direct) this.setObserver()
   },
   methods: {
-    randomBg,
+    revokeURL() {
+      if (this.localSrc?.startsWith('blob:')) {
+        URL.revokeObjectURL(this.localSrc)
+      }
+    },
     setObserver() {
       const options = {
         rootMargin: '0px 50px 50px 0px',
@@ -77,23 +98,15 @@ export default {
           this.loading = false
           return
         }
-        url.host = window.p_pximg_ip
-        const path = url.pathname.slice(1)
-        const directory = Directory.External
-        const stats = await Filesystem.stat({ path, directory }).catch(() => ({ uri: null }))
-        if (stats.uri) {
-          this.localSrc = Capacitor.convertFileSrc(stats.uri)
+
+        if (platform.isCapacitor) {
+          const { getPximgUri } = await import('@/platform/capacitor/utils')
+          this.localSrc = await getPximgUri(url)
           this.loading = false
           return
         }
-        const res = await Filesystem.downloadFile({
-          url: url.href,
-          path,
-          directory,
-          recursive: true,
-          headers: { Host: 'i.pximg.net', Referer: 'https://www.pixiv.net' },
-        })
-        this.localSrc = Capacitor.convertFileSrc(res.path)
+
+        this.localSrc = this.src
         this.loading = false
       } catch (error) {
         console.log('error: ', error)

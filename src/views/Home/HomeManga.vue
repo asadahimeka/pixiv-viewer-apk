@@ -8,22 +8,19 @@
     <div class="home-m">
       <MangaRankCard />
       <MangaRecommendCard v-if="isSelfHibi" />
-      <lazy-component>
-        <RandomManga />
-      </lazy-component>
-      <lazy-component v-if="isSelfHibi">
-        <LatestMangaCard />
-      </lazy-component>
+      <RandomManga />
+      <LatestMangaCard v-if="isSelfHibi" />
     </div>
   </div>
 </template>
 
 <script>
-import { notSelfHibiApi } from '@/api/http'
+import { notSelfHibiApi } from '@/consts'
 import LatestMangaCard from './components/LatestMangaCard.vue'
 import MangaRankCard from './components/MangaRankCard.vue'
 import MangaRecommendCard from './components/MangaRecommendCard.vue'
 import RandomManga from './components/RandomManga.vue'
+import { i18n } from '@/i18n'
 
 export default {
   name: 'HomeIllust',
@@ -37,6 +34,9 @@ export default {
     return {
       isSelfHibi: !notSelfHibiApi,
     }
+  },
+  head: {
+    title: i18n.t('common.manga'),
   },
 }
 </script>

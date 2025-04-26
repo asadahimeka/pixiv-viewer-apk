@@ -1,6 +1,6 @@
 <template>
   <div class="image-card">
-    <ImagePximg :src="artwork.thumbnail" :alt="artwork.title" class="image" />
+    <Pximg :src="artwork.thumbnail" :alt="artwork.title" class="image" />
     <div class="meta">
       <div class="content">
         <h2 class="title" :title="artwork.title">{{ artwork.title }}</h2>
@@ -39,7 +39,7 @@ export default {
   margin-bottom: 10px;
   overflow: hidden;
   background: #fafafa;
-  border-radius: 20px;
+  // border-radius: 20px;
 
   .image {
     position: absolute;

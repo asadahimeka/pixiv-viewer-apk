@@ -2,10 +2,11 @@ import nprogress from 'nprogress'
 import { Dialog } from 'vant'
 import { i18n } from '@/i18n'
 import { objectToQueryString } from '@/utils'
-import { imgProxy, parseWebApiIllust, PIXIV_NOW_URL } from '.'
-import { getCache, setCache } from '@/utils/siteCache'
+import { imgProxy, parseWebApiIllust } from '.'
+import { getCache, setCache } from '@/utils/storage/siteCache'
 import { LocalStorage } from '@/utils/storage'
 import store from '@/store'
+import { PIXIV_NOW_URL, UA_Header } from '@/consts'
 
 /**
  * @param {string} url
@@ -16,15 +17,17 @@ const doGet = (url, params, config = {}) => {
   nprogress.start()
   return fetch((url.startsWith('http') ? url : PIXIV_NOW_URL + url) + objectToQueryString(params), {
     method: 'GET',
+    referrerPolicy: 'origin',
     ...config,
     headers: {
-      'Origin': 'https://pixiv.pictures',
       'x-auth': LocalStorage.get('PXV_NOW_COOKIE') || '',
       'x-csrf-token': sessionStorage.getItem('PXV_NOW_CSRFTOKEN') || '',
+      ...UA_Header,
       ...config.headers,
     },
   }).then(res => {
     nprogress.done()
+    if (!res.ok) throw new Error('Not ok.')
     return res.json()
   }).then(res => {
     return { data: res }
@@ -43,6 +46,7 @@ const doPost = (url, data, config = {}) => {
   nprogress.start()
   return fetch(PIXIV_NOW_URL + url, {
     method: 'POST',
+    referrerPolicy: 'origin',
     body: JSON.stringify(data),
     ...config,
     headers: {
@@ -50,6 +54,7 @@ const doPost = (url, data, config = {}) => {
       'Origin': 'https://pixiv.pictures',
       'x-auth': LocalStorage.get('PXV_NOW_COOKIE') || '',
       'x-csrf-token': sessionStorage.getItem('PXV_NOW_CSRFTOKEN') || '',
+      ...UA_Header,
       ...config.headers,
     },
   }).then(res => {
@@ -65,10 +70,12 @@ const doPost = (url, data, config = {}) => {
 }
 
 export function existsSessionId() {
+  // const sessionId = getCookie('PHPSESSID')
   const sessionId = LocalStorage.get('PXV_NOW_COOKIE')
   if (sessionId) {
     return true
   } else {
+    // removeCookie('CSRFTOKEN')
     sessionStorage.removeItem('PXV_NOW_CSRFTOKEN')
     return false
   }
@@ -79,13 +86,16 @@ export async function initUser() {
     const { data } = await doGet(PIXIV_NOW_URL.replace('/http', '') + '/user', {}, { headers: { 'cache-control': 'no-store' } })
     if (data?.token) {
       console.log('session ID认证成功', data)
+      // setCookie('CSRFTOKEN', data.token)
       sessionStorage.setItem('PXV_NOW_CSRFTOKEN', data.token)
       return data.userData
     } else {
+      // removeCookie('CSRFTOKEN')
       sessionStorage.removeItem('PXV_NOW_CSRFTOKEN')
-      throw new Error('无效的session ID')
+      throw new Error(i18n.t('k0V0c1MNZGYs9MCqjx8QL'))
     }
   } catch (err) {
+    // removeCookie('CSRFTOKEN')
     sessionStorage.removeItem('PXV_NOW_CSRFTOKEN')
     throw err
   }
@@ -94,13 +104,15 @@ export async function initUser() {
 export function login(token) {
   if (!validateSessionId(token)) {
     console.error('访问令牌格式错误')
-    return Promise.reject(new Error('访问令牌格式错误'))
+    return Promise.reject(new Error(i18n.t('3UCLxnEsirUQvP_xv4po4')))
   }
+  // setCookie('PHPSESSID', token, 180)
   LocalStorage.set('PXV_NOW_COOKIE', `PHPSESSID=${token}`, 180 * 86400)
   return initUser()
 }
 
 export function logout() {
+  // const token = getCookie('PHPSESSID')
   const token = LocalStorage.get('PXV_NOW_COOKIE')
   if (!token) return
   Dialog.confirm({
@@ -109,6 +121,8 @@ export function logout() {
     cancelButtonText: i18n.t('common.cancel'),
     confirmButtonText: i18n.t('common.confirm'),
   }).then(() => {
+    // removeCookie('PHPSESSID')
+    // removeCookie('CSRFTOKEN')
     LocalStorage.remove('PXV_NOW_COOKIE')
     sessionStorage.removeItem('PXV_NOW_CSRFTOKEN')
     setTimeout(() => {

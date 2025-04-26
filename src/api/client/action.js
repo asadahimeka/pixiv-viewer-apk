@@ -1,20 +1,23 @@
 import axios from 'axios'
+import { DEF_API_PROXY, COMMON_PROXY } from '@/consts'
 import PixivAuth from './pixiv-auth'
 import { LocalStorage } from '@/utils/storage'
 
 const API_DOMAIN = 'app-api.pixiv.net'
 const OAUTH_DOMAIN = 'oauth.secure.pixiv.net'
 const DEF_API_HOSTS = {
-  [OAUTH_DOMAIN]: '210.140.92.183',
-  [API_DOMAIN]: '210.140.92.183',
+  [OAUTH_DOMAIN]: '210.140.139.161',
+  [API_DOMAIN]: '210.140.139.161',
 }
-const DEF_API_PROXY = process.env.VUE_APP_DEF_APP_API_PROXY
 const DEF_PXIMG_IP = '210.140.139.131'
 
 function dnsQuery(domain) {
   return Promise.race([
-    axios.get(`https://1.1.1.1/dns-query?name=${domain}&do=false&cd=false`, {
-      headers: { Accept: 'application/dns-json' },
+    axios.get(`${COMMON_PROXY}https://1.1.1.1/dns-query?name=${domain}&do=false&cd=false`, {
+      headers: {
+        'Accept': 'application/dns-json',
+        'User-Agent': navigator.userAgent,
+      },
     }),
     new Promise((_resolve, reject) => {
       setTimeout(() => reject(new Error('请求超时')), 3000)
@@ -240,10 +243,8 @@ function initApp(pixiv) {
     return pixiv.trendingTagsNovel(req.query)
   })
   app.get('/related', async req => {
-    const { page = 1, size = 30, id } = req.query
-    return pixiv.illustRelated(id, {
-      offset: (page - 1) * size,
-    })
+    const { id, nextUrl } = req.query
+    return pixiv.illustRelated(id, { nextUrl })
   })
   app.get('/related_novel', async req => {
     const { page = 1, size = 30, id } = req.query

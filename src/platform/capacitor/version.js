@@ -1,7 +1,8 @@
+import { CURRENT_APP_VERSION } from '@/consts'
 import { App } from '@capacitor/app'
 import { Device } from '@capacitor/device'
 
-export const CURRENT_WEB_VERSION = 'v1.17.5'
+export const CURRENT_WEB_VERSION = CURRENT_APP_VERSION
 
 /** @type {import('@capacitor/app').AppInfo} */
 let appInfo = null

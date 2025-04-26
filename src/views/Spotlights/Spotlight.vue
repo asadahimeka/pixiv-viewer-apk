@@ -5,7 +5,7 @@
       <Icon class="icon" name="ex_link" />
     </div>
     <div class="main_cover">
-      <ImagePximg :src="spotlight.cover || ''" alt="" />
+      <img :src="spotlight.cover || ''" alt="" loading="lazy">
       <div class="title_wp">
         <div class="title_cnt">
           <h1 class="title">{{ spotlight.title }}</h1>
@@ -43,11 +43,12 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import _ from '@/lib/lodash'
 import TopBar from '@/components/TopBar'
 import ImageCard from '@/components/ImageCard'
 import api from '@/api'
 import SpotlightsRecom from './SpotlightsRecom.vue'
+import { COMMON_PROXY } from '@/consts'
 import { dealStatusBarOnLeave, dealStatusBarOnEnter } from '@/utils'
 
 export default {
@@ -78,6 +79,9 @@ export default {
       },
     }
   },
+  head() {
+    return { title: this.spotlight.title }
+  },
   computed: {
     tagRecomm() {
       return this.spotlight.related_recommend || {}
@@ -97,6 +101,9 @@ export default {
       }
     },
   },
+  activated() {
+    this.spotlight.items && this.checkRes()
+  },
   mounted() {
     this.init()
   },
@@ -108,14 +115,24 @@ export default {
         params: { id },
       })
     },
+    checkRes(res) {
+      const data = res || this.spotlight
+      if (!data.desc || !data.items.length || data.items.some(e => e.illust_url.endsWith('/effect.png'))) {
+        this.spotlight.related_recommend = null
+        this.spotlight.related_latest = null
+        this.$router.replace(`/pixivision/${this.spid}`)
+      }
+    },
     async getDetail() {
       this.loading = true
       const res = _.cloneDeep(await api.getSpotlightDetail(this.spid))
       if (res.status === 0) {
-        res.data.cover = (process.env.VUE_APP_COMMON_PROXY || '') + res.data.cover
+        this.checkRes(res.data)
+        res.data.cover = COMMON_PROXY + res.data.cover
         res.data.items = res.data.items.map(e => ({
           id: e.illust_id,
           title: e.title,
+          illust_url: e.illust_url,
           images: [{ m: e.illust_url }],
           author: {
             name: e.user_name,
@@ -123,11 +140,6 @@ export default {
           },
         }))
         this.spotlight = res.data
-        if (!res.data.desc || !res.data.items.length) {
-          this.spotlight.related_recommend = null
-          this.spotlight.related_latest = null
-          this.$router.replace(`/pixivision/${this.spid}`)
-        }
       } else {
         this.$toast({
           message: res.msg,
@@ -283,6 +295,9 @@ export default {
     .image-card
       max-height: 360px
       margin: 4px 2px
+
+      .image[lazy="loading"]
+        margin 0 !important
 
 .ex_link
   position: fixed;

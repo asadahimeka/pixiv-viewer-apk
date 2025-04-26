@@ -24,7 +24,6 @@ import RecommendApp from './RecommendApp.vue'
 import RecommendLink from './RecommendLink.vue'
 import RecommendUserscript from './RecommendUserscript.vue'
 
-const tabNames = ['site', 'app', 'tm']
 export default {
   name: 'SettingHistory',
   components: {
@@ -35,12 +34,16 @@ export default {
   },
   data() {
     return {
-      activeTab: tabNames.find(e => e == this.$route.query.t) || 'site',
+      activeTab: 'site',
     }
   },
-  watch: {
-    activeTab() {
-      this.$router.replace(this.$route.path + '?t=' + this.activeTab)
+  head() {
+    return { title: this.$t('setting.recomm.title') }
+  },
+  methods: {
+    openLink(link) {
+      window.umami?.track('open_link', { link: link.replace('https://', '') })
+      window.open(link, '_blank', 'noopener')
     },
   },
 }

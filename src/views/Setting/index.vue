@@ -1,41 +1,43 @@
 <template>
   <div class="setting">
-    <h2 class="app-title" @click="$router.push('/setting/accent_color')">
-      <img v-if="!isLoggedIn" width="40" height="40" src="/app-icon.png" alt="">
+    <h1 class="app-title" @click="$router.push('/setting/accent_color')">
+      <img v-if="!isLoggedIn" src="/app-icon.png" alt="">
       <div class="app-title-desc">
-        <span style="font-family: serif;">Pixiv Viewer<sup style="margin-left: 5px;font-size: 0.3rem;">Kai</sup></span>
+        <span class="title-font">Pixiv Viewer<sup style="margin-left: 5px;font-size: 0.3rem;">Kai</sup></span>
         <small>{{ $t('setting.app_desc') }}</small>
       </div>
-    </h2>
+    </h1>
     <van-notice-bar
       v-if="notice"
       class="custom-notice"
-      color="#B5495B"
-      background="#FEDFE1"
+      :color="notice.color || '#B5495B'"
+      :background="notice.bg || '#FEDFE1'"
       :left-icon="notice.icon"
     >
       {{ notice.text }}
     </van-notice-bar>
-    <van-cell v-if="isLoggedIn" size="large" center is-link :to="`/u/${user.id}`">
-      <template #title>
-        <div class="user_data">
-          <ImagePximg :src="userAvatar" nobg width="50" height="50" alt="" />
-          <div>
-            <div>{{ user.name }}</div>
-            <div style="color: #999">@{{ user.pixivId }}</div>
+    <div class="setting-group">
+      <van-cell v-if="isLoggedIn" size="large" center is-link :to="`/u/${user.id}`">
+        <template #title>
+          <div class="user_data">
+            <Pximg :src="user.profileImg" nobg width="50" height="50" alt="" />
+            <div>
+              <div>{{ user.name }}</div>
+              <div style="color: #999">@{{ user.pixivId }}</div>
+            </div>
           </div>
-        </div>
-      </template>
-    </van-cell>
-    <van-cell v-if="isLoggedIn" size="large" center :title="$t('user.sess.my_fav')" icon="star-o" is-link :to="`/users/${user.id}/favorites`" />
-    <van-cell v-else size="large" center :title="$t('user.sess.login')" icon="user-circle-o" is-link to="/account/login" />
-    <van-cell size="large" center :title="$t('common.history')" icon="underway-o" is-link to="/setting/history" />
-    <van-cell size="large" center :title="$t('5wkdnjEH9KXox8uIHhQmm')" icon="list-switch" is-link to="/setting/downloads" />
-    <van-cell size="large" center :title="$t('display.title')" icon="eye-o" is-link to="/setting/contents_display" />
-    <van-cell size="large" center :title="$t('cache.title')" icon="delete-o" is-link to="/setting/clearcache" />
-    <van-cell size="large" center :title="$t('setting.other.title')" icon="setting-o" is-link to="/setting/others" />
-    <van-cell size="large" center :title="$t('setting.recomm.title')" icon="bookmark-o" is-link to="/setting/recommend" />
-    <van-cell size="large" center :title="$t('setting.about')" icon="info-o" is-link to="/setting/about" />
+        </template>
+      </van-cell>
+      <van-cell v-if="isLoggedIn" size="large" center :title="$t('user.sess.my_fav')" icon="star-o" is-link :to="`/users/${user.id}/favorites`" />
+      <van-cell v-else size="large" center :title="$t('user.sess.login')" icon="user-circle-o" is-link to="/account/login" />
+      <van-cell size="large" center :title="$t('common.history')" icon="underway-o" is-link to="/setting/history" />
+      <van-cell v-if="platform.isCapacitor" size="large" center :title="$t('5wkdnjEH9KXox8uIHhQmm')" icon="list-switch" is-link to="/setting/downloads" />
+      <van-cell size="large" center :title="$t('display.title')" icon="eye-o" is-link to="/setting/contents_display" />
+      <van-cell size="large" center :title="$t('cache.title')" icon="delete-o" is-link to="/setting/clearcache" />
+      <van-cell size="large" center :title="$t('setting.other.title')" icon="setting-o" is-link to="/setting/preference" />
+      <van-cell size="large" center :title="$t('setting.recomm.title')" icon="bookmark-o" is-link to="/setting/osusume" />
+      <van-cell size="large" center :title="$t('setting.about')" icon="info-o" is-link to="/setting/about" />
+    </div>
     <div v-if="isLoggedIn" style="width: 60%;margin: 1rem auto 0;">
       <van-button round plain block type="danger" size="small" @click="logoutApp">{{ $t('user.sess.out') }}</van-button>
     </div>
@@ -43,50 +45,35 @@
 </template>
 
 <script>
-import { Dialog } from 'vant'
-import dayjs from 'dayjs'
 import { mapGetters, mapState } from 'vuex'
-import { logout } from '@/api/user'
+import { Dialog } from 'vant'
 import PixivAuth from '@/api/client/pixiv-auth'
+import { logout } from '@/api/user'
+import { LocalStorage } from '@/utils/storage'
+import store from '@/store'
+import platform from '@/platform'
 
 export default {
   name: 'Setting',
-  data() {
+  data: () => ({ platform }),
+  head() {
     return {
-      notice: null,
+      title: this.$t('nav.setting'),
     }
   },
   computed: {
     ...mapState(['user']),
     ...mapGetters(['isLoggedIn']),
-    userAvatar() {
-      if (/^\/(-|~)\//.test(this.user.profileImg)) {
-        return `https://pxvek.cocomi.eu.org/${this.user.profileImg}`
-      }
-      return this.user.profileImg
+    notice() {
+      return store.state.appNotice
     },
-  },
-  async created() {
-    try {
-      const notices = await fetch('https://pxve-notice.nanoka.top').then(r => r.json())
-      const today = dayjs().startOf('day')
-      this.notice = notices.filter(e => e.pnt.length == 0 || e.pnt.includes('android')).find(e =>
-        today.isAfter(dayjs(e.start).startOf('day') - 1) &&
-        today.isBefore(dayjs(e.end).endOf('day'))
-      )
-      console.log('this.notice: ', this.notice)
-      if (this.notice?.style) {
-        document.head.insertAdjacentHTML('beforeend', `<style>${this.notice.style}</style>`)
-      }
-    } catch (err) {
-      console.log('err: ', err)
-    }
   },
   methods: {
     async logoutApp() {
       if (window.APP_CONFIG.useLocalAppApi) {
         const res = await Dialog.confirm({ message: this.$t('login.logout_tip') }).catch(() => {})
         if (res != 'confirm') return
+        LocalStorage.remove('PXV_CLIENT_AUTH')
         window.APP_CONFIG.useLocalAppApi = false
         PixivAuth.writeConfig(window.APP_CONFIG)
         setTimeout(() => {
@@ -119,6 +106,10 @@ export default {
   font-size 40px
   text-align center
 
+  .title-font
+    font-family "Georgia Pro", Georgia, "Times New Roman", serif
+    font-weight bold
+
   &-desc
     display flex
     flex-direction column
@@ -128,6 +119,8 @@ export default {
       font-size 0.24rem
 
   img
+    width 64px
+    height 64px
     margin-right 20px
 
 .user_data
@@ -136,4 +129,12 @@ export default {
   img
     margin-right 20px
     border-radius 50%
+
+.custom-notice
+  width 85%
+  margin -20px auto 10px
+  border-radius 8px
+  ::v-deep
+    .van-icon__image
+      border-radius 50%
 </style>

@@ -12,7 +12,7 @@
     >
       <masonry v-bind="masonryProps">
         <div v-for="s in artList" :key="s.id" class="series-cont" @click="toArtwork(s.id)">
-          <ImagePximg class="series-bg" :src="s.cover_image_urls.medium" alt="" />
+          <Pximg class="series-bg" :src="s.cover_image_urls.medium" alt="" />
           <div class="series-title">
             <p>
               <span>{{ s.title }}</span>
@@ -29,8 +29,9 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import _ from '@/lib/lodash'
 import api from '@/api'
+
 export default {
   name: 'AuthorIllustSeries',
   props: {
@@ -106,6 +107,7 @@ export default {
       height: 100%
       border-radius 24px
       background-image: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(255,255,255,0) 100%)
+
   &-bg
     position absolute
     top 0
@@ -115,6 +117,7 @@ export default {
     height 100%
     object-fit cover
     border-radius 24px
+
   &-title
     position absolute
     bottom 0

@@ -57,7 +57,8 @@
 
 <script>
 import api, { imgProxy } from '@/api'
-import _ from 'lodash'
+import _ from '@/lib/lodash'
+import { COMMON_PROXY } from '@/consts'
 
 export default {
   name: 'Lives',
@@ -82,7 +83,7 @@ export default {
       const res = await api.getLiveList(this.curPage)
       if (res.status === 0) {
         if (res.data.length) {
-          if (!(this.$store.state.SETTING.r18 || this.$store.state.SETTING.r18g)) {
+          if (!(this.$store.state.contentSetting.r18 || this.$store.state.contentSetting.r18g)) {
             res.data = res.data.filter(e => !e.is_adult)
           }
           this.artList = _.uniqBy([
@@ -103,7 +104,7 @@ export default {
     }, 1000),
     imgProxy,
     cmnProxy(src) {
-      return (process.env.VUE_APP_COMMON_PROXY || '') + src
+      return COMMON_PROXY + src
     },
   },
 }
@@ -116,22 +117,27 @@ export default {
   margin-bottom 40px
   text-align center
   font-size 28px
+
 .illusts
   position relative
   padding 0 20px 40px
+
   .loading
     margin-top: 2rem;
     text-align: center;
+
   ::v-deep .top-bar-wrap
     width 2rem
     padding-top 20px
     background transparent
+
 .live_list
   display flex
   flex-wrap wrap
   gap: 0.4rem 2%;
   max-width 1200PX
   margin 0 auto
+
   .live_card
     position relative
     flex: 0 0 32%;
@@ -145,6 +151,7 @@ export default {
     @media screen and (max-width: 500px)
       flex: 0 0 100%;
       max-width: 100%;
+
   .live_img
     position relative
     width 100%;
@@ -181,11 +188,13 @@ export default {
         border-radius: 50%;
         border 2PX solid #fff
         object-fit: cover;
+
   .live_play_icon
     position absolute
     left 0.1rem
     top 0.1rem
     color: #56565699;
+
   .content
     width: 100%;
     padding: .10667rem .26667rem .21333rem;
@@ -232,4 +241,5 @@ export default {
         ::v-deep
           .van-icon
             margin-left .10667rem
+
 </style>

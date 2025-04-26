@@ -4,35 +4,35 @@
     <h3 class="af_title">{{ $t('cache.title') }}</h3>
     <van-cell center :title="$t('cache.db')">
       <template #label>
-        <span>{{ size.db[1] }} {{ $t('cache.records') }} ~ {{ size.db[0] | bytes }}</span>
+        <span>{{ $t('cache.records', [size.db[1]]) }} ~ {{ size.db[0] | bytes }}</span>
       </template>
       <template #right-icon>
         <van-button type="info" size="small" @click="clearCache('db')">
-          <span>{{ $t('cache.clear') }}</span>
+          <span data-umami-event="clear_db_cache">{{ $t('cache.clear') }}</span>
         </van-button>
       </template>
     </van-cell>
     <van-cell center :title="$t('cache.local')">
       <template #label>
-        <span>{{ size.local[1] }} {{ $t('cache.records') }} ~ {{ size.local[0] | bytes }}</span>
+        <span>{{ $t('cache.records', [size.local[1]]) }} ~ {{ size.local[0] | bytes }}</span>
       </template>
       <template #right-icon>
         <van-button size="small" color="linear-gradient(to right, #ff6034, #ee0a24)" @click="clearCache('local')">
-          <span>{{ $t('cache.clear') }}</span>
+          <span data-umami-event="clear_local_cache">{{ $t('cache.clear') }}</span>
         </van-button>
       </template>
     </van-cell>
     <van-cell center :title="$t('cache.session')">
       <template #label>
-        <span>{{ size.session[1] }} {{ $t('cache.records') }} ~ {{ size.session[0] | bytes }}</span>
+        <span>{{ $t('cache.records', [size.session[1]]) }} ~ {{ size.session[0] | bytes }}</span>
       </template>
       <template #right-icon>
         <van-button type="primary" size="small" @click="clearCache('session')">
-          <span>{{ $t('cache.clear') }}</span>
+          <span data-umami-event="clear_session_cache">{{ $t('cache.clear') }}</span>
         </van-button>
       </template>
     </van-cell>
-    <van-cell center :title="$t('ltKHIZm9mBZ8Dit_u8aW4')">
+    <van-cell v-if="platform.isCapacitor" center :title="$t('ltKHIZm9mBZ8Dit_u8aW4')">
       <template #label>
         <span>{{ size.imgCache[1] }} {{ $t('cache.records') }} ~ {{ size.imgCache[0] | bytes }}</span>
       </template>
@@ -42,17 +42,16 @@
         </van-button>
       </template>
     </van-cell>
-    <van-cell center is-link :title="$t('I9MyPQxu3O04E3h2qRBzN')" @click="openSettings" />
+    <van-cell v-if="platform.isCapacitor" center is-link :title="$t('I9MyPQxu3O04E3h2qRBzN')" @click="openSettings" />
   </div>
 </template>
 
 <script>
 import { Dialog } from 'vant'
+import { formatBytes } from '@/utils'
 import { LocalStorage, SessionStorage } from '@/utils/storage'
-import localDb from '@/utils/localDb'
-import { formatBytes, trackEvent } from '@/utils'
-import { NativeSettings, AndroidSettings } from 'capacitor-native-settings'
-import { Filesystem, Directory } from '@himeka/capacitor-filesystem'
+import localDb from '@/utils/storage/localDb'
+import platform from '@/platform'
 
 export default {
   name: 'SettingClearCache',
@@ -63,6 +62,7 @@ export default {
   },
   data() {
     return {
+      platform,
       size: {
         db: [0, 0],
         local: [0, 0],
@@ -70,6 +70,9 @@ export default {
         imgCache: [0, 0],
       },
     }
+  },
+  head() {
+    return { title: this.$t('cache.title') }
   },
   activated() {
     this.calcCacheSize()
@@ -82,30 +85,20 @@ export default {
         (await navigator.storage.estimate()).usage,
         await localDb.length(),
       ]
-      const { size = 0, len = 0 } = await Filesystem.getFileSize({ path: '', directory: Directory.External }).catch(() => ({}))
-      this.size.imgCache = [size, len]
+      if (platform.isCapacitor) {
+        this.size.imgCache = (await import('@/platform/capacitor/utils')).getCacheSize()
+      }
     },
     clearCache(type) {
-      let showName
-      switch (type) {
-        case 'db':
-          showName = this.$t('cache.db')
-          break
-        case 'local':
-          showName = this.$t('cache.local')
-          break
-        case 'session':
-          showName = this.$t('cache.session')
-          break
-        case 'imgCache':
-          showName = this.$t('ltKHIZm9mBZ8Dit_u8aW4')
-          break
-        default:
-          break
+      const showNames = {
+        db: this.$t('cache.db'),
+        local: this.$t('cache.local'),
+        session: this.$t('cache.session'),
+        imgCache: this.$t('ltKHIZm9mBZ8Dit_u8aW4'),
       }
-      let message = this.$t('cache.confirm.first', [showName])
+      let message = this.$t('cache.confirm.first', [showNames[type]])
       if (type == 'db') message += this.$t('cache.confirm.second')
-      if (type == 'local') message += this.$t('L1YwIFcNQQQVihEgMBUaK')
+      if (type == 'local') message += this.$t('a1HSQm-WYv6GDFwhKr9x_')
       Dialog.confirm({
         message,
         confirmButtonColor: 'black',
@@ -124,26 +117,15 @@ export default {
         if (type === 'local') LocalStorage.clear()
         if (type === 'session') SessionStorage.clear()
         if (type === 'imgCache') {
-          const directory = Directory.External
-          const { files } = await Filesystem.readdir({ path: '', directory })
-          await Promise.all(files.map(async it => {
-            if (it.type == 'directory') {
-              await Filesystem.rmdir({ path: it.name, directory, recursive: true })
-            } else {
-              await Filesystem.deleteFile({ path: it.name, directory })
-            }
-          }))
+          (await import('@/platform/capacitor/utils')).clearImageCache()
         }
 
         this.calcCacheSize()
         this.$toast.success(this.$t('cache.success_tip'))
-        trackEvent('ClearCache', { type })
-      }).catch(() => {})
-    },
-    openSettings() {
-      NativeSettings.openAndroid({
-        option: AndroidSettings.ApplicationDetails,
       })
+    },
+    async openSettings() {
+      (await import('@/platform/capacitor/utils')).openAndroidSettings()
     },
   },
 }

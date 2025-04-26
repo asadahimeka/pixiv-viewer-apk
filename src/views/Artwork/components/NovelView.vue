@@ -2,12 +2,12 @@
   <div
     ref="view"
     class="novel-view"
-    :class="{ shrink: isShrink, loaded: artwork.images, censored }"
+    :class="{ shrink: isShrink, loaded: artwork.images, censored, vertical: textConfig.direction=='v' }"
     :style="{ backgroundColor: textConfig.bg }"
     @click="showFull"
   >
     <div class="image-box">
-      <ImagePximg :src="getImgUrl" nobg :alt="artwork.title" class="image" />
+      <Pximg :src="getImgUrl" nobg :alt="artwork.title" class="image" />
     </div>
     <div
       class="novel_text"
@@ -16,18 +16,19 @@
       v-html="novelText"
     >
     </div>
-    <Icon v-if="isShrink" class="dropdown" name="dropdown" scale="4" />
+    <Icon v-show="isShrink" class="dropdown" name="dropdown" scale="4" />
   </div>
 </template>
 
 <script>
-import { imgProxy } from '@/api'
 import { mapGetters } from 'vuex'
+import { imgProxy } from '@/api'
+import { novelTextConfig } from '@/store'
 
 const fontMap = {
-  'sans-serif': 'YuGothic, "Hiragino Kaku Gothic Pro", Meiryo, "Source Han Sans", "Source Han Sans JP", "Noto Sans CJK JP", "Avenir Next", Avenir, "Source Sans", "Noto Sans", Roboto, Verdana, "Pingfang TC", "Pingfang HK", "Hiragino Sans CNS", "Lantinghei TC", "Source Han Sans TW", "Source Han Sans HK", "Noto Sans CJK TC", "Microsoft JhengHei", "Pingfang SC", "Hiragino Sans GB", "Lantinghei SC", "Source Han Sans CN", "Noto Sans CJK SC", "Microsoft Yahei", DengXian, "Apple SD Gothic Neo", "Source Han Sans K", "Source Han Sans KR", "Noto Sans CJK KR", "Malgun Gothic", sans-serif',
+  'inherit': 'inherit',
+  'sans-serif': 'YuGothic, "Hiragino Kaku Gothic Pro", "Source Han Sans", "Source Han Sans JP", "Noto Sans CJK JP", "Avenir Next", Avenir, "Source Sans", "Noto Sans", Roboto, Verdana, "Pingfang SC", "Hiragino Sans GB", "Lantinghei SC", "Source Han Sans CN", "Noto Sans CJK SC", "Microsoft Yahei", DengXian, "Pingfang TC", "Pingfang HK", "Hiragino Sans CNS", "Lantinghei TC", "Source Han Sans TW", "Source Han Sans HK", "Noto Sans CJK TC", "Microsoft JhengHei", "Apple SD Gothic Neo", "Source Han Sans K", "Source Han Sans KR", "Noto Sans CJK KR", "Malgun Gothic", sans-serif',
   'serif': '"Source Serif Pro", "Source Serif", "Noto Serif", "Times New Roman", "Georgia Pro", Georgia, "Songti SC", "Source Han Serif SC", "Source Han Serif CN", "Noto Serif SC", Simsun, "Yu Mincho", YuMincho, "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Source Han Serif", "Source Han Serif JP", "BIZ UDMincho Medium", "Noto Serif JP", "Songti TC", "Source Han Serif TC", "Source Han Serif TW", "Source Han Serif HK", "Noto Serif TC", PMingLiu, AppleMyungjo, "Source Han Serif K", "Source Han Serif KR", "Noto Serif KR", Batang, serif',
-  'lxgw': '"LXGW WenKai Screen", sans-serif',
 }
 
 export default {
@@ -41,18 +42,16 @@ export default {
       type: Object,
       required: true,
     },
-    textConfig: {
-      type: Object,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      isShrink: this.textConfig.direction == 'h',
-    }
   },
   computed: {
     ...mapGetters(['isCensored']),
+    textConfig() {
+      return novelTextConfig
+    },
+    isShrink() {
+      if (this.textConfig.direction == 'v') return false
+      return this.$store.state.isNovelViewShrink
+    },
     censored() {
       return this.isCensored(this.artwork)
     },
@@ -80,23 +79,11 @@ export default {
       }
     },
   },
-  watch: {
-    textConfig: {
-      deep: true,
-      handler(val) {
-        if (val.font == 'lxgw') this.loadLxgwFont()
-      },
-    },
-  },
-  mounted() {
-    if (this.textConfig.font == 'lxgw') this.loadLxgwFont()
-  },
   methods: {
     showFull() {
-      if (this.isShrink) this.isShrink = false
-    },
-    loadLxgwFont() {
-      document.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" href="https://lib.baomitu.com/lxgw-wenkai-screen-webfont/1.7.0/style.min.css">')
+      if (this.isShrink) {
+        this.$store.commit('setIsNovelViewShrink', false)
+      }
     },
     getEmbedImg(id) {
       const urls = this.textObj.embedImgs?.[id]?.urls
@@ -117,18 +104,26 @@ export default {
   text-align: justify;
   user-select text !important
 
+  &:not(.vertical)
+    padding-bottom 100px
+
   &.vertical
-    width 90%
-    height 75vh
-    padding 10px 20px 40px
-    overflow-x: auto;
-    writing-mode: vertical-rl;
+    width auto
+    height 82.5vh
+    padding 10px 20px 40px 150px
+    @media screen and (max-width: 1200px)
+      height auto
 
 .novel-view {
   position: relative;
   width 100%
   min-height: 600px;
-  margin-top 40px
+  padding-top 40px
+  // border-radius: 0.26667rem;
+
+  @media screen and (max-width: 1200px) {
+    border-radius: 0;
+  }
 
   &.censored {
     pointer-events: none;
@@ -204,4 +199,37 @@ export default {
   }
 
 }
+</style>
+<style lang="stylus">
+.artwork.novel .ia-cont
+  height max-content
+  .ia-right
+    position: sticky;
+    top: 0;
+.artwork.novel .ia-cont.isCollapseMeta
+  &:has(.shrink),
+  &:has(.vertical)
+    height 100vh
+  .ia-left
+    margin-top 0
+    padding-left 0
+    padding-right 0
+  .novel-view
+    border-radius 0
+  .novel_text
+    height auto
+.artwork.novel .ia-cont .ia-left .novel-view.vertical
+  position relative
+  padding-right 4.5rem
+  overflow-x: auto
+  writing-mode: vertical-rl
+  .image-box
+    position absolute
+    top 50%
+    right 0
+    transform translateY(-50%)
+    width 4rem !important
+    height auto !important
+    margin-bottom 0 !important
+    padding-right 0.5rem
 </style>

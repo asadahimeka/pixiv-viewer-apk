@@ -1,11 +1,16 @@
 import { Toast } from 'vant'
+import { Capacitor } from '@capacitor/core'
 import { Clipboard } from '@capacitor/clipboard'
-import { FileDownload } from '@himeka/capacitor-plugin-filedownload'
+import { Share } from '@capacitor/share'
 import { Filesystem, Directory } from '@himeka/capacitor-filesystem'
+import { FileDownload } from '@himeka/capacitor-plugin-filedownload'
+import { FileOpener } from '@capacitor-community/file-opener'
+import { NativeSettings, AndroidSettings } from 'capacitor-native-settings'
 import writeBlob from 'capacitor-blob-writer'
-import { LocalStorage } from './storage'
-import { getCache, setCache } from './siteCache'
+import { LocalStorage } from '@/utils/storage'
+import { getCache, setCache } from '@/utils/storage/siteCache'
 import { i18n } from '@/i18n'
+import { formatBytes } from '@/utils'
 
 export async function copyText(string, cb, errCb) {
   try {
@@ -16,7 +21,7 @@ export async function copyText(string, cb, errCb) {
   }
 }
 
-export function replaceValidFilename(str = '') {
+function replaceValidFilename(str = '') {
   const maxLen = 72
   const strArr = str.split('.')
   const ext = strArr.pop()
@@ -25,7 +30,7 @@ export function replaceValidFilename(str = '') {
   return str
 }
 
-export async function addDownloadHistory(args) {
+async function addDownloadHistory(args) {
   const historyList = await getCache('downloads.history') || []
   historyList.unshift({ ...args, date: new Date().toLocaleString() })
   setCache('downloads.history', historyList)
@@ -35,7 +40,6 @@ const isDirect = LocalStorage.get('PXV_PXIMG_DIRECT', false)
 export async function downloadFile(url, fileName, subpath) {
   try {
     fileName = replaceValidFilename(fileName)
-    Toast(i18n.t('tip.downloading') + ': ' + fileName)
     if (subpath) fileName = subpath + '/' + fileName
 
     let res
@@ -61,6 +65,7 @@ export async function downloadFile(url, fileName, subpath) {
 
     addDownloadHistory({ status: 'ok', url: downloadUrl, fileName, path: res.path })
 
+    Toast.clear(true)
     Toast({
       message: i18n.t('tip.downloaded') + ': ' + decodeURIComponent(res.path.replace('file://', '')),
       duration: 3000,
@@ -68,8 +73,6 @@ export async function downloadFile(url, fileName, subpath) {
     return { res }
   } catch (error) {
     addDownloadHistory({ status: 'error', url, fileName, error: error + '' })
-
-    Toast(i18n.t('D8R2062pjASZe9mgvpeLr') + ': ' + error)
     return { error }
   }
 }
@@ -87,7 +90,7 @@ export async function downloadBlob(blob, fileName, subpath) {
     const res = { uri }
 
     addDownloadHistory({ status: 'ok', fileName, path: res.uri })
-
+    Toast.clear(true)
     Toast({
       message: i18n.t('tip.downloaded') + ': ' + decodeURIComponent(res.uri.replace('file://', '')),
       duration: 3000,
@@ -95,22 +98,83 @@ export async function downloadBlob(blob, fileName, subpath) {
     return { res }
   } catch (error) {
     addDownloadHistory({ status: 'error', fileName, error: error + '' })
-
-    Toast(i18n.t('D8R2062pjASZe9mgvpeLr') + ': ' + error)
     return { error }
   }
 }
 
-const isOverlayOff = LocalStorage.get('PXV_STATUSBAR_OVERLAY_OFF', false)
-
-export function dealStatusBarOnEnter() {
-  if (isOverlayOff) return
-  document.documentElement.classList.add('pt0')
-  window['nav-bar-overlay']?.classList.add('op0')
+export async function getPximgUri(url) {
+  url.protocol = 'http:'
+  url.host = window.p_pximg_ip
+  const path = url.pathname.slice(1)
+  const directory = Directory.External
+  const stats = await Filesystem.stat({ path, directory }).catch(() => ({ uri: null }))
+  if (stats.uri) {
+    return Capacitor.convertFileSrc(stats.uri)
+  }
+  const res = await Filesystem.downloadFile({
+    url: url.href,
+    path,
+    directory,
+    recursive: true,
+    headers: { Host: 'i.pximg.net', Referer: 'https://www.pixiv.net' },
+  })
+  return Capacitor.convertFileSrc(res.path)
 }
 
-export async function dealStatusBarOnLeave() {
-  if (isOverlayOff) return
-  document.documentElement.classList.remove('pt0')
-  window['nav-bar-overlay']?.classList.remove('op0')
+export async function share(...args) {
+  return Share.share(...args)
+}
+
+export async function getCacheSize() {
+  const { size = 0, len = 0 } = await Filesystem
+    .getFileSize({ path: '', directory: Directory.External })
+    .catch(() => ({}))
+  return [size, len]
+}
+
+export async function clearImageCache() {
+  const directory = Directory.External
+  const { files } = await Filesystem.readdir({ path: '', directory })
+  await Promise.all(files.map(async it => {
+    if (it.type == 'directory') {
+      await Filesystem.rmdir({ path: it.name, directory, recursive: true })
+    } else {
+      await Filesystem.deleteFile({ path: it.name, directory })
+    }
+  }))
+}
+
+export function openAndroidSettings() {
+  NativeSettings.openAndroid({
+    option: AndroidSettings.ApplicationDetails,
+  })
+}
+
+export async function openFile(filePath) {
+  await FileOpener.open({ filePath })
+}
+
+export function convertFileSrc(path) {
+  return Capacitor.convertFileSrc(path)
+}
+
+export async function readDlDir(path) {
+  const directory = Directory.Downloads
+  const { files } = await Filesystem.readdir({ path, directory }).catch(() => ({ files: [] }))
+  const res = await Promise.all(files.map(async it => {
+    if (it.type == 'file') {
+      return {
+        path: convertFileSrc(it.uri),
+        fileName: it.name,
+        id: it.name.match(/_(\d{4,})[_.]/)?.[1],
+        isNovel: /\.txt$/.test(it.name),
+        isImage: /\.(jpe?g|png|gif)$/.test(it.name),
+        size: formatBytes(it.size),
+        date: new Date(it.ctime).toLocaleString(),
+        status: 'ok',
+        ms: it.ctime || it.mtime,
+      }
+    }
+  }))
+  return res.filter(Boolean)
 }

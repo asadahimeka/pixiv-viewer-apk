@@ -44,6 +44,11 @@
         <van-icon v-if="isDark" :class="{ active: isActive('Setting') }" name="setting-o" />
         <span>{{ $t('nav.setting') }}</span>
       </li>
+      <li v-if="!isShowBackTop" class="nav_to_top" @click="scrollToTop()">
+        <Icon class="icon" name="to_top" index="BackTop" />
+        <van-icon v-if="isDark" name="back-top" />
+        <span>{{ $t('9t4q1l50WKJY_iuXpTo66') }}</span>
+      </li>
     </ul>
   </div>
 </template>
@@ -63,6 +68,7 @@ export default {
   data() {
     return {
       isLogin: window.APP_CONFIG.useLocalAppApi || isWebLogin,
+      isShowBackTop: document.documentElement.clientWidth < 1280,
       isDark: !!localStorage.PXV_DARK,
     }
   },
@@ -70,9 +76,12 @@ export default {
     isActive(name) {
       return this.$route.name.startsWith(name)
     },
+    scrollToTop() {
+      document.documentElement.scrollTo({ top: 0, behavior: 'smooth' })
+    },
     navigateTo(name, params) {
       if (this.$route.name.startsWith(name)) {
-        document.documentElement.scrollTo({ top: 0, behavior: 'smooth' })
+        this.scrollToTop()
       } else {
         this.$router.push({ name, params })
       }
@@ -82,12 +91,16 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.nav_to_top
+  display none
+
 .nav-container {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   height: 100px;
+  // height: calc(100px + env(safe-area-inset-bottom));
   z-index: 10;
 
   opacity: 0;
@@ -102,18 +115,17 @@ export default {
   .nav-bar {
     display: flex;
     justify-content: space-between;
-    background: #fff;
-    /* border-radius: .7rem .7rem 0 0; */
+    // border-radius: .7rem .7rem 0 0;
     box-shadow: 0px 0px 20px #dedede;
     width: 100%;
-    max-width: 750px;
+    // max-width: 750px;
     height: 100%;
     margin: 0 auto;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
     // backdrop-filter: blur(6px);
-    // backdrop-filter: saturate(200%) blur(6px);
-    background: rgba(255, 255, 255, 1);
+    backdrop-filter: saturate(200%) blur(10PX);
+    background: rgba(255, 255, 255, 0.8);
 
     li {
       position: relative;

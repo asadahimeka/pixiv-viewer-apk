@@ -14,7 +14,7 @@
       <ImageSlide v-for="u in userList" :key="u.id" :images="u.illusts.slice(0, 3)">
         <div class="link" @click="toUserPage(u.id)">
           <div class="user_info">
-            <ImagePximg class="user_avatar" nobg :src="u.avatar" alt="" />
+            <Pximg nobg class="user_avatar" :src="u.avatar" alt="" />
             <div class="user_name">{{ u.name }}</div>
           </div>
         </div>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import _ from '@/lib/lodash'
 import ImageSlide from '@/components/ImageSlide.vue'
 import { getDiscoveryUsers } from '@/api/user'
 
@@ -111,7 +111,7 @@ export default {
 .illusts ::v-deep .image-slide
   height: 390px
   margin-bottom 12px
-  border: 1px solid #ebebeb
+  border: 1PX solid #ebebeb
   border-radius: 18px
   box-sizing: border-box
   background none

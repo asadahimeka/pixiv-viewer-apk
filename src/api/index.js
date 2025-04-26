@@ -1,9 +1,10 @@
 import dayjs from 'dayjs'
-import { get, notSelfHibiApi } from './http'
-import { LocalStorage, SessionStorage } from '@/utils/storage'
-import { getCache, setCache } from '@/utils/siteCache'
+import { get } from './http'
+import { SessionStorage } from '@/utils/storage'
+import { getCache, setCache } from '@/utils/storage/siteCache'
 import { i18n } from '@/i18n'
 import { filterCensoredIllusts } from '@/utils/filter'
+import { PXIMG_PROXY_BASE, notSelfHibiApi, PIXIV_NOW_URL, PIXIV_NEXT_URL } from '@/consts'
 
 const isSupportWebP = (() => {
   const elem = document.createElement('canvas')
@@ -17,10 +18,6 @@ const isSupportWebP = (() => {
   return false
 })()
 
-export const PIXIV_NEXT_URL = 'https://hibiapi.cocomi.eu.org'
-export const PIXIV_NOW_URL = `${PIXIV_NEXT_URL}/api/pixiv-now/http`
-
-export const PXIMG_PROXY_BASE = LocalStorage.get('PXIMG_PROXY', process.env.VUE_APP_DEF_PXIMG_MAIN)
 export const imgProxy = url => {
   let result = url.replace(/i\.pximg\.net/g, PXIMG_PROXY_BASE)
   if (url.startsWith('/-/')) {
@@ -41,7 +38,7 @@ export const imgProxy = url => {
 const parseUser = data => {
   const { user, profile, workspace } = data
   const { id, account, name, comment } = user
-  const { background_image_url, birth, birth_day, gender, is_premium, is_using_custom_profile_image, job, total_follow_users, total_mypixiv_users, total_illust_bookmarks_public, total_illusts, twitter_account, twitter_url, webpage, country_code } = profile
+  const { background_image_url, birth, gender, is_premium, is_using_custom_profile_image, job, total_follow_users, total_mypixiv_users, total_illust_bookmarks_public, total_illusts, twitter_account, twitter_url, webpage, country_code } = profile
 
   return {
     id,
@@ -52,7 +49,7 @@ const parseUser = data => {
     region: profile.region,
     avatar: imgProxy(user.profile_image_urls.medium),
     bgcover: imgProxy(background_image_url || ''),
-    birth: `${birth}-${birth_day}`,
+    birth,
     gender,
     is_premium,
     is_using_custom_profile_image,
@@ -246,7 +243,7 @@ export const parseWebApiIllust = d => {
   const artwork = {
     id: d.id,
     title: d.title,
-    caption: '',
+    caption: d.description || '',
     author: {
       id: d.userId,
       name: d.userName,
@@ -263,14 +260,14 @@ export const parseWebApiIllust = d => {
     like: 0,
     x_restrict: d.xRestrict,
     illust_ai_type: d.aiType,
-    type: 'illust',
+    type: ['illust', 'manga', 'ugoira'][d.illustType || 0],
   }
 
   return artwork
 }
 
 const dealErrMsg = res => {
-  const err = res.error?.response?.data?.error || res.error
+  const err = res.error?.response?.data?.error || res.error?.error || res.error
   let msg = err?.message || err?.user_message || err
   if (msg == 'Rate Limit') msg = i18n.t('tip.rate_limit')
   return msg
@@ -379,7 +376,7 @@ const api = {
    * @param {Number} id 作品ID
    * @param {Number} page 页数 [1,5]
    */
-  async getRelated(id, page = 1) {
+  async getRelated(id, page = 1, nextUrl = '') {
     const cacheKey = `relatedList_${id}_p${page}`
     let relatedList = await getCache(cacheKey)
 
@@ -387,10 +384,12 @@ const api = {
       const res = await get('/related', {
         id,
         page,
+        nextUrl,
       })
 
       if (res.illusts) {
         relatedList = res.illusts.map(art => parseIllust(art))
+        relatedList.nextUrl = res.next_url
         setCache(cacheKey, relatedList, 60 * 60 * 48)
       } else if (res.error) {
         return {
@@ -746,15 +745,10 @@ const api = {
     if (!spotlights) {
       const url = `${PIXIV_NEXT_URL}/api/pixivision`
       const params = { page }
-      if (lang != 'zh-Hans') {
+      if (lang != 'zh-CN') {
         params.lang = lang
       }
-      const res = await get(url, params, {
-        headers: {
-          'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56',
-          'origin': 'http://localhost',
-        },
-      })
+      const res = await get(url, params)
 
       if (res.articles) {
         res.articles.forEach(a => {
@@ -789,15 +783,10 @@ const api = {
 
     if (!spotlights) {
       const params = { page, type }
-      if (lang != 'zh-Hans') {
+      if (lang != 'zh-CN') {
         params.lang = lang
       }
-      const res = await get(`${PIXIV_NEXT_URL}/api/pixivision/list`, params, {
-        headers: {
-          'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56',
-          'origin': 'http://localhost',
-        },
-      })
+      const res = await get(`${PIXIV_NEXT_URL}/api/pixivision/list`, params)
 
       if (res.articles) {
         res.articles.forEach(a => {
@@ -831,15 +820,10 @@ const api = {
 
     if (!spotlight) {
       const params = { id }
-      if (lang != 'zh-Hans') {
+      if (lang != 'zh-CN') {
         params.lang = lang
       }
-      const res = await get(`${PIXIV_NEXT_URL}/api/pixivision/detail`, params, {
-        headers: {
-          'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56',
-          'origin': 'http://localhost',
-        },
-      })
+      const res = await get(`${PIXIV_NEXT_URL}/api/pixivision/detail`, params)
 
       if (res) {
         res.related_latest?.items?.forEach(a => {
@@ -871,15 +855,10 @@ const api = {
 
     if (!spotlight) {
       const params = {}
-      if (lang != 'zh-Hans') {
+      if (lang != 'zh-CN') {
         params.lang = lang
       }
-      const res = await get(`${PIXIV_NEXT_URL}/api/pixivision/${id}`, params, {
-        headers: {
-          'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56',
-          'origin': 'http://localhost',
-        },
-      })
+      const res = await get(`${PIXIV_NEXT_URL}/api/pixivision/${id}`, params)
 
       if (res) {
         res.cover = imgProxy(res.cover?.replace('i-ogp.pximg.net', 'i.pximg.net') || '')
@@ -954,11 +933,6 @@ const api = {
         mode,
         date,
         content,
-      }, {
-        headers: {
-          'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56',
-          'origin': 'http://localhost',
-        },
       })
 
       if (res && res.contents) {
@@ -984,11 +958,6 @@ const api = {
       lang: 'zh',
       _vercel_no_cache: 1,
       _t: Date.now(),
-    }, {
-      headers: {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56',
-        'origin': 'http://localhost',
-      },
     })
 
     const illust = res?.thumbnails?.illust
@@ -1014,12 +983,7 @@ const api = {
       params._t = Date.now()
     }
 
-    const res = await get(`${PIXIV_NOW_URL}/ajax/illust/discovery`, params, {
-      headers: {
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56',
-        'origin': 'http://localhost',
-      },
-    })
+    const res = await get(`${PIXIV_NOW_URL}/ajax/illust/discovery`, params, { baseURL: '/' })
 
     if (res && res.illusts) {
       list = res.illusts.filter(e => !e.isAdContainer).map(e => parseWebApiIllust(e))
@@ -1234,6 +1198,38 @@ const api = {
     return { status: 0, data: artwork }
   },
 
+  // async getNovelText(id) {
+  //   const cacheKey = `novel_text_${id}`
+  //   let artwork = await getCache(cacheKey)
+
+  //   if (!artwork) {
+  //     const res = await get('/novel_text', {
+  //       id,
+  //     })
+
+  //     if (res.novel_text) {
+  //       artwork = {
+  //         text: res.novel_text,
+  //         prev: res.series_prev?.id && parseNovel(res.series_prev),
+  //         next: res.series_next?.id && parseNovel(res.series_next),
+  //       }
+  //       setCache(cacheKey, artwork, -1)
+  //     } else if (res.error) {
+  //       return {
+  //         status: -1,
+  //         msg: dealErrMsg(res),
+  //       }
+  //     } else {
+  //       return {
+  //         status: -1,
+  //         msg: i18n.t('tip.unknown_err'),
+  //       }
+  //     }
+  //   }
+
+  //   return { status: 0, data: artwork }
+  // },
+
   /**
    *
    * @param {Number} id 作品ID
@@ -1250,7 +1246,11 @@ const api = {
       if (res.illust) {
         artwork = parseIllust(res.illust)
         try {
-          if (artwork.images[0].o.includes('common/images/limit_sanity_level')) {
+          // if (!artwork.caption) {
+          //   const webIllust = await get(`${PIXIV_NOW_URL}/ajax/illust/${id}?full=1`)
+          //   artwork.caption = webIllust.illustComment
+          // }
+          if (artwork.images[0].o.includes('common/images/limit')) {
             const [webRes, webImages] = await Promise.all([
               get(`${PIXIV_NOW_URL}/ajax/illust/${id}?full=1`),
               get(`${PIXIV_NOW_URL}/ajax/illust/${id}/pages`),
@@ -1280,7 +1280,7 @@ const api = {
               like: webRes.bookmarkCount,
               x_restrict: webRes.xRestrict,
               illust_ai_type: webRes.aiType,
-              type: 'illust',
+              type: ['illust', 'manga', 'ugoira'][webRes.illustType || 0],
               is_bookmarked: false,
               series: null,
             }
@@ -1346,9 +1346,7 @@ const api = {
     let memberInfo = await getCache(cacheKey)
 
     if (!memberInfo) {
-      const res = await get('/member', {
-        id,
-      })
+      const res = await get('/member', { id })
 
       if (res.error) {
         return {
@@ -1357,12 +1355,121 @@ const api = {
         }
       } else {
         memberInfo = parseUser(res)
+        try {
+          if (!memberInfo.comment || !memberInfo.webpage || !memberInfo.twitter_url) {
+            const webRes = await get(`${PIXIV_NOW_URL}/ajax/user/${id}?full=1`)
+            memberInfo.comment = webRes?.commentHtml
+            memberInfo.webpage = webRes?.webpage
+            memberInfo.twitter_url = webRes?.social?.twitter?.url || ''
+            memberInfo.twitter_account = webRes?.social?.twitter?.url?.split('/').pop() || ''
+          }
+        } catch (err) {
+          console.log('err: ', err)
+        }
+        setCache(cacheKey, memberInfo, 60 * 60 * 24)
       }
-
-      setCache(cacheKey, memberInfo, 60 * 60 * 24)
     }
 
     return { status: 0, data: memberInfo }
+  },
+
+  /**
+   * 获取画师作品标签
+   * @param {Number} id 画师ID
+   */
+  async getMemberTags(id) {
+    const cacheKey = `memberTags_${id}`
+    let memberInfo = await getCache(cacheKey)
+
+    if (!memberInfo) {
+      const res = await get(`${PIXIV_NOW_URL}/ajax/user/${id}/illusts/tags`)
+
+      if (!Array.isArray(res)) {
+        return {
+          status: -1,
+          msg: dealErrMsg(res.error ? res : { error: res }),
+        }
+      } else {
+        memberInfo = res.sort((a, b) => b.cnt - a.cnt)
+        setCache(cacheKey, memberInfo, 60 * 60 * 24)
+      }
+    }
+
+    return { status: 0, data: memberInfo }
+  },
+
+  /**
+   * 获取画师标签下的作品
+   * @param {number} id 画师ID
+   * @param {string} tag 标签
+   * @param {number} page 页数
+   */
+  async getMemberTagArtworks(id, tag, page = 1) {
+    const cacheKey = `memberTagArtworks_${id}_${tag}_${page}`
+    let memberInfo = await getCache(cacheKey)
+
+    if (!memberInfo) {
+      const res = await get(`${PIXIV_NOW_URL}/ajax/user/${id}/illusts/tag`, {
+        tag,
+        offset: (page - 1) * 48,
+        limit: 48,
+        sensitiveFilterMode: 'userSetting',
+        lang: 'zh',
+      })
+
+      if (!Array.isArray(res.works)) {
+        return {
+          status: -1,
+          msg: dealErrMsg(res.error ? res : { error: res }),
+        }
+      } else {
+        memberInfo = {
+          total: res.total,
+          currLen: res.works.length,
+          works: res.works.map(parseWebApiIllust),
+        }
+        setCache(cacheKey, memberInfo, 60 * 60 * 12)
+      }
+    }
+
+    memberInfo.works = filterCensoredIllusts(memberInfo.works)
+
+    return { status: 0, data: memberInfo }
+  },
+
+  /**
+   *
+   * @param {Number} id 画师ID
+   * @param {Number} page 页数
+   */
+  async getMemberArtwork(id, page, illust_type = 'illust') {
+    const cacheKey = `memberArtwork_${id}_${illust_type}_p${page}`
+    let memberArtwork = await getCache(cacheKey)
+
+    if (!memberArtwork) {
+      const res = await get('/member_illust', {
+        id,
+        page,
+        illust_type,
+      })
+
+      if (res.illusts) {
+        memberArtwork = res.illusts.map(art => parseIllust(art))
+        setCache(cacheKey, memberArtwork, 60 * 60 * 6)
+      } else if (res.error) {
+        return {
+          status: -1,
+          msg: dealErrMsg(res),
+        }
+      } else {
+        return {
+          status: -1,
+          msg: i18n.t('tip.unknown_err'),
+        }
+      }
+    }
+
+    return { status: 0, data: filterCensoredIllusts(memberArtwork) }
   },
 
   async getMemberIllustSeries(id, page = 1) {
@@ -1475,41 +1582,6 @@ const api = {
     }
 
     return { status: 0, data }
-  },
-
-  /**
-   *
-   * @param {Number} id 画师ID
-   * @param {Number} page 页数
-   */
-  async getMemberArtwork(id, page, illust_type = 'illust') {
-    const cacheKey = `memberArtwork_${id}_${illust_type}_p${page}`
-    let memberArtwork = await getCache(cacheKey)
-
-    if (!memberArtwork) {
-      const res = await get('/member_illust', {
-        id,
-        page,
-        illust_type,
-      })
-
-      if (res.illusts) {
-        memberArtwork = res.illusts.map(art => parseIllust(art))
-        setCache(cacheKey, memberArtwork, 60 * 60 * 6)
-      } else if (res.error) {
-        return {
-          status: -1,
-          msg: dealErrMsg(res),
-        }
-      } else {
-        return {
-          status: -1,
-          msg: i18n.t('tip.unknown_err'),
-        }
-      }
-    }
-
-    return { status: 0, data: filterCensoredIllusts(memberArtwork) }
   },
 
   async getMemberNovel(id, page = 1) {

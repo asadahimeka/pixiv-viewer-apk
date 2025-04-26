@@ -5,7 +5,7 @@
     <van-form style="margin: 1rem auto;" @submit="onSubmit">
       <van-field
         v-model="sessionIdInput"
-        label="Session ID"
+        :label="$t('sYF0dqcLCYmsSg2R2bLk8')"
         :placeholder="$t('sess.input.ph')"
         :rules="rules.sessionIdInput"
       />
@@ -65,7 +65,6 @@
 import { Dialog } from 'vant'
 import { i18n } from '@/i18n'
 import { login, validateSessionId } from '@/api/user'
-import { trackEvent } from '@/utils'
 
 export default {
   name: 'Session',
@@ -83,6 +82,9 @@ export default {
       },
     }
   },
+  head() {
+    return { title: this.$t('sess.title') }
+  },
   methods: {
     async onSubmit() {
       try {
@@ -97,8 +99,9 @@ export default {
         const userData = await login(this.sessionIdInput)
         this.$store.commit('setUser', userData)
         this.loading = false
+        window.umami?.track('session_login_success')
         this.$toast(this.$t('sess.succ_msg'))
-        trackEvent('Session Login Success')
+        // this.$router.replace({ name: 'Setting' })
         this.$router.go(-2)
         setTimeout(() => {
           location.reload()

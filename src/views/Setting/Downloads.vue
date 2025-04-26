@@ -18,7 +18,7 @@
         :key="i"
         lazy-load
         :title="d.fileName"
-        :thumb="d.isImage ? imgSrc(d.path) : undefined"
+        :thumb="d.isImage ? d.path : undefined"
       >
         <template #desc>
           <p style="line-height: 2;color: #555;">{{ d.date }} <span v-if="d.size" style="margin-left: 1em;">{{ d.size }}</span></p>
@@ -40,13 +40,10 @@
 </template>
 
 <script>
-import { Capacitor } from '@capacitor/core'
-import { FileOpener } from '@capacitor-community/file-opener'
-import { Filesystem, Directory } from '@himeka/capacitor-filesystem'
 import { Dialog } from 'vant'
 import TopBar from '@/components/TopBar'
-import { downloadFile, formatBytes } from '@/utils'
-import { getCache, setCache } from '@/utils/siteCache'
+import { downloadFile } from '@/utils'
+import { getCache, setCache } from '@/utils/storage/siteCache'
 
 export default {
   name: 'SettingDownloads',
@@ -80,13 +77,10 @@ export default {
     },
   },
   methods: {
-    imgSrc(path) {
-      if (!path) return ''
-      return Capacitor.convertFileSrc(path)
-    },
     async openFile(filePath) {
       try {
-        await FileOpener.open({ filePath })
+        const { openFile } = await import('@/platform/capacitor/utils')
+        await openFile(filePath)
       } catch (err) {
         this.$toast(err?.message || 'Open file failed.')
       }
@@ -118,31 +112,12 @@ export default {
         return setCache('downloads.history', null)
       }).catch(() => {})
     },
-    async readDir(path) {
-      const directory = Directory.Downloads
-      const { files } = await Filesystem.readdir({ path, directory }).catch(() => ({ files: [] }))
-      const res = await Promise.all(files.map(async it => {
-        if (it.type == 'file') {
-          return {
-            path: it.uri,
-            fileName: it.name,
-            id: it.name.match(/_(\d{4,})[_.]/)?.[1],
-            isNovel: /\.txt$/.test(it.name),
-            isImage: /\.(jpe?g|png|gif)$/.test(it.name),
-            size: formatBytes(it.size),
-            date: new Date(it.ctime).toLocaleString(),
-            status: 'ok',
-            ms: it.ctime || it.mtime,
-          }
-        }
-      }))
-      return res.filter(Boolean)
-    },
     async getDlDirFiles() {
+      const { readDlDir } = await import('@/platform/capacitor/utils')
       return (await Promise.all([
-        this.readDir('pixiv-viewer'),
-        this.readDir('pixiv-viewer/novel'),
-        this.readDir('pixiv-viewer/ugoira'),
+        readDlDir('pixiv-viewer'),
+        readDlDir('pixiv-viewer/novel'),
+        readDlDir('pixiv-viewer/ugoira'),
       ])).flat().sort((a, b) => b.ms - a.ms)
     },
   },

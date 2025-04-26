@@ -6,7 +6,7 @@
       <ImageSlide v-for="u in userList" :key="u.id" :images="u.illusts">
         <div class="link" @click="toUserPage(u.id)">
           <div class="user_info">
-            <ImagePximg class="user_avatar" nobg :src="u.avatar" alt="" />
+            <Pximg nobg class="user_avatar" :src="u.avatar" alt="" />
             <div class="user_name">{{ u.name }}</div>
           </div>
         </div>
@@ -20,9 +20,10 @@
 <script>
 import TopBar from '@/components/TopBar'
 import api from '@/api'
-import _ from 'lodash'
+import _ from '@/lib/lodash'
 import ImageSlide from '@/components/ImageSlide.vue'
-import { mintVerify } from '@/utils/filter'
+import { mintVerify, BLOCK_SEARCH_WORD_RE } from '@/utils/filter'
+import { i18n } from '@/i18n'
 
 export default {
   name: 'SearchUserRes',
@@ -51,6 +52,9 @@ export default {
       },
     }
   },
+  head: {
+    title: i18n.t('search.search_user'),
+  },
   activated() {
     this.init()
   },
@@ -63,7 +67,7 @@ export default {
     },
     getUserList: _.throttle(async function () {
       const { word } = this.$route.params
-      if (!word || /スカラマシュ|散兵|放浪者|流浪者/i.test(word) || !(await mintVerify(word))) {
+      if (!word || BLOCK_SEARCH_WORD_RE.test(word) || !(await mintVerify(word))) {
         return
       }
       this.loading = true
@@ -122,7 +126,7 @@ export default {
 .illusts ::v-deep .image-slide
   height: 390px
   margin-bottom 12px
-  border: 1px solid #ebebeb
+  border: 1PX solid #ebebeb
   border-radius: 18px
   box-sizing: border-box
   background none

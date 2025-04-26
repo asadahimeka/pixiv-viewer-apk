@@ -49,7 +49,7 @@
         </div>
         <div class="chats">
           <div class="c-title-cont">
-            <div class="c-title">Chats</div>
+            <div class="c-title">{{ $t('lives_chats_title') }}</div>
             <div class="counts">
               <van-icon name="clock-o" />
               <span>{{ liveDuration }}</span>
@@ -86,7 +86,9 @@
 
 <script>
 import dayjs from 'dayjs'
+import { COMMON_PROXY, UA_Header } from '@/consts'
 import DPlayer from './components/DPlayer.vue'
+
 export default {
   name: 'LiveDetail',
   components: { DPlayer },
@@ -228,8 +230,9 @@ export default {
     },
     getDetail: async function (id) {
       this.loading = true
-      const resp = await fetch(this.cmnProxy(`https://sketch.pixiv.net/api/lives/${id}.json`))
+      const resp = await fetch(this.cmnProxy(`https://sketch.pixiv.net/api/lives/${id}.json`), { headers: UA_Header })
       const json = await resp.json()
+
       if (json?.errors?.length) {
         this.$toast({
           message: json.errors[0].message || this.$t('tip.unknown_err'),
@@ -241,7 +244,7 @@ export default {
       this.loading = false
     },
     async getLogs(id) {
-      const resp = await fetch(this.cmnProxy(`https://sketch.pixiv.net/api/lives/${id}/logs.json`))
+      const resp = await fetch(this.cmnProxy(`https://sketch.pixiv.net/api/lives/${id}/logs.json`), { headers: UA_Header })
       const json = await resp.json()
       if (json?.errors?.length) {
         this.$toast({
@@ -272,7 +275,7 @@ export default {
       window.open(`/users/${id}`, '_blank', 'noreferrer')
     },
     cmnProxy(src) {
-      return (process.env.VUE_APP_COMMON_PROXY || '') + src
+      return COMMON_PROXY + src
     },
     calcDuration() {
       let ms = (this.detail.finished_at ? new Date(this.detail.finished_at) : Date.now()) - new Date(this.detail.created_at)
@@ -287,6 +290,7 @@ export default {
   },
 }
 </script>
+
 <style lang="stylus" scoped>
 .af_title
   position relative
@@ -296,18 +300,23 @@ export default {
   text-align center
   font-size 0.38rem
   font-weight bold
+
 .live_detail
   position relative
   padding 0 20px 40px
+
   .loading
     margin-top 120px
     text-align center
+
   ::v-deep .top-bar-wrap
     width 2rem
-    padding-top calc(20px + var(--status-bar-height))
+    padding-top 20px
     background transparent
+
   .live_detail_cont
     position relative
+
   .live_play_icon
     position absolute
     top 50%
@@ -316,18 +325,21 @@ export default {
     transform translate(-50%, -50%)
     color: #56565699;
     cursor pointer
+
   .player
     position relative
     margin 20px auto
     padding 0 5vw
     .dplayer
       max-height 70vh
+
   .content
     max-width: 1200px;
     margin: auto;
     padding: .10667rem .26667rem .21333rem;
     color: #333;
     box-sizing: border-box;
+
     .avatar
       width: .55rem;
       min-width: .55rem;
@@ -338,6 +350,7 @@ export default {
       overflow: hidden;
       object-fit: cover;
       cursor pointer
+
     .title
       margin: .08rem 0;
       font-weight: 600;
@@ -360,6 +373,7 @@ export default {
       word-break: break-word;
       &:hover
         text-decoration underline
+
     .author-cont
       display: flex;
       align-items: center;
@@ -372,6 +386,7 @@ export default {
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
+
     .counts
       display flex
       align-items center
@@ -388,10 +403,11 @@ export default {
           margin-left 0.1rem
         ::v-deep .van-tag:last-child
           margin-right 0.2rem
+
     .chats
       margin-top 40px
       padding 20px 0
-      border 1px solid #ccc
+      border 1PX solid #ccc
       border-radius 0.1rem
       .ct-hr
         width 100%
@@ -410,6 +426,7 @@ export default {
         font-size 0.32rem
         font-style italic
         font-family Georgia, Helvetica, Arial, sans-serif
+
       .chat-list
         max-height 60vh
         padding 0 20px
@@ -431,6 +448,7 @@ export default {
             color #db735c
           &.is_owner
             color #2e97d8
+
   .performers
     display flex
     justify-content center
@@ -471,16 +489,19 @@ export default {
         border-color #F2C358
         img
           transform scale(1.1)
+
 @media screen and (max-width 978px)
   .live_detail
     .player
       padding 0
+
 @media screen and (max-width 1190px)
   .live_detail .content .chats
     .chat-list
       max-height: 36vh;
     .c-title-cont .counts
       display none
+
 @media screen and (min-width 1200px)
   .live_detail
     .content
@@ -507,4 +528,5 @@ export default {
         height: 13.49rem;
         max-height unset
         border-radius 12px
+
 </style>

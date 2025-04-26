@@ -1,13 +1,13 @@
 <template>
   <div class="image-slide">
     <div class="slide">
-      <ImagePximg
+      <Pximg
         v-for="(image,index) in images"
         :key="index"
         :src="image.src"
+        class="image"
         :alt="image.title"
         :class="{censored: isCensored(image)}"
-        class="image"
       />
     </div>
     <slot></slot>

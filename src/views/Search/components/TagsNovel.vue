@@ -8,7 +8,7 @@
         :style="{ backgroundImage: `linear-gradient(45deg, ${randColor()} 0%, ${randColor()} 100%)` }"
         @click.stop="search(tag.name)"
       >
-        <ImagePximg :src="tag.pic" nobg alt />
+        <Pximg :src="tag.pic" nobg alt />
         <div class="meta">
           <div class="content">
             <div v-if="tag.name" class="name" :class="[getLength(tag.name)]">#{{ tag.name }}</div>

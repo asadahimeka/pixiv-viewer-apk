@@ -9,7 +9,7 @@
 
 <script>
 import { Dialog } from 'vant'
-import { getCache, setCache } from '@/utils/siteCache'
+import { getCache, setCache } from '@/utils/storage/siteCache'
 import NovelCard from '@/components/NovelCard.vue'
 export default {
   name: 'SettingHistoryNovel',
@@ -22,12 +22,17 @@ export default {
     }
   },
   activated() {
-    this.getHistory()
+    this.init()
   },
   mounted() {
-    this.getHistory()
+    this.init()
   },
   methods: {
+    init() {
+      this.$nextTick(() => {
+        this.getHistory()
+      })
+    },
     toArtwork(id) {
       this.$router.push({
         name: 'NovelDetail',
@@ -46,7 +51,7 @@ export default {
       }).then(async () => {
         this.artList = []
         await setCache('novels.history', null)
-      }).catch(() => {})
+      })
     },
   },
 }

@@ -34,6 +34,7 @@ export default {
 .fade-leave-to {
   opacity: 0;
 }
+
 .slide-left-enter-active,
 .slide-left-leave-active,
 .slide-right-enter-active,
@@ -56,6 +57,7 @@ export default {
   opacity: 0;
   transform: translate(50px, 0);
 }
+
 html:has(div[class*="slide-left"]),
 html:has(div[class*="slide-right"]) {
   overflow-x: hidden;

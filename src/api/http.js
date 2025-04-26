@@ -1,14 +1,12 @@
 import axios from 'axios'
 import nprogress from 'nprogress'
-import { LocalStorage } from '@/utils/storage'
-
-export const BASE_API_URL = LocalStorage.get('HIBIAPI_BASE', process.env.VUE_APP_DEF_HIBIAPI_MAIN)
-export const notSelfHibiApi = !/cocomi\..+|pixiv\.pics|169889\.xyz|hibiapi\.getloli\.com|api\.obfs\.dev/.test(BASE_API_URL)
+import { BASE_API_URL, UA_Header } from '@/consts'
 
 axios.defaults.baseURL = BASE_API_URL
 axios.defaults.timeout = 20000
 axios.defaults.headers.post['Content-Type'] = 'application/json'
-axios.defaults.headers.common['User-Agent'] = navigator.userAgent
+axios.defaults.headers.common['User-Agent'] = UA_Header['User-Agent']
+axios.defaults.headers.common.Origin = 'https://localhost'
 
 axios.interceptors.request.use(config => {
   nprogress.start()
@@ -31,7 +29,7 @@ const get = async (url, params = {}, config = {}) => {
   console.log('params: ', params)
   try {
     let res
-    if (/^\/(?!prks).*/.test(url) && window.APP_CONFIG.useLocalAppApi) {
+    if (window.APP_CONFIG.useLocalAppApi) {
       res = await window.__localApiMap__[url]?.({ query: params, ...config })
     } else {
       res = (await axios.get(url, { params, ...config })).data

@@ -3,7 +3,7 @@
     <top-bar />
     <h3 class="af_title">{{ $t('iAH7adsXaqWMXEi3TOuwS') }}({{ $t('common.manga') }})</h3>
     <template v-if="detail">
-      <ImagePximg class="ss-cover" :src="detail.cover" alt="" />
+      <Pximg class="ss-cover" :src="detail.cover" alt="" />
       <p class="ss-title">
         {{ detail.title }}
         <van-tag color="#ffe1e1" text-color="#ad0000" style="vertical-align: 0.06rem;">
@@ -39,10 +39,11 @@
 </template>
 
 <script>
-import _ from 'lodash'
+import _ from '@/lib/lodash'
 import TopBar from '@/components/TopBar'
 import ImageCard from '@/components/ImageCard'
 import api from '@/api'
+
 export default {
   name: 'IllustSeries',
   components: {
@@ -99,6 +100,7 @@ export default {
           ...this.artList,
           ...res.data,
         ], 'id')
+
         this.detail = res.data.detail
         this.loading = false
         if (res.data.next) {
@@ -118,6 +120,7 @@ export default {
   },
 }
 </script>
+
 <style lang="stylus" scoped>
 .af_title
   position relative
@@ -125,9 +128,11 @@ export default {
   margin-bottom 40px
   text-align center
   font-size 28px
+
 .illusts
   position relative
   padding 0 20px 40px
+
   .ss-cover
     display block
     max-width 100%
@@ -151,20 +156,25 @@ export default {
     text-align center
     font-size 18px
     color rgb(92, 92, 92)
+
   .loading
     margin-top: 2rem;
     text-align: center;
+
   ::v-deep .top-bar-wrap
     width 30%
     padding-top 20px
     background transparent
+
   .card-box
     padding: 0 12px
     display: flex
     flex-direction: row
+
     .image-card
       max-height: 360px
       margin: 4px 2px
+
   ::v-deep .author-cont
     display none !important
   ::v-deep .meta
@@ -173,4 +183,5 @@ export default {
       background-image: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(255,255,255,0) 100%);
     .title
       display block !important
+
 </style>

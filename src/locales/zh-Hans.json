@@ -290,7 +290,7 @@
       "title3": "HibiAPI 实例地址",
       "desc": "在下方输入 HibiAPI 实例地址，需要加 https://，路径需填写到 `/api/pixiv` 部分",
       "desc2": "例如：https://hibiapi.getloli.com/api/pixiv，保存后会清空本地缓存",
-      "desc3": "API 实例可前往",
+      "desc3": "API 实例可前往 Github 查找或自行搭建",
       "desc4": "查找或自行搭建",
       "desc5": "API 实例地址需要支持跨域（CORS）访问",
       "ph": "请选择 HibiAPI 实例 (切换后会清空本地缓存)",

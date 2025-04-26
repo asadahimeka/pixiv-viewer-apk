@@ -114,20 +114,6 @@
     />
     <van-cell
       center
-      title="全是漫画 (Android)"
-      is-link
-      label="https://github.com/hongchacha/cartoon"
-      @click="openLink('https://github.com/hongchacha/cartoon')"
-    />
-    <van-cell
-      center
-      title="Kikoeru (Android)"
-      is-link
-      label="Kikoeru(ASMR Online) android client."
-      @click="openLink('https://install.appcenter.ms/users/littleloli/apps/Kikoeru/distribution_groups/public')"
-    />
-    <van-cell
-      center
       title="TachiyomiJ2K (Android)"
       is-link
       label="TachiyomiJ2K is a free and open source manga reader for Android 6.0 and above. Based on the original Tachiyomi"
@@ -149,17 +135,31 @@
     />
     <van-cell
       center
+      title="全是漫画 (Android)"
+      is-link
+      label="https://github.com/hongchacha/cartoon"
+      @click="openLink('https://github.com/hongchacha/cartoon')"
+    />
+    <van-cell
+      center
+      title="kobi ( Android,iOS,macOS,Windows,Linux)"
+      is-link
+      label="拷贝漫画客户端"
+      @click="openLink('https://github.com/Predidit/Kazumi')"
+    />
+    <van-cell
+      center
+      title="HamsterHelper (Windows)"
+      is-link
+      label="仓鼠助手,p站pixiv图片下载收藏管理器"
+      @click="openLink('https://github.com/HamsterHelper/HamsterHelper')"
+    />
+    <van-cell
+      center
       title="Neko Anime (Android)"
       is-link
       label="一个可以在线看番的 Android App."
       @click="openLink('https://github.com/xioneko/neko-anime')"
-    />
-    <van-cell
-      center
-      title="Bili You (Android)"
-      is-link
-      label="一个用flutter制作的第三方B站客户端."
-      @click="openLink('https://github.com/lucinhu/bili_you')"
     />
     <van-cell
       center
@@ -170,10 +170,52 @@
     />
     <van-cell
       center
-      title="ani (Android,iOS,Linux,macOS,Windows)"
+      title="Animeko (Android,iOS,Linux,macOS,Windows)"
       is-link
       label="集找番、追番、看番的一站式弹幕追番平台"
-      @click="openLink('https://github.com/open-ani/ani')"
+      @click="openLink('https://github.com/open-ani/animeko')"
+    />
+    <van-cell
+      center
+      title="Aniyomi (Android)"
+      is-link
+      label="Full-featured player and reader, based on Tachiyomi."
+      @click="openLink('https://aniyomi.org/')"
+    />
+    <van-cell
+      center
+      title="KNKPAnime (Android,Windows)"
+      is-link
+      label="支持多番剧源与弹幕的看番软件。"
+      @click="openLink('https://github.com/KNKPA/KNKPAnime')"
+    />
+    <van-cell
+      center
+      title="Kazumi (Android,Windows)"
+      is-link
+      label="基于自定义规则的番剧采集APP，支持流媒体在线观看，支持弹幕。"
+      @click="openLink('https://github.com/Predidit/Kazumi')"
+    />
+    <van-cell
+      center
+      title="LightNovelReader (Android)"
+      is-link
+      label="一款开源的轻小说阅读软件，追求轻量化的体积和流畅的阅读体验。"
+      @click="openLink('https://github.com/dmzz-yyhyy/LightNovelReader')"
+    />
+    <van-cell
+      center
+      title="Bili You (Android)"
+      is-link
+      label="一个用flutter制作的第三方B站客户端."
+      @click="openLink('https://github.com/lucinhu/bili_you')"
+    />
+    <van-cell
+      center
+      title="Kikoeru (Android)"
+      is-link
+      label="Kikoeru(ASMR Online) android client."
+      @click="openLink('https://github.com/loli-ball/KikoeruRelease/releases')"
     />
     <van-cell
       center
@@ -193,8 +235,6 @@
 </template>
 
 <script>
-import { trackEvent } from '@/utils'
-
 export default {
   name: 'SettingRecommendApps',
   components: {
@@ -206,7 +246,7 @@ export default {
   },
   methods: {
     openLink(link) {
-      trackEvent('Open Link', { url: link.replace('https://', '') })
+      window.umami?.track('open_link', { link: link.replace('https://', '') })
       window.open(link, '_blank', 'noopener')
     },
   },

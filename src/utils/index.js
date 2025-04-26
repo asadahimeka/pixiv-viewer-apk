@@ -1,13 +1,12 @@
 import axios from 'axios'
+import dayjs from 'dayjs'
 import { Toast } from 'vant'
-import { Fancybox } from '@fancyapps/ui'
-import { Clipboard } from '@capacitor/clipboard'
-import { FileDownload } from '@himeka/capacitor-plugin-filedownload'
-import { Filesystem, Directory } from '@himeka/capacitor-filesystem'
-import writeBlob from 'capacitor-blob-writer'
+import store from '@/store'
+import platform from '@/platform'
+import { i18n, isCNLocale } from '@/i18n'
+import { getArtworkFileName } from '@/store/actions/filename'
+import { BASE_URL } from '@/consts'
 import { LocalStorage } from './storage'
-import { getCache, setCache } from './siteCache'
-import { i18n } from '@/i18n'
 
 export function throttleScroll(el, downFn, upFn) {
   let position = el.scrollTop
@@ -24,13 +23,48 @@ export function throttleScroll(el, downFn, upFn) {
   }
 }
 
-export async function copyText(string, cb, errCb) {
+function fallbackCopyTextToClipboard(text, cb, errCb) {
+  const textArea = document.createElement('textarea')
+  textArea.value = text
+  textArea.style.top = '0'
+  textArea.style.left = '0'
+  textArea.style.position = 'fixed'
+
+  document.body.appendChild(textArea)
+  textArea.focus()
+  textArea.select()
+
   try {
-    await Clipboard.write({ string })
-    cb()
-  } catch (error) {
-    errCb(error)
+    const successful = document.execCommand('copy')
+    successful ? cb?.() : errCb?.()
+  } catch (err) {
+    console.error('Fallback: Oops, unable to copy', err)
+    errCb?.(err)
   }
+
+  document.body.removeChild(textArea)
+}
+
+export function copyText(text, cb, errCb) {
+  try {
+    if (platform.isCapacitor) {
+      import('@/platform/capacitor/utils').then(util => {
+        util.copyText(text, cb, errCb)
+      })
+      return
+    }
+    navigator.clipboard.writeText(text).then(cb, errCb)
+  } catch (error) {
+    fallbackCopyTextToClipboard(text, cb, errCb)
+  }
+}
+
+export function setCookieOnce(key, val) {
+  document.cookie = `${key}=${val}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/;Secure`
+}
+
+export function resetCookieOnce(key) {
+  document.cookie = `${key}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; Secure`
 }
 
 export function sleep(ms) {
@@ -83,6 +117,14 @@ export function isURL(s) {
   return /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/i.test(s)
 }
 
+export function tryURL(url) {
+  try {
+    return new URL(url)
+  } catch (_err) {
+    return null
+  }
+}
+
 export async function checkImgAvailable(src) {
   return new Promise((resolve, reject) => {
     let img = document.createElement('img')
@@ -105,109 +147,72 @@ export async function checkUrlAvailable(url) {
   throw new Error('Resp not ok.')
 }
 
-export function replaceValidFilename(str = '') {
-  const maxLen = 72
-  const strArr = str.split('.')
-  const ext = strArr.pop()
-  str = strArr.join('').replace(/[\\/|?*:<>'"\s.]/g, '_') + '.' + ext
+function replaceValidFileName(str = '', isDir = false) {
+  const maxLen = 128
+  if (isDir) {
+    str = str.replace(/[\\/|?*:<>'"\s.]/g, '_')
+  } else {
+    const strArr = str.split('.')
+    const ext = strArr.pop()
+    str = strArr.join('').replace(/[\\/|?*:<>'"\s.]/g, '_') + '.' + ext
+  }
   if (str.length > maxLen) str = str.slice(-maxLen)
   return str
 }
 
-export async function addDownloadHistory(args) {
-  const historyList = await getCache('downloads.history') || []
-  historyList.unshift({ ...args, date: new Date().toLocaleString() })
-  setCache('downloads.history', historyList)
-}
-
-const isDirect = LocalStorage.get('PXV_PXIMG_DIRECT', false)
-export async function downloadFile(url, fileName, subpath) {
+/**
+ * @param {string|Blob} source
+ * @param {string} fileName
+ * @param {object} options
+ * @param {string} options.message
+ * @param {string} options.subDir
+ */
+export async function downloadFile(source, fileName, options = {}) {
   try {
-    fileName = replaceValidFilename(fileName)
-    Toast(i18n.t('tip.downloading') + ': ' + fileName)
-    if (subpath) fileName = subpath + '/' + fileName
+    if (typeof source == 'string' && !/\.\w+$/.test(fileName)) {
+      fileName += `.${source.split('.').pop()}`
+    }
+    fileName = replaceValidFileName(fileName)
+    if (options.subDir) options.subDir = replaceValidFileName(options.subDir, true)
 
-    let res
-    let downloadUrl
-    if (isDirect && /\.(jpe?g|png)$/.test(url)) {
-      const newUrl = new URL(url)
-      newUrl.host = window.p_pximg_ip
-      downloadUrl = newUrl.href
-      res = await Filesystem.downloadFile({
-        url: downloadUrl,
-        path: 'pixiv-viewer/' + fileName,
-        directory: Directory.Downloads,
-        recursive: true,
-        headers: { Host: 'i.pximg.net', Referer: 'https://www.pixiv.net' },
-      })
-    } else {
-      downloadUrl = url
-      res = await FileDownload.download({
-        uri: downloadUrl,
-        fileName: 'pixiv-viewer/' + fileName,
-      })
+    const loading = Toast.loading({
+      duration: 0,
+      // forbidClick: true,
+      message: options.message || (i18n.t('tip.downloading') + ': ' + fileName),
+    })
+
+    if (platform.isCapacitor) {
+      const util = await import('@/platform/capacitor/utils')
+      const result = source instanceof Blob
+        ? await util.downloadBlob(source, fileName, options.subDir)
+        : await util.downloadFile(source, fileName, options.subDir)
+      if (result.error) throw new Error(result.error)
+      return result
     }
 
-    addDownloadHistory({ status: 'ok', url: downloadUrl, fileName, path: res.path })
-
-    Toast({
-      message: i18n.t('tip.downloaded') + ': ' + decodeURIComponent(res.path.replace('file://', '')),
-      duration: 3000,
-    })
-    return { res }
-  } catch (error) {
-    addDownloadHistory({ status: 'error', url, fileName, error: error + '' })
-
-    Toast(i18n.t('D8R2062pjASZe9mgvpeLr') + ': ' + error)
-    return { error }
+    downloadLink(source, fileName)
+    loading.clear()
+  } catch (err) {
+    console.log('err: ', err)
+    Toast.clear(true)
+    Toast(i18n.t('D8R2062pjASZe9mgvpeLr') + ': ' + err)
   }
 }
 
 /**
- * @param {Blob} blob
- * @returns {Promise<string>}
+ * @param {string} source
+ * @param {string} fileName
  */
-export function blobToBase64(blob) {
-  return new Promise(resolve => {
-    const reader = new FileReader()
-    reader.onloadend = () => resolve(reader.result)
-    reader.readAsDataURL(blob)
-  })
-}
-
-export async function downloadBlob(blob, fileName, subpath) {
-  try {
-    fileName = replaceValidFilename(fileName)
-    if (subpath) fileName = subpath + '/' + fileName
-
-    // const base64 = await blobToBase64(blob)
-    // const res = await Filesystem.writeFile({
-    //   path: 'pixiv-viewer/' + fileName,
-    //   data: base64,
-    //   directory: Directory.Downloads,
-    //   recursive: true,
-    // })
-
-    const path = 'pixiv-viewer/' + fileName
-    const directory = Directory.Downloads
-
-    await writeBlob({ blob, path, directory, recursive: true })
-    const { uri } = await Filesystem.getUri({ path, directory })
-    const res = { uri }
-
-    addDownloadHistory({ status: 'ok', fileName, path: res.uri })
-
-    Toast({
-      message: i18n.t('tip.downloaded') + ': ' + decodeURIComponent(res.uri.replace('file://', '')),
-      duration: 3000,
-    })
-    return { res }
-  } catch (error) {
-    addDownloadHistory({ status: 'error', fileName, error: error + '' })
-
-    Toast(i18n.t('D8R2062pjASZe9mgvpeLr') + ': ' + error)
-    return { error }
-  }
+export async function downloadLink(source, fileName) {
+  const a = document.createElement('a')
+  a.href = source
+  a.target = '_blank'
+  a.rel = 'noopener noreferrer'
+  a.style.display = 'none'
+  a.setAttribute('download', fileName)
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
 }
 
 const isAnalyticsOn = LocalStorage.get('PXV_ANALYTICS', true)
@@ -239,8 +244,9 @@ export function formatBytes(bytes) {
   const sizes = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
 
   const i = Math.floor(Math.log(bytes) / Math.log(k))
+  const n = parseFloat((bytes / Math.pow(k, i)).toFixed(dm))
 
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
+  return `${i18n.locale.includes('zh') ? n : n.toLocaleString(i18n.locale)} ${sizes[i]}`
 }
 
 export function randomBg() {
@@ -248,6 +254,40 @@ export function randomBg() {
   const leftHue = getRandomRangeNum(0, 360)
   const bottomHue = getRandomRangeNum(0, 360)
   return `linear-gradient(to right bottom,hsl(${leftHue}, 100%, 90%) 0%,hsl(${bottomHue}, 100%, 90%) 100%)`
+}
+
+/** 生成随机中间范围的颜色 */
+export function generateRandomColor() {
+  const min = 195
+  const max = 245
+  const r = Math.floor(Math.random() * (max - min)) + min
+  const g = Math.floor(Math.random() * (max - min)) + min
+  const b = Math.floor(Math.random() * (max - min)) + min
+  return `rgb(${r}, ${g}, ${b})`
+}
+
+/** 根据背景色生成对比强的文本色 */
+export function getContrastingTextColor(backgroundColor) {
+  const rgb = backgroundColor.match(/\d+/g).map(Number)
+  const luminance = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255
+  return luminance > 0.5 ? '#333' : 'white' // 浅色背景用黑字，深色背景用白字
+}
+
+export function hexToRgb(hex) {
+  // 移除 "#" 号（如果有的话）
+  hex = hex.replace(/^#/, '')
+
+  // 处理简写形式 (例如: #03F 变成 #0033FF)
+  if (hex.length === 3) {
+    hex = hex.split('').map(char => char + char).join('')
+  }
+
+  // 解析 r, g, b
+  const r = parseInt(hex.substring(0, 2), 16)
+  const g = parseInt(hex.substring(2, 4), 16)
+  const b = parseInt(hex.substring(4, 6), 16)
+
+  return `rgb(${r}, ${g}, ${b})`
 }
 
 export async function readTextFile(file) {
@@ -275,14 +315,19 @@ export function isSafari() {
 }
 
 export async function fancyboxShow(artwork, index = 0, getSrc = e => e.o) {
-  Fancybox.show(artwork.images.map(e => ({
+  if (!window.Fancybox) {
+    document.head.insertAdjacentHTML('beforeend', `<link href="${BASE_URL}static/css/fancybox.min.css" rel="stylesheet">`)
+    await loadScript(`${BASE_URL}static/js/fancybox.umd.min.js`)
+  }
+  // eslint-disable-next-line no-new
+  new window.Fancybox(artwork.images.map(e => ({
     src: getSrc(e),
     thumb: e.m,
   })), {
     compact: false,
     startIndex: index,
     backdropClick: 'close',
-    contentClick: 'close',
+    contentClick: store.state.isMobile ? 'close' : 'toggleZoom',
     hideScrollbar: false,
     placeFocusBack: false,
     trapFocus: false,
@@ -292,8 +337,8 @@ export async function fancyboxShow(artwork, index = 0, getSrc = e => e.o) {
     Toolbar: {
       display: {
         left: ['infobar'],
-        middle: ['toggleZoom', 'myDownload', 'rotateCW', 'flipX', 'flipY', 'close'],
-        right: [],
+        middle: platform.isCapacitor ? ['toggleZoom', 'myDownload', 'rotateCW', 'flipX', 'flipY', 'close'] : [],
+        right: platform.isCapacitor ? [] : ['toggleZoom', 'thumbs', 'myDownload', 'rotateCW', 'flipX', 'flipY', 'close'],
       },
       items: {
         myDownload: {
@@ -302,11 +347,47 @@ export async function fancyboxShow(artwork, index = 0, getSrc = e => e.o) {
             console.log('ev: ', ev)
             const { page } = ev.instance.carousel
             const item = artwork.images[page]
-            const fileName = `${artwork.author.name}_${artwork.title}_${artwork.id}_p${page}.${item.o.split('.').pop()}`
-            await downloadFile(item.o, fileName)
+            const fileName = `${getArtworkFileName(artwork, page)}.${item.o.split('.').pop()}`
+            await downloadFile(item.o, fileName, { subDir: store.state.appSetting.dlSubDirByAuthor ? artwork.author.name : undefined })
           },
         },
       },
     },
   })
+}
+
+export function formatIntlNumber(num) {
+  try {
+    return new Intl.NumberFormat(i18n.locale, {
+      notation: 'compact',
+      compactDisplay: 'short',
+    }).format(num)
+  } catch (err) {
+    return num
+  }
+}
+
+export function formatIntlDate(date) {
+  try {
+    if (isCNLocale()) return dayjs(date).format('YYYY-MM-DD HH:mm')
+    date = dayjs(date).toDate()
+    return new Intl.DateTimeFormat(i18n.locale, {
+      dateStyle: 'short',
+      timeStyle: 'short',
+    }).format(date)
+  } catch (err) {
+    return date
+  }
+}
+
+/**
+ * @param {string[]} blockTags
+ * @param {string[]|undefined} value
+ */
+export function isBlockTagHit(blockTags, value) {
+  let tags = Array.isArray(value) ? value : []
+  if (!tags.length || !blockTags.length) return false
+  if (typeof tags[0] != 'string') tags = tags.map(e => e.name)
+  const tagSet = new Set(tags)
+  return blockTags.some(tag => tagSet.has(tag))
 }

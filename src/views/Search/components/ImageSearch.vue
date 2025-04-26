@@ -1,5 +1,5 @@
 <template>
-  <div class="image-search" @click="track">
+  <div class="image-search">
     <van-uploader class="open-dialog" :before-read="beforeRead" :after-read="afterRead" :disabled="loading">
       <Icon v-show="!loading&&!file" name="image" />
       <div v-show="loading" class="loading"></div>
@@ -36,9 +36,11 @@
 </template>
 
 <script>
-import _ from 'lodash'
-import { PIXIV_NEXT_URL } from '@/api'
-import { trackEvent } from '@/utils'
+import _ from '@/lib/lodash'
+import { Dialog } from 'vant'
+import { PIXIV_NEXT_URL, UA_Header } from '@/consts'
+import platform from '@/platform'
+
 export default {
   filters: {
     hostname(val) {
@@ -103,17 +105,20 @@ export default {
       // 此时可以自行将文件上传至服务器
 
       const showErr = () => {
-        this.$toast({
-          type: 'fail',
-          message: this.$t('search.img.err'),
+        Dialog.alert({
+          title: this.$t('tips.tip'),
+          message: `<p>${this.$t('search.img.err')}<br>${this.$t('lJtMtr2rgYCSg-osHykE9')}<p>`,
+          confirmButtonText: this.$t('common.confirm'),
         })
       }
 
       const formData = new FormData()
       formData.append('file', file.file, file.file.name)
-      window.CapacitorWebFetch(`${PIXIV_NEXT_URL}/api/saucenao`, {
+      const fetchFn = platform.isCapacitor ? window.CapacitorWebFetch : window.fetch
+      fetchFn(`${PIXIV_NEXT_URL}/api/saucenao`, {
         method: 'POST',
         body: formData,
+        headers: UA_Header,
         referrerPolicy: 'origin',
       }).then(res => {
         if (!res.ok) throw new Error('Resp not ok.')
@@ -138,9 +143,6 @@ export default {
         return
       }
       window.open(url, '_blank', 'noopener')
-    },
-    track() {
-      trackEvent('Image Search')
     },
   },
 }

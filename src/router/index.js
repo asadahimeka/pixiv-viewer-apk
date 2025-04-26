@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import nprogress from 'nprogress'
-
-import { trackEvent } from '@/utils'
-import { LocalStorage } from '@/utils/storage'
+import store from '@/store'
+import { BASE_URL } from '@/consts'
 
 import BaseLayout from '@/layouts/BaseLayout.vue'
 import MainLayout from '@/layouts/MainLayout.vue'
@@ -33,9 +32,9 @@ import ClearCache from '@/views/Setting/ClearCache.vue'
 import ContentsDisplay from '@/views/Setting/ContentsDisplay.vue'
 import SettingOthers from '@/views/Setting/OtherSetting.vue'
 import SettingAbout from '@/views/Setting/About.vue'
+import SettingFAQ from '@/views/Setting/FAQ.vue'
 import SettingDisclaimer from '@/views/Setting/Disclaimer.vue'
 import SettingAccentColor from '@/views/Setting/AccentColor.vue'
-import SettingFAQ from '@/views/Setting/FAQ.vue'
 import Recommend from '@/views/Setting/Recommend.vue'
 import Artwork from '@/views/Artwork/index.vue'
 import Novel from '@/views/Artwork/Novel.vue'
@@ -60,12 +59,14 @@ const routes = [
       {
         path: '/',
         component: MainLayout,
+        props: { safeArea: true },
         children: [
           {
             path: '/',
             name: 'Home',
             component: Home,
             meta: { __depth: 1 },
+            alias: ['/home', '/index', '/index.html'],
           },
           {
             path: '/home_manga',
@@ -112,6 +113,7 @@ const routes = [
           },
           {
             path: '/rank',
+            alias: ['/ranking', '/ranking.php'],
             redirect: '/rank/daily',
             meta: { __depth: 1 },
           },
@@ -169,6 +171,7 @@ const routes = [
           },
           {
             path: '/users/:id/artworks',
+            alias: ['/users/:id/illustrations'],
             name: 'AuthorIllusts',
             component: UserIllusts,
             meta: { __depth: 25 },
@@ -181,12 +184,14 @@ const routes = [
           },
           {
             path: '/users/:id/favorites',
+            alias: ['/users/:id/bookmarks/artworks'],
             name: 'AuthorFavorites',
             component: UserFavorites,
             meta: { __depth: 25 },
           },
           {
             path: '/users/:id/favorite_novels',
+            alias: ['/users/:id/bookmarks/novels'],
             name: 'AuthorFavoriteNovels',
             component: UserFavoriteNovels,
             meta: { __depth: 25 },
@@ -234,7 +239,8 @@ const routes = [
             meta: { __depth: 2 },
           },
           {
-            path: '/setting/others',
+            path: '/setting/preference',
+            alias: ['/setting/others'],
             name: 'SettingOthers',
             component: SettingOthers,
             meta: { __depth: 2 },
@@ -246,22 +252,23 @@ const routes = [
             meta: { __depth: 2 },
           },
           {
+            path: '/setting/about/faq',
+            name: 'SettingAboutFaq',
+            component: SettingFAQ,
+            meta: { __depth: 3 },
+          },
+          {
             path: '/setting/about/disclaimer',
             name: 'SettingDisclaimer',
             component: SettingDisclaimer,
             meta: { __depth: 3 },
           },
           {
-            path: '/setting/recommend',
+            path: '/setting/osusume',
+            alias: ['/setting/recommend'],
             name: 'SettingRecommend',
             component: Recommend,
             meta: { __depth: 2 },
-          },
-          {
-            path: '/setting/about/faq',
-            name: 'SettingAboutFaq',
-            component: SettingFAQ,
-            meta: { __depth: 3 },
           },
           {
             path: '/setting/accent_color',
@@ -276,7 +283,8 @@ const routes = [
             meta: { __depth: 2 },
           },
           {
-            path: '/recom_illust',
+            path: '/osusume_illust',
+            alias: ['/recom_illust'],
             name: 'RecommendIllust',
             component: RecommendIllust,
             meta: { __depth: 2 },
@@ -312,7 +320,7 @@ const routes = [
             path: '/account/login',
             name: 'Login',
             component: Login,
-            meta: { __depth: 3 },
+            meta: { __depth: 2 },
           },
           {
             path: '/lives',
@@ -337,44 +345,53 @@ const routes = [
   },
 ]
 
-const isPageEffectOn = LocalStorage.get('PXV_PAGE_EFFECT', false)
-
 const router = new VueRouter({
   routes,
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: BASE_URL,
   scrollBehavior(_, __, pos) {
     console.log('pos: ', pos)
-    if (isPageEffectOn) {
-      return new Promise(resolve => {
-        setTimeout(() => {
-          resolve(pos || { x: 0, y: 0 })
-        }, 225)
-      })
-    } else {
-      return pos || { x: 0, y: 0 }
-    }
+    return pos || { x: 0, y: 0 }
   },
 })
 
-const isDark = !!localStorage.PXV_DARK
+const noSlideRoutes = ['Home', 'HomeManga', 'HomeNovel', 'Search', 'SearchNovel', 'SearchUser', 'Rank', 'RankNovel', 'Following', 'Setting']
+function handlePageTransition(to, from) {
+  const { routeHistory } = store.state
+  if (routeHistory.length > 1 && routeHistory[routeHistory.length - 2] == to.fullPath) {
+    document.documentElement.classList.add('router-vta-back')
+    store.commit('setRouteHistory', routeHistory.slice(0, -1))
+  } else if (routeHistory[routeHistory.length - 1] != to.fullPath) {
+    document.documentElement.classList.remove('router-vta-back')
+    store.commit('setRouteHistory', [...routeHistory, to.fullPath])
+  }
+  if (noSlideRoutes.includes(from.name) && noSlideRoutes.includes(to.name)) {
+    document.documentElement.classList.add('router-vta-fade')
+  } else {
+    document.documentElement.classList.remove('router-vta-fade')
+  }
+  if (!from.name) {
+    document.documentElement.classList.add('router-vta-first')
+  } else {
+    document.documentElement.classList.remove('router-vta-first')
+  }
+}
 
+const { pageTransition } = store.state.appSetting
 router.beforeEach((to, from, next) => {
-  if (!isPageEffectOn && !isDark) document.body.classList.add('fadeIn')
-  nprogress.start()
-  next()
+  if (pageTransition) {
+    handlePageTransition(to, from)
+    document.startViewTransition(() => next())
+  } else {
+    nprogress.start()
+    next()
+  }
 })
 
 router.afterEach((to, from) => {
-  if (!isPageEffectOn && !isDark) {
-    setTimeout(() => {
-      document.body.classList.remove('fadeIn')
-    }, 500)
-  }
-  nprogress.done()
+  if (!pageTransition) nprogress.done()
   console.log('afterEach to', to.fullPath)
   console.log('afterEach from', from.fullPath)
-  trackEvent('Route ' + to.name, { path: to.fullPath })
 })
 
 export default router

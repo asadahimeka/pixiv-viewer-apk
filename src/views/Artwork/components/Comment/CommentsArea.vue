@@ -5,13 +5,7 @@
       <div v-for="item in comments" :key="item.id" class="comments-item">
         <Comment :comment="item" />
         <div class="reply-area">
-          <van-button
-            v-if="item.hasReplies && !qShowMap[item.id]"
-            type="info"
-            plain
-            size="small"
-            @click="queryReply(item.id)"
-          >
+          <van-button v-if="item.hasReplies && !qShowMap[item.id]" type="info" plain size="small" @click="queryReply(item.id)">
             {{ qLoadingMap[item.id] ? $t('tips.loading') : $t('0CDMRP9wSGJQTyMbvrM8z') }}
           </van-button>
           <ul v-if="qShowMap[item.id]" class="comments-list">
@@ -33,10 +27,11 @@
 
 <script>
 import axios from 'axios'
-import _ from 'lodash'
-import { PIXIV_NOW_URL } from '@/api'
+import _ from '@/lib/lodash'
 import { mintVerify } from '@/utils/filter'
+import { PIXIV_NOW_URL } from '@/consts'
 import Comment from './Comment.vue'
+
 export default {
   name: 'CommentsArea',
   components: { Comment },
@@ -86,7 +81,7 @@ export default {
         for (let i = 0; i < data.comments.length; i++) {
           const element = data.comments[i]
           const text = element.userName + element.comment
-          if (mintVerify(text)) {
+          if (await mintVerify(text, true)) {
             res.push(element)
           }
         }
@@ -115,7 +110,7 @@ export default {
         for (let i = 0; i < data.comments.length; i++) {
           const element = data.comments[i]
           const text = element.userName + element.comment
-          if (mintVerify(text)) {
+          if (await mintVerify(text, true)) {
             res.push(element)
           }
         }
@@ -130,6 +125,7 @@ export default {
     },
   },
 }
+
 </script>
 
 <style scoped lang="stylus">

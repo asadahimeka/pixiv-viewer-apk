@@ -4,8 +4,8 @@
     <div class="mask">
       <canvas ref="mask" class="mask-text"></canvas>
     </div>
-    <div class="author-info" :class="{ is_novel: isNovel }">
-      <ImagePximg
+    <div class="author-info" :class="{ is_novel: isNovel, isAutoLoadImt }">
+      <Pximg
         v-if="!isNovel"
         class="avatar"
         nobg
@@ -28,17 +28,17 @@
     </div>
     <div class="date">
       <span v-if="isNovel" class="view" style="margin-left: 0;">
-        {{ artwork.text_length | convertToK }}{{ $t('common.words') }}
+        {{ $t('P8RGkre-rnlFxZ18aH2VW', [convertToK(artwork.text_length)]) }}
       </span>
       <span class="view">
         <Icon name="view" class="icon" />
-        {{ artwork.view | convertToK }}
+        {{ convertToK(artwork.view) }}
       </span>
       <span class="like">
         <Icon name="like" class="icon" />
-        {{ artwork.like | convertToK }}
+        {{ convertToK(artwork.like) }}
       </span>
-      <span class="created" :class="{ is_novel: isNovel }">{{ artwork.created | formatDate(isNovel) }}</span>
+      <span class="created" :class="{ is_novel: isNovel }">{{ formatDate(artwork.created) }}</span>
     </div>
     <div class="pid_link">
       <a
@@ -101,91 +101,76 @@
       ></div>
       <Icon v-if="isShrink" class="dropdown" name="dropdown" scale="4" />
     </div>
-    <div v-if="!isNovel " class="meta_btns" :class="{ censored }">
-      <van-button
-        v-if="isLoggedIn"
-        size="small"
-        :loading="favLoading"
-        :icon="bookmarkId ? 'like' : 'like-o'"
-        plain
-        color="#E87A90"
-        style="margin-right: 0.15rem;"
-        @click="toggleBookmark"
-      >
-        {{ bookmarkId ? $t('user.faved'): $t('user.fav') }}
-      </van-button>
-      <van-button
-        type="info"
-        icon="down"
-        size="small"
-        plain
-        color="#5DAC81"
-        style="margin-right: 0.15rem;"
-        @click="downloadArtwork()"
-      >
-        {{ $t('common.download') }}
-      </van-button>
-      <van-button
-        type="info"
-        icon="comment-o"
-        size="small"
-        plain
-        color="#005CAF"
-        @click="showComments = true"
-      >
-        <span>{{ $t('user.view_comments') }}</span>
-      </van-button>
-      <van-popup
-        v-model="showComments"
-        class="comments-popup"
-        position="right"
-        get-container="body"
-        closeable
-      >
-        <template v-if="showComments">
-          <p class="comments-title">{{ $t('hGqGftQ7v772prEac1hbJ') }}</p>
-          <CommentsArea :id="artwork.id" :count="0" :limit="10" />
-        </template>
-      </van-popup>
-    </div>
+    <template v-if="!isNovel">
+      <div v-show="isBtnsShow" class="meta_btns" :class="{ censored }">
+        <van-button
+          v-if="isLoggedIn"
+          size="small"
+          :loading="favLoading"
+          :icon="bookmarkId ? 'like' : 'like-o'"
+          plain
+          color="#E87A90"
+          style="margin-right: 0.15rem;"
+          @click="toggleBookmark"
+        >
+          {{ bookmarkId ? $t('user.faved'): $t('user.fav') }}
+        </van-button>
+        <van-button
+          type="info"
+          icon="down"
+          size="small"
+          plain
+          color="#5DAC81"
+          style="margin-right: 0.15rem;"
+          @click="downloadArtwork()"
+        >
+          {{ $t('common.download') }}
+        </van-button>
+        <van-button
+          type="info"
+          icon="comment-o"
+          size="small"
+          plain
+          color="#005CAF"
+          @click="showComments = true"
+        >
+          <span>{{ $t('user.view_comments') }}</span>
+        </van-button>
+        <van-popup
+          v-model="showComments"
+          class="comments-popup"
+          position="right"
+          get-container="body"
+          closeable
+        >
+          <template v-if="showComments">
+            <p class="comments-title">{{ $t('hGqGftQ7v772prEac1hbJ') }}</p>
+            <CommentsArea :id="artwork.id" :count="0" :limit="10" />
+          </template>
+        </van-popup>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import dayjs from 'dayjs'
 import { Dialog } from 'vant'
-import { copyText, downloadFile, sleep, trackEvent, isSafari } from '@/utils'
-import { i18n } from '@/i18n'
+import { copyText, isSafari, downloadFile, formatIntlDate, formatIntlNumber } from '@/utils'
+import { i18n, isCNLocale } from '@/i18n'
 import { isIllustBookmarked, addBookmark, removeBookmark } from '@/api/user'
 import { localApi } from '@/api'
-import { toggleBookmarkCache } from '@/utils/siteCache'
+import { toggleBookmarkCache } from '@/utils/storage/siteCache'
 import { isAiIllust } from '@/utils/filter'
 import CommentsArea from './Comment/CommentsArea.vue'
+import store from '@/store'
+import { getArtworkFileName } from '@/store/actions/filename'
+
+const { isAutoLoadImt } = store.state.appSetting
 
 export default {
   name: 'ArtworkMeta',
   components: { CommentsArea },
-  filters: {
-    convertToK(val) {
-      if (!val) return '-'
-      val = +val
-      if (val > 10000) {
-        return (val / 1000).toFixed(1) + 'K'
-      } else {
-        return val
-      }
-    },
-    formatDate(val, isNovel) {
-      if (isNovel) {
-        return dayjs(val)
-          .format('YYYY年MM月DD日Ahh点mm分')
-          .replace('AM', '上午')
-          .replace('PM', '下午')
-      }
-      return dayjs(val).format('YYYY-MM-DD HH:mm')
-    },
-  },
   props: {
     artwork: {
       type: Object,
@@ -206,6 +191,7 @@ export default {
       bookmarkId: null,
       favLoading: false,
       showComments: false,
+      isAutoLoadImt,
     }
   },
   computed: {
@@ -218,6 +204,9 @@ export default {
     },
     isAiIllust() {
       return isAiIllust(this.artwork)
+    },
+    isBtnsShow() {
+      return !this.artwork?.images.some(e => e.o.includes('common/images/limit_unknown_360.png'))
     },
   },
   watch: {
@@ -239,14 +228,17 @@ export default {
     },
   },
   mounted() {
-    if (isSafari()) return
-    this.$nextTick(() => {
-      setTimeout(() => {
-        this.drawMask()
-      }, 500)
-    })
+    this.drawMask()
   },
   methods: {
+    convertToK(val) {
+      if (!val) return '-'
+      if (isCNLocale()) return val
+      return formatIntlNumber(+val)
+    },
+    formatDate(val) {
+      return formatIntlDate(val)
+    },
     checkBookmarked() {
       if (!this.artwork.id) return
       if (window.APP_CONFIG.useLocalAppApi) {
@@ -301,8 +293,12 @@ export default {
           })
       }
     },
-    drawMask() {
+    async drawMask() {
+      if (this.isAutoLoadImt || isSafari()) return
       if (this.isNovel) return
+
+      await this.$nextTick()
+
       const canvas = this.$refs.mask
       if (!canvas) return
 
@@ -379,6 +375,7 @@ export default {
           this.$store.dispatch('appendBlockTags', [tag])
         }
       }).catch(() => {})
+
       return false
     },
     onUidLongpress(author) {
@@ -400,17 +397,19 @@ export default {
         this.$emit('ugoira-download')
         return
       }
-      trackEvent('DownloadArtwork')
-      for (let index = 0; index < this.artwork.images.length; index++) {
+      const len = this.artwork.images.length
+      for (let index = 0; index < len; index++) {
         const item = this.artwork.images[index]
-        const fileName = `${this.artwork.author.name}_${this.artwork.title}_${this.artwork.id}_p${index}.${item.o.split('.').pop()}`
-        await downloadFile(item.o, fileName)
-        await sleep(1000)
+        const fileName = `${getArtworkFileName(this.artwork, index)}.${item.o.split('.').pop()}`
+        await downloadFile(item.o, fileName, {
+          message: `${this.$t('tip.downloading')} (${index + 1}/${len})`,
+          subDir: store.state.appSetting.dlSubDirByAuthor ? this.artwork.author.name : undefined,
+        })
       }
     },
     async copyId(text) {
       copyText(
-        `${text}`,
+        text,
         () => this.$toast(this.$t('tips.copylink.succ')),
         () => {}
       )
@@ -470,6 +469,7 @@ export default {
         filter: brightness(1.05);
       }
     }
+
     &:nth-child(2) {
       transition 0.2s
       filter: none;
@@ -478,6 +478,7 @@ export default {
         filter: brightness(1.05);
       }
     }
+
     &:nth-child(3) {
       transition 0.2s
       filter: none;
@@ -582,6 +583,7 @@ export default {
         cursor pointer
         // overflow: hidden;
         // text-overflow: ellipsis;
+
         &.is_followed {
           font-weight 500
           text-decoration underline
@@ -591,11 +593,8 @@ export default {
 
     }
 
-    &.is_novel {
-      height auto
-      .name-box {
-        white-space normal
-      }
+    &.is_novel,
+    &.isAutoLoadImt {
       .author {
         margin-top 20px
         font-size 24px
@@ -607,6 +606,23 @@ export default {
         }
       }
     }
+
+    &.is_novel {
+      height auto
+      .name-box {
+        white-space normal
+      }
+    }
+
+    &.isAutoLoadImt {
+      .avatar {
+        display none
+      }
+      .name-box {
+        max-width unset
+      }
+    }
+
   }
 
   .date {

@@ -1,5 +1,7 @@
 <script>
+import { BASE_URL } from '@/consts'
 import { loadScript } from '@/utils'
+
 export default {
   props: {
     options: {
@@ -13,8 +15,8 @@ export default {
   },
   async mounted() {
     if (!window.DPlayer) {
-      await loadScript(`${process.env.BASE_URL}static/js/hls.min.js`)
-      await loadScript(`${process.env.BASE_URL}static/js/DPlayer.min.js`)
+      await loadScript(`${BASE_URL}static/js/hls.min.js`)
+      await loadScript(`${BASE_URL}static/js/DPlayer.min.js`)
     }
     await this.$nextTick()
     this.initPlayer()

@@ -3,71 +3,98 @@
     <top-bar id="top-bar-wrap" />
     <h3 class="af_title">{{ $t('about.title') }}</h3>
     <van-cell-group :title="$t('about.about_site')">
-      <van-cell center :title="$t('about.version')" clickable :label="curVer" />
-      <van-cell center :title="$t('about.disclaimer')" is-link :label="$t('tips.click_view')" to="/setting/about/disclaimer" />
-      <van-cell v-if="appInfo.version" center :title="'APP '+$t('about.version')" clickable :label="`${appInfo.version}(${appInfo.build})`" />
+      <van-cell center :title="$t('about.version')" clickable :label="ver" />
       <van-cell v-if="wvVersion" center :title="'Webview '+$t('about.version')" clickable :label="wvVersion" />
+      <van-cell center :title="$t('about.disclaimer')" is-link :label="$t('tips.click_view')" to="/setting/about/disclaimer" />
       <van-cell center :title="$t('setting.check_update')" label="Go to Github Release" clickable @click="openGithubRelease" />
       <van-cell
         center
-        :title="$t('about.source')"
+        title="Github"
         is-link
-        label="Github:asadahimeka/pixiv-viewer"
-        @click="openLink('https://github.com/asadahimeka/pixiv-viewer-apk')"
+        :label="$t('BTQ4EAQMdeN-0ZdoU8ZsP')"
+        @click="openLink('https://github.com/asadahimeka/pixiv-viewer')"
       />
-      <van-cell center :title="'FAQ'" is-link :label="$t('tips.click_view')" to="/setting/about/faq" />
+      <van-cell center :title="$t('QV1uifvU3RRNg7roth-8s')" is-link :label="$t('tips.click_view')" to="/setting/about/faq" />
     </van-cell-group>
     <van-cell-group :title="$t('about.credits')">
       <van-cell
         center
-        title="pixiv-viewer"
+        title="@journey-ad"
         is-link
-        label="Github:journey-ad/pixiv-viewer"
-        @click="openLink('https://github.com/journey-ad/pixiv-viewer')"
+        :label="$t('VISKhjE86qDcIl_XXpx1q')"
+        @click="openLink('https://github.com/journey-ad')"
       />
       <van-cell
         center
         title="HibiAPI"
         is-link
-        label="Github:mixmoe/HibiAPI"
+        :label="$t('44eCE1yMuhnfx93siUVJ8')"
         @click="openLink('https://github.com/mixmoe/HibiAPI')"
+      />
+      <van-cell
+        center
+        title="PixivNow"
+        is-link
+        :label="$t('OcYnjztb0HpfzH4xK-2f4')"
+        @click="openLink('https://github.com/FreeNowOrg/PixivNow')"
+      />
+      <van-cell
+        center
+        title="Pixiv.cat"
+        is-link
+        :label="$t('R7wR59U5tm8NR3Gn1FKAw')"
+        @click="openLink('https://pixiv.re')"
+      />
+      <van-cell
+        center
+        title="@Blueberryy"
+        is-link
+        :label="$t('PtZhgMV8k86Gmg96kKTCA')"
+        @click="openLink('https://github.com/Blueberryy')"
+      />
+      <van-cell
+        center
+        title="@olivertzeng"
+        is-link
+        :label="$t('FyTTJetQW2e3wVs2sOjif')"
+        @click="openLink('https://github.com/olivertzeng')"
       />
       <van-cell
         center
         title="pxder"
         is-link
-        label="Github:Tsuk1ko/pxder"
+        :label="$t('tQaYxaOwYjOgf1OAnQm4J')"
         @click="openLink('https://github.com/Tsuk1ko/pxder')"
       />
       <van-cell
         center
         title="PixEz"
         is-link
-        label="Github:Notsfsssf/pixez-flutter"
+        :label="$t('tQaYxaOwYjOgf1OAnQm4J')"
         @click="openLink('https://github.com/Notsfsssf/pixez-flutter')"
       />
       <van-cell
         center
         title="pixivpy-async"
         is-link
-        label="Github:Mikubill/pixivpy-async"
+        :label="$t('tQaYxaOwYjOgf1OAnQm4J')"
         @click="openLink('https://github.com/Mikubill/pixivpy-async')"
       />
     </van-cell-group>
     <van-cell-group :title="$t('about.feedback')">
       <van-cell
         center
-        title="Github Discussions"
+        :title="$t('cIyLKP7_S_Wo0Y0908dnm')"
         is-link
         label="Github:asadahimeka/pixiv-viewer"
         @click="openLink('https://github.com/asadahimeka/pixiv-viewer/discussions')"
       />
       <van-cell
         center
-        title="Github Issues"
+        :title="$t('TnXv_wGi3BhyVLjxBYf1u')"
         is-link
-        label="Github:asadahimeka/pixiv-viewer-apk"
-        @click="openLink('https://github.com/asadahimeka/pixiv-viewer-apk/issues')"
+        label="Github:asadahimeka/pixiv-viewer"
+        @click="openLink('https://github.com/asadahimeka/pixiv-viewer/issues')"
       />
       <van-cell
         center
@@ -82,36 +109,42 @@
 
 <script>
 import { Dialog } from 'vant'
-import { trackEvent } from '@/utils'
-import { CURRENT_WEB_VERSION, getAppInfo, getDeviceInfo } from '@/platform/capacitor/version'
+import { CURRENT_APP_VERSION } from '@/consts'
+import { getDeviceInfo } from '@/platform/capacitor/version'
+import platform from '@/platform'
 
 export default {
   name: 'SettingAbout',
   data() {
     return {
+      platform,
+      ver: CURRENT_APP_VERSION,
       wvVersion: '',
-      appInfo: {},
-      curVer: CURRENT_WEB_VERSION,
     }
   },
+  head() {
+    return { title: this.$t('about.title') }
+  },
   async created() {
-    this.appInfo = await getAppInfo()
-    this.wvVersion = (await getDeviceInfo()).webViewVersion
+    if (platform.isCapacitor) {
+      this.wvVersion = (await getDeviceInfo()).webViewVersion
+    }
     this.checkUpdate()
   },
   methods: {
     openLink(link) {
-      trackEvent('Open Link', { url: link.replace('https://', '') })
+      window.umami?.track('open_link', { link: link.replace('https://', '') })
       window.open(link, '_blank', 'noopener noreferrer')
     },
     openGithubRelease() {
-      trackEvent('Check Update')
+      window.umami?.track('Check Update')
       window.open('https://github.com/asadahimeka/pixiv-viewer/releases', '_blank', 'noopener noreferrer')
     },
     async checkUpdate() {
-      const resp = await fetch('https://fastly.jsdelivr.net/gh/asadahimeka/pixiv-viewer-apk@main/android/app/build.gradle')
-      const text = await resp.text()
-      if (text?.match(/versionCode (\d)/i)?.[1] != this.appInfo.build) {
+      const resp = await fetch('https://pxve-notice.nanoka.top/version.json')
+      const json = await resp.json()
+      const latest = json[platform.current]
+      if (latest && latest != CURRENT_APP_VERSION) {
         const res = await Dialog.confirm({ message: this.$t('JKCgrgXZfg4-HDftheb96') }).catch(() => {})
         if (res != 'confirm') return
         this.openGithubRelease()

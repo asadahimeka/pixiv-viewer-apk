@@ -8,11 +8,11 @@
         </div>
         <div v-if="userInfo.id" class="info-container">
           <div class="bg-cover" :class="{ hasbgcover: !!userInfo.bgcover }">
-            <ImagePximg :src="userInfo.bgcover || userInfo.avatar" :class="{ nobg: !userInfo.bgcover }" :alt="userInfo.name" />
+            <Pximg :src="userInfo.bgcover || userInfo.avatar" :class="{ nobg: !userInfo.bgcover }" :alt="userInfo.name" />
           </div>
           <div class="info">
             <div class="avatar">
-              <ImagePximg :src="userInfo.avatar" :alt="userInfo.name" />
+              <Pximg :src="userInfo.avatar" :alt="userInfo.name" />
             </div>
             <h2 class="name">
               <div class="user_name">
@@ -23,7 +23,7 @@
                   </span>
                   <span v-if="userInfo.gender" class="gender">
                     <van-tag v-if="userInfo.gender == 'male'" plain color="#005CAF">♂</van-tag>
-                    <van-tag v-if="userInfo.gender == 'female'" plain color="#F596AA">♀  </van-tag>
+                    <van-tag v-if="userInfo.gender == 'female'" plain color="#F596AA">♀</van-tag>
                   </span>
                 </div>
               </div>
@@ -40,45 +40,77 @@
                 {{ isFollowed ? $t('user.followed') : $t('user.follow') }}
               </van-button>
             </div>
-            <ul class="site-list">
-              <li class="site user_account">
-                <a target="_blank" rel="noreferrer" :href="'https://pixiv.me/' + userInfo.account">
-                  @{{ userInfo.account }}
-                </a>
-              </li>
-              <li class="site">·</li>
-              <li v-longpress="onUidLongpress" class="site" @click="copyId">
-                <span class="user_id">ID:{{ userInfo.id }}</span>
-                <Icon name="copy" />
-              </li>
-              <!-- <li v-if="userInfo.region" class="site">
-                <Icon class="icon loc" name="loc" />
+            <div class="share_btn" @click="share">
+              <Icon class="icon" name="share" />
+            </div>
+            <div>
+              <ul class="site-list">
+                <li class="site user_account">
+                  <a target="_blank" rel="noreferrer" :href="'https://pixiv.me/' + userInfo.account">
+                    @{{ userInfo.account }}
+                  </a>
+                </li>
+                <li class="site">·</li>
+                <li v-longpress="onUidLongpress" class="site" @click="copyId">
+                  <span class="user_id">ID:{{ userInfo.id }}</span>
+                  <Icon name="copy" />
+                </li>
+                <!-- <li v-if="userInfo.region" class="site">
+                  <Icon class="icon loc" name="loc" />
+                  <span>{{ userInfo.region }}</span>
+                </li> -->
+              </ul>
+              <ul class="site-list" :class="{ multi: userInfo.webpage && userInfo.twitter_url }">
+                <li v-if="userInfo.webpage" class="site">
+                  <Icon class="icon home" name="home-s" />
+                  <a :href="userInfo.webpage" target="_blank">{{ userInfo.webpage | hostname }}</a>
+                </li>
+                <li v-if="userInfo.twitter_url" class="site">
+                  <Icon class="icon twitter" name="twitter" />
+                  <a :href="userInfo.twitter_url" target="_blank">@{{ userInfo.twitter_account }}</a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <span v-if="isCurrentUser" class="follow" style="cursor: pointer;" @click="toFollowedUsers">
+                {{ $t('user.following') }}
+                <span class="num">
+                  <a :href="`https://www.pixiv.net/users/${userInfo.id}/following`" target="_blank" rel="noopener noreferrer">
+                    {{ userInfo.follow }}
+                  </a>
+                </span>
+              </span>
+              <span v-else class="follow">
+                {{ $t('user.following') }}
+                <span class="num">
+                  <a
+                    :href="`https://www.pixiv.net/users/${userInfo.id}/following`"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="margin-left: -.3em;;color: inherit;"
+                  >
+                    {{ userInfo.follow }}
+                  </a>
+                </span>
+              </span>
+              <span v-if="userInfo.friend" class="friend">
+                {{ $t('user.friend') }}
+                <span class="num">
+                  <a
+                    :href="`https://www.pixiv.net/users/${userInfo.id}/mypixiv`"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="margin-left: -.3em;;color: inherit;"
+                  >
+                    {{ userInfo.friend }}
+                  </a>
+                </span>
+              </span>
+              <span v-if="userInfo.region" class="follow">
+                <Icon name="loc" />
                 <span>{{ userInfo.region }}</span>
-              </li> -->
-            </ul>
-            <ul class="site-list" :class="{ multi: userInfo.webpage && userInfo.twitter_url }">
-              <li v-if="userInfo.webpage" class="site">
-                <Icon class="icon home" name="home-s" />
-                <a :href="userInfo.webpage" target="_blank">{{ userInfo.webpage | hostname }}</a>
-              </li>
-              <li v-if="userInfo.twitter_url" class="site">
-                <Icon class="icon twitter" name="twitter" />
-                <a :href="userInfo.twitter_url" target="_blank">@{{ userInfo.twitter_account }}</a>
-              </li>
-            </ul>
-            <span v-if="isCurrentUser" class="follow" style="cursor: pointer;" @click="toFollowedUsers">
-              {{ $t('user.following') }}<span class="num">{{ userInfo.follow }}</span>
-            </span>
-            <span v-else class="follow">
-              {{ $t('user.following') }}<span class="num">{{ userInfo.follow }}</span>
-            </span>
-            <span v-if="userInfo.friend" class="friend">
-              {{ $t('user.friend') }}<span class="num">{{ userInfo.friend }}</span>
-            </span>
-            <span v-if="userInfo.region" class="follow">
-              <Icon name="loc" />
-              <span>{{ userInfo.region }}</span>
-            </span>
+              </span>
+            </div>
             <div class="user_link">
               <span>🔗</span>
               <a
@@ -101,7 +133,7 @@
           class="user-tabs"
           sticky
           animated
-          swipeable
+          :swipeable="activeTab!='illusts'"
           swipe-threshold="3"
           color="#F2C358"
         >
@@ -220,20 +252,20 @@
 </template>
 
 <script>
-import TopBar from '@/components/TopBar.vue'
-import AuthorIllusts from './components/AuthorIllusts.vue'
-import FavoriteIllusts from './components/FavoriteIllusts.vue'
-import AuthorIllustSeries from './components/AuthorIllustSeries.vue'
+import TopBar from '@/components/TopBar'
+import AuthorIllusts from './components/AuthorIllusts'
+import AuthorIllustSeries from './components/AuthorIllustSeries'
 import AuthorNovelSeries from './components/AuthorNovelSeries.vue'
+import FavoriteIllusts from './components/FavoriteIllusts'
 import RecommUser from '../Search/components/RecommUser.vue'
 import AuthorNovels from './components/AuthorNovels.vue'
 import FavoriteNovels from './components/FavoriteNovels.vue'
-import _ from 'lodash'
+import _ from '@/lib/lodash'
 import { Dialog } from 'vant'
 import api, { localApi } from '@/api'
-import { getCache, setCache } from '@/utils/siteCache'
-import { trackEvent, dealStatusBarOnLeave, dealStatusBarOnEnter, copyText } from '@/utils'
-import { Share } from '@capacitor/share'
+import { getCache, setCache } from '@/utils/storage/siteCache'
+import { copyText, dealStatusBarOnLeave, dealStatusBarOnEnter } from '@/utils'
+import platform from '@/platform'
 
 export default {
   name: 'Users',
@@ -279,6 +311,9 @@ export default {
       activeTab: 'illusts',
       favLoading: false,
     }
+  },
+  head() {
+    return { title: this.userInfo.name }
   },
   computed: {
     showFollowBtn() {
@@ -332,16 +367,20 @@ export default {
     },
     async share() {
       const shareUrl = `https://pixiv.pictures/u/${this.userInfo.id}`
-      try {
-        await Share.share({
+      if (platform.isCapacitor) {
+        const { share } = await import('@/platform/capacitor/utils')
+        await share({
           title: 'Pixiv Viewer',
           text: `${this.$t('8dWKEVyxLa8UjO0iuOA78')}：${this.userInfo.name}`,
           url: shareUrl,
           dialogTitle: this.$t('artwork.share.share'),
-        })
-        trackEvent('Share Users')
-      } catch (error) {
-        console.log('error: ', error)
+        }).catch(() => {})
+      } else {
+        copyText(
+          `${this.userInfo.name} ${shareUrl}`,
+          () => this.$toast(this.$t('tips.copylink.succ')),
+          err => this.$toast(this.$t('tips.copy_err') + err)
+        )
       }
     },
     async togggleFollowCache(bool) {
@@ -465,16 +504,27 @@ export default {
   .info, .illusts, .favorite
     padding-left 16px
     padding-right 16px
+
+.android
+  .top-bar-wrap
+    padding-top 1rem !important
+  .share_btn
+    top: 1.15rem !important
+  .users:has(.van-sticky--fixed)
+    ::v-deep .top-bar-wrap
+      top 0.8rem !important
+    .share_btn
+      top 2rem !important
 </style>
 <style lang="stylus" scoped>
-.user-container {
-  height: 100%;
+// .user-container {
+//   height: 100%;
 
-  .user-illusts, .user-wrap {
-    height: 100vh;
-    // overflow-y: scroll;
-  }
-}
+//   .user-illusts, .user-wrap {
+//     height: 100vh;
+//     // overflow-y: scroll;
+//   }
+// }
 
 .loading {
   position: absolute;
@@ -486,10 +536,6 @@ export default {
 .user-tabs {
   ::v-deep .van-tabs__content  {
     margin-top 10px
-  }
-  ::v-deep .van-sticky--fixed {
-    background #fff
-    // padding-top 0.6rem
   }
 }
 
@@ -504,9 +550,6 @@ export default {
   .info-container {
     margin-bottom 40px
     .bg-cover {
-      display: flex;
-      justify-content: center;
-      align-items: center;
       height: 300px;
       overflow: hidden;
 
@@ -571,7 +614,7 @@ export default {
           right 0
           transform translateX(120%)
           display flex
-          font-family 'Dosis', sans-serif
+          font-family 'Dosis', 'PingFang SC', sans-serif
           .van-tag {
             height 16PX
             vertical-align super
@@ -693,7 +736,6 @@ export default {
 }
 
 ::v-deep .top-bar-wrap
-  padding-top 1rem
   background none
   transition top 0.2s
 
@@ -704,7 +746,7 @@ export default {
 
 .share_btn
   position: fixed;
-  top: 1.15rem;
+  top: 0.99rem;
   right 0.5rem;
   z-index: 99;
   font-size 0.675rem
@@ -712,14 +754,14 @@ export default {
   transition top 0.2s
   .svg-icon
     color: #fafafa;
-    filter: drop-shadow(0.02667rem 0.05333rem 0.05333rem rgba(0,0,0,0.8))
+    filter: drop-shadow(0.02667rem 0.05333rem 0.05333rem rgba(0,0,0,0.8));
 
 .users:has(.van-sticky--fixed)
   ::v-deep .top-bar-wrap
-    top 0.8rem
+    top 0.5rem
     z-index 98
   .share_btn
-    top 2rem
+    top 1.5rem
     z-index 98
 
 @media screen and (min-width 768px)

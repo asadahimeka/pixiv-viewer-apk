@@ -1,12 +1,7 @@
 <template>
-  <div class="main-layout">
-    <div class="app-main">
-      <transition v-if="isPageEffectOn" :name="transitionName" mode="out-in">
-        <keep-alive>
-          <router-view />
-        </keep-alive>
-      </transition>
-      <keep-alive v-else>
+  <div class="main-layout" :class="{ noImgFillScreen, 'safe-area': safeArea }">
+    <div class="app-main" :class="{ 'image-card-no-radius': imageCardNoRadius }">
+      <keep-alive>
         <router-view />
       </keep-alive>
     </div>
@@ -19,16 +14,20 @@
 
 <script>
 import Nav from '@/components/Nav'
+import store from '@/store'
 import { throttleScroll } from '@/utils'
-import { LocalStorage } from '@/utils/storage'
 
-const isPageEffectOn = LocalStorage.get('PXV_PAGE_EFFECT', false)
+const { isImageFitScreen, isImageCardBorderRadius } = store.state.appSetting
 
 export default {
   components: {
     'my-nav': Nav,
   },
   props: {
+    safeArea: {
+      type: Boolean,
+      default: false,
+    },
     showNav: {
       type: Boolean,
       default: true,
@@ -36,25 +35,13 @@ export default {
   },
   data() {
     return {
-      isPageEffectOn,
-      transitionName: isPageEffectOn ? 'fade' : '',
       isNavAppear: true,
+      noImgFillScreen: !isImageFitScreen,
+      imageCardNoRadius: !isImageCardBorderRadius,
     }
   },
-  watch: {
-    '$route'(to, from) {
-      if (!isPageEffectOn) return
-      const toDepth = to.meta.__depth
-      const fromDepth = from.meta.__depth
-      if (toDepth == fromDepth) {
-        this.transitionName = 'fade'
-      } else {
-        this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
-      }
-      console.log('this.transitionName: ', this.transitionName)
-    },
-  },
   mounted() {
+    console.log('main-layout mounted')
     addEventListener('scroll', throttleScroll(document.documentElement, scroll => {
       if (scroll > 160) {
         this.isNavAppear = false
@@ -72,6 +59,11 @@ export default {
   methods: {
     scrollToTop() {
       document.documentElement.scrollTo({ top: 0, behavior: 'smooth' })
+      if (this.$route.name == 'NovelDetail') {
+        setTimeout(() => {
+          this.$store.commit('setIsNovelViewShrink', true)
+        }, 500)
+      }
     },
   },
 }
@@ -80,6 +72,10 @@ export default {
 <style lang="stylus" scoped>
 .main-layout
   box-sizing border-box
+
+  &.safe-area
+    // height 100vh
+    padding-top 0
 
 .app-main
   position relative
@@ -105,11 +101,15 @@ export default {
   transform: scale(0);
   transition: .3s cubic-bezier(.25,.8,.5,1);
   background-color rgba(241, 194, 95, 0.9)
+
   ::v-deep .van-icon
     font-size 22PX
     font-weight 600
+
   &--show
     transform: scale(1);
+
   // @media screen and (max-width: 1280px)
     // display none
+
 </style>

@@ -2,7 +2,7 @@
   <div class="Following">
     <van-tabs v-if="isLogin" v-model="activeTab" :ellipsis="false" swipe-threshold="3" sticky animated color="#F2C358">
       <van-tab :title="$t('follow.timeline')" name="1">
-        <LatestConcerned v-if="activeTab == 1" />
+        <FeedsIllusts v-if="activeTab == 1" />
       </van-tab>
       <van-tab v-if="isLocalApi" :title="`${$t('follow.timeline')}(${$t('common.novel')})`" name="5">
         <FeedsNovels v-if="activeTab == 5" />
@@ -25,17 +25,22 @@
 import { mapState } from 'vuex'
 import FollowedUsers from './components/FollowedUsers.vue'
 import LatestAllSite from './components/LatestAllSite.vue'
-import LatestConcerned from './components/LatestConcerned.vue'
+import FeedsIllusts from './components/FeedsIllusts.vue'
 import FeedsNovels from './components/FeedsNovels.vue'
 import MyBookmarks from './MyBookmarks.vue'
 
 export default {
   name: 'Following',
-  components: { LatestConcerned, FeedsNovels, FollowedUsers, LatestAllSite, MyBookmarks },
+  components: { FeedsIllusts, FeedsNovels, FollowedUsers, LatestAllSite, MyBookmarks },
   data() {
     return {
       activeTab: this.$route.params?.tab || '1',
       isLocalApi: window.APP_CONFIG.useLocalAppApi,
+    }
+  },
+  head() {
+    return {
+      title: this.$t('follow.timeline'),
     }
   },
   computed: {
@@ -58,12 +63,10 @@ export default {
   .van-tabs--line .van-tabs__wrap
     height 60px
   .van-tabs__nav
-    // justify-content center
     padding-bottom 0
-    background: rgba(255,255,255,1)
-    // backdrop-filter: saturate(200%) blur(0.08rem)
+    background: rgba(255,255,255,0.8)
+    backdrop-filter: saturate(200%) blur(10PX)
   .van-tab
-    // flex unset
     margin 0 0.1rem
     padding 0
   .van-tab__text
@@ -92,4 +95,5 @@ export default {
     .van-tab
       flex unset
       padding 0 4PX
+
 </style>

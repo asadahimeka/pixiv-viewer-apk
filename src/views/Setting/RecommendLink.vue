@@ -25,50 +25,50 @@
       center
       title="Pixiviz Kai"
       is-link
-      label="https://z.pixiv.pics"
-      @click="openLink('https://pixiviz.cocomi.eu.org/')"
+      label="https://pixiviz.cocomi.eu.org"
+      @click="openLink('https://pixiviz.cocomi.eu.org')"
     />
     <van-cell
       center
       title="Pixivel Kai"
       is-link
-      label="https://pxelk.pixiv.pics"
-      @click="openLink('https://pxelk.cocomi.eu.org/')"
+      label="https://pxelk.cocomi.eu.org"
+      @click="openLink('https://pxelk.cocomi.eu.org')"
     />
     <van-cell
       center
       title="PixivNow Kai"
       is-link
       label="https://pxnow.cocomi.eu.org"
-      @click="openLink('https://pxnow.cocomi.eu.org/')"
+      @click="openLink('https://pxnow.cocomi.eu.org')"
     />
     <van-cell
       center
       title="pixiv萌え改"
       is-link
       label="https://pixivmoe.cocomi.eu.org"
-      @click="openLink('https://pixivmoe.cocomi.eu.org/')"
+      @click="openLink('https://pixivmoe.cocomi.eu.org')"
     />
     <van-cell
       center
       title="PixivLxns"
       is-link
-      label="https://lxns.pixiv.pics"
+      label="https://pixivlxns.cocomi.eu.org"
       @click="openLink('https://pixivlxns.cocomi.eu.org')"
     />
     <van-cell
       center
       title="Moeview"
       is-link
-      label="https://moeview.pixiv.pics"
-      @click="openLink('https://moeview.cocomi.eu.org/')"
+      label="https://moeview.cocomi.eu.org"
+      @click="openLink('https://moeview.cocomi.eu.org')"
     />
     <van-cell
       center
       title="Booru Masonry"
       is-link
-      label="https://booru.pixiv.pics"
-      @click="openLink('https://booru.cocomi.eu.org/')"
+      label="https://booru.cocomi.eu.org"
+      @click="openLink('https://booru.cocomi.eu.org')"
     />
     <van-cell
       center
@@ -81,36 +81,41 @@
       center
       title="PixivCollection"
       is-link
-      label="https://fav.pixiv.pics/"
-      @click="openLink('https://pxc.cocomi.eu.org/')"
+      label="https://pxc.cocomi.eu.org"
+      @click="openLink('https://pxc.cocomi.eu.org')"
     />
     <van-cell
       center
       title="Ugoira Converter"
       is-link
-      label="https://ugoira.pixiv.pics"
+      label="https://ugoira.cocomi.eu.org"
       @click="openLink('https://ugoira.cocomi.eu.org')"
     />
     <van-cell
       center
       title="Wotaku - The Otaku Index"
       is-link
-      label="https://wotaku.moe/"
+      label="https://wotaku.moe"
       @click="openLink('https://wotaku.moe/')"
     />
     <van-cell
       center
       title="AnimeGarden - Anime Torrent aggregation site"
       is-link
-      label="https://garden.onekuma.cn/"
+      label="https://garden.onekuma.cn"
       @click="openLink('https://garden.onekuma.cn/')"
+    />
+    <van-cell
+      center
+      title="EverythingMoe - Index of best Anime/Manga sites"
+      is-link
+      label="https://everythingmoe.com"
+      @click="openLink('https://everythingmoe.com')"
     />
   </div>
 </template>
 
 <script>
-import { trackEvent } from '@/utils'
-
 export default {
   name: 'SettingRecommendLinks',
   components: {
@@ -123,7 +128,7 @@ export default {
   },
   methods: {
     openLink(link) {
-      trackEvent('Open Link', { url: link.replace('https://', '') })
+      window.umami?.track('open_link', { link: link.replace('https://', '') })
       window.open(link, '_blank', 'noopener')
     },
   },

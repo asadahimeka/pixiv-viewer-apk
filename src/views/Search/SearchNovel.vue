@@ -37,6 +37,11 @@
           {{ tag }}
         </div>
       </div>
+      <div v-if="pidOrUidList.length" class="pid-n-uid">
+        <template v-for="n in pidOrUidList">
+          <div :key="'n_' + n" class="keyword" @click="toArtwork(n)">→ {{ $t('common.novel') }} ID: {{ n }} </div>
+        </template>
+      </div>
       <div v-if="!keywords.trim() && searchHistory.length > 0" class="search-history">
         <div class="title-bar">
           {{ $t('search.history') }}
@@ -49,7 +54,7 @@
         </div>
       </div>
     </div>
-    <div v-show="!keywords.trim()" class="com_sel_tabs">
+    <div v-show="!keywords.trim()" class="com_sel_tabs" :style="focus?'opacity:0;pointer-events:none':''">
       <div class="com_sel_tab" @click="$router.replace('/search')">{{ $t('common.illust_manga') }}</div>
       <div class="com_sel_tab cur">{{ $t('common.novel') }}</div>
       <div class="com_sel_tab" @click="$router.replace('/search_user')">{{ $t('common.user') }}</div>
@@ -83,12 +88,13 @@
 <script>
 import TagsNovel from './components/TagsNovel'
 import { mapState, mapActions } from 'vuex'
-import _ from 'lodash'
+import _ from '@/lib/lodash'
 import api from '@/api'
-import { notSelfHibiApi } from '@/api/http'
+import { notSelfHibiApi } from '@/consts'
 import NovelCard from '@/components/NovelCard.vue'
 import PopularPreviewNovel from './components/PopularPreviewNovel.vue'
-import { mintVerify } from '@/utils/filter'
+import { mintVerify, BLOCK_SEARCH_WORD_RE } from '@/utils/filter'
+import { i18n } from '@/i18n'
 
 export default {
   name: 'Search',
@@ -115,8 +121,14 @@ export default {
       isSelfHibi: !notSelfHibiApi,
     }
   },
+  head: {
+    title: i18n.t('search.search'),
+  },
   computed: {
     ...mapState(['searchHistory']),
+    pidOrUidList() {
+      return this.keywords.match(/(\d+)/g) || []
+    },
   },
   watch: {
     $route() {
@@ -226,10 +238,7 @@ export default {
       }
       console.log(`doSearch: ${val}`)
 
-      if (
-        /スカラマシュ|散兵|放浪者(原神)|流浪者(原神)|阿散|阿帽/i.test(val) ||
-        !(await mintVerify(val))
-      ) {
+      if (BLOCK_SEARCH_WORD_RE.test(val) || !(await mintVerify(val))) {
         this.artList = []
         this.finished = true
         this.curPage = 1
@@ -365,8 +374,8 @@ export default {
       height: 120px;
       padding-top 0.133rem
       padding-bottom 0
-      // backdrop-filter: saturate(200%) blur(6px);
-      background: rgba(255, 255, 255, 1);
+      backdrop-filter: saturate(200%) blur(10PX);
+      background: rgba(255, 255, 255, 0.8);
 
       ::v-deep .van-cell {
         line-height: 0.6rem;
@@ -434,6 +443,7 @@ export default {
       width: 100%;
       // max-width: 10rem;
       // height: calc(100% - 128px);
+      // height: calc(100% - env(safe-area-inset-top));
       height: 100%;
       box-sizing: border-box;
       // pointer-events: none;
@@ -490,7 +500,7 @@ export default {
     top calc(120px + var(--status-bar-height))
     margin-bottom 0
     padding 0px 0px 20px
-    backdrop-filter: saturate(200%) blur(6px);
+    backdrop-filter: saturate(200%) blur(10PX);
     background: rgba(255, 255, 255, 0.8);
   }
 

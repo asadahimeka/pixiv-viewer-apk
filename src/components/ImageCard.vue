@@ -6,8 +6,12 @@
       @click.stop="click(artwork.id)"
       @contextmenu="preventContext"
     >
-      <ImageLocal v-if="isPximgDirect" :src="imgSrc" :alt="artwork.title" class="image" :class="{ censored }" />
-      <img v-else v-lazy="imgSrc" class="image" :class="{ censored }" :alt="artwork.title">
+      <Pximg
+        class="image"
+        :src="imgSrc"
+        :class="{ censored }"
+        :alt="artwork.title"
+      />
       <div class="tag-r18-ai">
         <van-tag v-if="index">#{{ index }}</van-tag>
         <van-tag v-if="tagText" :color="tagText === 'R-18' ? '#fb7299' : '#ff3f3f'">{{ tagText }}</van-tag>
@@ -29,10 +33,9 @@
       />
       <div v-if="mode == 'all' || mode === 'meta'" v-longpress="isTriggerLongpress?onLongpress:null" class="meta">
         <div v-if="!isOuterMeta" class="content">
-          <h2 class="title" :title="artwork.title">{{ artwork.title }}</h2>
-          <div class="author-cont">
-            <ImageLocal v-if="isPximgDirect" nobg :src="artwork.author.avatar" class="avatar" :alt="artwork.author.name" />
-            <img v-else :src="artwork.author.avatar" :alt="artwork.author.name" class="avatar" @error="onAvatarErr">
+          <h2 class="title" :title="artwork.title + ' ' + artwork.created" @click.stop="onImageTitleClick">{{ artwork.title }}</h2>
+          <div class="author-cont" @click.stop="toAuthor">
+            <Pximg :src="artwork.author.avatar" :alt="artwork.author.name" nobg class="avatar" />
             <div class="author">{{ artwork.author.name }}</div>
           </div>
         </div>
@@ -40,10 +43,11 @@
     </div>
     <div v-if="isOuterMeta && (mode == 'all' || mode === 'meta')" class="outer-meta">
       <div class="content">
-        <h2 class="title" :title="artwork.title" @click="onImageTitleClick">{{ artwork.title }}</h2>
+        <h2 class="title" :title="artwork.title + ' ' + artwork.created" @click="onImageTitleClick">
+          {{ artwork.title }}
+        </h2>
         <div class="author-cont" @click="toAuthor">
-          <ImageLocal v-if="isPximgDirect" nobg :src="artwork.author.avatar" class="avatar" :alt="artwork.author.name" />
-          <img v-else :src="artwork.author.avatar" :alt="artwork.author.name" class="avatar" @error="onAvatarErr">
+          <Pximg :src="artwork.author.avatar" :alt="artwork.author.name" nobg class="avatar" />
           <div class="author">{{ artwork.author.name }}</div>
         </div>
       </div>
@@ -52,22 +56,18 @@
 </template>
 
 <script>
-import { Dialog } from 'vant'
+import { Dialog, ImagePreview } from 'vant'
 import { mapGetters } from 'vuex'
 import { localApi } from '@/api'
-import { downloadFile, fancyboxShow } from '@/utils'
-import { getCache, toggleBookmarkCache } from '@/utils/siteCache'
-import { LocalStorage } from '@/utils/storage'
-import ImageLocal from './ImageLocal.vue'
+import { getCache, toggleBookmarkCache } from '@/utils/storage/siteCache'
 import { isAiIllust } from '@/utils/filter'
+import { fancyboxShow, downloadFile } from '@/utils'
+import store from '@/store'
+import { getArtworkFileName } from '@/store/actions/filename'
 
-const isLongpressDL = LocalStorage.get('PXV_LONGPRESS_DL', false)
-const isLongpressBlock = LocalStorage.get('PXV_LONGPRESS_BLOCK', false)
-const isOuterMeta = LocalStorage.get('PXV_IMG_META_OUTER', false)
-const isPximgDirect = LocalStorage.get('PXV_PXIMG_DIRECT', false)
+const { isImageCardOuterMeta, isLongpressDL, isLongpressBlock } = store.state.appSetting
 
 export default {
-  components: { ImageLocal },
   props: {
     artwork: {
       type: Object,
@@ -96,10 +96,8 @@ export default {
       showBookmarkBtn: window.APP_CONFIG.useLocalAppApi,
       bLoading: false,
       isBookmarked: false,
-      isLongpressDL,
+      isOuterMeta: isImageCardOuterMeta,
       isTriggerLongpress: isLongpressDL || isLongpressBlock,
-      isOuterMeta,
-      isPximgDirect,
     }
   },
   computed: {
@@ -133,19 +131,19 @@ export default {
     }
   },
   methods: {
-    onAvatarErr() {
-      const src = this.artwork.author.avatar
-      if (!src) return
-      if (src.includes('i.pixiv.re')) return
-      try {
-        const u = new URL(src)
-        u.host = 'i.pixiv.re'
-        // eslint-disable-next-line vue/no-mutating-props
-        this.artwork.author.avatar = u.href
-      } catch (error) {
-        console.log('error: ', error)
-      }
-    },
+    // onAvatarErr() {
+    //   const src = this.artwork.author.avatar
+    //   if (!src) return
+    //   if (src.includes('i.pixiv.re')) return
+    //   try {
+    //     const u = new URL(src)
+    //     u.host = 'i.pixiv.re'
+    //     // eslint-disable-next-line vue/no-mutating-props
+    //     this.artwork.author.avatar = u.href
+    //   } catch (error) {
+    //     console.log('error: ', error)
+    //   }
+    // },
     async toggleBookmark() {
       if (this.bLoading) return
       this.bLoading = true
@@ -196,7 +194,23 @@ export default {
       isLongpressDL ? this.downloadArtwork() : this.showBlockDialog()
     },
     onImageTitleClick() {
-      fancyboxShow(this.artwork, 0, e => e.l.replace(/\/c\/\d+x\d+(_\d+)?\//g, '/'))
+      if (this.artwork.novel_ai_type) {
+        this.click(this.artwork.id)
+        return
+      }
+      const getSrc = e => e.l.replace(/\/c\/\d+x\d+(_\d+)?\//g, '/')
+      if (store.state.appSetting.isUseFancybox) {
+        fancyboxShow(this.artwork, 0, getSrc)
+      } else {
+        ImagePreview({
+          images: this.artwork.images.map(getSrc),
+          startPosition: 0,
+          closeOnPopstate: true,
+          closeable: true,
+          loop: false,
+          transition: 'fade',
+        })
+      }
     },
     toAuthor() {
       if (this.$route.name == 'Users') return
@@ -234,11 +248,9 @@ export default {
     },
     async downloadArtwork() {
       if (this.artwork.type == 'ugoira') return
-      const src = this.artwork.images[0].o
-      const fileName = `${this.artwork.author.name}_${this.artwork.title}_${this.artwork.id}_p0.${src.split('.').pop()}`
       const res = await Dialog.confirm({
         title: this.$t('wuh4SsMnuqgjHpaOVp2rB'),
-        message: fileName,
+        message: this.artwork.title,
         lockScroll: false,
         closeOnPopstate: true,
         cancelButtonText: this.$t('common.cancel'),
@@ -246,7 +258,15 @@ export default {
       }).catch(() => 'cancel')
       if (res != 'confirm') return
       await this.$nextTick()
-      downloadFile(src, fileName)
+      const len = this.artwork.images.length
+      for (let index = 0; index < len; index++) {
+        const item = this.artwork.images[index]
+        const fileName = `${getArtworkFileName(this.artwork, index)}.${item.o.split('.').pop()}`
+        await downloadFile(item.o, fileName, {
+          message: `${this.$t('tip.downloading')} (${index + 1}/${len})`,
+          subDir: store.state.appSetting.dlSubDirByAuthor ? this.artwork.author.name : undefined,
+        })
+      }
     },
   },
 }
@@ -258,7 +278,12 @@ export default {
   overflow: hidden;
   background: #fafafa;
   margin-bottom: 10px;
-  border-radius: 20px;
+  // border-radius: 20px;
+
+  // @media screen and (min-width: 1280px)
+  //   &:hover
+  //     .image[lazy="loaded"]
+  //       transform: scale(1.1);
 
   .image
     position: absolute;
@@ -338,7 +363,7 @@ export default {
   box-shadow none
   background none
   .image-card-wrapper
-    border-radius: 0.26667rem;
+    // border-radius: 0.26667rem;
 
   .meta
     background: rgba(0,0,0,.04);
@@ -392,6 +417,7 @@ export default {
     .title
       margin 6px 0
       font-weight 600
+      cursor pointer
 
     .avatar
       width: 36px;
@@ -401,7 +427,7 @@ export default {
 </style>
 
 <style lang="stylus">
-html:not(.dark)
+body:not(.dark)
   .outer-meta
     .content
       color #333

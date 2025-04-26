@@ -8,7 +8,7 @@
         :style="{ backgroundImage: `linear-gradient(45deg, ${randColor()} 0%, ${randColor()} 100%)` }"
         @click.stop="search(tag.name)"
       >
-        <ImagePximg :src="tag.pic" nobg alt @contextmenu.native="preventContext" />
+        <Pximg :src="tag.pic" nobg alt @contextmenu.native="preventContext" />
         <div v-longpress="ev => toArtwork(ev, tag.pic)" class="meta" @contextmenu="preventContext">
           <div class="content">
             <div v-if="tag.name" class="name" :class="[getLength(tag.name)]">#{{ tag.name }}</div>
@@ -22,8 +22,9 @@
 </template>
 
 <script>
-import { Dialog } from 'vant'
 import api from '@/api'
+import { Dialog } from 'vant'
+
 export default {
   components: {
   },
@@ -112,6 +113,7 @@ export default {
     margin-bottom: 10px;
     padding-bottom: 100%;
     border-radius: 8px;
+    overflow hidden
 
     img {
       position: absolute;
@@ -122,6 +124,8 @@ export default {
       height: 100%;
       border-radius: 8px;
       object-fit: cover;
+      transition transform 0.5s
+      transform none
     }
 
     .meta {
@@ -140,6 +144,8 @@ export default {
         bottom: 10%;
         width: 100%;
         text-shadow: 0.05333rem 0.05333rem 0.05333rem #000;
+        transition 0.3s
+        transform: none
 
         .name {
           font-size: 36px;
@@ -164,6 +170,19 @@ export default {
         }
       }
     }
+
+    @media screen and (min-width: 1280px) {
+      &:hover {
+        img {
+          transform scale(1.1)
+        }
+        .meta .content {
+          bottom: 36%;
+          transform scale(1.1)
+        }
+      }
+    }
+
   }
 
   .top {

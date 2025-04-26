@@ -7,7 +7,7 @@
         class="user_info"
         @click="toArtwork(u.id)"
       >
-        <ImagePximg class="user_avatar" nobg :src="u.avatar" alt="" />
+        <Pximg nobg class="user_avatar" :src="u.avatar" alt="" />
         <div class="user_name">{{ u.name }}</div>
         <div
           class="cover"
@@ -22,7 +22,7 @@
 
 <script>
 import { Dialog } from 'vant'
-import { getCache, setCache } from '@/utils/siteCache'
+import { getCache, setCache } from '@/utils/storage/siteCache'
 
 export default {
   name: 'SettingHistoryUsers',
@@ -32,12 +32,17 @@ export default {
     }
   },
   activated() {
-    this.getHistory()
+    this.init()
   },
   mounted() {
-    this.getHistory()
+    this.init()
   },
   methods: {
+    init() {
+      this.$nextTick(() => {
+        this.getHistory()
+      })
+    },
     toArtwork(id) {
       this.$router.push({
         name: 'Users',
@@ -107,7 +112,7 @@ export default {
     min-height 240px
     padding: 0.26667rem;
     margin-bottom: 0.2rem;
-    border-radius: 0.26667rem;
+    // border-radius: 0.26667rem;
     border-bottom: 0.01333rem solid #ccc;
     cursor: pointer;
     .cover

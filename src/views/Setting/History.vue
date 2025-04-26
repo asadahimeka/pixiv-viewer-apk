@@ -7,14 +7,14 @@
         <Icon name="del" scale="2" />
       </div>
     </h3>
-    <van-tabs v-model="activeTab" class="h-tabs" animated swipeable color="#F2C358">
+    <van-tabs v-model="activeTab" class="h-tabs" sticky animated swipeable color="#F2C358">
       <van-tab :title="$t('common.illust_manga')" name="i">
         <HistoryIllust v-if="activeTab == 'i'" ref="hi" />
       </van-tab>
       <van-tab :title="$t('common.novel')" name="n">
         <HistoryNovel v-if="activeTab == 'n'" ref="hn" />
       </van-tab>
-      <van-tab :title="$t('common.user')" name="u">
+      <van-tab :title="$t('history_tab_label_user')" name="u">
         <HistoryUsers v-if="activeTab == 'u'" ref="hu" />
       </van-tab>
     </van-tabs>
@@ -27,7 +27,6 @@ import HistoryIllust from './HistoryIllust.vue'
 import HistoryNovel from './HistoryNovel.vue'
 import HistoryUsers from './HistoryUsers.vue'
 
-const tabNames = ['i', 'n', 'u']
 export default {
   name: 'SettingHistory',
   components: {
@@ -38,13 +37,11 @@ export default {
   },
   data() {
     return {
-      activeTab: tabNames.find(e => e == this.$route.query.t) || 'i',
+      activeTab: 'i',
     }
   },
-  watch: {
-    activeTab() {
-      this.$router.replace(this.$route.path + '?t=' + this.activeTab)
-    },
+  head() {
+    return { title: this.$t('common.history') }
   },
   methods: {
     clearHistory() {

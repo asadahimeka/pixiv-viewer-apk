@@ -24,7 +24,8 @@
 <script>
 import { localApi } from '@/api'
 import NovelCard from '@/components/NovelCard'
-import _ from 'lodash'
+import _ from '@/lib/lodash'
+
 export default {
   name: 'FeedsNovels',
   components: {
@@ -48,6 +49,7 @@ export default {
           ...this.artList,
           ...res.data,
         ], 'id')
+
         this.loading = false
         this.curPage++
         if (!res.data?.length) this.finished = true
@@ -65,5 +67,6 @@ export default {
   },
 }
 </script>
+
 <style lang="stylus" scoped>
 </style>
