@@ -8,7 +8,7 @@
     "source": "소스 코드",
     "title": "사이트 정보",
     "version": "버전",
-    "about_site": "이 사이트 정보",
+    "about_site": "이 응용 프로그램에 대해",
     "credits": "감사의 말"
   },
   "artwork": {
@@ -557,5 +557,8 @@
   "GC421AyTxr0fbKIiTVhNt": "세부 사항 페이지의 상태 표시 줄을 투명하게 비활성화합니다.",
   "Rw0vijWia2YYJTECmLXnR": "이 옵션은 특수 화면으로 켜질 수 있습니다.",
   "mq3jjWeUDS-TPnfYJQvD5": "PXIMG 직접 연결 모드는 이미지를 더 빨리로드 할 수 있지만 유용성과 안정성을 보장하지는 않습니다.",
-  "8dWKEVyxLa8UjO0iuOA78": "pixiv 사용자를 공유하십시오"
+  "8dWKEVyxLa8UjO0iuOA78": "pixiv 사용자를 공유하십시오",
+  "hyCctySRvfcddmi6nVh9b": "상쾌한 액세스 토큰",
+  "Gry1iNTJ2wm_9FMG_JpBT": "스크롤 할 때 탐색 표시 줄을 숨 깁니다",
+  "1bFB0dqSmKBnjbVLFyJKp": "현재 직접 연결 IP : {0}"
 }

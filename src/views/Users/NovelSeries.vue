@@ -31,6 +31,7 @@
           v-for="(art,i) in artList"
           :key="art.id"
           mode="all"
+          :show-img="false"
           :index="i+1"
           :artwork="art"
           @click-card="toArtwork($event)"

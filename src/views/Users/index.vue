@@ -505,13 +505,13 @@ export default {
     padding-left 16px
     padding-right 16px
 
-.android
+.android .users
   .top-bar-wrap
     padding-top 1rem !important
   .share_btn
     top: 1.15rem !important
-  .users:has(.van-sticky--fixed)
-    ::v-deep .top-bar-wrap
+  &:has(.van-sticky--fixed)
+    .top-bar-wrap
       top 0.8rem !important
     .share_btn
       top 2rem !important

@@ -5,8 +5,8 @@
         <router-view />
       </keep-alive>
     </div>
-    <my-nav v-if="showNav" :is-nav-appear="isNavAppear" />
-    <div v-else class="back_to_top" :class="{ 'back_to_top--show': !isNavAppear }" @click="scrollToTop()">
+    <my-nav v-show="showNav" :is-nav-appear="hideNavBarOnScroll ? isNavAppear : true" />
+    <div v-show="!showNav" class="back_to_top" :class="{ 'back_to_top--show': !isNavAppear }" @click="scrollToTop()">
       <van-icon name="back-top" />
     </div>
   </div>
@@ -17,7 +17,7 @@ import Nav from '@/components/Nav'
 import store from '@/store'
 import { throttleScroll } from '@/utils'
 
-const { isImageFitScreen, isImageCardBorderRadius } = store.state.appSetting
+const { isImageFitScreen, isImageCardBorderRadius, hideNavBarOnScroll } = store.state.appSetting
 
 export default {
   components: {
@@ -38,6 +38,7 @@ export default {
       isNavAppear: true,
       noImgFillScreen: !isImageFitScreen,
       imageCardNoRadius: !isImageCardBorderRadius,
+      hideNavBarOnScroll,
     }
   },
   mounted() {

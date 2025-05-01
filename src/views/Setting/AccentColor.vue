@@ -1484,9 +1484,10 @@ export default {
 
 <style lang="stylus" scoped>
 .reset-color
-  position fixed
-  top 0.5rem
-  right 20px
+  position absolute
+  top 50%
+  right 15px
+  transform translateY(-50%)
   cursor pointer
   ::v-deep .svg-icon
     font-size 0.6rem !important

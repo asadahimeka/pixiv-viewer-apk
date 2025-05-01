@@ -8,7 +8,7 @@
     "source": "Code source",
     "title": "À propos du site",
     "version": "Version",
-    "about_site": "À propos de ce site",
+    "about_site": "À propos de cette application",
     "credits": "Remerciements"
   },
   "artwork": {
@@ -556,5 +556,8 @@
   "GC421AyTxr0fbKIiTVhNt": "Désactiver la barre d'état de la page Détails pour",
   "Rw0vijWia2YYJTECmLXnR": "Cette option peut être activée avec un écran spécial",
   "mq3jjWeUDS-TPnfYJQvD5": "Le mode de connexion directe PXIMG peut charger des images plus rapidement, mais elle ne garantit pas la convivialité et la stabilité.",
-  "8dWKEVyxLa8UjO0iuOA78": "Partager les utilisateurs de Pixiv"
+  "8dWKEVyxLa8UjO0iuOA78": "Partager les utilisateurs de Pixiv",
+  "hyCctySRvfcddmi6nVh9b": "Jeton d'accès rafraîchissant",
+  "Gry1iNTJ2wm_9FMG_JpBT": "Masquer la barre de navigation lors du défilement",
+  "1bFB0dqSmKBnjbVLFyJKp": "Connexion directe actuelle IP: {0}"
 }

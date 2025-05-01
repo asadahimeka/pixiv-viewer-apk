@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="app_name">Pixiv Viewer</string>
-    <string name="title_activity_main">Pixiv-Viewer</string>
-    <string name="package_name">top.nanoka.pixiv</string>
+    <string name="title_activity_main">Pixiv Viewer</string>
+    <string name="package_name">org.eu.cocomi.pxvek</string>
     <string name="custom_url_scheme">pixiv</string>
 </resources>

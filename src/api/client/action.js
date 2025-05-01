@@ -20,7 +20,7 @@ function dnsQuery(domain) {
       },
     }),
     new Promise((_resolve, reject) => {
-      setTimeout(() => reject(new Error('请求超时')), 3000)
+      setTimeout(() => reject(new Error('请求超时')), 5000)
     }),
   ])
 }
@@ -51,7 +51,7 @@ async function setApiHosts(config) {
     return
   }
   try {
-    const res = await dnsQuery('www.pixivision.net')
+    const res = await dnsQuery('pixiv.me')
     const { data } = res.data.Answer[0]
     console.log('dns answer: ', data)
     window.p_api_hosts = {

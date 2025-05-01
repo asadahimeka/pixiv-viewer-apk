@@ -103,7 +103,7 @@ export async function downloadBlob(blob, fileName, subpath) {
 }
 
 export async function getPximgUri(url) {
-  url.protocol = 'http:'
+  url.protocol = 'https:'
   url.host = window.p_pximg_ip
   const path = url.pathname.slice(1)
   const directory = Directory.External
@@ -164,7 +164,8 @@ export async function readDlDir(path) {
   const res = await Promise.all(files.map(async it => {
     if (it.type == 'file') {
       return {
-        path: convertFileSrc(it.uri),
+        path: it.uri,
+        imgSrc: convertFileSrc(it.uri),
         fileName: it.name,
         id: it.name.match(/_(\d{4,})[_.]/)?.[1],
         isNovel: /\.txt$/.test(it.name),

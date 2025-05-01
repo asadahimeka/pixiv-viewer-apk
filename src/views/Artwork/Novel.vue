@@ -143,12 +143,13 @@ export default {
       pntActions: [
         { text: '加载沉浸式翻译 SDK', className: 'imt', key: 'imt' },
         { text: 'AI 翻译(glm-4-9b)', className: 'sc', key: 'sc_glm' },
-        { text: 'AI 翻译(GLM-4-9B-0414)', className: 'sc', key: 'sc_glm_0414' },
-        { text: 'AI 翻译(GLM-Z1-9B-0414)', className: 'sc', key: 'sc_glm_z1' },
-        { text: 'AI 翻译(Qwen2-7B)', className: 'sc', key: 'sc_qwen2' },
+        // { text: 'AI 翻译(GLM-4-9B-0414)', className: 'sc', key: 'sc_glm_0414' },
+        // { text: 'AI 翻译(GLM-Z1-9B-0414)', className: 'sc', key: 'sc_glm_z1' },
+        // { text: 'AI 翻译(Qwen3-8B)', className: 'sc', key: 'sc_qwen3' },
+        // { text: 'AI 翻译(Qwen2-7B)', className: 'sc', key: 'sc_qwen2' },
         { text: 'AI 翻译(Qwen2.5-7B)', className: 'sc', key: 'sc_qwen2_5' },
-        { text: 'AI 翻译(DS-R1-Llama-8B)', className: 'sc', key: 'sc_ds_r1_llama' },
-        { text: 'AI 翻译(DS-R1-Qwen-7B)', className: 'sc', key: 'sc_ds_r1_qwen' },
+        // { text: 'AI 翻译(DS-R1-Llama-8B)', className: 'sc', key: 'sc_ds_r1_llama' },
+        // { text: 'AI 翻译(DS-R1-Qwen-7B)', className: 'sc', key: 'sc_ds_r1_qwen' },
         { text: '微软翻译', className: 'ms', key: 'ms' },
         { text: '谷歌翻译', className: 'gg', key: 'gg' },
         { text: '有道翻译', className: 'yd', key: 'yd' },
@@ -250,7 +251,7 @@ export default {
         const { share } = await import('@/platform/capacitor/utils')
         await share({
           title: 'Pixiv Viewer',
-          text: `${this.$t('artwork.share.share')} ${this.artwork.author.name} ${this.$t('artwork.share.of_art')} ${this.artwork.title} - ID: ${this.artwork.id}`,
+          text: `${this.$t('artwork.share.share')} ${this.$t('artwork.share.of_art', [this.artwork.author.name])} ${this.artwork.title} - ID: ${this.artwork.id}`,
           url: `https://pixiv.pictures/n/${this.artwork.id}`,
           dialogTitle: this.$t('artwork.share.share'),
         }).catch(() => {})
@@ -344,6 +345,7 @@ export default {
         sc_glm: async () => this.fanyi('sc', await getNoTranslateWords(this.artwork.tags), 'glm'),
         sc_glm_0414: async () => this.fanyi('sc', await getNoTranslateWords(this.artwork.tags), 'glm_0414'),
         sc_glm_z1: async () => this.fanyi('sc', await getNoTranslateWords(this.artwork.tags), 'glm_z1'),
+        sc_qwen3: async () => this.fanyi('sc', await getNoTranslateWords(this.artwork.tags), 'qwen3'),
         sc_qwen2: async () => this.fanyi('sc', await getNoTranslateWords(this.artwork.tags), 'qwen2'),
         sc_qwen2_5: async () => this.fanyi('sc', await getNoTranslateWords(this.artwork.tags), 'qwen2_5'),
         sc_ds_r1_llama: async () => this.fanyi('sc', await getNoTranslateWords(this.artwork.tags), 'ds_r1_llama'),

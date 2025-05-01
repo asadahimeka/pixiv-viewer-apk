@@ -66,6 +66,11 @@ export default {
       if (!this.isVLazy && this.$parent.playUgoira) {
         this.loading = true
       }
+      if (isDirectPximg) {
+        this.loading = true
+        this.localSrc = ''
+        this.setImgSrc()
+      }
     },
   },
   mounted() {

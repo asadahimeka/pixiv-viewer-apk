@@ -13,7 +13,7 @@
           :key="art.id"
           class="image-card-slide"
         >
-          <NovelCard :artwork="art" @click-card="toArtwork($event)" />
+          <NovelCard :show-img="false" :artwork="art" @click-card="toArtwork($event)" />
         </swiper-slide>
         <swiper-slide class="image-slide-slide">
           <ImageSlide class="slide" :images="slides">

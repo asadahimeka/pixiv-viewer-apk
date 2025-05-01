@@ -1,4 +1,4 @@
-package top.nanoka.pixiv;
+package org.eu.cocomi.pxvek;
 
 import android.annotation.SuppressLint;
 

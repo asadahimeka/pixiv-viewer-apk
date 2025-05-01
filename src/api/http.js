@@ -29,7 +29,7 @@ const get = async (url, params = {}, config = {}) => {
   console.log('params: ', params)
   try {
     let res
-    if (window.APP_CONFIG.useLocalAppApi) {
+    if (/^\/(?!prks).*/.test(url) && window.APP_CONFIG.useLocalAppApi) {
       res = await window.__localApiMap__[url]?.({ query: params, ...config })
     } else {
       res = (await axios.get(url, { params, ...config })).data

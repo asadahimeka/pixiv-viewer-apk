@@ -37,7 +37,6 @@ import { trackEvent } from '@/utils'
 setStatusBar()
 setSafeAreaVar()
 addCapListeners()
-setShortcuts()
 addErrorListener()
 setupApp()
 
@@ -48,6 +47,7 @@ async function setupApp() {
   await initSetting()
   await initLocalApi()
   await initLocale()
+  setShortcuts()
 
   setupVant()
   Vue.use(Toast)
@@ -84,7 +84,7 @@ async function initLocalApi() {
   const config = LocalStorage.get('PXV_CLIENT_CONFIG', {})
   window.APP_CONFIG = config
   if (!config.useLocalAppApi) return
-  document.querySelector('#ldio-loading .ldio-content')?.insertAdjacentHTML('beforeend', '<p class="ldio-title" style="top:180px;font-size:14px">Refreshing Access Token</p>')
+  document.querySelector('#ldio-loading .ldio-content')?.insertAdjacentHTML('beforeend', `<p class="ldio-title" style="top:180px;font-size:14px">${i18n.t('hyCctySRvfcddmi6nVh9b')}</p>`)
   window.__localApiMap__ = await getActionMap()
   await initBookmarkCache()
 }
@@ -111,15 +111,15 @@ function setSafeAreaVar() {
   SafeArea.getSafeAreaInsets().then(({ insets }) => {
     console.log('insets: ', insets)
     document.documentElement.style.setProperty('--safe-area-top', `${insets.top}px`)
-  })
+  }).catch(() => {})
 }
 
 function setStatusBar() {
   const color = localStorage.PXV_DARK ? '#16161A' : '#FFFFFF'
-  StatusBar.setStyle({ style: localStorage.PXV_DARK ? StatusBarStyle.Dark : StatusBarStyle.Light })
-  StatusBar.setBackgroundColor({ color })
-  StatusBar.setOverlaysWebView({ overlay: true })
-  NavigationBar.setNavigationBarColor({ color })
+  StatusBar.setStyle({ style: localStorage.PXV_DARK ? StatusBarStyle.Dark : StatusBarStyle.Light }).catch(() => {})
+  StatusBar.setBackgroundColor({ color }).catch(() => {})
+  StatusBar.setOverlaysWebView({ overlay: true }).catch(() => {})
+  NavigationBar.setNavigationBarColor({ color }).catch(() => {})
 }
 
 function addCapListeners() {

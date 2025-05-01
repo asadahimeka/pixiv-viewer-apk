@@ -16,6 +16,10 @@
     background: #16161a !important;
 
   &.custom_theme body:not(.dark)
+    #nav-bar-overlay:not(.show)
+      background transparent
+    .search-bar-wrap::before
+      background: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), var(--accent-color, #f7f8fa);
     .novel .ia-cont .ia-left .collapse-btn,
     .novel .ia-cont .ia-right .artwork-meta
       background: #fefefe;
@@ -27,6 +31,47 @@
     .van-calendar,
     .search-dropdown
       background: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9)), var(--accent-color)
+    .rank .top,
+    .Home .com_sel_tabs,
+    .Following .van-tabs__nav
+      background transparent
+      backdrop-filter: saturate(200%) blur(10PX)
+    .Home .com_sel_tabs .home-search .van-search__content,
+    .search .search-bar-wrap .van-search__content
+      background white
+      box-shadow: 0 1PX .5PX .5PX rgba(0, 0, 0, 0.1)
+    .com_sel_tabs .com_sel_tab,
+    .rank .top .com_sel_tab,
+    .search .keyword
+      box-shadow: 0 1PX .5PX .5PX rgba(0, 0, 0, 0.1)
+    .rank .top .nav a
+      border 1PX solid #bbb
+      &.cur
+        border-color var(--accent-color)
+    .search .com_sel_tabs
+      left 50%
+      transform translateX(-50%)
+      width max-content
+      padding-top 0.1rem
+      backdrop-filter: none
+      background none !important
+      & + .list-wrap .tags
+        padding-top 0 !important
+    .search .search_params
+      position fixed
+      z-index 3
+      top calc(1.6rem + var(--status-bar-height))
+      left 0
+      width 100%
+      .search_param_sel
+        width max-content
+        min-width 100%
+      &+.result-list
+        padding-top 1rem
+    .search-dropdown .pid-n-uid
+      margin-top 0.13333rem
+    .van-sticky--fixed,
+    .van-sticky--fixed .van-tabs__nav
     .van-popup .van-cell,
     .search .search_params,
     .dropdown.search-bar-wrap .search-bar,
@@ -88,17 +133,44 @@
         &+.more, &::after
           display none
     .search .com_sel_tabs
-      left 50%
-      transform translateX(-50%)
-      width fit-content
       padding-top 0.1rem
       backdrop-filter: none
       background none
+    .search .search_params
+      position fixed
+      z-index 3
+      top calc(1.6rem + var(--status-bar-height))
+      left 0
+      width 100%
+      .search_param_sel
+        width max-content
+        min-width 100%
+        .van-dropdown-menu__title
+          font-size 12PX
+      &+.result-list
+        padding-top 1rem
+    .search .search-bar,
+    .search .search_params,
+    .search .com_sel_tabs
+      background: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), var(--accent-color, #f7f8fa);
+    .search .com_sel_tabs + .list-wrap .tags
+      padding-top 0.2rem
+    .van-sticky--fixed
+      background: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9)), var(--accent-color, #f7f8fa);
+      box-shadow: 0px 2PX 10PX 2PX rgba(0, 0, 0, 0.15);
+    .nav-container .nav-bar
+      backdrop-filter: saturate(200%) blur(16PX)
+      box-shadow: 0px -2PX 10PX 2PX rgba(0, 0, 0, 0.15)
+    .van-card
+      background white
+
+  &:not(.custom_theme) body:not(.dark)
+    .rank .top
+      background white
     .rank .top,
     .Home .com_sel_tabs,
-    .Following .van-tabs__nav,
-    .search .search-bar
-      background: rgba(255, 255, 255, 0.2);
+    .Following .van-tabs__nav
+      backdrop-filter none
 
   @media screen and (max-width: 600px)
     body:not(.dark)

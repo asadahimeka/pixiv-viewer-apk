@@ -1,3 +1,17 @@
-Android > 7
-> 0.5%
+[development]
+defaults
+
+[tauri]
+defaults
+
+[electron]
+Chrome 124
+
+[capacitor]
+Chrome > 104
+and_chr > 104
+Safari >= 16
+ios_saf >= 16
+last 2 versions
 not dead
+> 0.2%

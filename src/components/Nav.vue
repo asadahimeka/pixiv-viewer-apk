@@ -123,7 +123,6 @@ export default {
     margin: 0 auto;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
-    // backdrop-filter: blur(6px);
     backdrop-filter: saturate(200%) blur(10PX);
     background: rgba(255, 255, 255, 0.8);
 

@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <Preload />
-    <router-view />
     <div v-if="platform.isAndroid" id="nav-bar-overlay"></div>
+    <router-view />
   </div>
 </template>
 
@@ -78,11 +78,12 @@ html,body
     margin-bottom 0
     padding-top 0
     padding-bottom 0.3rem
+    // background: white
     background: rgba(255,255,255,0.8)
     backdrop-filter: saturate(200%) blur(10PX)
     .home-title
       position absolute
-      top 50%
+      top calc(50% + var(--status-bar-height) / 2)
       left 6vw
       transform translateY(-50%)
       display flex
@@ -96,7 +97,7 @@ html,body
       font-size 0.35rem
     .home-search
       position absolute
-      top 50%
+      top calc(50% + var(--status-bar-height) / 2)
       left 50%
       transform translate(-50%, -50%)
       display flex
@@ -115,7 +116,7 @@ html,body
 @media screen and (max-width: 999px)
   .Home .home-i-tabs
     justify-content flex-end
-    padding-right 0.3rem
+    padding-right 0.3rem !important
     .home-search
       display none
 
@@ -136,42 +137,82 @@ html,body
 
 @media screen and (min-width: 1280px)
   #app
-    .Home,
-    .search .tags,
-    .search .result-list,
-    .rank-list,
-    .users .user-tabs .van-tab__pane,
-    .user-illusts,
-    .Spotlights,
-    .Discovery,
-    .HomeRecommIllust,
-    .related,
+    .app-main
+      padding-left 1.4rem !important
+      padding-right 0.2rem !important
+    .app-main:has(.user-container)
+      padding-left 1.2rem
+      padding-right 0
+      .user-tabs
+        padding-left 0.2rem
+        padding-right 0.2rem
+    .top-bar-wrap
+      left 1.2rem
+    .rank,.search
+      padding-left 0.18rem
+      padding-right 0.18rem
+    .rank .top
+      padding-left 1.7rem
+    .search
+      .search-bar-wrap
+        padding-left 1.4rem
+        padding-right 0.2rem
+        box-sizing border-box
+        .search-bar
+          width 100%
+        .search-bar-word
+          left 2.5rem
+      .search-dropdown
+          left 1.2rem
+          width calc(100% - 1.2rem)
+      .search-history
+        padding-left 0.4rem
+        padding-right 0.4rem
+      .pid-n-uid
+        padding-left 0.2rem
+        padding-right 0.2rem
+      .image-search
+        right 0.9rem
+        .container
+          left 1.4rem
+          width: calc(100vw - 1.5rem)
+      .search_param_sel
+        margin-top .3rem
+        .van-dropdown-menu__bar
+          border-radius 10px
+        .van-dropdown-item
+          left 1.6rem
+          width calc(100% - 2rem)
+    .Home .com_sel_tabs,
+    .search .com_sel_tabs
+      padding-left 1.2rem
+    .Home .com_sel_tabs .home-title
+      left: 2rem
     .Following
-      padding-left 5vw
-      padding-right 5vw
-
-  #app
+      padding-left 0.2rem
+      padding-right 0.2rem
+      .van-sticky--fixed
+        padding-left 1.2rem
     .nav-container
-      left unset
-      right 0
-      bottom 50%
+      display block !important
+      top 0
+      left 0
+      right unset
+      z-index 9999
       width 1.2rem
-      height auto
-      transform: translate(0, 50%);
+      height 100vh
       opacity 1
-      &.showNav
-        transform: translate(0, 50%);
+      transform: translate(0, 0) !important;
     .nav-bar
       flex-direction: column
       justify-content: center
       align-items: center
-      padding-top 15px
-      border-top-left-radius: 0.21333rem;
-      border-top-right-radius: 0;
-      border-bottom-left-radius: 0.21333rem;
+      border-radius: 0;
       li
         width 100%
-        margin-bottom 25px
+        margin 0
+        &:not(:last-child)
+          margin-bottom 30px
         &.nav_to_top
           display list-item
         .icon
@@ -179,6 +220,58 @@ html,body
           font-size 0.55rem
         span
           font-size 0.26rem
+          word-break: break-all
+  .custom_theme #app
+    .search_param_sel
+      margin-top 0
+      .van-dropdown-menu__bar
+        border-radius 0
+
+// @media screen and (min-width: 1280px)
+//   #app
+//     .Home,
+//     .search .tags,
+//     .search .result-list,
+//     .rank-list,
+//     .users .user-tabs .van-tab__pane,
+//     .user-illusts,
+//     .Spotlights,
+//     .Discovery,
+//     .HomeRecommIllust,
+//     .related,
+//     .Following
+//       padding-left 5vw
+//       padding-right 5vw
+
+//   #app
+//     .nav-container
+//       left unset
+//       right 0
+//       bottom 50%
+//       width 1.2rem
+//       height auto
+//       transform: translate(0, 50%);
+//       opacity 1
+//       &.showNav
+//         transform: translate(0, 50%);
+//     .nav-bar
+//       flex-direction: column
+//       justify-content: center
+//       align-items: center
+//       padding-top 15px
+//       border-top-left-radius: 0.21333rem;
+//       border-top-right-radius: 0;
+//       border-bottom-left-radius: 0.21333rem;
+//       li
+//         width 100%
+//         margin-bottom 25px
+//         &.nav_to_top
+//           display list-item
+//         .icon
+//           margin-bottom 4px
+//           font-size 0.55rem
+//         span
+//           font-size 0.26rem
 
 html:not([lang^=zh])
   @media screen and (max-width: 1200px)

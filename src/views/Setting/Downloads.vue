@@ -18,8 +18,13 @@
         :key="i"
         lazy-load
         :title="d.fileName"
-        :thumb="d.isImage ? d.path : undefined"
       >
+        <template #thumb>
+          <template v-if="d.isImage">
+            <img v-if="isImgLazy" v-lazy="d.imgSrc" alt="" style="width: 100%;height: 100%;object-fit: cover;">
+            <img v-else :src="d.imgSrc" loading="lazy" alt style="width: 100%;height: 100%;object-fit: cover;">
+          </template>
+        </template>
         <template #desc>
           <p style="line-height: 2;color: #555;">{{ d.date }} <span v-if="d.size" style="margin-left: 1em;">{{ d.size }}</span></p>
           <p style="margin-bottom: 0.2rem;line-height: 1.3;color: #777;word-break: break-all;"><i>{{ d.status == 'ok' ? d.url : d.error }}</i></p>
@@ -42,8 +47,11 @@
 <script>
 import { Dialog } from 'vant'
 import TopBar from '@/components/TopBar'
+import store from '@/store'
 import { downloadFile } from '@/utils'
 import { getCache, setCache } from '@/utils/storage/siteCache'
+
+const { isImgLazy } = store.state.appSetting
 
 export default {
   name: 'SettingDownloads',
@@ -54,6 +62,7 @@ export default {
     return {
       activeTab: '0',
       dlList: [],
+      isImgLazy,
     }
   },
   watch: {
@@ -93,8 +102,10 @@ export default {
       location.reload()
     },
     async getHistory() {
+      const { convertFileSrc } = await import('@/platform/capacitor/utils')
       const res = await getCache('downloads.history') || []
       return res.map(e => {
+        e.imgSrc = convertFileSrc(e.path)
         e.fileName = e.fileName.split('/').pop()
         e.id = e.fileName.match(/_(\d{4,})[_.]/)?.[1]
         e.isNovel = /\.txt$/.test(e.fileName)

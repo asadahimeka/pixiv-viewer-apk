@@ -38,7 +38,7 @@
     "source": "Source Code",
     "title": "About Site",
     "version": "Version",
-    "about_site": "About this site",
+    "about_site": "About this app",
     "credits": "Acknowledgements"
   },
   "artwork": {
@@ -557,5 +557,8 @@
   "GC421AyTxr0fbKIiTVhNt": "Disable the status bar of the details page to transparently",
   "Rw0vijWia2YYJTECmLXnR": "This option can be turned on with a special screen",
   "mq3jjWeUDS-TPnfYJQvD5": "PXIMG direct connection mode may load images faster, but it does not guarantee usability and stability.",
-  "8dWKEVyxLa8UjO0iuOA78": "Share Pixiv users"
+  "8dWKEVyxLa8UjO0iuOA78": "Share Pixiv users",
+  "hyCctySRvfcddmi6nVh9b": "Refreshing Access Token",
+  "Gry1iNTJ2wm_9FMG_JpBT": "Hide navigation bar when scrolling",
+  "1bFB0dqSmKBnjbVLFyJKp": "Current direct connection IP: {0}"
 }

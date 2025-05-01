@@ -231,8 +231,15 @@ export function dealStatusBarOnEnter() {
 
 export async function dealStatusBarOnLeave() {
   if (isOverlayOff) return
-  document.documentElement.classList.remove('pt0')
-  window['nav-bar-overlay']?.classList.remove('op0')
+  if (store.state.appSetting.pageTransition) {
+    setTimeout(() => {
+      document.documentElement.classList.remove('pt0')
+      window['nav-bar-overlay']?.classList.remove('op0', 'show')
+    }, 16)
+  } else {
+    document.documentElement.classList.remove('pt0')
+    window['nav-bar-overlay']?.classList.remove('op0', 'show')
+  }
 }
 
 export function formatBytes(bytes) {
@@ -273,7 +280,7 @@ export function getContrastingTextColor(backgroundColor) {
   return luminance > 0.5 ? '#333' : 'white' // 浅色背景用黑字，深色背景用白字
 }
 
-export function hexToRgb(hex) {
+export function hexToRgb(hex, onlyReturnNum = false) {
   // 移除 "#" 号（如果有的话）
   hex = hex.replace(/^#/, '')
 
@@ -287,7 +294,7 @@ export function hexToRgb(hex) {
   const g = parseInt(hex.substring(2, 4), 16)
   const b = parseInt(hex.substring(4, 6), 16)
 
-  return `rgb(${r}, ${g}, ${b})`
+  return onlyReturnNum ? `${r}, ${g}, ${b}` : `rgb(${r}, ${g}, ${b})`
 }
 
 export async function readTextFile(file) {

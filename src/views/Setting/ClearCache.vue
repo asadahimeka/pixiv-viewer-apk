@@ -34,7 +34,7 @@
     </van-cell>
     <van-cell v-if="platform.isCapacitor" center :title="$t('ltKHIZm9mBZ8Dit_u8aW4')">
       <template #label>
-        <span>{{ size.imgCache[1] }} {{ $t('cache.records') }} ~ {{ size.imgCache[0] | bytes }}</span>
+        <span>{{ $t('cache.records', [size.imgCache[1]]) }} ~ {{ size.imgCache[0] | bytes }}</span>
       </template>
       <template #right-icon>
         <van-button type="primary" size="small" @click="clearCache('imgCache')">
@@ -86,7 +86,8 @@ export default {
         await localDb.length(),
       ]
       if (platform.isCapacitor) {
-        this.size.imgCache = (await import('@/platform/capacitor/utils')).getCacheSize()
+        const { getCacheSize } = await import('@/platform/capacitor/utils')
+        this.size.imgCache = await getCacheSize()
       }
     },
     clearCache(type) {
@@ -117,7 +118,8 @@ export default {
         if (type === 'local') LocalStorage.clear()
         if (type === 'session') SessionStorage.clear()
         if (type === 'imgCache') {
-          (await import('@/platform/capacitor/utils')).clearImageCache()
+          const { clearImageCache } = await import('@/platform/capacitor/utils')
+          await clearImageCache()
         }
 
         this.calcCacheSize()
@@ -125,7 +127,8 @@ export default {
       })
     },
     async openSettings() {
-      (await import('@/platform/capacitor/utils')).openAndroidSettings()
+      const { openAndroidSettings } = await import('@/platform/capacitor/utils')
+      openAndroidSettings()
     },
   },
 }

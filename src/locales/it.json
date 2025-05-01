@@ -8,7 +8,7 @@
     "source": "Codice sorgente",
     "title": "Informazioni sul sito",
     "version": "Versione",
-    "about_site": "A proposito di questo sito",
+    "about_site": "Su questa applicazione",
     "credits": "Ringraziamenti"
   },
   "artwork": {
@@ -557,5 +557,8 @@
   "GC421AyTxr0fbKIiTVhNt": "Disabilita la barra di stato della pagina dei dettagli in trasparente",
   "Rw0vijWia2YYJTECmLXnR": "Questa opzione può essere attivata con uno schermo speciale",
   "mq3jjWeUDS-TPnfYJQvD5": "La modalità di connessione diretta PXIMG può caricare immagini più velocemente, ma non garantisce l'usabilità e la stabilità.",
-  "8dWKEVyxLa8UjO0iuOA78": "Condividi gli utenti Pixiv"
+  "8dWKEVyxLa8UjO0iuOA78": "Condividi gli utenti Pixiv",
+  "hyCctySRvfcddmi6nVh9b": "Token di accesso rinfrescante",
+  "Gry1iNTJ2wm_9FMG_JpBT": "Nascondi la barra di navigazione durante lo scorrimento",
+  "1bFB0dqSmKBnjbVLFyJKp": "Connessione termica corrente IP: {0}"
 }

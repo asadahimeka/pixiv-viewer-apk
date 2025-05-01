@@ -177,7 +177,7 @@
     "feedback": "反馈",
     "disclaimer_text": "<b>NSFW 相关</b><br>本站默认不显示 NSFW 资源（例如 R-18 插画），任意访问此类资源的行为均是由用户在设置中设定的，并且用户已确保自身年龄已满18岁且未违反当地法律法规所规定的内容。对于可能出现的 NSFW 资源我们均有做出明显的警告标记，我们不鼓励访问或传播此类资源。<br><br><b>用户言论</b><br>“用户言论”指的是 Pixiv 源站用户通过自我介绍、插画简介、评论区等功能发布的言论。这部分属于发表者自身的行为，我们无法有效控制。我们不会发布也不鼓励传播不当言论。如果您在浏览过程中发现了不当内容，我们非常鼓励您前往源站进行举报。 <br><br><b>版权声明</b><br>本站与 pixiv.net (ピクシブ株式会社) 无任何关系，所有作品的数据以及媒体资源，版权归 Pixiv 或其原作者所有。<br><br>Pixiv Viewer 程序通过 MIT 协议授权。<br><br>仅供交流与学习。",
     "credits": "鸣谢",
-    "about_site": "关于本站"
+    "about_site": "关于本应用"
   },
   "cache": {
     "records": "{0} 条记录",
@@ -556,5 +556,8 @@
   "GC421AyTxr0fbKIiTVhNt": "禁用详情页状态栏透明",
   "Rw0vijWia2YYJTECmLXnR": "异形屏可打开此项",
   "mq3jjWeUDS-TPnfYJQvD5": "pximg 直连模式加载图片可能较快，但不保证可用性及稳定性",
-  "8dWKEVyxLa8UjO0iuOA78": "分享 Pixiv 用户"
+  "8dWKEVyxLa8UjO0iuOA78": "分享 Pixiv 用户",
+  "hyCctySRvfcddmi6nVh9b": "刷新访问令牌中",
+  "Gry1iNTJ2wm_9FMG_JpBT": "滚动时隐藏导航栏",
+  "1bFB0dqSmKBnjbVLFyJKp": "当前直连 IP：{0}"
 }

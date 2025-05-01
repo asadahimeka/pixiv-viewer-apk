@@ -1,10 +1,10 @@
 {
-  "appId": "top.nanoka.pixiv",
+  "appId": "org.eu.cocomi.pxvek",
   "appName": "Pixiv Viewer",
   "bundledWebRuntime": false,
   "webDir": "dist",
   "android": {
-    "appendUserAgent": "PixivViewer/1.5",
+    "appendUserAgent": "PixivViewer/1.6",
     "buildOptions": {
       "releaseType": "APK"
     }

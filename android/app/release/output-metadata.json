@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "top.nanoka.pixiv",
+  "applicationId": "org.eu.cocomi.pxvek",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 8,
-      "versionName": "1.5",
+      "versionCode": 20250501,
+      "versionName": "1.6",
       "outputFile": "app-release.apk"
     }
   ],

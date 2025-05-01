@@ -1,18 +1,15 @@
 {
   "name": "pixiv-viewer",
-  "version": "0.0.1",
+  "version": "1.25.5",
   "private": true,
   "scripts": {
     "serve": "cross-env VUE_APP_PLATFORM=android vue-cli-service serve --port 8080",
-    "build:and": "cross-env VUE_APP_PLATFORM=android npm run build:web && npm run cap:sync:and",
-    "build:ios": "cross-env VUE_APP_PLATFORM=ios npm run build:web && npm run cap:sync:ios",
+    "build:and:dev": "cross-env BROWSERSLIST_ENV=development VUE_APP_PLATFORM=android npm run build:web -- --modern && npm run cap:sync:and",
+    "build:and": "cross-env BROWSERSLIST_ENV=capacitor VUE_APP_PLATFORM=android npm run build:web && npm run cap:sync:and",
+    "build:ios": "cross-env BROWSERSLIST_ENV=capacitor VUE_APP_PLATFORM=ios npm run build:web && npm run cap:sync:ios",
     "build:web": "vue-cli-service build",
     "cap:sync:and": "npx cap sync android",
     "cap:sync:ios": "npx cap sync ios",
-    "cap:open:and": "npx cap open android",
-    "cap:open:ios": "npx cap open ios",
-    "cap:run:and": "npx cap run android",
-    "cap:run:ios": "npx cap run ios",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -47,7 +44,7 @@
     "nprogress": "0.2.0",
     "swiper": "5.4.5",
     "ts-whammy": "1.1.5",
-    "vant": "2.13.7",
+    "vant": "2.13.2",
     "vue": "2.7.16",
     "vue-awesome-swiper": "4.1.1",
     "vue-i18n": "8.28.2",

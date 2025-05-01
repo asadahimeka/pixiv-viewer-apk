@@ -8,7 +8,7 @@
     "source": "Quellcode",
     "title": "Über die Website",
     "version": "Ausführung",
-    "about_site": "Über diese Seite",
+    "about_site": "Über diese Anwendung",
     "credits": "Danksagungen"
   },
   "artwork": {
@@ -556,5 +556,8 @@
   "GC421AyTxr0fbKIiTVhNt": "Deaktivieren Sie die Statusleiste der Detailseite auf transparent",
   "Rw0vijWia2YYJTECmLXnR": "Diese Option kann mit einem speziellen Bildschirm eingeschaltet werden",
   "mq3jjWeUDS-TPnfYJQvD5": "Der direkte Verbindungsmodus von Pximg kann Bilder schneller laden, garantiert jedoch nicht die Benutzerfreundlichkeit und Stabilität.",
-  "8dWKEVyxLa8UjO0iuOA78": "Teilen Sie Pixiv -Benutzer"
+  "8dWKEVyxLa8UjO0iuOA78": "Teilen Sie Pixiv -Benutzer",
+  "hyCctySRvfcddmi6nVh9b": "Erfrischende Zugangstoken",
+  "Gry1iNTJ2wm_9FMG_JpBT": "Navigationsleiste ausblenden beim Scrollen ausblenden",
+  "1bFB0dqSmKBnjbVLFyJKp": "Aktuelle direkte Verbindung IP: {0}"
 }

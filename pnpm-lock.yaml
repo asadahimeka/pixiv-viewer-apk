@@ -99,8 +99,8 @@ importers:
         specifier: 1.1.5
         version: 1.1.5
       vant:
-        specifier: 2.13.7
-        version: 2.13.7(vue@2.7.16)
+        specifier: 2.13.2
+        version: 2.13.2(vue@2.7.16)
       vue:
         specifier: 2.7.16
         version: 2.7.16
@@ -5070,8 +5070,8 @@ packages:
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
 
-  vant@2.13.7:
-    resolution: {integrity: sha512-o0xJwzPhXTp2tdfBPqrge1BgoBbWVa3lPDZcULZ/FFOqZk/vLpk3FACFvWZzBN30YIyVKszGlisLzq4BlYwBtA==}
+  vant@2.13.2:
+    resolution: {integrity: sha512-anZbbLqXCq+rUJk10D67mn+V/1/i9tfOTdoR+64B0e+0BzV3KFgpHBF76noLa+yX9i/L+8DeL560WMk0GEN38g==}
     peerDependencies:
       vue: '>= 2.6.0'
 
@@ -10986,7 +10986,7 @@ snapshots:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
 
-  vant@2.13.7(vue@2.7.16):
+  vant@2.13.2(vue@2.7.16):
     dependencies:
       '@babel/runtime': 7.27.0
       '@vant/icons': 3.0.2

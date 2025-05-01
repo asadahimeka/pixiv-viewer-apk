@@ -311,7 +311,7 @@ export default {
 
   ::v-deep .top-bar-wrap
     width 2rem
-    padding-top 20px
+    padding-top calc(20px + var(--status-bar-height))
     background transparent
 
   .live_detail_cont

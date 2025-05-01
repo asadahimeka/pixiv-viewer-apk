@@ -4,7 +4,10 @@
     <h3 class="af_title">{{ $t('about.title') }}</h3>
     <van-cell-group :title="$t('about.about_site')">
       <van-cell center :title="$t('about.version')" clickable :label="ver" />
-      <van-cell v-if="wvVersion" center :title="'Webview '+$t('about.version')" clickable :label="wvVersion" />
+      <template v-if="platform.isCapacitor">
+        <van-cell v-if="appInfo.version" center :title="'APP '+$t('about.version')" clickable :label="`${appInfo.version}(${appInfo.build})`" />
+        <van-cell v-if="wvVersion" center :title="'Webview '+$t('about.version')" clickable :label="wvVersion" />
+      </template>
       <van-cell center :title="$t('about.disclaimer')" is-link :label="$t('tips.click_view')" to="/setting/about/disclaimer" />
       <van-cell center :title="$t('setting.check_update')" label="Go to Github Release" clickable @click="openGithubRelease" />
       <van-cell
@@ -110,7 +113,7 @@
 <script>
 import { Dialog } from 'vant'
 import { CURRENT_APP_VERSION } from '@/consts'
-import { getDeviceInfo } from '@/platform/capacitor/version'
+import { getDeviceInfo, getAppInfo } from '@/platform/capacitor/version'
 import platform from '@/platform'
 
 export default {
@@ -120,6 +123,7 @@ export default {
       platform,
       ver: CURRENT_APP_VERSION,
       wvVersion: '',
+      appInfo: {},
     }
   },
   head() {
@@ -128,6 +132,7 @@ export default {
   async created() {
     if (platform.isCapacitor) {
       this.wvVersion = (await getDeviceInfo()).webViewVersion
+      this.appInfo = await getAppInfo()
     }
     this.checkUpdate()
   },

@@ -61,6 +61,7 @@ export default new Vuex.Store({
       novelDlFormat: 'txt',
       novelDefTranslate: '',
       pageFont: '',
+      hideNavBarOnScroll: true,
       ...getSettingDef('PXV_APP_SETTING', {}),
     },
   },

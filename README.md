@@ -3,6 +3,18 @@
 <h1 align="center">Pixiv Viewer <sup><small>Kai</small></sup></h1>
 <p align="center">Yet Another Pixiv Illustration & Novel Viewer.</p>
 
+<p align="center">
+<img src="https://img.shields.io/github/package-json/v/asadahimeka/pixiv-viewer-app" >
+<img src="https://img.shields.io/badge/license-MIT-green" >
+<img src="https://img.shields.io/github/downloads/asadahimeka/pixiv-viewer-app/total?logo=github" alt >
+<img src="https://img.shields.io/badge/JavaScript-%23323330.svg?style=flat&logo=javascript&logoColor=%23F7DF1E" alt >
+<img src="https://img.shields.io/badge/Vue.js-%2335495e.svg?style=flat&logo=vuedotjs&logoColor=%234FC08D" alt >
+<img src="https://kwc.cocomi.eu.org/https://img.shields.io/badge/Stylus-6da13f.svg?style=flat&logo=Stylus&logoColor=white" alt >
+<img src="https://img.shields.io/badge/Capacitor-119EFF.svg?style=flat&logo=Capacitor&logoColor=white" alt >
+<img src="https://img.shields.io/badge/Tauri-24C8D8.svg?style=flat&logo=Tauri&logoColor=white" alt >
+<img src="https://img.shields.io/badge/Electron-47848F.svg?style=flat&logo=Electron&logoColor=white" alt >
+</p>
+
 **Web Preview:** 🔗 [pixiv.pictures](https://pixiv.pictures)
 
 **Download:** ⏬ [GitHub Releases](https://github.com/asadahimeka/pixiv-viewer-app/releases)

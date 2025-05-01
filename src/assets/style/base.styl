@@ -697,7 +697,7 @@ html.dark
 html
   --status-bar-height: 0px
   padding-top var(--status-bar-height)
-  transition padding-top 0.2s
+  // transition padding-top 0.2s
   &.android
     --status-bar-height: var(--safe-area-top, 20px)
 
@@ -715,6 +715,21 @@ html
   padding-top var(--status-bar-height)
   background #fff
 
+.van-calendar__popup.van-popup--top
+  padding-top var(--status-bar-height)
+.van-calendar__popup .van-popup__close-icon
+  top calc(var(--status-bar-height) + 11PX)
+
+body .comments-popup
+  .van-popup__close-icon
+    top calc(var(--status-bar-height) + 16PX)
+  .comments-title
+    padding-bottom 0.2rem
+  .comments-area
+    height calc(100vh - var(--status-bar-height) - 1.25rem)
+    min-height unset
+    overflow auto
+
 #nav-bar-overlay
   position fixed
   z-index 1000
@@ -728,6 +743,13 @@ html
     opacity 1 !important
     backdrop-filter: saturate(200%) blur(.08rem);
     background: rgba(255, 255, 255, 0.72);
+
+body .Home .com_sel_tabs
+  z-index 99
+  top 0
+  padding calc(0.3rem + var(--status-bar-height)) 0 0.3rem
+  background: rgba(255,255,255,1)
+
 
 .dark #nav-bar-overlay.show
   background: rgba(0, 0, 0, 0.28);

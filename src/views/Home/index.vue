@@ -116,11 +116,6 @@ export default {
 
 </style>
 <style lang="stylus" scoped>
-.com_sel_tabs
-  z-index 99
-  top 0
-  padding calc(0.3rem + var(--status-bar-height)) 0 0.3rem
-  background: rgba(255,255,255,1)
 .home-i
   position relative
   z-index 2

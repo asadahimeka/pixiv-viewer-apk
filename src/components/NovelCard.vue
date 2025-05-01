@@ -1,6 +1,6 @@
 <template>
   <div class="novel-card" @click.stop="click(artwork.id)">
-    <div class="img-cont">
+    <div v-if="showImg" class="img-cont">
       <Pximg :src="imgSrc" :alt="artwork.title" class="image" :class="{ censored }" />
     </div>
     <div class="meta" :class="{ censored }">
@@ -44,6 +44,10 @@ export default {
     square: {
       type: Boolean,
       default: false,
+    },
+    showImg: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {

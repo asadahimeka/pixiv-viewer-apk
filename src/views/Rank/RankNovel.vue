@@ -240,11 +240,10 @@ export default {
     min-height: 100px;
     padding: var(--status-bar-height) 20px 10px;
     box-sizing: border-box;
-    // background: #fff;
     z-index: 1;
-    // backdrop-filter: blur(6px);
-    backdrop-filter: saturate(200%) blur(10PX);
-    background: rgba(255, 255, 255, 0.8);
+    // backdrop-filter: saturate(200%) blur(10PX);
+    // background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 1)
 
     .nav {
       flex 1

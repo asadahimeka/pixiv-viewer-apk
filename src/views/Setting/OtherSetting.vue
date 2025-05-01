@@ -10,6 +10,7 @@
           <van-switch :value="isDark" size="24" @change="onDarkChange" />
         </template>
       </van-cell>
+      <van-cell center :title="$t('SLO07VkQh2wjFJJ1MLvUl')" :label="appSetting.pageFont || $t('ZfJcs8gi6ptsljzInCNpH')" is-link @click="showPageFontSel" />
     </van-cell-group>
 
     <van-cell-group :title="$t('9X179hdP1zzapzk5Rvqx2')">
@@ -30,7 +31,6 @@
           <van-switch :disabled="appSetting.isLongpressDL" :value="appSetting.isLongpressBlock" size="24" @change="v => saveAppSetting('isLongpressBlock', v, true)" />
         </template>
       </van-cell>
-      <van-cell center :title="$t('SLO07VkQh2wjFJJ1MLvUl')" :label="appSetting.pageFont || $t('ZfJcs8gi6ptsljzInCNpH')" is-link @click="showPageFontSel" />
       <van-cell v-if="isPageTransitionSelShow" center :title="$t('Cy6qJLutMa5O3jJr8TawB')" :label="pageTransitionLabel" is-link @click="pageTransition.show = true" />
       <van-cell v-if="platform.isAndroid" center :title="$t('GC421AyTxr0fbKIiTVhNt')" :label="$t('Rw0vijWia2YYJTECmLXnR')">
         <template #right-icon>
@@ -77,14 +77,14 @@
       <van-cell v-if="!clientConfig.useLocalAppApi && hideApSelect" center :title="$t('setting.api.title')" is-link :label="hibiapi.value" @click="hibiapi.show = true" />
       <van-cell v-if="!hideApSelect && !appSetting.isDirectPximg" center :title="$t('setting.img_proxy.title2')" is-link :label="pximgBedLabel" @click="pximgBed_.show = true" />
       <van-cell v-if="!clientConfig.useLocalAppApi && !hideApSelect" center :title="$t('setting.api.title2')" is-link :label="hibiapiLabel" @click="hibiapi_.show = true" />
-      <van-cell center :title="$t('lGZGzwfWz9tW_KQey3AmQ')" :label="$t('OA8ygupG-4FcNWHtwEUG-')">
+      <van-cell center :title="$t('lGZGzwfWz9tW_KQey3AmQ')" :label="appSetting.isDirectPximg?$t('1bFB0dqSmKBnjbVLFyJKp', [directApiHosts.pximg]):$t('OA8ygupG-4FcNWHtwEUG-')">
         <template #right-icon>
           <van-switch :value="appSetting.isDirectPximg" size="24" @change="setDirectPximg" />
         </template>
       </van-cell>
       <van-cell v-if="clientConfig.directMode || appSetting.isDirectPximg" center :title="$t('setting.other.direct_mode.host.title')" is-link :label="$t('setting.other.direct_mode.host.label')" @click="clearApiHosts" />
       <template v-if="clientConfig.useLocalAppApi">
-        <van-cell center :title="$t('setting.other.direct_mode.title')" :label="$t('setting.other.direct_mode.label')">
+        <van-cell center :title="$t('setting.other.direct_mode.title')" :label="clientConfig.directMode?$t('1bFB0dqSmKBnjbVLFyJKp', [directApiHosts.api]):$t('setting.other.direct_mode.label')">
           <template #right-icon>
             <van-switch :value="clientConfig.directMode" :disabled="clientConfig.useApiProxy" size="24" @change="setDirectMode" />
           </template>
@@ -100,6 +100,11 @@
     </van-cell-group>
 
     <van-cell-group :title="$t('6oe7JPS26HGAlcjQdmHZ4')">
+      <van-cell center :title="$t('Na5UTdncjCSNrFJGlrPoq')">
+        <template #right-icon>
+          <van-switch :value="appSetting.withBodyBg" size="24" @change="v => saveAppSetting('withBodyBg', v, true)" />
+        </template>
+      </van-cell>
       <van-cell center :title="$t('qLUWER5bf4X2lE0RjKTBj')">
         <template #right-icon>
           <van-switch :value="appSetting.isUseFancybox" size="24" @change="v => saveAppSetting('isUseFancybox', v)" />
@@ -108,6 +113,11 @@
       <van-cell center :title="$t('setting.other.swipe_toggle')">
         <template #right-icon>
           <van-switch :value="appSetting.isEnableSwipe" size="24" @change="v => saveAppSetting('isEnableSwipe', v, true)" />
+        </template>
+      </van-cell>
+      <van-cell center :title="$t('Gry1iNTJ2wm_9FMG_JpBT')">
+        <template #right-icon>
+          <van-switch :value="appSetting.hideNavBarOnScroll" size="24" @change="v => saveAppSetting('hideNavBarOnScroll', v, true)" />
         </template>
       </van-cell>
       <van-cell center :title="$t('GnyWarxXoDw49xCft4IlS')">
@@ -123,11 +133,6 @@
       <van-cell center :title="$t('_E9iTJP6wHVE-Qxau80YA')">
         <template #right-icon>
           <van-switch :value="appSetting.isImageCardBorderRadius" size="24" @change="v => saveAppSetting('isImageCardBorderRadius', v, true)" />
-        </template>
-      </van-cell>
-      <van-cell center :title="$t('Na5UTdncjCSNrFJGlrPoq')">
-        <template #right-icon>
-          <van-switch :value="appSetting.withBodyBg" size="24" @change="v => saveAppSetting('withBodyBg', v, true)" />
         </template>
       </van-cell>
       <van-cell center title="Enable Umami Analytics">
@@ -390,7 +395,7 @@ export default {
         actions: [
           { name: 'Medium', subname: this.$t('setting.img_res.m') },
           { name: 'Large', subname: this.$t('setting.img_res.l') },
-          { name: 'Original', subname: this.$t('setting.img_res.o'), disabled: true },
+          { name: 'Original', subname: this.$t('setting.img_res.o'), disabled: LocalStorage.get('PXIMG_PROXY') != 'i.pixiv.re' },
         ],
       },
       lang: {
@@ -454,13 +459,14 @@ export default {
         show: false,
         actions: [
           { name: '未设置', _value: '' },
-          { text: 'AI 翻译(glm-4-9b)', className: 'sc', key: 'sc_glm' },
-          { text: 'AI 翻译(GLM-4-9B-0414)', className: 'sc', key: 'sc_glm_0414' },
-          { text: 'AI 翻译(GLM-Z1-9B-0414)', className: 'sc', key: 'sc_glm_z1' },
-          { text: 'AI 翻译(Qwen2-7B)', className: 'sc', key: 'sc_qwen2' },
-          { text: 'AI 翻译(Qwen2.5-7B)', className: 'sc', key: 'sc_qwen2_5' },
-          { text: 'AI 翻译(DS-R1-Llama-8B)', className: 'sc', key: 'sc_ds_r1_llama' },
-          { text: 'AI 翻译(DS-R1-Qwen-7B)', className: 'sc', key: 'sc_ds_r1_qwen' },
+          { name: 'AI 翻译(glm-4-9b)', className: 'sc', key: 'sc_glm' },
+          { name: 'AI 翻译(GLM-4-9B-0414)', className: 'sc', key: 'sc_glm_0414' },
+          { name: 'AI 翻译(GLM-Z1-9B-0414)', className: 'sc', key: 'sc_glm_z1' },
+          { name: 'AI 翻译(Qwen3-8B)', className: 'sc', key: 'sc_qwen3' },
+          { name: 'AI 翻译(Qwen2.5-7B)', className: 'sc', key: 'sc_qwen2_5' },
+          { name: 'AI 翻译(Qwen2-7B)', className: 'sc', key: 'sc_qwen2' },
+          { name: 'AI 翻译(DS-R1-Llama-8B)', className: 'sc', key: 'sc_ds_r1_llama' },
+          { name: 'AI 翻译(DS-R1-Qwen-7B)', className: 'sc', key: 'sc_ds_r1_qwen' },
           { name: '微软翻译', _value: 'ms' },
           { name: '谷歌翻译', _value: 'gg' },
           { name: '有道翻译', _value: 'yd' },
@@ -476,6 +482,10 @@ export default {
       isAnalyticsOn: LocalStorage.get('PXV_ANALYTICS', true),
       isPageTransitionSelShow: Boolean(document.startViewTransition),
       isDisableStatusbarOverlay: LocalStorage.get('PXV_STATUSBAR_OVERLAY_OFF', false),
+      directApiHosts: {
+        api: window.p_api_hosts?.['app-api.pixiv.net'],
+        pximg: window.p_pximg_ip,
+      },
     }
   },
   head() {
@@ -547,6 +557,7 @@ export default {
         }).catch(() => 'cancel')
         if (res == 'cancel') return
       }
+      LocalStorage.set('PXV_PXIMG_DIRECT', val)
       this.saveAppSetting('isDirectPximg', val, true)
     },
     async setDirectMode(val) {
@@ -598,7 +609,7 @@ export default {
       window.umami?.track('clearApiHosts')
       LocalStorage.remove('PXV_PXIMG_IP')
       delete this.clientConfig.apiHosts
-      await this.saveConfig()
+      await this.saveClientConfig()
     },
     async changeApiProxy({ _value }) {
       this.clientConfig.apiProxy = _value
@@ -676,6 +687,7 @@ export default {
         document.documentElement.classList.remove('dark')
         document.body.classList.remove('dark')
       }
+      setTimeout(() => location.reload(), 200)
     },
     onPageTransitionChange({ _value }) {
       this.saveAppSetting('pageTransition', _value, false)

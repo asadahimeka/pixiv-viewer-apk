@@ -89,8 +89,9 @@ export default {
       height: 120px;
       padding-top 0.133rem
       padding-bottom 0
-      backdrop-filter: saturate(200%) blur(10PX);
-      background: rgba(255, 255, 255, 0.8);
+      // backdrop-filter: saturate(200%) blur(10PX);
+      // background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 1)
 
       ::v-deep .van-cell {
         align-items center
@@ -114,8 +115,9 @@ export default {
     top calc(120px + var(--status-bar-height))
     margin-bottom 0
     padding 0px 0px 20px
-    backdrop-filter: saturate(200%) blur(10PX);
-    background: rgba(255, 255, 255, 0.8);
+    // backdrop-filter: saturate(200%) blur(10PX);
+    // background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 1)
   }
 
   .search_btn {
