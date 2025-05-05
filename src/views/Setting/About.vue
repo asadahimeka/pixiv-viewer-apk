@@ -15,7 +15,7 @@
         title="Github"
         is-link
         :label="$t('BTQ4EAQMdeN-0ZdoU8ZsP')"
-        @click="openLink('https://github.com/asadahimeka/pixiv-viewer')"
+        @click="openLink('https://github.com/asadahimeka/pixiv-viewer-app')"
       />
       <van-cell center :title="$t('QV1uifvU3RRNg7roth-8s')" is-link :label="$t('tips.click_view')" to="/setting/about/faq" />
     </van-cell-group>

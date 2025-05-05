@@ -33,6 +33,7 @@ import { loadCustomFont } from '@/utils/font'
 import { initBookmarkCache } from '@/utils/storage/siteCache'
 import { login } from '@/api/client/login'
 import { trackEvent } from '@/utils'
+import platform from '..'
 
 setStatusBar()
 setSafeAreaVar()
@@ -45,8 +46,8 @@ async function setupApp() {
   if (!isPersisted) await navigator.storage?.persist?.().catch(() => {})
   await setPximgIP()
   await initSetting()
-  await initLocalApi()
   await initLocale()
+  await initLocalApi()
   setShortcuts()
 
   setupVant()
@@ -111,10 +112,15 @@ function setSafeAreaVar() {
   SafeArea.getSafeAreaInsets().then(({ insets }) => {
     console.log('insets: ', insets)
     document.documentElement.style.setProperty('--safe-area-top', `${insets.top}px`)
+    document.documentElement.style.setProperty('--safe-area-bottom', `${insets.bottom}px`)
   }).catch(() => {})
 }
 
 function setStatusBar() {
+  if (platform.isIOS) {
+    StatusBar.setStyle({ style: localStorage.PXV_DARK ? StatusBarStyle.Dark : StatusBarStyle.Light }).catch(() => {})
+    return
+  }
   const color = localStorage.PXV_DARK ? '#16161A' : '#FFFFFF'
   StatusBar.setStyle({ style: localStorage.PXV_DARK ? StatusBarStyle.Dark : StatusBarStyle.Light }).catch(() => {})
   StatusBar.setBackgroundColor({ color }).catch(() => {})
@@ -126,7 +132,7 @@ function addCapListeners() {
   CapApp.addListener('backButton', ev => {
     if (!ev.canGoBack || history.length <= 1) {
       CapApp.exitApp()
-    } else if (document.querySelector('.comments-popup')) {
+    } else if (document.querySelector('.comments-popup .comments-area')) {
       document.querySelector('.comments-popup .van-popup__close-icon')?.click()
     } else if (document.querySelector('.fancybox__container')) {
       document.querySelector('.fancybox__container .f-button[data-fancybox-close]')?.click()
@@ -168,6 +174,7 @@ function addCapListeners() {
 }
 
 async function setShortcuts() {
+  if (platform.isIOS) return
   try {
     if (LocalStorage.get('PXV_SHORTCUTS_SET')) {
       AndroidShortcuts.addListener('shortcut', res => {

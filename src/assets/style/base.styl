@@ -696,10 +696,32 @@ html.dark
 
 html
   --status-bar-height: 0px
+  --nav-bar-height: 0px
   padding-top var(--status-bar-height)
-  // transition padding-top 0.2s
-  &.android
+  &.android,
+  &.ios
     --status-bar-height: var(--safe-area-top, 20px)
+    --nav-bar-height: var(--safe-area-bottom, 0px)
+
+.ios
+  #app .nav-container
+    margin-bottom: var(--nav-bar-height)
+    &::after
+      content ''
+      position absolute
+      left 0
+      bottom calc(var(--nav-bar-height) * -1)
+      width 100%
+      height var(--nav-bar-height)
+      background white
+
+  .dark #app
+    .nav-container::after,
+    .rank .top .cal-box
+      background #161616
+
+  .fancybox__toolbar
+    bottom: var(--nav-bar-height)
 
 .search-bar-wrap
   &::before

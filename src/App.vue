@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Preload />
-    <div v-if="platform.isAndroid" id="nav-bar-overlay"></div>
+    <div v-if="platform.isCapacitor" id="nav-bar-overlay"></div>
     <router-view />
   </div>
 </template>

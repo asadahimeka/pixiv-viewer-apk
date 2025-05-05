@@ -225,13 +225,13 @@ export function trackEvent(name, properties) {
 const isOverlayOff = LocalStorage.get('PXV_STATUSBAR_OVERLAY_OFF', false)
 
 export function dealStatusBarOnEnter() {
-  if (isOverlayOff) return
+  if (!platform.isAndroid || isOverlayOff) return
   document.documentElement.classList.add('pt0')
   window['nav-bar-overlay']?.classList.add('op0')
 }
 
 export async function dealStatusBarOnLeave() {
-  if (isOverlayOff) return
+  if (!platform.isAndroid || isOverlayOff) return
   if (store.state.appSetting.pageTransition) {
     setTimeout(() => {
       document.documentElement.classList.remove('pt0')

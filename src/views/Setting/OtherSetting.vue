@@ -84,7 +84,7 @@
       </van-cell>
       <van-cell v-if="clientConfig.directMode || appSetting.isDirectPximg" center :title="$t('setting.other.direct_mode.host.title')" is-link :label="$t('setting.other.direct_mode.host.label')" @click="clearApiHosts" />
       <template v-if="clientConfig.useLocalAppApi">
-        <van-cell center :title="$t('setting.other.direct_mode.title')" :label="clientConfig.directMode?$t('1bFB0dqSmKBnjbVLFyJKp', [directApiHosts.api]):$t('setting.other.direct_mode.label')">
+        <van-cell v-if="platform.isAndroid" center :title="$t('setting.other.direct_mode.title')" :label="clientConfig.directMode?$t('1bFB0dqSmKBnjbVLFyJKp', [directApiHosts.api]):$t('setting.other.direct_mode.label')">
           <template #right-icon>
             <van-switch :value="clientConfig.directMode" :disabled="clientConfig.useApiProxy" size="24" @change="setDirectMode" />
           </template>

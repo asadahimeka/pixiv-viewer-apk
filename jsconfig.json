@@ -24,10 +24,10 @@
   },
   "vueCompilerOptions": {
     "target": 2.7,
-    // "optionsWrapper": [
-    //   "(await import('vue')).defineComponent(",
-    //   ")"
-    // ]
+    "optionsWrapper": [
+      "(await import('vue')).defineComponent(",
+      ")"
+    ]
   },
   "include": [
     "src/**/*.js",

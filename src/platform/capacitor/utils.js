@@ -5,12 +5,13 @@ import { Share } from '@capacitor/share'
 import { Filesystem, Directory } from '@himeka/capacitor-filesystem'
 import { FileDownload } from '@himeka/capacitor-plugin-filedownload'
 import { FileOpener } from '@capacitor-community/file-opener'
-import { NativeSettings, AndroidSettings } from 'capacitor-native-settings'
+import { NativeSettings, AndroidSettings, IOSSettings } from 'capacitor-native-settings'
 import writeBlob from 'capacitor-blob-writer'
 import { LocalStorage } from '@/utils/storage'
 import { getCache, setCache } from '@/utils/storage/siteCache'
 import { i18n } from '@/i18n'
 import { formatBytes } from '@/utils'
+import platform from '..'
 
 export async function copyText(string, cb, errCb) {
   try {
@@ -46,14 +47,17 @@ export async function downloadFile(url, fileName, subpath) {
     let downloadUrl
     if (isDirect && /\.(jpe?g|png)$/.test(url)) {
       const newUrl = new URL(url)
+      if (platform.isIOS) newUrl.protocol = 'http:'
       newUrl.host = window.p_pximg_ip
       downloadUrl = newUrl.href
       res = await Filesystem.downloadFile({
         url: downloadUrl,
         path: 'pixiv-viewer/' + fileName,
-        directory: Directory.Downloads,
+        directory: platform.isAndroid ? Directory.Downloads : Directory.Documents,
         recursive: true,
-        headers: { Host: 'i.pximg.net', Referer: 'https://www.pixiv.net' },
+        headers: platform.isIOS
+          ? ({ Referer: 'https://www.pixiv.net' })
+          : ({ Host: 'i.pximg.net', Referer: 'https://www.pixiv.net' }),
       })
     } else {
       downloadUrl = url
@@ -103,6 +107,29 @@ export async function downloadBlob(blob, fileName, subpath) {
 }
 
 export async function getPximgUri(url) {
+  return platform.isAndroid ? getPximgUriAndroid(url) : getPximgUriIOS(url)
+}
+
+export async function getPximgUriIOS(url) {
+  url.protocol = 'http:'
+  url.host = window.p_pximg_ip
+  const path = url.pathname.slice(1)
+  const directory = Directory.Cache
+  const stats = await Filesystem.stat({ path, directory }).catch(() => ({ uri: null }))
+  if (stats.uri) {
+    return Capacitor.convertFileSrc(stats.uri)
+  }
+  const res = await Filesystem.downloadFile({
+    url: url.href,
+    path,
+    directory,
+    recursive: true,
+    headers: { Referer: 'https://www.pixiv.net' },
+  })
+  return Capacitor.convertFileSrc(res.path)
+}
+
+export async function getPximgUriAndroid(url) {
   url.protocol = 'https:'
   url.host = window.p_pximg_ip
   const path = url.pathname.slice(1)
@@ -133,7 +160,7 @@ export async function getCacheSize() {
 }
 
 export async function clearImageCache() {
-  const directory = Directory.External
+  const directory = platform.isIOS ? Directory.Cache : Directory.External
   const { files } = await Filesystem.readdir({ path: '', directory })
   await Promise.all(files.map(async it => {
     if (it.type == 'directory') {
@@ -144,10 +171,14 @@ export async function clearImageCache() {
   }))
 }
 
-export function openAndroidSettings() {
-  NativeSettings.openAndroid({
-    option: AndroidSettings.ApplicationDetails,
-  })
+export function openAppSettings() {
+  platform.isIOS
+    ? NativeSettings.openIOS({
+      option: IOSSettings.App,
+    })
+    : NativeSettings.openAndroid({
+      option: AndroidSettings.ApplicationDetails,
+    })
 }
 
 export async function openFile(filePath) {
@@ -159,7 +190,7 @@ export function convertFileSrc(path) {
 }
 
 export async function readDlDir(path) {
-  const directory = Directory.Downloads
+  const directory = platform.isIOS ? Directory.Documents : Directory.Downloads
   const { files } = await Filesystem.readdir({ path, directory }).catch(() => ({ files: [] }))
   const res = await Promise.all(files.map(async it => {
     if (it.type == 'file') {

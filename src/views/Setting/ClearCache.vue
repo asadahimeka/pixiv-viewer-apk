@@ -33,7 +33,7 @@
       </template>
     </van-cell>
     <van-cell v-if="platform.isCapacitor" center :title="$t('ltKHIZm9mBZ8Dit_u8aW4')">
-      <template #label>
+      <template v-if="platform.isAndroid" #label>
         <span>{{ $t('cache.records', [size.imgCache[1]]) }} ~ {{ size.imgCache[0] | bytes }}</span>
       </template>
       <template #right-icon>
@@ -85,7 +85,7 @@ export default {
         (await navigator.storage.estimate()).usage,
         await localDb.length(),
       ]
-      if (platform.isCapacitor) {
+      if (platform.isAndroid) {
         const { getCacheSize } = await import('@/platform/capacitor/utils')
         this.size.imgCache = await getCacheSize()
       }
@@ -127,8 +127,8 @@ export default {
       })
     },
     async openSettings() {
-      const { openAndroidSettings } = await import('@/platform/capacitor/utils')
-      openAndroidSettings()
+      const { openAppSettings } = await import('@/platform/capacitor/utils')
+      openAppSettings()
     },
   },
 }
