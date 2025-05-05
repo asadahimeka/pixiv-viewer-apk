@@ -75,9 +75,7 @@
               <span v-if="isCurrentUser" class="follow" style="cursor: pointer;" @click="toFollowedUsers">
                 {{ $t('user.following') }}
                 <span class="num">
-                  <a :href="`https://www.pixiv.net/users/${userInfo.id}/following`" target="_blank" rel="noopener noreferrer">
-                    {{ userInfo.follow }}
-                  </a>
+                  <a>{{ userInfo.follow }}</a>
                 </span>
               </span>
               <span v-else class="follow">

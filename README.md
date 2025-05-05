@@ -194,6 +194,7 @@ This project uses [Vue I18n](https://kazupon.github.io/vue-i18n/) for translatio
 ### Projects
 - [HibiAPI](https://github.com/mixmoe/HibiAPI)
 - [PixivNow](https://github.com/FreeNowOrg/PixivNow)
+- [PixEz](https://github.com/Notsfsssf/pixez-flutter)
 
 ### Services
 - [Pixiv.cat](https://pixiv.re/)

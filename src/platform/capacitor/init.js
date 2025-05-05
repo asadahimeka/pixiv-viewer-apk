@@ -124,9 +124,12 @@ function setStatusBar() {
 
 function addCapListeners() {
   CapApp.addListener('backButton', ev => {
-    // todo: 检测fancybox是否打开
     if (!ev.canGoBack || history.length <= 1) {
       CapApp.exitApp()
+    } else if (document.querySelector('.comments-popup')) {
+      document.querySelector('.comments-popup .van-popup__close-icon')?.click()
+    } else if (document.querySelector('.fancybox__container')) {
+      document.querySelector('.fancybox__container .f-button[data-fancybox-close]')?.click()
     } else {
       router.back()
     }

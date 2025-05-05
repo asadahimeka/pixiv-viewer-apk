@@ -50,7 +50,8 @@ export default {
     },
   },
   activated() {
-    this.activeTab = this.$route.params?.tab || '1'
+    const act = this.$route.params?.tab
+    if (act) this.activeTab = act
   },
 }
 </script>

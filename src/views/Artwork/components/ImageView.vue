@@ -55,6 +55,7 @@
       <div v-if="ugoiraPlaying" class="btn-pause" @click="drawCanvas('pause')">
         <Icon class="pause" name="pause" scale="6" />
       </div>
+      <div v-else-if="progressShow" class="loading"></div>
       <div v-else class="btn-play" @click="playUgoira()">
         <Icon class="play" name="play" scale="6" />
       </div>
@@ -237,9 +238,9 @@ export default {
         }, {}),
       }
 
-      this.progressShow = true
-      nprogress.start()
       try {
+        this.progressShow = true
+        nprogress.start()
         const fetchFn = platform.isCapacitor ? window.CapacitorWebFetch : window.fetch
         const resp = await fetchFn(ugoira.zip, { headers: UA_Header })
         if (!resp.ok) throw new Error(this.$t('D8R2062pjASZe9mgvpeLr'))
@@ -592,6 +593,17 @@ export default {
       right: 16px;
       bottom: 16px;
       color: rgba(122, 172, 208, 0.9);
+    }
+
+    .loading {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      width: 6em;
+      height: 6em;
+      background: rgba(122, 172, 208, 0.45) url('~@/icons/loading.svg');
+      background-size: 100%;
+      border-radius 50%
     }
 
     .progress-bar {

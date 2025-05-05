@@ -47,6 +47,7 @@ function fallbackCopyTextToClipboard(text, cb, errCb) {
 
 export function copyText(text, cb, errCb) {
   try {
+    text = `${text}`
     if (platform.isCapacitor) {
       import('@/platform/capacitor/utils').then(util => {
         util.copyText(text, cb, errCb)
