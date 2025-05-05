@@ -704,6 +704,17 @@ html
     --nav-bar-height: var(--safe-area-bottom, 0px)
 
 .ios
+  .artwork .top-bar-wrap,
+  .users .top-bar-wrap
+    padding-top calc(0.2rem + var(--status-bar-height)) !important
+  .artwork .share_btn,
+  .artwork.novel .more_btn,
+  .users .share_btn
+    top: calc(0.35rem + var(--status-bar-height)) !important
+  .users:has(.van-sticky--fixed) .top-bar-wrap
+    padding-top calc(0.8rem + var(--status-bar-height)) !important
+  .users:has(.van-sticky--fixed) .share_btn
+    top: calc(1.45rem + var(--status-bar-height)) !important
   #app .nav-container
     margin-bottom: var(--nav-bar-height)
     &::after
@@ -714,12 +725,10 @@ html
       width 100%
       height var(--nav-bar-height)
       background white
-
   .dark #app
     .nav-container::after,
     .rank .top .cal-box
       background #161616
-
   .fancybox__toolbar
     bottom: var(--nav-bar-height)
 

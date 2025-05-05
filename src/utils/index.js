@@ -317,6 +317,7 @@ export function loadScript(src) {
 }
 
 export function isSafari() {
+  if (platform.isIOS) return true
   const ua = navigator.userAgent
   if (!/Chrome/i.test(ua) && /Safari/i.test(ua)) return true
   return false

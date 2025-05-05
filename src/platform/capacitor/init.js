@@ -174,7 +174,7 @@ function addCapListeners() {
 }
 
 async function setShortcuts() {
-  if (platform.isIOS) return
+  if (!platform.isAndroid) return
   try {
     if (LocalStorage.get('PXV_SHORTCUTS_SET')) {
       AndroidShortcuts.addListener('shortcut', res => {

@@ -64,7 +64,7 @@ const colors = [
   { name: 'Ena', color: '#CCAA88', cname: 'Ena' },
   { name: 'Mizuki', color: '#DDAACC', cname: 'Mizuki' },
 
-  { name: 'Amami ', color: '#e22b30' },
+  { name: 'Amami', color: '#e22b30' },
   { name: 'Chihaya', color: '#2743d2' },
   { name: 'Miki', color: '#b4e04b' },
   { name: 'Yukiho', color: '#d3dde9' },

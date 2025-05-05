@@ -26,6 +26,12 @@ importers:
       '@capacitor/device':
         specifier: 5.0.6
         version: 5.0.6(@capacitor/core@5.6.0)
+      '@capacitor/filesystem':
+        specifier: file:packages/capacitor-filesystem
+        version: '@himeka/capacitor-filesystem@file:packages/capacitor-filesystem(@capacitor/core@5.6.0)'
+      '@capacitor/ios':
+        specifier: 5.6.0
+        version: 5.6.0(@capacitor/core@5.6.0)
       '@capacitor/share':
         specifier: 5.0.6
         version: 5.0.6(@capacitor/core@5.6.0)
@@ -35,12 +41,6 @@ importers:
       '@capgo/capacitor-navigation-bar':
         specifier: 6.0.12
         version: 6.0.12(@capacitor/core@5.6.0)
-      '@himeka/capacitor-filesystem':
-        specifier: 5.1.2-alpha.2
-        version: 5.1.2-alpha.2(@capacitor/core@5.6.0)
-      '@himeka/capacitor-plugin-filedownload':
-        specifier: 1.0.6
-        version: 1.0.6(@capacitor/core@5.6.0)
       '@vant/touch-emulator':
         specifier: 1.4.0
         version: 1.4.0
@@ -55,10 +55,13 @@ importers:
         version: 5.0.5(@capacitor/core@5.6.0)
       capacitor-blob-writer:
         specifier: 1.1.14
-        version: 1.1.14(@capacitor/core@5.6.0)(@capacitor/filesystem@7.0.1(@capacitor/core@5.6.0))
+        version: 1.1.14(@capacitor/core@5.6.0)(@himeka/capacitor-filesystem@file:packages/capacitor-filesystem(@capacitor/core@5.6.0))
       capacitor-native-settings:
         specifier: 5.0.1
         version: 5.0.1(@capacitor/core@5.6.0)
+      capacitor-plugin-filedownload:
+        specifier: file:packages/capacitor-plugin-filedownload
+        version: '@himeka/capacitor-plugin-filedownload@file:packages/capacitor-plugin-filedownload(@capacitor/core@5.6.0)'
       capacitor-plugin-safe-area:
         specifier: 2.0.6
         version: 2.0.6(@capacitor/core@5.6.0)
@@ -745,10 +748,10 @@ packages:
     peerDependencies:
       '@capacitor/core': ^5.0.0
 
-  '@capacitor/filesystem@7.0.1':
-    resolution: {integrity: sha512-dxuKNLFoUejm7tBKkQPs1j7+BLpDh5JKPSVu7nT8jgCbA/KXt5FoCLiepfkjWkYfq60X0JNFzGnIquc5FPOLzQ==}
+  '@capacitor/ios@5.6.0':
+    resolution: {integrity: sha512-iswpOcD5us10hIF5zS4w6k/ekW0A+2pXhDV4AHOBXR4VOkOMI8QJaavgl9JvZ/NVvVNJdEN2rOKCMNh4AH08sw==}
     peerDependencies:
-      '@capacitor/core': '>=7.0.0'
+      '@capacitor/core': ^5.6.0
 
   '@capacitor/share@5.0.6':
     resolution: {integrity: sha512-/dVOW7kcuuD7hWB9Z1drArIpEk+5JCoMnMrAs2c7CLp3q5PeaXNJjTkGr6RJ1OtMhsHyXc6DAFwQ4frFkmZsgw==}
@@ -797,13 +800,13 @@ packages:
   '@hapi/topo@5.1.0':
     resolution: {integrity: sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==}
 
-  '@himeka/capacitor-filesystem@5.1.2-alpha.2':
-    resolution: {integrity: sha512-nnjN83g4VrRz7VxjurAGHFCXqGjjUrU6jQR3sr3y4sAycJdKYl1Ubu6NVqncCUBXBtU1FjCs+l9P5wSzjMHvfA==}
+  '@himeka/capacitor-filesystem@file:packages/capacitor-filesystem':
+    resolution: {directory: packages/capacitor-filesystem, type: directory}
     peerDependencies:
       '@capacitor/core': ^5.1.1
 
-  '@himeka/capacitor-plugin-filedownload@1.0.6':
-    resolution: {integrity: sha512-aqjQ84W/0tEWrFHONMXPgrRSu1MfFrPQCd0HVoqT4OnMRoP5vPUWThr72KkgVh1iwnlS9zKUfHuezrjMbmUCYw==}
+  '@himeka/capacitor-plugin-filedownload@file:packages/capacitor-plugin-filedownload':
+    resolution: {directory: packages/capacitor-plugin-filedownload, type: directory}
     peerDependencies:
       '@capacitor/core': ^5.0.0
 
@@ -1675,6 +1678,7 @@ packages:
 
   capacitor-blob-writer@1.1.14:
     resolution: {integrity: sha512-hSjvxUMQ0EpOm1cE5vLtgkfPYJx7xMKGQe0+zaXFMou1dQVcJaIgJN6OGgeNj/r+Ml8AQMrBbwJzE/0+uQV3eA==}
+    version: 1.1.14
     peerDependencies:
       '@capacitor/core': '>=3.0.0'
       '@capacitor/filesystem': '>=1.0.0'
@@ -6178,7 +6182,7 @@ snapshots:
     dependencies:
       '@capacitor/core': 5.6.0
 
-  '@capacitor/filesystem@7.0.1(@capacitor/core@5.6.0)':
+  '@capacitor/ios@5.6.0(@capacitor/core@5.6.0)':
     dependencies:
       '@capacitor/core': 5.6.0
 
@@ -6229,11 +6233,11 @@ snapshots:
     dependencies:
       '@hapi/hoek': 9.3.0
 
-  '@himeka/capacitor-filesystem@5.1.2-alpha.2(@capacitor/core@5.6.0)':
+  '@himeka/capacitor-filesystem@file:packages/capacitor-filesystem(@capacitor/core@5.6.0)':
     dependencies:
       '@capacitor/core': 5.6.0
 
-  '@himeka/capacitor-plugin-filedownload@1.0.6(@capacitor/core@5.6.0)':
+  '@himeka/capacitor-plugin-filedownload@file:packages/capacitor-plugin-filedownload(@capacitor/core@5.6.0)':
     dependencies:
       '@capacitor/core': 5.6.0
 
@@ -7525,10 +7529,10 @@ snapshots:
     dependencies:
       '@capacitor/core': 5.6.0
 
-  capacitor-blob-writer@1.1.14(@capacitor/core@5.6.0)(@capacitor/filesystem@7.0.1(@capacitor/core@5.6.0)):
+  capacitor-blob-writer@1.1.14(@capacitor/core@5.6.0)(@himeka/capacitor-filesystem@file:packages/capacitor-filesystem(@capacitor/core@5.6.0)):
     dependencies:
       '@capacitor/core': 5.6.0
-      '@capacitor/filesystem': 7.0.1(@capacitor/core@5.6.0)
+      '@capacitor/filesystem': '@himeka/capacitor-filesystem@file:packages/capacitor-filesystem(@capacitor/core@5.6.0)'
 
   capacitor-native-settings@5.0.1(@capacitor/core@5.6.0):
     dependencies:

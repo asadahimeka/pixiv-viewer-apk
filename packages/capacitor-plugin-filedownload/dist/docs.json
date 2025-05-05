@@ -1,0 +1,130 @@
+{
+  "api": {
+    "name": "FileDownloadPlugin",
+    "slug": "filedownloadplugin",
+    "docs": "",
+    "tags": [],
+    "methods": [
+      {
+        "name": "download",
+        "signature": "(options: FileDownloadOptions) => Promise<FileDownloadResponse>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "FileDownloadOptions"
+          }
+        ],
+        "returns": "Promise<FileDownloadResponse>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "FileDownloadResponse",
+          "FileDownloadOptions"
+        ],
+        "slug": "download"
+      },
+      {
+        "name": "addListener",
+        "signature": "(eventName: 'downloadProgress', listenerFunc: (progress: FileDownloadProgress) => void) => Promise<PluginListenerHandle> & PluginListenerHandle",
+        "parameters": [
+          {
+            "name": "eventName",
+            "docs": "",
+            "type": "'downloadProgress'"
+          },
+          {
+            "name": "listenerFunc",
+            "docs": "",
+            "type": "(progress: FileDownloadProgress) => void"
+          }
+        ],
+        "returns": "Promise<PluginListenerHandle> & PluginListenerHandle",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [
+          "PluginListenerHandle",
+          "FileDownloadProgress"
+        ],
+        "slug": "addlistenerdownloadprogress"
+      }
+    ],
+    "properties": []
+  },
+  "interfaces": [
+    {
+      "name": "FileDownloadResponse",
+      "slug": "filedownloadresponse",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "path",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "FileDownloadOptions",
+      "slug": "filedownloadoptions",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "uri",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "fileName",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "PluginListenerHandle",
+      "slug": "pluginlistenerhandle",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "remove",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "() => Promise<void>"
+        }
+      ]
+    },
+    {
+      "name": "FileDownloadProgress",
+      "slug": "filedownloadprogress",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "progress",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        }
+      ]
+    }
+  ],
+  "enums": [],
+  "typeAliases": [],
+  "pluginConfigs": []
+}
