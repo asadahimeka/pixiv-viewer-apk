@@ -34,7 +34,7 @@ export async function getSelectedSaveDir() {
   }
 }
 
-const baseDlDir = async () => LocalStorage.get('PXV_DL_DIR', await pictureDir())
+const baseDlDir = async () => LocalStorage.get('PXV_DL_DIR', `${await pictureDir()}${sep}pixiv-viewer`)
 export async function ensureDownloadDir(sub = '') {
   const dir = (await baseDlDir()) + (sub || '')
   const isExist = await fs.exists(dir)

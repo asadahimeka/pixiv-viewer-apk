@@ -27,25 +27,11 @@ jobs:
             args: ''
 
     runs-on: ${{ matrix.platform }}
-    env:
-      VUE_APP_DEF_HIBIAPI_MAIN: ${{ secrets.VUE_APP_DEF_HIBIAPI_MAIN }}
-      VUE_APP_PXIMG_PROXYS: ${{ secrets.VUE_APP_PXIMG_PROXYS }}
-      VUE_APP_DEF_PXIMG_MAIN: ${{ secrets.VUE_APP_DEF_PXIMG_MAIN }}
-      VUE_APP_HIBIAPI_ALTS: ${{ secrets.VUE_APP_HIBIAPI_ALTS }}
-      VUE_APP_DEF_APP_API_PROXY: ${{ secrets.VUE_APP_DEF_APP_API_PROXY }}
-      VUE_APP_APP_API_PROXYS: ${{ secrets.VUE_APP_APP_API_PROXYS }}
-      VUE_APP_COMMON_PROXY: ${{ secrets.VUE_APP_COMMON_PROXY }}
-      VUE_APP_UMAMI_ID: ${{ secrets.VUE_APP_UMAMI_ID }}
-      VUE_APP_UMAMI_SRC: ${{ secrets.VUE_APP_UMAMI_SRC }}
-      VUE_APP_PIXIV_NEXT_URL_ALTS: ${{ secrets.VUE_APP_PIXIV_NEXT_URL_ALTS }}
-      VUE_APP_SILICON_CLOUD_API_KEY: ${{ secrets.VUE_APP_SILICON_CLOUD_API_KEY }}
-      BROWSERSLIST_ENV: 'tauri'
-      VUE_APP_PLATFORM: 'tauri'
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: install dependencies (ubuntu only)
+      - name: Install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
         run: |
           sudo apt-get update
@@ -53,13 +39,13 @@ jobs:
         # libwebkit2gtk-4.0-dev is for Tauri v1 - libwebkit2gtk-4.1-dev is for Tauri v2.
         # You can remove the one that doesn't apply to your app to speed up the workflow a bit.
 
-      - name: setup node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           # cache: 'pnpm' # Set this to npm, yarn or pnpm.
 
-      - name: install Rust stable
+      - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
           # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
@@ -70,19 +56,41 @@ jobs:
         with:
           workspaces: './src-tauri -> target'
 
-      - name: install frontend dependencies
+      - name: Install frontend dependencies
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: |
           npm install -g pnpm
           pnpm install
         # change this to npm or pnpm depending on which one you use.
 
-      - uses: tauri-apps/tauri-action@v0
+      - name: Extract app name and version
+        id: app-info
+        run: |
+          NAME=$(node -p "require('./src-tauri/tauri.conf.json').package.productName || 'tauri-app'")
+          VERSION=$(node -p "require('./src-tauri/tauri.conf.json').package.version || '0.0.0'")
+          echo "APP_NAME=$NAME" >> $GITHUB_OUTPUT
+          echo "APP_VERSION=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Build Tauri app
+        uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VUE_APP_DEF_HIBIAPI_MAIN: ${{ secrets.VUE_APP_DEF_HIBIAPI_MAIN }}
+          VUE_APP_PXIMG_PROXYS: ${{ secrets.VUE_APP_PXIMG_PROXYS }}
+          VUE_APP_DEF_PXIMG_MAIN: ${{ secrets.VUE_APP_DEF_PXIMG_MAIN }}
+          VUE_APP_HIBIAPI_ALTS: ${{ secrets.VUE_APP_HIBIAPI_ALTS }}
+          VUE_APP_DEF_APP_API_PROXY: ${{ secrets.VUE_APP_DEF_APP_API_PROXY }}
+          VUE_APP_APP_API_PROXYS: ${{ secrets.VUE_APP_APP_API_PROXYS }}
+          VUE_APP_COMMON_PROXY: ${{ secrets.VUE_APP_COMMON_PROXY }}
+          VUE_APP_UMAMI_ID: ${{ secrets.VUE_APP_UMAMI_ID }}
+          VUE_APP_UMAMI_SRC: ${{ secrets.VUE_APP_UMAMI_SRC }}
+          VUE_APP_PIXIV_NEXT_URL_ALTS: ${{ secrets.VUE_APP_PIXIV_NEXT_URL_ALTS }}
+          VUE_APP_SILICON_CLOUD_API_KEY: ${{ secrets.VUE_APP_SILICON_CLOUD_API_KEY }}
+          BROWSERSLIST_ENV: 'tauri'
+          VUE_APP_PLATFORM: 'tauri'
         with:
           tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
-          releaseName: 'App v__VERSION__'
+          releaseName: 'v__VERSION__'
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: true
           prerelease: false

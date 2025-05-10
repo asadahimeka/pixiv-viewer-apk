@@ -9,21 +9,6 @@ jobs:
   build-android:
     name: Build Android APK
     runs-on: ubuntu-latest
-    env:
-      VUE_APP_DEF_HIBIAPI_MAIN: ${{ secrets.VUE_APP_DEF_HIBIAPI_MAIN }}
-      VUE_APP_PXIMG_PROXYS: ${{ secrets.VUE_APP_PXIMG_PROXYS }}
-      VUE_APP_DEF_PXIMG_MAIN: ${{ secrets.VUE_APP_DEF_PXIMG_MAIN }}
-      VUE_APP_HIBIAPI_ALTS: ${{ secrets.VUE_APP_HIBIAPI_ALTS }}
-      VUE_APP_DEF_APP_API_PROXY: ${{ secrets.VUE_APP_DEF_APP_API_PROXY }}
-      VUE_APP_APP_API_PROXYS: ${{ secrets.VUE_APP_APP_API_PROXYS }}
-      VUE_APP_COMMON_PROXY: ${{ secrets.VUE_APP_COMMON_PROXY }}
-      VUE_APP_UMAMI_ID: ${{ secrets.VUE_APP_UMAMI_ID }}
-      VUE_APP_UMAMI_SRC: ${{ secrets.VUE_APP_UMAMI_SRC }}
-      VUE_APP_PIXIV_NEXT_URL_ALTS: ${{ secrets.VUE_APP_PIXIV_NEXT_URL_ALTS }}
-      VUE_APP_SILICON_CLOUD_API_KEY: ${{ secrets.VUE_APP_SILICON_CLOUD_API_KEY }}
-      BROWSERSLIST_ENV: 'capacitor'
-      VUE_APP_PLATFORM: 'android'
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -40,6 +25,20 @@ jobs:
 
       - name: Build frontend
         run: npm run build:web
+        env:
+          VUE_APP_DEF_HIBIAPI_MAIN: ${{ secrets.VUE_APP_DEF_HIBIAPI_MAIN }}
+          VUE_APP_PXIMG_PROXYS: ${{ secrets.VUE_APP_PXIMG_PROXYS }}
+          VUE_APP_DEF_PXIMG_MAIN: ${{ secrets.VUE_APP_DEF_PXIMG_MAIN }}
+          VUE_APP_HIBIAPI_ALTS: ${{ secrets.VUE_APP_HIBIAPI_ALTS }}
+          VUE_APP_DEF_APP_API_PROXY: ${{ secrets.VUE_APP_DEF_APP_API_PROXY }}
+          VUE_APP_APP_API_PROXYS: ${{ secrets.VUE_APP_APP_API_PROXYS }}
+          VUE_APP_COMMON_PROXY: ${{ secrets.VUE_APP_COMMON_PROXY }}
+          VUE_APP_UMAMI_ID: ${{ secrets.VUE_APP_UMAMI_ID }}
+          VUE_APP_UMAMI_SRC: ${{ secrets.VUE_APP_UMAMI_SRC }}
+          VUE_APP_PIXIV_NEXT_URL_ALTS: ${{ secrets.VUE_APP_PIXIV_NEXT_URL_ALTS }}
+          VUE_APP_SILICON_CLOUD_API_KEY: ${{ secrets.VUE_APP_SILICON_CLOUD_API_KEY }}
+          BROWSERSLIST_ENV: 'capacitor'
+          VUE_APP_PLATFORM: 'android'
 
       - name: Sync Capacitor
         run: npx cap sync android
@@ -71,21 +70,6 @@ jobs:
     name: Build iOS IPA (Unsigned)
     runs-on: macos-latest
     needs: build-android  # 等待安卓构建完成
-    env:
-      VUE_APP_DEF_HIBIAPI_MAIN: ${{ secrets.VUE_APP_DEF_HIBIAPI_MAIN }}
-      VUE_APP_PXIMG_PROXYS: ${{ secrets.VUE_APP_PXIMG_PROXYS }}
-      VUE_APP_DEF_PXIMG_MAIN: ${{ secrets.VUE_APP_DEF_PXIMG_MAIN }}
-      VUE_APP_HIBIAPI_ALTS: ${{ secrets.VUE_APP_HIBIAPI_ALTS }}
-      VUE_APP_DEF_APP_API_PROXY: ${{ secrets.VUE_APP_DEF_APP_API_PROXY }}
-      VUE_APP_APP_API_PROXYS: ${{ secrets.VUE_APP_APP_API_PROXYS }}
-      VUE_APP_COMMON_PROXY: ${{ secrets.VUE_APP_COMMON_PROXY }}
-      VUE_APP_UMAMI_ID: ${{ secrets.VUE_APP_UMAMI_ID }}
-      VUE_APP_UMAMI_SRC: ${{ secrets.VUE_APP_UMAMI_SRC }}
-      VUE_APP_PIXIV_NEXT_URL_ALTS: ${{ secrets.VUE_APP_PIXIV_NEXT_URL_ALTS }}
-      VUE_APP_SILICON_CLOUD_API_KEY: ${{ secrets.VUE_APP_SILICON_CLOUD_API_KEY }}
-      BROWSERSLIST_ENV: 'capacitor'
-      VUE_APP_PLATFORM: 'ios'
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -102,6 +86,20 @@ jobs:
 
       - name: Build frontend
         run: npm run build:web
+        env:
+          VUE_APP_DEF_HIBIAPI_MAIN: ${{ secrets.VUE_APP_DEF_HIBIAPI_MAIN }}
+          VUE_APP_PXIMG_PROXYS: ${{ secrets.VUE_APP_PXIMG_PROXYS }}
+          VUE_APP_DEF_PXIMG_MAIN: ${{ secrets.VUE_APP_DEF_PXIMG_MAIN }}
+          VUE_APP_HIBIAPI_ALTS: ${{ secrets.VUE_APP_HIBIAPI_ALTS }}
+          VUE_APP_DEF_APP_API_PROXY: ${{ secrets.VUE_APP_DEF_APP_API_PROXY }}
+          VUE_APP_APP_API_PROXYS: ${{ secrets.VUE_APP_APP_API_PROXYS }}
+          VUE_APP_COMMON_PROXY: ${{ secrets.VUE_APP_COMMON_PROXY }}
+          VUE_APP_UMAMI_ID: ${{ secrets.VUE_APP_UMAMI_ID }}
+          VUE_APP_UMAMI_SRC: ${{ secrets.VUE_APP_UMAMI_SRC }}
+          VUE_APP_PIXIV_NEXT_URL_ALTS: ${{ secrets.VUE_APP_PIXIV_NEXT_URL_ALTS }}
+          VUE_APP_SILICON_CLOUD_API_KEY: ${{ secrets.VUE_APP_SILICON_CLOUD_API_KEY }}
+          BROWSERSLIST_ENV: 'capacitor'
+          VUE_APP_PLATFORM: 'ios'
 
       - name: Sync Capacitor
         run: npx cap sync ios
@@ -122,18 +120,29 @@ jobs:
             -archivePath $PWD/build/App.xcarchive \
             archive CODE_SIGNING_ALLOWED=NO
 
-      - name: Export IPA (unsigned)
+      - name: List archive contents
+        run: ls -R ios/App/build/App.xcarchive
+
+      - name: Package App.app into IPA manually
         run: |
-          cd ios/App
-          xcodebuild \
-            -exportArchive \
-            -archivePath $PWD/build/App.xcarchive \
-            -exportPath $PWD/build/export \
-            -exportOptionsPlist exportOptions.plist \
-            CODE_SIGNING_ALLOWED=NO
+          cd ios/App/build
+          mkdir -p Payload
+          cp -R App.xcarchive/Products/Applications/App.app Payload/
+          zip -r App.ipa Payload
+
+      # - name: Export IPA (unsigned)
+      #   run: |
+      #     cd ios/App
+      #     xcodebuild \
+      #       -exportArchive \
+      #       -archivePath $PWD/build/App.xcarchive \
+      #       -exportPath $PWD/build/export \
+      #       -exportOptionsPlist exportOptions.plist \
+      #       CODE_SIGNING_ALLOWED=NO
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
           name: ios-app-unsigned.ipa
-          path: ios/App/build/export/*.ipa
+          # path: ios/App/build/export/*.ipa
+          path: ios/App/build/App.ipa
