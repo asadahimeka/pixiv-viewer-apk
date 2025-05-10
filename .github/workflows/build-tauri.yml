@@ -10,7 +10,43 @@ on:
   workflow_dispatch:  # 允许手动触发
 
 jobs:
-  publish-tauri:
+  create-release:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    outputs:
+      release_id: ${{ steps.create-release.outputs.result }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Get Version
+        run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+
+      - name: Create Release
+        id: create-release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data } = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: `v${process.env.PACKAGE_VERSION}`,
+              name: `v${process.env.PACKAGE_VERSION}`,
+              body: 'Take a look at the assets to download and install this app.',
+              draft: true,
+              prerelease: false
+            })
+            return data.id
+
+  build-tauri:
+    needs: create-release
     permissions:
       contents: write
     strategy:
@@ -28,7 +64,7 @@ jobs:
 
     runs-on: ${{ matrix.platform }}
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Install dependencies (ubuntu only)
@@ -63,14 +99,6 @@ jobs:
           pnpm install
         # change this to npm or pnpm depending on which one you use.
 
-      - name: Extract app name and version
-        id: app-info
-        run: |
-          NAME=$(node -p "require('./src-tauri/tauri.conf.json').package.productName || 'tauri-app'")
-          VERSION=$(node -p "require('./src-tauri/tauri.conf.json').package.version || '0.0.0'")
-          echo "APP_NAME=$NAME" >> $GITHUB_OUTPUT
-          echo "APP_VERSION=$VERSION" >> $GITHUB_OUTPUT
-
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
         env:
@@ -89,9 +117,32 @@ jobs:
           BROWSERSLIST_ENV: 'tauri'
           VUE_APP_PLATFORM: 'tauri'
         with:
-          tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
-          releaseName: 'v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
-          releaseDraft: true
-          prerelease: false
+          # tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
+          # releaseName: 'v__VERSION__'
+          # releaseBody: 'See the assets to download this version and install.'
+          # releaseDraft: true
+          # prerelease: false
+          releaseId: ${{ needs.create-release.outputs.release_id }}
           args: ${{ matrix.args }}
+
+  # publish-release:
+  #   permissions:
+  #     contents: write
+  #   runs-on: ubuntu-latest
+  #   needs: [create-release, build-tauri]
+
+  #   steps:
+  #     - name: Publish Release
+  #       id: publish-release
+  #       uses: actions/github-script@v6
+  #       env:
+  #         release_id: ${{ needs.create-release.outputs.release_id }}
+  #       with:
+  #         script: |
+  #           github.rest.repos.updateRelease({
+  #             owner: context.repo.owner,
+  #             repo: context.repo.repo,
+  #             release_id: process.env.release_id,
+  #             draft: false,
+  #             prerelease: false
+  #           })
