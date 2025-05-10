@@ -2,6 +2,7 @@
   <div class="rank">
     <div class="top">
       <van-popover
+        v-if="showRankCat"
         v-model="showRankCat"
         placement="bottom-start"
         theme="dark"
@@ -13,23 +14,31 @@
           <div class="com_sel_tab" style="margin-right: 2px;">{{ rankCatLabels[actRankCat] }}</div>
         </template>
       </van-popover>
+      <span v-else>
+        <div class="com_sel_tab" style="margin-right: 2px;" @click="showRankCat = true">{{ rankCatLabels[actRankCat] }}</div>
+      </span>
       <div class="nav_divi"></div>
       <RankNav :menu="menu" />
-      <van-popover
-        v-if="showFilterFavsBtn"
-        v-model="showFilterFavsPop"
-        placement="bottom-end"
-        theme="dark"
-        trigger="click"
-      >
-        <div class="filter-favs-actions">
-          <span @click="isFilterFavs=!isFilterFavs">{{ isFilterFavs ? $t('hHPMdWCYd_B2r9F0icW5Y') : $t('KS3utA342Q7yr0mOFARV-') }}</span>
-          <span @click="isHideManga=!isHideManga">{{ isHideManga ? $t('KBTp7zyXO4ckXvh14iu0K') : $t('1VVoNDWxcoBn236bEV-_H') }}</span>
-        </div>
-        <template #reference>
-          <van-icon name="filter-o" class="filter-favs-icon" />
-        </template>
-      </van-popover>
+      <template v-if="showFilterFavsBtn">
+        <van-popover
+          v-if="showFilterFavsPop"
+          v-model="showFilterFavsPop"
+          placement="bottom-end"
+          theme="dark"
+          trigger="click"
+        >
+          <div class="filter-favs-actions">
+            <span @click="isFilterFavs=!isFilterFavs">{{ isFilterFavs ? $t('hHPMdWCYd_B2r9F0icW5Y') : $t('KS3utA342Q7yr0mOFARV-') }}</span>
+            <span @click="isHideManga=!isHideManga">{{ isHideManga ? $t('KBTp7zyXO4ckXvh14iu0K') : $t('1VVoNDWxcoBn236bEV-_H') }}</span>
+          </div>
+          <template #reference>
+            <van-icon name="filter-o" class="filter-favs-icon" />
+          </template>
+        </van-popover>
+        <span v-else>
+          <van-icon name="filter-o" class="filter-favs-icon" @click="showFilterFavsPop = true" />
+        </span>
+      </template>
       <span style="display: inline-block;cursor: pointer;">
         <div class="calendar" @click="isDatePickerShow = true">
           <div class="date">{{ dateNum }}</div>

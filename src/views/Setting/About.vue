@@ -113,7 +113,6 @@
 <script>
 import { Dialog } from 'vant'
 import { CURRENT_APP_VERSION } from '@/consts'
-import { getDeviceInfo, getAppInfo } from '@/platform/capacitor/version'
 import platform from '@/platform'
 
 export default {
@@ -131,6 +130,7 @@ export default {
   },
   async created() {
     if (platform.isCapacitor) {
+      const { getDeviceInfo, getAppInfo } = await import('@/platform/capacitor/version')
       this.wvVersion = (await getDeviceInfo()).webViewVersion
       this.appInfo = await getAppInfo()
     }

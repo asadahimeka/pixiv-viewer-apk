@@ -172,6 +172,11 @@
     .Following .van-tabs__nav
       backdrop-filter none
 
+  &.tauri body:not(.dark) .search .search_params
+    &+.result-list,
+    &+.rank-card
+      padding-top 1.4rem !important
+
   @media screen and (max-width: 600px)
     body:not(.dark)
       .setting,.setting-page

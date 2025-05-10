@@ -156,7 +156,7 @@ function addCapListeners() {
       return
     }
 
-    const code = url.match(/^pixiv:\/\/account\/login\?code=(\w+)/i)?.[1]
+    const code = new URL(url).searchParams.get('code')
     if (!code) return
 
     try {

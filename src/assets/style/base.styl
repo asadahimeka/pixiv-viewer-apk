@@ -154,25 +154,26 @@ code
 .van-image-preview__close-icon--top-right
   top 1rem
 
-.fancybox__nav
-  display none
-.fancybox__infobar
-  line-height 30PX
-  text-shadow 0.02667rem 0.05333rem 0.05333rem rgba(0,0,0,0.8)
-.fancybox__toolbar__column.is-right
-  display none
-.fancybox__toolbar
-  position absolute
-  bottom 0
-  left 50%
-  transform translateX(-50%)
-  align-items center
-  width 100%
-  .f-button
-    background transparent
-    color  #fff
-    svg
-      filter: drop-shadow(0.02667rem 0.05333rem 0.05333rem rgba(0,0,0,0.8))
+.android,.ios
+  .fancybox__nav
+    display none
+  .fancybox__infobar
+    line-height 30PX
+    text-shadow 0.02667rem 0.05333rem 0.05333rem rgba(0,0,0,0.8)
+  .fancybox__toolbar__column.is-right
+    display none
+  .fancybox__toolbar
+    position absolute
+    bottom 0
+    left 50%
+    transform translateX(-50%)
+    align-items center
+    width 100%
+    .f-button
+      background transparent
+      color  #fff
+      svg
+        filter: drop-shadow(0.02667rem 0.05333rem 0.05333rem rgba(0,0,0,0.8))
 
 .swiper-container
   --swiper-theme-color: #fcb93e
@@ -695,8 +696,8 @@ html.dark
   padding-top 0 !important
 
 html
-  --status-bar-height: 0px
-  --nav-bar-height: 0px
+  --status-bar-height: 0PX
+  --nav-bar-height: 0PX
   padding-top var(--status-bar-height)
   &.android,
   &.ios
@@ -872,6 +873,22 @@ html:has(.novel_text) #immersive-translate-popup
 #app .users .info-container .info .share_btn
   display none
 @media screen and (min-width: 1280px)
+  #app
+    .nav-bar .nav_to_top,
+    .nav-bar .nav_back
+      display list-item
+    .nav-bar .nav_to_top
+      position absolute
+      bottom 1.3rem
+    .nav-bar .nav_setting
+      position absolute
+      bottom 0.4rem
+      margin-bottom 0 !important
+    .nav-bar .nav_back
+      position absolute
+      top  0.4rem
+    .top-bar-wrap
+      display none
   #app .users
     .van-tabs__nav
       padding-left 5vw

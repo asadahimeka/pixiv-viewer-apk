@@ -49,8 +49,14 @@ export function copyText(text, cb, errCb) {
   try {
     text = `${text}`
     if (platform.isCapacitor) {
-      import('@/platform/capacitor/utils').then(util => {
-        util.copyText(text, cb, errCb)
+      import('@/platform/capacitor/utils').then(({ copyText }) => {
+        copyText(text, cb, errCb)
+      })
+      return
+    }
+    if (platform.isTauri) {
+      import('@/platform/tauri/utils').then(({ copyText }) => {
+        copyText(text, cb, errCb)
       })
       return
     }
@@ -184,6 +190,15 @@ export async function downloadFile(source, fileName, options = {}) {
 
     if (platform.isCapacitor) {
       const util = await import('@/platform/capacitor/utils')
+      const result = source instanceof Blob
+        ? await util.downloadBlob(source, fileName, options.subDir)
+        : await util.downloadFile(source, fileName, options.subDir)
+      if (result.error) throw new Error(result.error)
+      return result
+    }
+
+    if (platform.isTauri) {
+      const util = await import('@/platform/tauri/utils')
       const result = source instanceof Blob
         ? await util.downloadBlob(source, fileName, options.subDir)
         : await util.downloadFile(source, fileName, options.subDir)

@@ -7,4 +7,7 @@ async function setupApp() {
   if (platform.isCapacitor) {
     await import('@/platform/capacitor/init')
   }
+  if (platform.isTauri) {
+    await import('@/platform/tauri/init')
+  }
 }

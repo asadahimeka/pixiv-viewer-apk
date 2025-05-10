@@ -39,7 +39,7 @@
           <van-switch :value="appConfig.useApiProxy" :disabled="appConfig.directMode" size="24" @change="setUseApiProxy" />
         </div>
       </van-cell>
-      <van-cell>
+      <van-cell v-if="platform.isAndroid">
         <div class="flex">
           <span style="margin-right: 0.3rem">{{ $t('setting.other.direct_mode.title') }}</span>
           <van-switch :value="appConfig.directMode" :disabled="appConfig.useApiProxy" size="24" @change="setDirectMode" />
@@ -50,10 +50,11 @@
 </template>
 
 <script>
-import { getLoginURL } from '@/api/client/login'
-import PixivAuth from '@/api/client/pixiv-auth'
-import { LocalStorage } from '@/utils/storage'
 import { Dialog } from 'vant'
+import platform from '@/platform'
+import PixivAuth from '@/api/client/pixiv-auth'
+import { getLoginURL } from '@/api/client/login'
+import { LocalStorage } from '@/utils/storage'
 
 export default {
   name: 'Login',
@@ -62,6 +63,7 @@ export default {
       appConfig: { ...window.APP_CONFIG },
       showConfirmDialog: false,
       showTokenDialog: false,
+      platform,
     }
   },
   head() {

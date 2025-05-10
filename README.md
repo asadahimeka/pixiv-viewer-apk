@@ -19,6 +19,63 @@
 
 **Download:** ⏬ [GitHub Releases](https://github.com/asadahimeka/pixiv-viewer-app/releases)
 
+<table class="is-fullwidth">
+  <tr>
+    <td>Android</td>
+    <td>
+      <a href="https://github.com/asadahimeka/pixiv-viewer/releases/download/v1.17.5/Pixiv-Viewer_1.17.5_android.apk">
+        💿 Installer
+      </a>
+    </td>
+    <td>Packaged via Capacitor</td>
+  </tr>
+  <tr>
+    <td>iOS</td>
+    <td>
+      <a href="https://github.com/asadahimeka/pixiv-viewer/releases/download/v1.17.5/Pixiv-Viewer_1.17.5_ios_no_sign.ipa">
+        💿 Installer
+      </a>
+    </td>
+    <td>Packaged via Capacitor</td>
+  </tr>
+  <tr>
+    <td>Windows</td>
+    <td>
+      <a href="https://github.com/asadahimeka/pixiv-viewer/releases/download/v1.17.5/Pixiv-Viewer_1.17.5_windows_x64_setup.exe">
+        💿 Installer
+      </a>&nbsp;|
+      <a href="https://github.com/asadahimeka/pixiv-viewer/releases/download/v1.17.5/Pixiv-Viewer_1.17.5_windows_x64_portable.exe">
+        📦 Executable
+      </a>
+    </td>
+    <td>Packaged via Tauri</td>
+  </tr>
+  <tr>
+    <td>macOS</td>
+    <td>
+      <a href="https://github.com/asadahimeka/pixiv-viewer/releases/download/v1.17.5/Pixiv-Viewer_1.17.5_macos_universal_setup.dmg">
+        💿 Installer
+      </a>&nbsp;|
+      <a href="https://github.com/asadahimeka/pixiv-viewer/releases/download/v1.17.5/Pixiv-Viewer_1.17.5_macos_universal_portable.app.zip">
+        📦 Executable
+      </a>
+    </td>
+    <td>Packaged via Tauri</td>
+  </tr>
+  <tr>
+    <td>Windows</td>
+    <td>
+      <a href="https://github.com/asadahimeka/pixiv-viewer/releases/download/v1.17.5/Pixiv-Viewer_1.10.7_windows_x64_setup.exe">
+        💿 Installer
+      </a>&nbsp;|
+      <a href="https://github.com/asadahimeka/pixiv-viewer/releases/download/v1.17.5/Pixiv-Viewer_1.10.7_windows_x64_portable.7z">
+        📦 Executable
+      </a>
+    </td>
+    <td>Packaged via Electron</td>
+  </tr>
+</table>
+
 ## Features
 - [x] Home
   - [x] Illustrations/Mangas/Novels/Live Streams
@@ -86,56 +143,11 @@ https://github.com/asadahimeka/pixiv-viewer/discussions
 
 <kbd><img src="https://raw.githubusercontent.com/asadahimeka/pixiv-viewer/master/docs/ea3.jpg" width="390"></kbd>  <kbd><img src="https://raw.githubusercontent.com/asadahimeka/pixiv-viewer/master/docs/ea4.jpg" width="390"></kbd>
 
-## Alternatives
+## Sponsor
 
-- [Pixiviz](https://pixiviz.cocomi.eu.org/)
-- [Pixivel](https://pxelk.cocomi.eu.org/)
-- [PixivNow](https://pxnow.cocomi.eu.org/)
-- [PixivMoe](https://pixivmoe.cocomi.eu.org/)
-- [PixivLxns](https://pixivlxns.cocomi.eu.org/)
-- [pixivic](https://pixivic.com)
-- [vilipix](https://www.vilipix.com/ranking)
-- [moeview](https://moeview.cocomi.eu.org/)
-- [booruwf](https://booru.cocomi.eu.org/)
-- [RankTop50](https://www.nanoka.top/illust/pixiv/)
+If you find this project helpful, feel free to buy me a coffee:
 
-## Project Setup
-```sh
-pnpm install
-```
-
-### Compile and Hot-reload for Development
-```sh
-pnpm serve
-```
-
-### Compile and Minify for Production
-```sh
-pnpm build:web
-```
-
-### Lint and Fix Files
-```sh
-pnpm lint
-```
-
-### Customize Configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-## Created with Capacitor Create App
-
-This app was created using [`@capacitor/create-app`](https://github.com/ionic-team/create-capacitor-app),
-and comes with a very minimal shell for building an app.
-
-### Running this example
-
-To run the provided example, you can use the following command.
-
-```bash
-pnpm build:and && pnpm cap:open:and
-# OR
-pnpm build:and && pnpm cap:run:and
-```
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/sakurayumine)
 
 ## FAQ
 
@@ -180,7 +192,7 @@ Go to the system settings to give this application storage permissions, or downl
 
 ## Contribute
 
-This project uses [Vue I18n](https://kazupon.github.io/vue-i18n/) for translations. Non-Chinese language translations are mainly from machine translation, if you find errors, feel free to [contribute a translation](https://github.com/asadahimeka/pixiv-viewer/tree/master/src/locales).
+This project uses [Vue I18n](https://kazupon.github.io/vue-i18n/) for translations. Non-Chinese language translations are mainly from machine translation, if you find errors, feel free to [contribute a translation](https://github.com/asadahimeka/pixiv-viewer-app/tree/master/src/locales).
 
 ## Credits
 
@@ -192,15 +204,13 @@ This project uses [Vue I18n](https://kazupon.github.io/vue-i18n/) for translatio
 - [@olivertzeng](https://github.com/olivertzeng): Traditional Chinese translation
 
 ### Projects
-- [HibiAPI](https://github.com/mixmoe/HibiAPI)
-- [PixivNow](https://github.com/FreeNowOrg/PixivNow)
-- [PixEz](https://github.com/Notsfsssf/pixez-flutter)
+- [HibiAPI](https://github.com/mixmoe/HibiAPI): Provide most Pixiv App API support
+- [PixivNow](https://github.com/FreeNowOrg/PixivNow): Provide partial support for Pixiv Web API.
+- [PixEz](https://github.com/Notsfsssf/pixez-flutter): Direct connect mode logic reference.
 
 ### Services
-- [Pixiv.cat](https://pixiv.re/)
-- [SauceNAO](https://saucenao.com/)
-- [Cloudflare Workers](https://workers.cloudflare.com/)
-- [Netlify](https://netlify.com/)
+- [Pixiv.cat](https://pixiv.re/): Pximg proxy service
+- [SauceNAO](https://saucenao.com/): Image search service
 
 ### Developing
 - [Vue](https://vuejs.org/)

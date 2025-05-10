@@ -26,11 +26,16 @@ export default {
     document.querySelector('#ldio-loading')?.remove()
     if (store.state.appSetting.isAutoLoadImt) loadImtSdk(true)
     if (platform.isCapacitor) (await import('@/platform/capacitor/mounted')).onMounted()
+    if (platform.isTauri) (await import('@/platform/tauri/mounted')).onMounted()
   },
 }
 </script>
 
 <style>
+html.tauri {
+  --status-bar-height: 0PX !important;
+  --nav-bar-height: 0PX !important;
+}
 .with-body-bg.custom_theme body:not(.dark) .shrink::after {
   --color: color-mix(in srgb, var(--accent-color), white 90%);
   background: linear-gradient(to top, var(--color), rgba(255, 255, 255, 0));
@@ -198,7 +203,7 @@ html,body
       top 0
       left 0
       right unset
-      z-index 9999
+      z-index 999
       width 1.2rem
       height 100vh
       opacity 1

@@ -28,6 +28,7 @@ import CryptoJS from 'crypto-js'
 import qs from 'qs'
 import axios from 'axios'
 import dayjs from 'dayjs'
+import platform from '@/platform'
 import { LocalStorage } from '@/utils/storage'
 import { i18n } from '@/i18n'
 
@@ -45,6 +46,12 @@ const DEFAULT_HEADERS = {
   'App-Version': '6.140.1',
   'Accept-Language': i18n.locale || 'zh-CN',
   'User-Agent': 'PixivAndroidApp/6.140.1 (Android 14.0; Pixel 8)',
+}
+
+const getClient = async () => {
+  if (!platform.isTauri) return axios
+  const { default: adapter } = await import('@/platform/tauri/axios-tauri-adapter')
+  return axios.create({ adapter })
 }
 
 function callApi(url, options) {
@@ -68,16 +75,18 @@ function callApi(url, options) {
   console.log('callApi Url: ', finalUrl)
   console.log('callApi options: ', options)
 
-  return axios(finalUrl, options).then(res => {
-    console.log('callApi res: ', res)
-    return res.data
-  }).catch(async err => {
-    console.log('callApi err: ', err)
-    if (err.response) {
-      throw err.response.data
-    } else {
-      throw err.message
-    }
+  return getClient().then(client => {
+    return client(finalUrl, options).then(res => {
+      console.log('callApi res: ', res)
+      return res.data
+    }).catch(async err => {
+      console.log('callApi err: ', err)
+      if (err.response) {
+        throw err.response.data
+      } else {
+        throw (err.message || err)
+      }
+    })
   })
 }
 

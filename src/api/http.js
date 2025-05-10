@@ -1,12 +1,16 @@
 import axios from 'axios'
 import nprogress from 'nprogress'
 import { BASE_API_URL, UA_Header } from '@/consts'
+import platform from '@/platform'
 
 axios.defaults.baseURL = BASE_API_URL
 axios.defaults.timeout = 20000
 axios.defaults.headers.post['Content-Type'] = 'application/json'
-axios.defaults.headers.common['User-Agent'] = UA_Header['User-Agent']
-axios.defaults.headers.common.Origin = 'https://localhost'
+
+if (platform.isCapacitor) {
+  axios.defaults.headers.common['User-Agent'] = UA_Header['User-Agent']
+  axios.defaults.headers.common.Origin = 'https://localhost'
+}
 
 axios.interceptors.request.use(config => {
   nprogress.start()
@@ -25,8 +29,7 @@ axios.interceptors.response.use(
 )
 
 const get = async (url, params = {}, config = {}) => {
-  console.log('url: ', url)
-  console.log('params: ', params)
+  console.log('=== get: ', url, params)
   try {
     let res
     if (/^\/(?!prks).*/.test(url) && window.APP_CONFIG.useLocalAppApi) {
@@ -35,9 +38,10 @@ const get = async (url, params = {}, config = {}) => {
       res = (await axios.get(url, { params, ...config })).data
     }
 
+    console.log('=== get res: ', res)
     return res
   } catch (error) {
-    console.error(error)
+    console.error('=== get error: ', error)
     return { error }
   }
 }

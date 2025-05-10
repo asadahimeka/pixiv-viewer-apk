@@ -1,3 +1,5 @@
+import { openUrl } from './utils'
+
 /* Safari and Edge polyfill for createImageBitmap
  * https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap
  */
@@ -15,4 +17,8 @@ if (!('createImageBitmap' in window)) {
       img.src = URL.createObjectURL(blob)
     })
   }
+}
+
+window.open = function (url) {
+  openUrl(url)
 }

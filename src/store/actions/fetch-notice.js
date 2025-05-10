@@ -3,10 +3,11 @@ import _ from '@/lib/lodash'
 import dayjs from 'dayjs'
 import store from '@/store'
 import { UA_Header } from '@/consts'
+import platform from '@/platform'
 
 async function fetchAppNotice(notices) {
   const today = dayjs().startOf('day')
-  const notice = notices.filter(e => e.pnt.length == 0 || e.pnt.includes('web') || e.pnt.includes(location.hostname)).find(e =>
+  const notice = notices.filter(e => e.pnt.length == 0 || e.pnt.includes(platform.current)).find(e =>
     today.isAfter(dayjs(e.start).startOf('day') - 1) &&
     today.isBefore(dayjs(e.end).endOf('day'))
   )

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Pixiv-Viewer",
+  "mainBinaryName": "Pixiv-Viewer",
+  "version": "1.25.5",
+  "identifier": "org.eu.cocomi.pxvek",
+  "build": {
+    "beforeBuildCommand": "npm run build:web:tauri",
+    "beforeDevCommand": "npm run dev:web:tauri",
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:8080"
+  },
+  "bundle": {
+    "active": true,
+    "publisher": "Yumine Sakura",
+    "copyright": "Copyright © 2024 Yumine Sakura",
+    "category": "Entertainment",
+    "shortDescription": "又一个 Pixiv 阅览工具",
+    "longDescription": "又一个 Pixiv 阅览工具，提供 Pixiv 插画、漫画、小说等作品的在线浏览。",
+    "targets": "all",
+    "externalBin": [],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
+    },
+    "macOS": {
+      "entitlements": null,
+      "exceptionDomain": "",
+      "frameworks": [],
+      "providerShortName": null,
+      "signingIdentity": null
+    },
+    "resources": [],
+    "linux": {
+      "deb": {
+        "depends": []
+      }
+    }
+  },
+  "plugins": {
+    "deep-link": {
+      "desktop": {
+        "schemes": ["pixiv"]
+      }
+    }
+  },
+  "app": {
+    "withGlobalTauri": false,
+    "windows": [
+      {
+        "title": "Pixiv Viewer",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 375,
+        "minHeight": 600,
+        "fullscreen": false,
+        "resizable": true,
+        "center": true,
+        "useHttpsScheme": true
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  }
+}

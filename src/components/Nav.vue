@@ -39,15 +39,16 @@
         <van-icon v-if="isDark" :class="{ active: isActive('Following') }" name="star-o" />
         <span>{{ $t('nav.follow') }}</span>
       </li>
-      <li @click="navigateTo('Setting')">
+      <li class="nav_setting" @click="navigateTo('Setting')">
         <Icon class="icon" name="setting" index="Setting" :current-index="$route.name" />
         <van-icon v-if="isDark" :class="{ active: isActive('Setting') }" name="setting-o" />
         <span>{{ $t('nav.setting') }}</span>
       </li>
-      <li v-if="!isShowBackTop" class="nav_to_top" @click="scrollToTop()">
-        <Icon class="icon" name="to_top" index="BackTop" />
-        <van-icon v-if="isDark" name="back-top" />
-        <span>{{ $t('9t4q1l50WKJY_iuXpTo66') }}</span>
+      <li v-if="isShowBackTop" class="nav_to_top" @click="scrollToTop()">
+        <van-icon name="back-top" size="0.6rem" />
+      </li>
+      <li v-if="isShowBackTop" class="nav_back" @click="$router.back()">
+        <van-icon name="arrow-left" size="0.6rem" />
       </li>
     </ul>
   </div>
@@ -68,7 +69,7 @@ export default {
   data() {
     return {
       isLogin: window.APP_CONFIG.useLocalAppApi || isWebLogin,
-      isShowBackTop: document.documentElement.clientWidth < 1280,
+      isShowBackTop: document.documentElement.clientWidth > 1270,
       isDark: !!localStorage.PXV_DARK,
     }
   },
@@ -91,7 +92,7 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.nav_to_top
+.nav_to_top, .nav_back
   display none
 
 .nav-container {

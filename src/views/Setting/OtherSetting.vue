@@ -58,6 +58,7 @@
           <van-switch :disabled="appSetting.isLongpressBlock" :value="appSetting.isLongpressDL" size="24" @change="v => saveAppSetting('isLongpressDL', v, true)" />
         </template>
       </van-cell>
+      <van-cell v-if="platform.isTauri" center :title="$t('C-gNiRgJ5qHE6we1kLwaZ')" is-link :label="saveFileDir || $t('CQXPpD9lIK5Te0yjGoy56')" @click="selSaveFileDir" />
       <van-cell center :title="$t('IQH88ofRzNxE0CTcT0-wO')" :label="$t('setting.lab.title')">
         <template #right-icon>
           <van-switch :value="appSetting.dlSubDirByAuthor" size="24" @change="v => saveAppSetting('dlSubDirByAuthor', v)" />
@@ -115,7 +116,7 @@
           <van-switch :value="appSetting.isEnableSwipe" size="24" @change="v => saveAppSetting('isEnableSwipe', v, true)" />
         </template>
       </van-cell>
-      <van-cell center :title="$t('Gry1iNTJ2wm_9FMG_JpBT')">
+      <van-cell v-if="isNavSHSetShow" center :title="$t('Gry1iNTJ2wm_9FMG_JpBT')">
         <template #right-icon>
           <van-switch :value="appSetting.hideNavBarOnScroll" size="24" @change="v => saveAppSetting('hideNavBarOnScroll', v, true)" />
         </template>
@@ -486,6 +487,8 @@ export default {
         api: window.p_api_hosts?.['app-api.pixiv.net'],
         pximg: window.p_pximg_ip,
       },
+      saveFileDir: LocalStorage.get('PXV_DL_DIR'),
+      isNavSHSetShow: document.documentElement.clientWidth <= 1270,
     }
   },
   head() {
@@ -723,6 +726,14 @@ export default {
       setTimeout(() => {
         location.reload()
       }, 500)
+    },
+    async selSaveFileDir() {
+      const { getSelectedSaveDir } = await import('@/platform/tauri/utils')
+      const selected = await getSelectedSaveDir()
+      if (selected != null && !Array.isArray(selected)) {
+        this.saveFileDir = selected
+        this.saveSetting('PXV_DL_DIR', selected)
+      }
     },
     onAnalyticsChange(val) {
       window.umami?.track('AnalyticsChange', { val })

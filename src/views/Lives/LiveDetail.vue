@@ -272,7 +272,7 @@ export default {
       }, 500)
     },
     toUsers(id) {
-      window.open(`/users/${id}`, '_blank', 'noreferrer')
+      this.$router.push(`/users/${id}`)
     },
     cmnProxy(src) {
       return COMMON_PROXY + src
@@ -524,7 +524,7 @@ export default {
       margin-right 0
       padding 0
       &,& .dplayer
-        width: calc(100vw - 400PX - 1.4rem);
+        width: calc(100vw - 400PX - 2.6rem);
         height: 13.49rem;
         max-height unset
         border-radius 12px
