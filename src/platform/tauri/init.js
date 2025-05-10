@@ -4,7 +4,6 @@ import '@/assets/style/base.styl'
 import '@/assets/style/theme.styl'
 import '@/assets/style/theme-bg.styl'
 import '@/assets/style/vta.css'
-import '@/assets/style/cover.css'
 import '@vant/touch-emulator'
 import './polyfill'
 
