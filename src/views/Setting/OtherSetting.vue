@@ -353,7 +353,12 @@ export default {
       apiProxySel: {
         show: false,
         actions: APP_API_PROXYS.split(',').map((_value, i) => {
-          return { name: `Proxy ${i} (${_value.split('.')[0]})`, _value }
+          const arr = _value.split('.')
+          const label = arr.map((e, i) => {
+            if (i == 0) { return e.length <= 4 ? e : `${e[0]}*${e.slice(-3)}` }
+            return i == arr.length - 1 ? e : '*'
+          }).join('.')
+          return { name: `Proxy ${i} (${label})`, _value }
         }),
       },
       pximgBed: {
