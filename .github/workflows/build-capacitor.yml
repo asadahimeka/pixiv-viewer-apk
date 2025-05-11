@@ -60,11 +60,33 @@ jobs:
         working-directory: android
         run: ./gradlew assembleDebug
 
+      - name: Extract app name and version
+        id: app-info
+        run: |
+          NAME=$(node -p "require('./package.json').name || 'app'")
+          VERSION=$(node -p "require('./package.json').version || '0.0.0'")
+          echo "APP_NAME=$NAME" >> $GITHUB_ENV
+          echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "APK_NAME=${APP_NAME}_${APP_VERSION}_android.apk" >> $GITHUB_ENV
+
+      - name: Rename APK
+        run: |
+          cd android/app/build/outputs/apk/debug
+          mv app-release.apk "${APK_NAME}"
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: android-app-debug.apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          name: ${{ APK_NAME }}
+          path: android/app/build/outputs/apk/debug/${{ APK_NAME }}
+
+      - name: Upload APK to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ APP_VERSION }}
+          files: android/app/build/outputs/apk/debug/${{ APK_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build-ios:
     name: Build iOS IPA (Unsigned)
@@ -123,12 +145,21 @@ jobs:
       - name: List archive contents
         run: ls -R ios/App/build/App.xcarchive
 
+      - name: Extract app name and version
+        id: app-info
+        run: |
+          NAME=$(node -p "require('./package.json').name || 'app'")
+          VERSION=$(node -p "require('./package.json').version || '0.0.0'")
+          echo "APP_NAME=$NAME" >> $GITHUB_ENV
+          echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "IPA_NAME=${APP_NAME}_v${APP_VERSION}_ios_unsigned.ipa" >> $GITHUB_ENV
+
       - name: Package App.app into IPA manually
         run: |
           cd ios/App/build
           mkdir -p Payload
           cp -R App.xcarchive/Products/Applications/App.app Payload/
-          zip -r App.ipa Payload
+          zip -r9 "${{ IPA_NAME }}" Payload
 
       # - name: Export IPA (unsigned)
       #   run: |
@@ -143,6 +174,13 @@ jobs:
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
-          name: ios-app-unsigned.ipa
-          # path: ios/App/build/export/*.ipa
-          path: ios/App/build/App.ipa
+          name: ${{ IPA_NAME }}
+          path: ios/App/build/${{ IPA_NAME }}
+
+      - name: Upload IPA to existing GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ APP_VERSION }}
+          files: ios/App/build/${{ IPA_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
