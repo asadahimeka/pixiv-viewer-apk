@@ -234,7 +234,7 @@ export default {
 
       let historyList = await getCache('illusts.history', [])
       if (!Array.isArray(historyList)) historyList = []
-      if (historyList.length > 100) historyList = historyList.slice(0, 100)
+      // if (historyList.length > 100) historyList = historyList.slice(0, 100)
       historyList = _.uniqBy([art, ...historyList], 'id')
       setCache('illusts.history', historyList)
     },

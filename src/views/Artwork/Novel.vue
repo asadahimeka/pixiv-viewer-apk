@@ -235,7 +235,7 @@ export default {
 
         let historyList = await getCache('novels.history', [])
         if (!Array.isArray(historyList)) historyList = []
-        if (historyList.length > 100) historyList = historyList.slice(0, 100)
+        // if (historyList.length > 100) historyList = historyList.slice(0, 100)
         historyList = _.uniqBy([res.data, ...historyList], 'id')
         setCache('novels.history', historyList)
       } else {
