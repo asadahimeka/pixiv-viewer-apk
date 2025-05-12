@@ -100,24 +100,24 @@
     <td>Linux</td>
     <td>
       <a href="https://github.com/asadahimeka/pixiv-viewer-app/releases/download/v1.25.5/Pixiv-Viewer_1.25.5_amd64.AppImage">
-        <img alt src="https://img.shields.io/badge/AppImage-x64-f84e29.svg?logo=linux">
+        <img alt src="https://img.shields.io/badge/AppImage-x64-F1B42F.svg?logo=linux">
       </a><br>
       <a href="https://github.com/asadahimeka/pixiv-viewer-app/releases/download/v1.25.5/Pixiv-Viewer_1.25.5_amd64.deb">
         <img alt src="https://img.shields.io/badge/DebPackage-x64-FF9966.svg?logo=debian">
       </a><br>
       <a href="https://github.com/asadahimeka/pixiv-viewer-app/releases/download/v1.25.5/Pixiv-Viewer-1.25.5-1.x86_64.rpm">
-        <img alt src="https://img.shields.io/badge/RpmPackage-x64-F1B42F.svg?logo=redhat">
+        <img alt src="https://img.shields.io/badge/RpmPackage-x64-f84e29.svg?logo=redhat">
       </a>
     </td>
     <td>
       <a href="https://github.com/asadahimeka/pixiv-viewer-app/releases/download/v1.25.5/Pixiv-Viewer_1.25.5_amd64.AppImage">
-        <img alt="" src="https://img.shields.io/github/downloads/asadahimeka/pixiv-viewer-app/v1.25.5/Pixiv-Viewer_1.25.5_amd64.AppImage?label=DL&color=f84e29">
+        <img alt="" src="https://img.shields.io/github/downloads/asadahimeka/pixiv-viewer-app/v1.25.5/Pixiv-Viewer_1.25.5_amd64.AppImage?label=DL&color=F1B42F">
       </a><br>
       <a href="https://github.com/asadahimeka/pixiv-viewer-app/releases/download/v1.25.5/Pixiv-Viewer_1.25.5_amd64.deb">
         <img alt="" src="https://img.shields.io/github/downloads/asadahimeka/pixiv-viewer-app/v1.25.5/Pixiv-Viewer_1.25.5_amd64.deb?label=DL&color=FF9966">
       </a><br>
       <a href="https://github.com/asadahimeka/pixiv-viewer-app/releases/download/v1.25.5/Pixiv-Viewer-1.25.5-1.x86_64.rpm">
-        <img alt="" src="https://img.shields.io/github/downloads/asadahimeka/pixiv-viewer-app/v1.25.5/Pixiv-Viewer-1.25.5-1.x86_64.rpm?label=DL&color=F1B42F">
+        <img alt="" src="https://img.shields.io/github/downloads/asadahimeka/pixiv-viewer-app/v1.25.5/Pixiv-Viewer-1.25.5-1.x86_64.rpm?label=DL&color=f84e29">
       </a>
     </td>
   </tr>
