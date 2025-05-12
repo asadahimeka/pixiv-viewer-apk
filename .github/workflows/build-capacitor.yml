@@ -152,7 +152,7 @@ jobs:
           VERSION=$(node -p "require('./package.json').version || '0.0.0'")
           echo "APP_NAME=$NAME" >> $GITHUB_ENV
           echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
-          echo "IPA_NAME=${NAME}_v${VERSION}_ios_unsigned.ipa" >> $GITHUB_ENV
+          echo "IPA_NAME=${NAME}_${VERSION}_ios_unsigned.ipa" >> $GITHUB_ENV
 
       - name: Package App.app into IPA manually
         run: |
